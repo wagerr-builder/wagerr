@@ -44,7 +44,8 @@ script: |
 
   WRAP_DIR=$HOME/wrapped
   HOSTS="arm-linux-gnueabihf x86_64-linux-gnu aarch64-linux-gnu" # powerpc64le-linux-gnu s390x-linux-gnu powerpc64-linux-gnu mipsel-linux-gnu mips-linux-gnu riscv64-linux-gnu i686-linux-gnu
-  CONFIGFLAGS="--enable-glibc-back-compat --enable-reduce-exports --disable-bench --disable-gui-tests --enable-crash-hooks"
+  HOSTS="x86_64-linux-gnu"
+  CONFIGFLAGS="--enable-glibc-back-compat --enable-reduce-exports --disable-bench --disable-gui-tests --enable-crash-hooks --enable-debug"
   FAKETIME_HOST_PROGS="gcc g++"
   FAKETIME_PROGS="date ar ranlib nm"
   HOST_CFLAGS="-O2 -g"
@@ -122,7 +123,7 @@ script: |
   BASEPREFIX="${PWD}/depends"
   # Build dependencies for each host
   for i in $HOSTS; do
-    make ${MAKEOPTS} -C ${BASEPREFIX} HOST="${i}" CC=${i}-gcc-9 CXX=${i}-g++-9
+    make DEBUG=1 ${MAKEOPTS} -C ${BASEPREFIX} HOST="${i}" CC=${i}-gcc-9 CXX=${i}-g++-9
   done
 
   # Faketime for binaries
