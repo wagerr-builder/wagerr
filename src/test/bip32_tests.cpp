@@ -8,6 +8,7 @@
 #include <key.h>
 #include <key_io.h>
 #include <streams.h>
+#include <util/system.h>
 #include <util/strencodings.h>
 #include <test/util/setup_common.h>
 
@@ -47,11 +48,11 @@ TestVector test1 =
     ("ToEA6jGTjbZqM7r7Q8x5VRjpc1tdb4rULfJzrTwzoaUfKe9wjJpT4d4jQcaLSh9GyD1zAvR8mHDecXwHPte6JVHjtYUZddowyYqAJcw8ncLBfDe",
      "TDt9EbMkGwvoY2hDZfBkGGhGkrfTk9ZuV6tmw8sbmsiofoRycyooMjF8URtiPVqXoD27cTB9yCoGVi5z6tztLzm8R3t8to16sJPKNpvkun8rYcG",
      0x80000002)
-    ("xpub6D4BDPcP2GT577Vvch3R8wDkScZWzQzMMUm3PWbmWvVJrZwQY4VUNgqFJPMM3No2dFDFGTsxxpG5uJh7n7epu4trkrX7x7DogT5Uv6fcLW5",
-     "xprv9z4pot5VBttmtdRTWfWQmoH1taj2axGVzFqSb8C9xaxKymcFzXBDptWmT7FwuEzG3ryjH4ktypQSAewRiNMjANTtpgP4mLTj34bhnZX7UiM",
-     2)
     ("ToEA6msjn8Ph3zhXGJkAk29By1vmpDizcCtzC1Bg3umpVWXP9A1ZsNuAK48FziL7R5TJXSWsNfCFzUWFrDnP1aqGwzdQDXn64Vtr2JrGstysVAH",
      "TDt9Edy2KUkfEuYdRpyqWs6e7rhbyJSRkeUmGg7H2D1xqfoR2pzvAV5ZNsSdwY49mSXc7vCYZfkBv7utL6jdw1gKY9KoFQZf2EdFz6fyYM6oD1B",
+     2)
+    ("ToEA6p78cZWeEUNWLnDtSHMGrX65u31jEoDBdV4yJsJHox5zWFdvw9bXWdbBg3KVpsc2zke3WfgD3DQNQe8P6tGUfb6f8KLGtgng2zm82T6KJan",
+     "TDt9EgCR9uscRPDcWJTZD8Jj1Mrv47jAPEnxi9zaHAYSA7N2PvdHEFmvaSuZcrTcE6w3BiLFBaykpwN3oHe68SDfjXuqeeekaKSy95993rNMzUu",
      1000000000)
     ("ToEA6qpu6F7tMbkhs81LYpv1AE65hGb34J2DRjTXZ9gS22UVDP3KTZrBmjkFJsESg8gkUSvb21c1aR6y14XQCjmKWrFmzrkMhANJqxP3GenZSJd",
      "TDt9EhvBdbUrYWbp2eF1KfsTK4rurMJUCjbzWQP8XSvaNBkX742fkg2aqZ4dFiEp9247o7jVxwxhfyuAoTeTfWEPrVZNz9QyhECgRQhVo1R47Ej",
@@ -91,7 +92,7 @@ static void RunTest(const TestVector &test) {
     std::vector<unsigned char> seed = ParseHex(test.strHexMaster);
     CExtKey key;
     CExtPubKey pubkey;
-    key.SetSeed(seed.data(), seed.size());
+    key.SetMaster(seed.data(), seed.size());
     pubkey = key.Neuter();
     for (const TestDerivation &derive : test.vDerive) {
         unsigned char data[74];
