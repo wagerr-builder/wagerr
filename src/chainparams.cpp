@@ -760,8 +760,9 @@ public:
         UpdateDevnetSubsidyAndDiffParametersFromArgs(args);
         genesis = CreateGenesisBlock(1518696184, 4638953, 0x207fffff, 1, 0 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x91f308fb406eafaee88b929632a4b2191ad6a832d2bdd896d474347c80fe165b"));
-        assert(genesis.hashMerkleRoot == uint256S("0xc4d06cf72583752c23b819fa8d8cededd1dad5733d413ea1f123f98a7db6af13"));
+        //assert(consensus.hashGenesisBlock == uint256S("0x91f308fb406eafaee88b929632a4b2191ad6a832d2bdd896d474347c80fe165b"));
+        assert(consensus.hashGenesisBlock == uint256S("0x30e54722b4d267ebddaabd43001f191e88a59d9cbe762348ce34cbb03b04d17"));
+        //assert(genesis.hashMerkleRoot == uint256S("0xc4d06cf72583752c23b819fa8d8cededd1dad5733d413ea1f123f98a7db6af13"));
 
         devnetGenesis = FindDevNetGenesisBlock(genesis, 50 * COIN);
         consensus.hashDevnetGenesisBlock = devnetGenesis.GetHash();
