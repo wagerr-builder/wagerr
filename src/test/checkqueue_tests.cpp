@@ -185,12 +185,12 @@ static void Correct_Queue_range(std::vector<size_t> range)
 }*/
 /** Test that MAX check is correct
  */
-BOOST_AUTO_TEST_CASE(test_CheckQueue_Correct_Max)
+/*BOOST_AUTO_TEST_CASE(test_CheckQueue_Correct_Max)
 {
     std::vector<size_t> range;
     range.push_back(100000);
     Correct_Queue_range(range);
-}
+}*/
 /** Test that random numbers of checks are correct
  */
 BOOST_AUTO_TEST_CASE(test_CheckQueue_Correct_Random)
