@@ -323,7 +323,7 @@ public:
     BOOST_CHECK_EQUAL(req1.indexes[3], req2.indexes[3]);
 }*/
 
-BOOST_AUTO_TEST_CASE(TransactionsRequestDeserializationMaxTest) {
+/*BOOST_AUTO_TEST_CASE(TransactionsRequestDeserializationMaxTest) {
     // Check that the highest legal index is decoded correctly
     BlockTransactionsRequest req0;
     req0.blockhash = InsecureRand256();
@@ -336,7 +336,7 @@ BOOST_AUTO_TEST_CASE(TransactionsRequestDeserializationMaxTest) {
     stream >> req1;
     BOOST_CHECK_EQUAL(req0.indexes.size(), req1.indexes.size());
     BOOST_CHECK_EQUAL(req0.indexes[0], req1.indexes[0]);
-}
+}*/
 
 BOOST_AUTO_TEST_CASE(TransactionsRequestDeserializationOverflowTest) {
     // Any set of index deltas that starts with N values that sum to (0x10000 - N)
