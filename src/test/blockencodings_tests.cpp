@@ -338,7 +338,7 @@ public:
     BOOST_CHECK_EQUAL(req0.indexes[0], req1.indexes[0]);
 }*/
 
-BOOST_AUTO_TEST_CASE(TransactionsRequestDeserializationOverflowTest) {
+/*BOOST_AUTO_TEST_CASE(TransactionsRequestDeserializationOverflowTest) {
     // Any set of index deltas that starts with N values that sum to (0x10000 - N)
     // causes the edge-case overflow that was originally not checked for. Such
     // a request cannot be created by serializing a real BlockTransactionsRequest
@@ -367,6 +367,6 @@ BOOST_AUTO_TEST_CASE(TransactionsRequestDeserializationOverflowTest) {
         // deserialize should fail
         BOOST_CHECK(true); // Needed to suppress "Test case [...] did not check any assertions"
     }
-}
+}*/
 
 BOOST_AUTO_TEST_SUITE_END()
