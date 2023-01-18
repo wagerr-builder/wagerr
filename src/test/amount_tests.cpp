@@ -7,6 +7,7 @@
 #include <test/util/setup_common.h>
 
 #include <boost/test/unit_test.hpp>
+#include <betting/bet_db.h>
 
 BOOST_FIXTURE_TEST_SUITE(amount_tests, BasicTestingSetup)
 
