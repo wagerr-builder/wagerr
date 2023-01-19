@@ -39,7 +39,8 @@ define $(package)_extract_cmds
   echo $($(package)_source_dir)/$($(package)_libsodium_file_name) && \
   ls $($(package)_source_dir)/$($(package)_libsodium_file_name) && \
   cp $($(package)_source_dir)/$($(package)_libsodium_file_name) . && \
-  cp $($(package)_source_dir)/$($(package)_relic_file_name) .
+  cp $($(package)_source_dir)/$($(package)_relic_file_name) . && \
+  ls 
 endef
 
 define $(package)_set_vars
