@@ -10,6 +10,7 @@
 #include <streams.h>
 #include <util/strencodings.h>
 #include <test/util/setup_common.h>
+#include <betting/bet_db.h>
 
 #include <string>
 #include <vector>
