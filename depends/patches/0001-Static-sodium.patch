@@ -1,0 +1,35 @@
+--- a/.github/workflows/build-wheels.yml	2023-01-20 15:34:35.835508617 +0000
++++ b/.github/workflows/build-wheels.yml	2023-01-20 15:35:46.519989628 +0000
+@@ -91,7 +91,7 @@
+           && delocate-wheel -v {wheel}
+           && cp {wheel} {dest_dir}
+         CIBW_BEFORE_ALL_WINDOWS: >
+-          curl -L https://download.libsodium.org/libsodium/releases/libsodium-1.0.18-stable-msvc.zip > libsodium-1.0.18-stable-msvc.zip
++          #curl -L https://download.libsodium.org/libsodium/releases/libsodium-1.0.18-stable-msvc.zip > libsodium-1.0.18-stable-msvc.zip
+           && 7z x libsodium-1.0.18-stable-msvc.zip
+           && git clone https://github.com/Chia-Network/relic_ietf_64.git
+           && ls -l relic_ietf_64
+--- a/CMakeLists.txt	2023-01-20 15:34:47.151585685 +0000
++++ b/CMakeLists.txt	2023-01-20 15:48:27.709013000 +0000
+@@ -30,16 +30,16 @@
+ 
+ include(FetchContent)
+ 
+-FetchContent_Declare(Sodium
+-  GIT_REPOSITORY https://github.com/AmineKhaldi/libsodium-cmake.git
++#FetchContent_Declare(Sodium
++  #GIT_REPOSITORY https://github.com/AmineKhaldi/libsodium-cmake.git
+   # Latest commit at the moment this was added here
+   # Anchored to libsodium v1.0.18
+-  GIT_TAG f73a3fe1afdc4e37ac5fe0ddd401bf521f6bba65
+-)
++  #GIT_TAG f73a3fe1afdc4e37ac5fe0ddd401bf521f6bba65
++#)
+ set(SODIUM_PCH "on" CACHE STRING "")
+ set(SODIUM_DISABLE_TESTS "on" CACHE STRING "")
+ set(SODIUM_CHIA_MINIMAL "on" CACHE STRING "")
+-FetchContent_MakeAvailable(Sodium)
++#FetchContent_MakeAvailable(Sodium)
+ 
+ if (DEFINED ENV{RELIC_MAIN})
+   set(RELIC_GIT_TAG "origin/main")
