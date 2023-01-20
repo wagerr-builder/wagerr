@@ -19,7 +19,7 @@ $(package)_libsodium_download_path=https://download.libsodium.org/libsodium/rele
 $(package)_libsodium_download_file=libsodium-$($(package)_libsodium_version).zip
 $(package)_libsodium_file_name=libsodium-$($(package)_libsodium_version).zip
 sspackage)_libsodium_build_subdir=sodium-populate
-$(package)_libsodium_sha256_hash=6f504490b342a4f8a4c4a02fc9b866cbef8622d5df4e5452b46be121e46636c1
+$(package)_libsodium_sha256_hash=2b8a6fd060c1ade26f9a66ca71a9602cc5e3cf19c0cdb8c56cd45ace5220fac4
 $(package)_extra_sources=$($(package)_relic_file_name)
 $(package)_extra_sources+=$($(package)_libsodium_file_name)
 
