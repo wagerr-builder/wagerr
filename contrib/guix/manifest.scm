@@ -1,6 +1,8 @@
 (use-modules (gnu)
              (gnu packages)
              (gnu packages autotools)
+             (gnu packages automake@1.16.5)
+             (gnu packages autoconf@2.71)
              (gnu packages base)
              (gnu packages bash)
              (gnu packages bison)
@@ -41,7 +43,6 @@
              (guix packages)
              (guix profiles)
              (guix utils))
-             (use-service-modules networking)
 
 (define-syntax-rule (search-our-patches file-name ...)
   "Return the list of absolute file names corresponding to each
