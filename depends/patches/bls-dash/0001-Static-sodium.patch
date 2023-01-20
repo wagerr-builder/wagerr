@@ -1,5 +1,5 @@
---- .github/workflows/build-wheels.yml.orig	2023-01-20 15:34:35.835508617 +0000
-+++ .github/workflows/build-wheels.yml	2023-01-20 15:35:46.519989628 +0000
+--- a/.github/workflows/build-wheels.yml	2023-01-20 15:34:35.835508617 +0000
++++ b/.github/workflows/build-wheels.yml	2023-01-20 15:35:46.519989628 +0000
 @@ -91,7 +91,7 @@
            && delocate-wheel -v {wheel}
            && cp {wheel} {dest_dir}
@@ -9,8 +9,8 @@
            && 7z x libsodium-1.0.18-stable-msvc.zip
            && git clone https://github.com/Chia-Network/relic_ietf_64.git
            && ls -l relic_ietf_64
---- CMakeLists.txt.orig	2023-01-20 15:34:47.151585685 +0000
-+++ CMakeLists.txt	2023-01-20 15:36:23.928243834 +0000
+--- a/CMakeLists.txt	2023-01-20 15:34:47.151585685 +0000
++++ b/CMakeLists.txt	2023-01-20 15:36:23.928243834 +0000
 @@ -31,10 +31,10 @@
  include(FetchContent)
  
