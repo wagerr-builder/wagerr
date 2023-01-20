@@ -41,6 +41,7 @@
              (guix packages)
              (guix profiles)
              (guix utils))
+             (use-service-modules networking)
 
 (define-syntax-rule (search-our-patches file-name ...)
   "Return the list of absolute file names corresponding to each
