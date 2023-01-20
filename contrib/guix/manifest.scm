@@ -49,6 +49,9 @@ FILE-NAME found in ./patches relative to the current file."
       ((%patch-path (list (string-append (dirname (current-filename)) "/patches"))))
     (list (search-patch file-name) ...)))
 
+ (services (append (list (service dhcp-client-service-type)
+                    %base-services)))
+
 (define (make-ssp-fixed-gcc xgcc)
   "Given a XGCC package, return a modified package that uses the SSP function
 from glibc instead of from libssp.so. Our `symbol-check' script will complain if
