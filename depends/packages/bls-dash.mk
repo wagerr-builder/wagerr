@@ -37,7 +37,8 @@ define $(package)_extract_cmds
   $(build_SHA256SUM) -c $($(package)_extract_dir)/.$($(package)_file_name).hash && \
   tar --strip-components=1 -xf $($(package)_source) -C . && \
   cp -v $($(package)_source_dir)/$($(package)_libsodium_file_name) . && \
-  cp $($(package)_source_dir)/$($(package)_relic_file_name) .
+  cp $($(package)_source_dir)/$($(package)_relic_file_name) . && \
+  ls 
 endef
 
 define $(package)_set_vars
