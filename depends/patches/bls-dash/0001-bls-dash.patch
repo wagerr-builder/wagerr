@@ -1,3 +1,65 @@
+--- a/src/elements.cpp	2023-01-20 11:52:42.767200918 +0000
++++ b/src/elements.cpp	2023-01-20 11:55:44.460467025 +0000
+@@ -122,7 +122,7 @@
+ 
+ bool G1Element::IsValid() const {
+     // Infinity no longer valid in Relic
+-    // https://github.com/relic-toolkit/relic/commit/f3be2babb955cf9f82743e0ae5ef265d3da6c02b
++    // https://140.82.121.4/relic-toolkit/relic/commit/f3be2babb955cf9f82743e0ae5ef265d3da6c02b
+     if (g1_is_infty((g1_st*)p) == 1)
+         return true;
+ 
+@@ -333,7 +333,7 @@
+ 
+ bool G2Element::IsValid() const {
+     // Infinity no longer valid in Relic
+-    // https://github.com/relic-toolkit/relic/commit/f3be2babb955cf9f82743e0ae5ef265d3da6c02b
++    // https://140.82.121.4/relic-toolkit/relic/commit/f3be2babb955cf9f82743e0ae5ef265d3da6c02b
+     if (g2_is_infty((g2_st*)q) == 1)
+         return true;
+ 
+--- ./contrib/catch/catch.hpp	2023-01-20 11:53:00.415323799 +0000
++++ ./contrib/catch/catch.hpp	2023-01-20 11:55:52.300521704 +0000
+@@ -8439,7 +8439,7 @@
+ // Distributed under the Boost Software License, Version 1.0. (See accompanying
+ // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+ //
+-// See https://github.com/philsquared/Clara for more details
++// See https://140.82.121.4/philsquared/Clara for more details
+ 
+ // Clara v1.1.5
+ 
+@@ -8470,7 +8470,7 @@
+ // Distributed under the Boost Software License, Version 1.0. (See accompanying
+ // file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+ //
+-// This project is hosted at https://github.com/philsquared/textflowcpp
++// This project is hosted at https://140.82.121.4/philsquared/textflowcpp
+ 
+ 
+ #include <cassert>
+@@ -10161,8 +10161,8 @@
+ 
+     // use POSIX/ ANSI console terminal codes
+     // Thanks to Adam Strzelecki forinal contribution
+-    // (http://github.com/nanoant)
+-    // https://github.com/philsquared/Catch/pull/131
++    // (http://140.82.121.4/nanoant)
++    // https://140.82.121.4/philsquared/Catch/pull/131
+     class PosixColourImpl : public IColourImpl {
+     public:
+         void use( Colour::Code _colourCode ) override {
+--- a/src/test.cpp	2023-01-20 11:53:08.967383352 +0000
++++ b/src/test.cpp	2023-01-20 11:56:12.720664121 +0000
+@@ -1182,7 +1182,7 @@
+     }
+ 
+     SECTION("Legacy scheme") {
+-        // Test legacy example data defined in https://gist.github.com/xdustinface/318c2c08c36ab12a2b1963caf1f7815c
++        // Test legacy example data defined in https://gist.140.82.121.4/xdustinface/318c2c08c36ab12a2b1963caf1f7815c
+         std::string strSignHash{"b6d8ee31bbd375dfd55d5fb4b02cfccc68709e64f4c5ffcd3895ceb46540311d"};
+         std::string strThresholdPublicKey{"97a12b918eac73718d55b7fca60435ec0b442d7e24b45cbd80f5cf2ea2e14c4164333fffdb00d27e309abbafacaa9c34"};
+         std::string strThresholdSignature{"031c536960c9c44efefa4a3334d2d1b808f46abe121cd14a1d0b6ee6b6dca85fd3087d86fe5b1327e6792be53f4ed4df19c3af3aac79c0bb9dc36fc2a30ba566de6a82cd3e4af2d6654cbe02bb52769a06c1644a4c63b3c3a6fd16e5e68e5c0b"};
 --- ./js-bindings/package.json	2023-01-20 11:53:13.895417667 +0000
 +++ ./js-bindings/package.json	2023-01-20 11:56:21.520725515 +0000
 @@ -20,13 +20,13 @@
@@ -37,6 +99,39 @@
    GIT_TAG ${RELIC_GIT_TAG}
  )
  
+--- ./python-impl/bls12381.py	2023-01-20 11:53:33.663555366 +0000
++++ ./python-impl/bls12381.py	2023-01-20 11:56:55.968965848 +0000
+@@ -2,7 +2,7 @@
+ from fields import Fq, Fq2
+ 
+ # BLS parameter used to generate the other parameters
+-# Spec is found here: https://github.com/zkcrypto/pairing/tree/master/src/bls12_381
++# Spec is found here: https://140.82.121.4/zkcrypto/pairing/tree/master/src/bls12_381
+ x = -0xD201000000010000
+ 
+ # 381 bit prime
+--- ./python-impl/op_swu_g2.py	2023-01-20 11:53:41.031606689 +0000
++++ ./python-impl/op_swu_g2.py	2023-01-20 11:57:08.945056388 +0000
+@@ -1,7 +1,7 @@
+ #!/usr/bin/python
+ #
+ # pure Python implementation of optimized simplified SWU map to BLS12-381 G2
+-# https://github.com/algorand/bls_sigs_ref
++# https://140.82.121.4/algorand/bls_sigs_ref
+ #
+ # This software is (C) 2019 Algorand, Inc.
+ #
+--- ./python-impl/impl-test.py	2023-01-20 11:53:55.423706960 +0000
++++ ./python-impl/impl-test.py	2023-01-20 11:57:18.705124511 +0000
+@@ -423,7 +423,7 @@
+ 
+ 
+ def test_vectors_invalid():
+-    # Invalid inputs from https://github.com/algorand/bls_sigs_ref/blob/master/python-impl/serdesZ.py
++    # Invalid inputs from https://140.82.121.4/algorand/bls_sigs_ref/blob/master/python-impl/serdesZ.py
+     invalid_inputs_1 = [
+         # infinity points: too short
+         "c000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
 --- ./setup.py	2023-01-20 11:54:07.983794484 +0000
 +++ ./setup.py	2023-01-20 11:57:29.505199892 +0000
 @@ -194,7 +194,7 @@
