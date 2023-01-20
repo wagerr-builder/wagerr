@@ -36,8 +36,6 @@
              (guix build-system trivial)
              (guix download)
              (guix gexp)
-             (guix automake@1.16.5)
-             (guix packages autoconf@2.71)
              (guix git-download)
              ((guix licenses) #:prefix license:)
              (guix packages)
@@ -629,8 +627,8 @@ inspecting signatures in Mach-O binaries.")
         ;; Build tools
         gnu-make
         libtool
-        autoconf
-        automake
+        autoconf@2.71
+        automake@1.16.5
         pkg-config
         bison
         cmake
