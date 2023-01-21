@@ -153,7 +153,7 @@ chain for " target " development."))
 
 (define* (make-wagerr-cross-toolchain target
                                        #:key
-                                       (base-gcc-for-libc gcc-7)
+                                       (base-gcc-for-libc gcc-9)
                                        (base-kernel-headers linux-libre-headers-4.9)
                                        (base-libc (make-glibc-without-ssp glibc-2.24))
                                        (base-gcc (make-gcc-rpath-link base-gcc)))
@@ -596,7 +596,7 @@ inspecting signatures in Mach-O binaries.")
                                            "glibc-2.24-elfm-loadaddr-dynamic-rewrite.patch"
                                            "glibc-2.24-no-build-time-cxx-header-run.patch"))))))
 
-(define glibc-2.27/wagerr-patched
+(define public glibc-2.27/wagerr-patched
   (package-with-extra-patches glibc-2.27
     (search-our-patches "glibc-2.27-riscv64-Use-__has_include__-to-include-asm-syscalls.h.patch")))
 
