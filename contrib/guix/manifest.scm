@@ -1,6 +1,8 @@
 (use-modules (gnu)
              (gnu packages)
              (gnu packages autotools)
+             (gnu packages automake)
+             (gnu packages libtool)
              (gnu packages base)
              (gnu packages bash)
              (gnu packages bison)
