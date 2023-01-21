@@ -580,6 +580,15 @@ and endian independent.")
 inspecting signatures in Mach-O binaries.")
       (license license:expat))))
 
+(define (make-glibc-without-werror glibc)
+  (package-with-extra-configure-variable glibc "enable_werror" "no"))
+
+(define (make-glibc-with-stack-protector glibc)
+  (package-with-extra-configure-variable glibc "--enable-stack-protector" "all"))
+
+(define (make-glibc-with-bind-now glibc)
+  (package-with-extra-configure-variable glibc "--enable-bind-now" "yes"))
+
 (define-public glibc-2.24
   (package
     (inherit glibc-2.31)
