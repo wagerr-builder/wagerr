@@ -151,7 +151,7 @@ chain for " target " development."))
     xglibc "libc_cv_ssp" "no")
    "libc_cv_ssp_strong" "no"))
 
-(define* (make-bitcoin-cross-toolchain target
+(define* (make-wagerr-cross-toolchain target
                                        #:key
                                        (base-gcc-for-libc base-gcc)
                                        (base-kernel-headers base-linux-kernel-headers)
