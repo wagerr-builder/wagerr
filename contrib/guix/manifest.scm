@@ -36,8 +36,6 @@
              (guix build-system trivial)
              (guix download)
              (guix gexp)
-             (guix libtool)
-             (guix autoconf)
              (guix git-download)
              ((guix licenses) #:prefix license:)
              (guix packages)
@@ -628,8 +626,8 @@ inspecting signatures in Mach-O binaries.")
         (list zlib "static")
         ;; Build tools
         gnu-make
-        libtool
-        autoconf
+        libtool-2.4.7
+        autoconf-2.71
         automake
         pkg-config
         bison
