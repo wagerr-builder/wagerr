@@ -7,6 +7,8 @@
              (gnu packages certs)
              (gnu packages cdrom)
              (gnu packages check)
+             (gnu packages libtool)
+             (gnu packages autoconf)
              (gnu packages cmake)
              (gnu packages commencement)
              (gnu packages compression)
