@@ -152,6 +152,12 @@ chain for " target " development."))
    "libc_cv_ssp_strong" "no"))
 
 (define base-linux-kernel-headers linux-libre-headers-5.15)
+(define (hardened-gcc gcc)
+  (package-with-extra-configure-variable (
+    package-with-extra-configure-variable gcc
+    "--enable-default-ssp" "yes")
+    "--enable-default-pie" "yes"))
+
 (define* (make-wagerr-cross-toolchain target
                                        #:key
                                        (base-gcc-for-libc base-gcc)
