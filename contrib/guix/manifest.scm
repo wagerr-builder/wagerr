@@ -628,8 +628,8 @@ inspecting signatures in Mach-O binaries.")
         (list zlib "static")
         ;; Build tools
         gnu-make
-        libtool-2.4.7
-        autoconf-2.71
+        libtool
+        autoconf
         automake
         pkg-config
         bison
