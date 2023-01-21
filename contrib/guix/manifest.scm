@@ -627,8 +627,8 @@ inspecting signatures in Mach-O binaries.")
         ;; Build tools
         gnu-make
         libtool
-        autoconf@2.71
-        automake@1.16.5
+        autoconf
+        automake
         pkg-config
         bison
         cmake
