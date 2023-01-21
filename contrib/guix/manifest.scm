@@ -637,5 +637,5 @@ inspecting signatures in Mach-O binaries.")
                        (else
                         (make-wagerr-cross-toolchain target)))))
           ((string-contains target "darwin")
-           (list clang-toolchain-9 binutils cmake xorriso python-signapple))
+           (list clang-toolchain-10 binutils cmake xorriso python-signapple))
           (else '())))))
