@@ -612,7 +612,6 @@ inspecting signatures in Mach-O binaries.")
         automake
         pkg-config
         bison
-        zlib
         ;; Native GCC 9 toolchain
         gcc-toolchain-9
         (list gcc-toolchain-9 "static")
