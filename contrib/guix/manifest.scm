@@ -580,7 +580,7 @@ inspecting signatures in Mach-O binaries.")
 
 (define-public glibc-2.24
   (package
-    (inherit glibc)
+    (inherit glibc-2.31)
     (version "2.24")
     (source (origin
               (method git-fetch)
@@ -599,7 +599,7 @@ inspecting signatures in Mach-O binaries.")
 ;; (define public glibc-2.27/wagerr-patched
 ;;  (package-with-extra-patches glibc-2.27
 ;;    (search-our-patches "glibc-2.27-riscv64-Use-__has_include__-to-include-asm-syscalls.h.patch")))
-(define-public glibc-2.27/bitcoin-patched
+(define-public glibc-2.27/wagerr-patched
   (package
     (inherit glibc-2.31)
     (version "2.27")
