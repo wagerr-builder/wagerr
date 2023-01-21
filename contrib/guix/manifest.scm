@@ -151,19 +151,20 @@ chain for " target " development."))
     xglibc "libc_cv_ssp" "no")
    "libc_cv_ssp_strong" "no"))
 
-(define* (make-wagerr-cross-toolchain target
+(define* (make-bitcoin-cross-toolchain target
                                        #:key
-                                       (base-gcc-for-libc gcc-9)
-                                       (base-kernel-headers linux-libre-headers-4.9)
-                                       (base-libc (make-glibc-without-ssp glibc-2.24))
-                                       (base-gcc (make-gcc-rpath-link base-gcc)))
+                                       (base-gcc-for-libc base-gcc)
+                                       (base-kernel-headers base-linux-kernel-headers)
+                                       (base-libc (make-glibc-with-bind-now (make-glibc-without-werror glibc-2.24)))
+                                       (base-gcc (make-gcc-rpath-link (hardened-gcc base-gcc))))
   "Convenience wrapper around MAKE-CROSS-TOOLCHAIN with default values
-desirable for building Wagerr Core release binaries."
+desirable for building Bitcoin Core release binaries."
   (make-cross-toolchain target
                         base-gcc-for-libc
                         base-kernel-headers
                         base-libc
                         base-gcc))
+
 
 (define (make-gcc-with-pthreads gcc)
   (package-with-extra-configure-variable gcc "--enable-threads" "posix"))
