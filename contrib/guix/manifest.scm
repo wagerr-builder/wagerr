@@ -612,7 +612,7 @@ inspecting signatures in Mach-O binaries.")
         automake
         pkg-config
         bison
-        zlib-1.2.12
+        zlib
         ;; Native GCC 10 toolchain
         gcc-toolchain-10
         (list gcc-toolchain-10 "static")
