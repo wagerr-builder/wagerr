@@ -604,6 +604,7 @@ inspecting signatures in Mach-O binaries.")
         gzip
         xz
         zlib
+        (list zlib "static")
         ;; Build tools
         gnu-make
         libtool-2.4.7
@@ -611,6 +612,7 @@ inspecting signatures in Mach-O binaries.")
         automake
         pkg-config
         bison
+        zlib-1.2.12
         ;; Native GCC 10 toolchain
         gcc-toolchain-10
         (list gcc-toolchain-10 "static")
