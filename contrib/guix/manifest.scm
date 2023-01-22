@@ -598,10 +598,23 @@ inspecting signatures in Mach-O binaries.")
                                            "glibc-2.24-elfm-loadaddr-dynamic-rewrite.patch"
                                            "glibc-2.24-no-build-time-cxx-header-run.patch"))))))
 
-(define glibc-2.27/wagerr-patched
-  (package-with-extra-patches glibc-2.27
-    (search-our-patches "glibc-2.27-riscv64-Use-__has_include__-to-include-asm-syscalls.h.patch")))
-
+(define-public glibc-2.27/bitcoin-patched
+  (package
+    (inherit glibc-2.31)
+    (version "2.27")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://sourceware.org/git/glibc.git")
+                    (commit "23158b08a0908f381459f273a984c6fd328363cb")))
+              (file-name (git-file-name "glibc" "23158b08a0908f381459f273a984c6fd328363cb"))
+              (sha256
+               (base32
+                "1b2n1gxv9f4fd5yy68qjbnarhf8mf4vmlxk10i3328c1w5pmp0ca"))
+              (patches (search-our-patches "glibc-ldd-x86_64.patch"
+                                           "glibc-2.27-riscv64-Use-__has_include-to-include-asm-syscalls.h.patch"
+                                           "glibc-2.27-dont-redefine-nss-database.patch"
+                                           "glibc-2.27-guix-prefix.patch"))))))
 (packages->manifest
  (append
   (list ;; The Basics
