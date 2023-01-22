@@ -588,6 +588,7 @@ inspecting signatures in Mach-O binaries.")
         which
         coreutils
         util-linux
+        glibc-utf8-locales
         ;; File(system) inspection
         file
         grep
