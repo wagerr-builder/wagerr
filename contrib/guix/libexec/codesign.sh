@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Copyright (c) 2021 The Wagerr Core developers
+# Copyright (c) 2021 The Wagerr developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 export LC_ALL=C

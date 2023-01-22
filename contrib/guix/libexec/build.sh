@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Copyright (c) 2019-2021 The Wagerr Core developers
+# Copyright (c) 2019-2021 The Bitcoin Core developers
+# Copyright (c) 2023 The Wagerr developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 export LC_ALL=C
@@ -274,7 +275,7 @@ mkdir -p "$DISTSRC"
 
     sed -i.old 's/-lstdc++ //g' config.status libtool
 
-    # Build Wagerr Core
+    # Build Wagerr
     make --jobs="$JOBS" ${V:+V=1}
 
     # Check that symbol/security checks tools are sane.
@@ -293,12 +294,12 @@ mkdir -p "$DISTSRC"
             ;;
     esac
 
-    # Setup the directory where our Wagerr Core build for HOST will be
+    # Setup the directory where our Wagerr build for HOST will be
     # installed. This directory will also later serve as the input for our
     # binary tarballs.
     INSTALLPATH="${PWD}/installed/${DISTNAME}"
     mkdir -p "${INSTALLPATH}"
-    # Install built Wagerr Core to $INSTALLPATH
+    # Install built Wagerr to $INSTALLPATH
     case "$HOST" in
         *darwin*)
             make install-strip DESTDIR="${INSTALLPATH}" ${V:+V=1}
