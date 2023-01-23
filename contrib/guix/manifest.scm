@@ -133,7 +133,7 @@ chain for " target " development."))
       (home-page (package-home-page xgcc))
       (license (package-license xgcc)))))
 
-(define base-gcc gcc-10)
+(define base-gcc gcc-9)
 (define base-linux-kernel-headers linux-libre-headers-5.15)
 
 ;; https://gcc.gnu.org/install/configure.html
@@ -196,7 +196,7 @@ chain for " target " development."))
       (home-page (package-home-page pthreads-xgcc))
       (license (package-license pthreads-xgcc)))))
 
-(define (make-nsis-for-gcc-10 base-nsis)
+(define (make-nsis-for-gcc-9 base-nsis)
   (package-with-extra-patches base-nsis
     (search-our-patches "nsis-gcc-10-memmove.patch"
                         "nsis-disable-installer-reloc.patch")))
@@ -625,7 +625,7 @@ inspecting signatures in Mach-O binaries.")
            ;; Windows
            (list zip
                  (make-mingw-pthreads-cross-toolchain "x86_64-w64-mingw32")
-                 (make-nsis-for-gcc-10 nsis-x86_64)
+                 (make-nsis-for-gcc-9 nsis-x86_64)
                  osslsigncode))
           ((string-contains target "-linux-")
            (list (cond ((string-contains target "riscv64-")
