@@ -128,7 +128,6 @@ for host in $HOSTS; do
     case "$host" in
         *darwin*)
             OSX_SDK="$(make -C "${PWD}/depends" --no-print-directory HOST="$host" print-OSX_SDK | sed 's@^[^=]\+=@@g' | sed 's/[[:blank:]]//g')"
-            echo ${OSX_SDK}
             if [ -e "$OSX_SDK" ]; then
                 echo "Found macOS SDK at '${OSX_SDK}', using..."
                 break
