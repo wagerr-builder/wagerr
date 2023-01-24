@@ -3362,10 +3362,9 @@ bool CChainState::ActivateBestChain(CValidationState &state, const CChainParams&
         LimitValidationInterfaceQueue();
 
          // Added while betting requires txindex
-        if (g_txindex && pindexNewTip && pindexNewTip->nHeight >= chainparams.GetConsensus().nWagerrProtocolV2StartHeight) {
+        if (g_txindex && m_chain.Height() >= chainparams.GetConsensus().nWagerrProtocolV2StartHeight) {
              g_txindex->BlockUntilSyncedToCurrentChain();
-         }
-
+        }
         {
             LOCK2(cs_main, ::mempool.cs); // Lock transaction pool for at least as long as it takes for connectTrace to be consumed
             CBlockIndex* starting_tip = m_chain.Tip();
