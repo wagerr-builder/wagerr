@@ -580,7 +580,7 @@ inspecting signatures in Mach-O binaries.")
 
 (define-public glibc-2.24
   (package
-    (inherit glibc)
+    ;; (inherit glibc-2.31)
     (version "2.24")
     (source (origin
               (method git-fetch)
@@ -594,11 +594,13 @@ inspecting signatures in Mach-O binaries.")
               (patches (search-our-patches "glibc-ldd-x86_64.patch"
                                            "glibc-versioned-locpath.patch"
                                            "glibc-2.24-elfm-loadaddr-dynamic-rewrite.patch"
-                                           "glibc-2.24-no-build-time-cxx-header-run.patch"))))))
+                                           "glibc-2.24-no-build-time-cxx-header-run.patch"
+                                           "glibc-2.24-fcommon.patch"
+                                           "glibc-2.24-guix-prefix.patch"))))))
 
 (define glibc-2.27/wagerr-patched
   (package
-    (inherit glibc-2.31)
+    ;; (inherit glibc-2.31)
     (version "2.27")
     (source (origin
               (method git-fetch)
