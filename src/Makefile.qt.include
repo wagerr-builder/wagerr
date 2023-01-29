@@ -399,6 +399,20 @@ qt_wagerr_qt_LDADD += $(LIBBITCOIN_CLI) $(LIBBITCOIN_COMMON) $(LIBBITCOIN_UTIL) 
 qt_wagerr_qt_LDFLAGS = $(LDFLAGS_WRAP_EXCEPTIONS) $(RELDFLAGS) $(AM_LDFLAGS) $(QT_LDFLAGS) $(LIBTOOL_APP_LDFLAGS) $(PTHREAD_FLAGS)
 qt_wagerr_qt_LIBTOOLFLAGS = $(AM_LIBTOOLFLAGS) --tag CXX
 
+qt_wagerr_qt_CPPFLAGS = $(wagerr_qt_cppflags)
+qt_wagerr_qt_CXXFLAGS = $(wagerr_qt_cxxflags)
+qt_wagerr_qt_SOURCES = $(wagerr_qt_sources) init/bitcoin-qt.cpp
+qt_wagerr_qt_LDADD = $(wagerr_qt_ldadd)
+qt_wagerr_qt_LDFLAGS = $(wagerr_qt_ldflags)
+qt_wagerr_qt_LIBTOOLFLAGS = $(wagerr_qt_libtoolflags)
+
+wagerr_gui_CPPFLAGS = $(wagerr_qt_cppflags)
+wagerr_gui_CXXFLAGS = $(wagerr_qt_cxxflags)
+wagerr_gui_SOURCES = $(wagerr_qt_sources) init/bitcoin-gui.cpp
+wagerr_gui_LDADD = $(wagerr_qt_ldadd) $(LIBBITCOIN_IPC) $(LIBBITCOIN_UTIL) $(LIBMULTIPROCESS_LIBS)
+wagerr_gui_LDFLAGS = $(wagerr_qt_ldflags)
+wagerr_gui_LIBTOOLFLAGS = $(wagerr_qt_libtoolflags)
+
 #locale/foo.ts -> locale/foo.qm
 QT_QM=$(QT_TS:.ts=.qm)
 
