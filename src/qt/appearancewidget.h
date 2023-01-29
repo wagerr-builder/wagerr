@@ -6,6 +6,7 @@
 #define BITCOIN_QT_APPEARANCEWIDGET_H
 
 #include <QWidget>
+#include <QObject>
 
 #include <qt/guiutil.h>
 
