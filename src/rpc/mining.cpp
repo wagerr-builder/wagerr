@@ -26,6 +26,7 @@
 #include <pos/staker.h>
 #include <pos/staking-manager.h>
 #include <pow.h>
+#include <reward-manager.h>
 #include <rpc/blockchain.h>
 #include <rpc/mining.h>
 #include <rpc/server.h>

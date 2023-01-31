@@ -899,7 +899,7 @@ UniValue getextendedbalance(const JSONRPCRequest &request)
     // the user could have gotten from another RPC command prior to now
     pwallet->BlockUntilSyncedToCurrentChain();
 
-    LOCK2(cs_main, pwallet->cs_wallet);
+    LOCK2(pwallet->cs_wallet, cs_main);
 
     const auto bal = pwallet->GetBalance();
 
@@ -1666,7 +1666,7 @@ UniValue listtransactionrecords(const JSONRPCRequest& request)
     // the user could have gotten from another RPC command prior to now
     pwallet->BlockUntilSyncedToCurrentChain();
 
-    LOCK2(cs_main, pwallet->cs_wallet);
+    LOCK2(pwallet->cs_wallet, cs_main);
 
     std::string strAccount = "*";
     if (request.params.size() > 0)
@@ -4510,7 +4510,7 @@ UniValue placefieldbet(const JSONRPCRequest& request) {
         throw JSONRPCError(RPC_BET_DETAILS_ERROR, "Error: placefieldbet deactived for now");
     }
 
-    LOCK2(cs_main, pwallet->cs_wallet);
+    LOCK2(pwallet->cs_wallet, cs_main);
 
     CAmount nAmount = AmountFromValue(request.params[3]);
     // Validate bet amount so its between 25 - 10000 WGR inclusive.
@@ -4626,7 +4626,7 @@ UniValue placefieldparlaybet(const JSONRPCRequest& request) {
         throw JSONRPCError(RPC_BET_DETAILS_ERROR, "Error: placefieldbet deactived for now");
     }
 
-    LOCK2(cs_main, pwallet->cs_wallet);
+    LOCK2(pwallet->cs_wallet, cs_main);
 
     CAmount nAmount = AmountFromValue(request.params[1]);
     // Validate bet amount so its between 25 - 10000 WGR inclusive.
@@ -4751,7 +4751,7 @@ UniValue listbets(const JSONRPCRequest& request)
 
     UniValue result{UniValue::VARR};
 
-    LOCK2(cs_main, pwallet->cs_wallet);
+    LOCK2(pwallet->cs_wallet, cs_main);
 
     const CWallet::TxItems & txOrdered{pwallet->wtxOrdered};
 
@@ -5764,7 +5764,7 @@ UniValue listchaingamesbets(const JSONRPCRequest& request)
 
     UniValue ret(UniValue::VARR);
 
-    LOCK2(cs_main, pwallet->cs_wallet);
+    LOCK2(pwallet->cs_wallet, cs_main);
 
     const CWallet::TxItems & txOrdered = pwallet->wtxOrdered;
 
@@ -5886,7 +5886,7 @@ UniValue getmybets(const JSONRPCRequest& request)
     if (!wallet) return NullUniValue;
     CWallet* const pwallet = wallet.get();
 
-    LOCK2(cs_main, pwallet->cs_wallet);
+    LOCK2(pwallet->cs_wallet, cs_main);
 
     boost::optional<std::string> accountName = {};
     if (request.params.size() >= 1)
@@ -6058,7 +6058,7 @@ UniValue getmyqgbets(const JSONRPCRequest& request)
     // the user could have gotten from another RPC command prior to now
     pwallet->BlockUntilSyncedToCurrentChain();
 
-    LOCK2(cs_main, pwallet->cs_wallet);
+    LOCK2(pwallet->cs_wallet, cs_main);
 
     boost::optional<std::string> accountName = {};
     if (request.params.size() >= 1)
