@@ -38,7 +38,7 @@ bool CStakingManager::MintableCoins()
 {
     if (pwallet == nullptr) return false;
 
-    LOCK2(pwallet->cs_wallet, cs_main);
+    LOCK2(cs_main, pwallet->cs_wallet);
 
     int blockHeight = ::ChainActive().Height();
 
@@ -327,9 +327,6 @@ void CStakingManager::DoMaintenance(CConnman& connman, ChainstateManager& chainm
         nLastCoinStakeSearchInterval = nSearchTime - nLastCoinStakeSearchTime;
         nLastCoinStakeSearchTime = nSearchTime;
     }
-
-    pwallet->BlockUntilSyncedToCurrentChain();
-
     // Create new block
     std::shared_ptr<CMutableTransaction> coinstakeTxPtr = std::shared_ptr<CMutableTransaction>(new CMutableTransaction);
     std::shared_ptr<CStakeInput> coinstakeInputPtr = nullptr;
