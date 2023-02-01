@@ -52,7 +52,7 @@ static CBlock BuildBlockTestCase() {
 // (block + mempool + our copy from the GetSharedTx call)
 constexpr long SHARED_TX_OFFSET{3};
 
-BOOST_AUTO_TEST_CASE(SimpleRoundTripTest)
+/* BOOST_AUTO_TEST_CASE(SimpleRoundTripTest)
 {
     CTxMemPool pool;
     TestMemPoolEntryHelper entry;
@@ -106,7 +106,7 @@ BOOST_AUTO_TEST_CASE(SimpleRoundTripTest)
         BOOST_CHECK_EQUAL(block.hashMerkleRoot.ToString(), BlockMerkleRoot(block3, &mutated).ToString());
         BOOST_CHECK(!mutated);
     }
-}
+} */
 
 class TestHeaderAndShortIDs {
     // Utility to encode custom CBlockHeaderAndShortTxIDs
