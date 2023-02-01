@@ -4,7 +4,6 @@
 
 #ifndef BITCOIN_QT_APPEARANCEWIDGET_H
 #define BITCOIN_QT_APPEARANCEWIDGET_H
-#include <iso646.h>
 #include <QWidget>
 #include <QObject>
 #include <QDialog>
