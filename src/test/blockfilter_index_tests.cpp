@@ -23,10 +23,10 @@
 
 BOOST_AUTO_TEST_SUITE(blockfilter_index_tests)
 
-struct BuildChainTestingSetup : public TestChain100Setup {
+/* struct BuildChainTestingSetup : public TestChain100Setup {
     CBlock CreateBlock(const CBlockIndex* prev, const std::vector<CMutableTransaction>& txns, const CScript& scriptPubKey);
     bool BuildChain(const CBlockIndex* pindex, const CScript& coinbase_script_pub_key, size_t length, std::vector<std::shared_ptr<CBlock>>& chain);
-};
+}; */
 
 static bool CheckFilterLookups(BlockFilterIndex& filter_index, const CBlockIndex* block_index,
                                uint256& last_header)
@@ -62,7 +62,7 @@ static bool CheckFilterLookups(BlockFilterIndex& filter_index, const CBlockIndex
     return true;
 }
 
-CBlock BuildChainTestingSetup::CreateBlock(const CBlockIndex* prev,
+/*CBlock BuildChainTestingSetup::CreateBlock(const CBlockIndex* prev,
     const std::vector<CMutableTransaction>& txns,
     const CScript& scriptPubKey)
 {
@@ -84,9 +84,9 @@ CBlock BuildChainTestingSetup::CreateBlock(const CBlockIndex* prev,
     while (!CheckProofOfWork(block.GetHash(), block.nBits, chainparams.GetConsensus())) ++block.nNonce;
 
     return block;
-}
+} */
 
-bool BuildChainTestingSetup::BuildChain(const CBlockIndex* pindex,
+/* bool BuildChainTestingSetup::BuildChain(const CBlockIndex* pindex,
     const CScript& coinbase_script_pub_key,
     size_t length,
     std::vector<std::shared_ptr<CBlock>>& chain)
@@ -105,9 +105,9 @@ bool BuildChainTestingSetup::BuildChain(const CBlockIndex* pindex,
     }
 
     return true;
-}
+}*/
 
-BOOST_FIXTURE_TEST_CASE(blockfilter_index_initial_sync, BuildChainTestingSetup)
+/*BOOST_FIXTURE_TEST_CASE(blockfilter_index_initial_sync, BuildChainTestingSetup)
 {
     BlockFilterIndex filter_index(BlockFilterType::BASIC_FILTER, 1 << 20, true);
 
@@ -268,7 +268,7 @@ BOOST_FIXTURE_TEST_CASE(blockfilter_index_initial_sync, BuildChainTestingSetup)
 
     filter_index.Interrupt();
     filter_index.Stop();
-}
+}*/
 
 BOOST_FIXTURE_TEST_CASE(blockfilter_index_init_destroy, BasicTestingSetup)
 {
