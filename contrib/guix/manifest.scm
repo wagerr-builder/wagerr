@@ -580,7 +580,7 @@ inspecting signatures in Mach-O binaries.")
                                            "glibc-2.27-riscv64-Use-__has_include-to-include-asm-syscalls.h.patch"
                                            "glibc-2.27-dont-redefine-nss-database.patch"
                                            "glibc-2.27-guix-prefix.patch"))))))
-(define-public make-libsodium-cmake
+(define make-libsodium-cmake
   (let ((commit "f73a3fe1afdc4e37ac5fe0ddd401bf521f6bba65"))
   (package
     (name "libsodium-cmake")
@@ -652,7 +652,7 @@ inspecting signatures in Mach-O binaries.")
                                                       #:base-libc (make-glibc-with-stack-protector
                                                         (make-glibc-with-bind-now (make-glibc-without-werror glibc-2.27/wagerr-patched)))))
                        (else
-                        (list make-libsodium-cmake make-wagerr-cross-toolchain target)))))
+                        (make-libsodium-cmake make-wagerr-cross-toolchain target)))))
           ((string-contains target "darwin")
            (list make-libsodium-cmake clang-toolchain-10 binutils cmake xorriso python-signapple))
           (else '())))))
