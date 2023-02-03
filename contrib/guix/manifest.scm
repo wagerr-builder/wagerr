@@ -652,7 +652,7 @@ inspecting signatures in Mach-O binaries.")
                                                       #:base-libc (make-glibc-with-stack-protector
                                                         (make-glibc-with-bind-now (make-glibc-without-werror glibc-2.27/wagerr-patched)))))
                        (else
-                        (make-libsodium-cmake make-wagerr-cross-toolchain target)))))
+                        (list make-libsodium-cmake make-wagerr-cross-toolchain target)))))
           ((string-contains target "darwin")
            (list make-libsodium-cmake clang-toolchain-10 binutils cmake xorriso python-signapple))
           (else '())))))
