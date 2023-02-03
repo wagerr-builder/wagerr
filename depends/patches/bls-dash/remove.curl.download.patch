@@ -14,8 +14,8 @@
          CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: >
            pip uninstall -y delocate
            && pip install git+https://github.com/Chia-Network/delocate.git
---- CMakeLists.txt.orig	2023-02-03 13:27:30.978081244 +0000
-+++ CMakeLists.txt	2023-02-03 13:28:07.642340556 +0000
+--- a/CMakeLists.txt	2023-02-03 13:27:30.978081244 +0000
++++ b/CMakeLists.txt	2023-02-03 13:28:07.642340556 +0000
 @@ -28,14 +28,6 @@
    ${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules
  )
