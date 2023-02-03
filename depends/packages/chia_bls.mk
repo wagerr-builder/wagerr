@@ -45,7 +45,7 @@ define $(package)_config_cmds
   export CXXFLAGS="$($(package)_cxxflags) $($(package)_cppflags)" && \
   export LDFLAGS="$($(package)_ldflags)" && \
   mkdir -p build && cd build && \
-  $($(package)_staging_dir)/cmake ../ $($(package)_config_opts)
+  $(host_prefix)/bin/cmake ../ $($(package)_config_opts)
 endef
 
 define $(package)_build_cmds
