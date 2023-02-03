@@ -584,16 +584,18 @@ inspecting signatures in Mach-O binaries.")
   (let ((commit "f73a3fe1afdc4e37ac5fe0ddd401bf521f6bba65"))
   (package
     (name "libsodium-cmake")
+    (version "1.0.18")
       (source
        (origin
          (method git-fetch)
          (uri (git-reference
-               (url "https://github.com/AmineKhaldi/libsodium-cmake.git")
+               (url "git")
                (commit commit)))
          (file-name (git-file-name name commit))
          (sha256
           (base32
            "1rwf6nkqyg1kpn8kyama8lzrs8f101pav87wxjhcl5hir2v4nn4r"))))
+      (build-system trivial-build-system)
       (home-page "https://github.com/AmineKhaldi/libsodium-cmake.git")
       (synopsis "Libsodium for CMake")
       (description "libsodium cmake")
