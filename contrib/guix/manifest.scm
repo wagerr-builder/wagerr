@@ -643,16 +643,18 @@ inspecting signatures in Mach-O binaries.")
     (cond ((string-suffix? "-mingw32" target)
            ;; Windows
            (list zip
-                 (make-libsodium-cmake make-mingw-pthreads-cross-toolchain "x86_64-w64-mingw32")
-                 (make-nsis-for-gcc-10 nsis-x86_64)
+                 (make-mingw-pthreads-cross-toolchain "x86_64-w64-mingw32")
+                 (make-libsodium-cmake make-nsis-for-gcc-10 nsis-x86_64)
                  osslsigncode))
           ((string-contains target "-linux-")
            (list (cond ((string-contains target "riscv64-")
-                        (make-libsodium-cmake make-wagerr-cross-toolchain target
+                        (make-libsodium-cmake)
+                        (make-wagerr-cross-toolchain target
                                                       #:base-libc (make-glibc-with-stack-protector
                                                         (make-glibc-with-bind-now (make-glibc-without-werror glibc-2.27/wagerr-patched)))))
                        (else
-                        (make-libsodium-cmake make-wagerr-cross-toolchain target)))))
+                        (make-libsodium-cmake)
+                        (make-wagerr-cross-toolchain target)))))
           ((string-contains target "darwin")
            (list make-libsodium-cmake clang-toolchain-10 binutils cmake xorriso python-signapple))
           (else '())))))
