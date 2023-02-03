@@ -599,7 +599,7 @@ inspecting signatures in Mach-O binaries.")
       (home-page "https://github.com/AmineKhaldi/libsodium-cmake.git")
       (synopsis "Libsodium for CMake")
       (description "libsodium cmake")
-      (license license:ISC))))
+      (license license:ISC1.0))))
 
 (packages->manifest
  (append
