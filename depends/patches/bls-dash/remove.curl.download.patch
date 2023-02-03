@@ -14,3 +14,20 @@
          CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: >
            pip uninstall -y delocate
            && pip install git+https://github.com/Chia-Network/delocate.git
+--- CMakeLists.txt.orig	2023-02-03 13:27:30.978081244 +0000
++++ CMakeLists.txt	2023-02-03 13:28:07.642340556 +0000
+@@ -28,14 +28,6 @@
+   ${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules
+ )
+ 
+-include(FetchContent)
+-
+-FetchContent_Declare(Sodium
+-  GIT_REPOSITORY https://github.com/AmineKhaldi/libsodium-cmake.git
+-  # Latest commit at the moment this was added here
+-  # Anchored to libsodium v1.0.18
+-  GIT_TAG f73a3fe1afdc4e37ac5fe0ddd401bf521f6bba65
+-)
+ set(SODIUM_PCH "on" CACHE STRING "")
+ set(SODIUM_DISABLE_TESTS "on" CACHE STRING "")
+ set(SODIUM_CHIA_MINIMAL "on" CACHE STRING "")
