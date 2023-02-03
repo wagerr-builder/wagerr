@@ -2,7 +2,7 @@ package=libsodium
 $(package)_version=1.0.18
 $(package)_download_path=https://download.libsodium.org/libsodium/releases
 $(package)_download_file=libsodium-$($(package)_version).tar.gz
-$(package)_file_name=$(package)-$($(package)_download_file)
+$(package)_file_name=$($(package)_download_file)
 $(package)_build_subdir=build
 $(package)_sha256_hash=edba9dd57b03cfd95d677709204bb13666ac1336c76c79bca8a51b15a1ccf3ac
 
