@@ -589,17 +589,17 @@ inspecting signatures in Mach-O binaries.")
        (origin
          (method git-fetch)
          (uri (git-reference
-               (url "git")
+               (url "https://github.com/AmineKhaldi/libsodium-cmake.git")
                (commit commit)))
          (file-name (git-file-name name commit))
          (sha256
           (base32
            "1rwf6nkqyg1kpn8kyama8lzrs8f101pav87wxjhcl5hir2v4nn4r"))))
-      (build-system trivial-build-system)
+      (build-system gnu-build-system)
       (home-page "https://github.com/AmineKhaldi/libsodium-cmake.git")
       (synopsis "Libsodium for CMake")
       (description "libsodium cmake")
-      (license license:lgpl2.1))))
+      (license license:ISC))))
 
 (packages->manifest
  (append
