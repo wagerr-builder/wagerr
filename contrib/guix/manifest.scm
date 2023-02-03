@@ -580,6 +580,24 @@ inspecting signatures in Mach-O binaries.")
                                            "glibc-2.27-riscv64-Use-__has_include-to-include-asm-syscalls.h.patch"
                                            "glibc-2.27-dont-redefine-nss-database.patch"
                                            "glibc-2.27-guix-prefix.patch"))))))
+(define-public libsodium-cmake
+  (let ((commit "f73a3fe1afdc4e37ac5fe0ddd401bf521f6bba65"))
+  (package
+    (name "libsodium-cmake")
+      (source
+       (origin
+         (method git-fetch)
+         (uri (git-reference
+               (url "https://github.com/AmineKhaldi/libsodium-cmake.git")
+               (commit commit)))
+         (file-name (git-file-name name commit))
+         (sha256
+          (base32
+           "1rwf6nkqyg1kpn8kyama8lzrs8f101pav87wxjhcl5hir2v4nn4r"))))
+      (home-page "https://github.com/AmineKhaldi/libsodium-cmake.git")
+      (synopsis "Libsodium for CMake")
+      (description "libsodium cmake")
+      (license license:lgpl2.1))))
 
 (packages->manifest
  (append
