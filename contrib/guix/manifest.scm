@@ -580,7 +580,7 @@ inspecting signatures in Mach-O binaries.")
                                            "glibc-2.27-riscv64-Use-__has_include-to-include-asm-syscalls.h.patch"
                                            "glibc-2.27-dont-redefine-nss-database.patch"
                                            "glibc-2.27-guix-prefix.patch"))))))
-(define libsodium-cmake
+(define-public make-libsodium-cmake
   (let ((commit "f73a3fe1afdc4e37ac5fe0ddd401bf521f6bba65"))
   (package
     (name "libsodium-cmake")
@@ -643,16 +643,16 @@ inspecting signatures in Mach-O binaries.")
     (cond ((string-suffix? "-mingw32" target)
            ;; Windows
            (list zip
-                 (make-mingw-pthreads-cross-toolchain "x86_64-w64-mingw32")
+                 (make-libsodium-cmake make-mingw-pthreads-cross-toolchain "x86_64-w64-mingw32")
                  (make-nsis-for-gcc-10 nsis-x86_64)
                  osslsigncode))
           ((string-contains target "-linux-")
            (list (cond ((string-contains target "riscv64-")
-                        (make-wagerr-cross-toolchain target
+                        (make-libsodium-cmake make-wagerr-cross-toolchain target
                                                       #:base-libc (make-glibc-with-stack-protector
                                                         (make-glibc-with-bind-now (make-glibc-without-werror glibc-2.27/wagerr-patched)))))
                        (else
-                        (make-wagerr-cross-toolchain target)))))
+                        (make-libsodium-cmake make-wagerr-cross-toolchain target)))))
           ((string-contains target "darwin")
-           (list clang-toolchain-10 binutils cmake xorriso python-signapple))
+           (list make-libsodium-cmake clang-toolchain-10 binutils cmake xorriso python-signapple))
           (else '())))))
