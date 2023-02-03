@@ -1,0 +1,16 @@
+--- a/.github/workflows/build-wheels.yml	2023-02-03 13:09:30.510141843 +0000
++++ b/.github/workflows/build-wheels.yml	2023-02-03 13:09:54.710327151 +0000
+@@ -90,13 +90,6 @@
+           && delocate-listdeps {wheel}
+           && delocate-wheel -v {wheel}
+           && cp {wheel} {dest_dir}
+-        CIBW_BEFORE_ALL_WINDOWS: >
+-          curl -L https://download.libsodium.org/libsodium/releases/libsodium-1.0.18-stable-msvc.zip > libsodium-1.0.18-stable-msvc.zip
+-          && 7z x libsodium-1.0.18-stable-msvc.zip
+-          && git clone https://github.com/Chia-Network/relic_ietf_64.git
+-          && ls -l relic_ietf_64
+-          && git clone https://github.com/Chia-Network/mpir_gc_x64.git
+-          && ls -l mpir_gc_x64
+         CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: >
+           pip uninstall -y delocate
+           && pip install git+https://github.com/Chia-Network/delocate.git
