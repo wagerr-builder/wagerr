@@ -1,6 +1,6 @@
 package=libsodium
 $(package)_version=1.0.18
-$(package)_download_path=https://download.libsodium.org/libsodium/releases/libsodium-1.0.18-stable.tar.gz
+$(package)_download_path=https://download.libsodium.org/libsodium/releases
 $(package)_download_file=libsodium-$($(package)_version).tar.gz
 $(package)_file_name=$(package)-$($(package)_download_file)
 $(package)_build_subdir=build
