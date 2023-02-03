@@ -580,7 +580,7 @@ inspecting signatures in Mach-O binaries.")
                                            "glibc-2.27-riscv64-Use-__has_include-to-include-asm-syscalls.h.patch"
                                            "glibc-2.27-dont-redefine-nss-database.patch"
                                            "glibc-2.27-guix-prefix.patch"))))))
-(define-public libsodium-cmake
+(define libsodium-cmake
   (let ((commit "f73a3fe1afdc4e37ac5fe0ddd401bf521f6bba65"))
   (package
     (name "libsodium-cmake")
