@@ -16,20 +16,29 @@ $(package)_relic_file_name=relic-$($(package)_relic_download_file)
 $(package)_relic_build_subdir=relic
 $(package)_relic_sha256_hash=f2de6ebdc9def7077f56c83c8b06f4da5bacc36b709514bd550a92a149e9fa1d
 
+$(package)_sodium_version=1.0.18
+$(package)_sodium_download_path=https://download.libsodium.org/libsodium/releases
+$(package)_sodium_file_name=libsodium-$($(package)_version).tar.gz
+$(package)_sodium_sha256_hash=6f504490b342a4f8a4c4a02fc9b866cbef8622d5df4e5452b46be121e46636c1
+
 $(package)_extra_sources=$($(package)_relic_file_name)
+$(package)_extra_sources+=$($(package)_sodium_file_name)
 
 define $(package)_fetch_cmds
 $(call fetch_file,$(package),$($(package)_download_path),$($(package)_download_file),$($(package)_file_name),$($(package)_sha256_hash)) && \
-$(call fetch_file,$(package),$($(package)_relic_download_path),$($(package)_relic_download_file),$($(package)_relic_file_name),$($(package)_relic_sha256_hash))
+$(call fetch_file,$(package),$($(package)_relic_download_path),$($(package)_relic_download_file),$($(package)_relic_file_name),$($(package)_relic_sha256_hash)) && \
+$(call fetch_file,$(package),$($(package)_sodium_download_path),$($(package)_sodiun_download_file),$($(package)_sodium_file_name),$($(package)_sodium_sha256_hash))
 endef
 
 define $(package)_extract_cmds
   mkdir -p $($(package)_extract_dir) && \
   echo "$($(package)_sha256_hash)  $($(package)_source)" > $($(package)_extract_dir)/.$($(package)_file_name).hash && \
   echo "$($(package)_relic_sha256_hash)  $($(package)_source_dir)/$($(package)_relic_file_name)" >> $($(package)_extract_dir)/.$($(package)_file_name).hash && \
+  echo "$($(package)_sodium_sha256_hash)  $($(package)_source_dir)/$($(package)_sodium_file_name)" >> $($(package)_extract_dir)/.$($(package)_file_name).hash && \
   $(build_SHA256SUM) -c $($(package)_extract_dir)/.$($(package)_file_name).hash && \
   tar --strip-components=1 -xf $($(package)_source) -C . && \
-  cp $($(package)_source_dir)/$($(package)_relic_file_name) .
+  cp $($(package)_source_dir)/$($(package)_relic_file_name) . && \
+  cp $($(package)_source_dir)/$($(package)_sodium_file_name) .
 endef
 
 define $(package)_preprocess_cmds
