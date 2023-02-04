@@ -5,7 +5,7 @@ $(package)_download_file=$($(package)_version).tar.gz
 $(package)_file_name=$(package)-$($(package)_download_file)
 $(package)_build_subdir=build
 $(package)_sha256_hash=94e49f3eaa29bc1f354cd569c00f4f4314d1c8ab4758527c248b67da9686135a
-$(package)_dependencies=gmp cmake libsodium
+$(package)_dependencies=gmp cmake
 $(package)_darwin_triplet=x86_64-apple-darwin19
 $(package)_patches=remove.curl.download.patch
 
@@ -19,6 +19,7 @@ $(package)_relic_sha256_hash=f2de6ebdc9def7077f56c83c8b06f4da5bacc36b709514bd550
 $(package)_sodium_version=1.0.18
 $(package)_sodium_download_path=https://download.libsodium.org/libsodium/releases
 $(package)_sodium_file_name=libsodium-$($(package)_version).tar.gz
+$(package)_sodium_build_subdir=sodium-populate
 $(package)_sodium_sha256_hash=6f504490b342a4f8a4c4a02fc9b866cbef8622d5df4e5452b46be121e46636c1
 
 $(package)_extra_sources=$($(package)_relic_file_name)
