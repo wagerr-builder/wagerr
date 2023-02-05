@@ -642,7 +642,7 @@ QTableWidget
 ******************************************************/
 
 .QTableWidget {
-    background-color: #4a4a4b;
+    /*background-color: #4a4a4b;*/
     border-color: #4a4a4b;
     color: #c7c7c7;
 }
@@ -929,7 +929,7 @@ RPCConsole QWidget#detailWidget {
 }
 
 #rpcAutoCompleter::item:selected {
-    background-color: #4a4a4b;
+    /*background-color: #4a4a4b;*/
     color: #c7c7c7;
 }
 
