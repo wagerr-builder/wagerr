@@ -189,7 +189,7 @@ QCalendarWidget QWidget {
 
 QCalendarWidget QAbstractItemView:enabled {
     color: #c7c7c7;
-    selection-background-color: #4a4a4b;
+    /*selection-background-color: #4a4a4b;*/
     selection-color: #c7c7c7;
 }
 
@@ -245,7 +245,7 @@ QComboBox::item {
 }
 
 QComboBox::item:alternate {
-    background-color: #4a4a4b;
+    /*background-color: #4a4a4b;*/
 }
 
 QComboBox::item:selected {
