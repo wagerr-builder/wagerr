@@ -383,6 +383,7 @@ QPushButton {
     border-color: #454545;
     border-radius: 2px;
     color:#f8f6f6;
+    font-size:12px;
     font-weight:bold;
     padding-left:25px;
     padding-right:25px;
@@ -691,6 +692,7 @@ QToolBar {
 
 QToolBar > QToolButton {
     background-color: #212121;
+    font-size: 11px;
     color: #c1c2c4;
 }
 
@@ -841,6 +843,14 @@ EditAddressDialog
 ******************************************************/
 
 /***** No dark.css specific coloring here yet *****/
+
+/******************************************************
+GovernanceList
+******************************************************/
+
+GovernanceList QTableView {
+    color: #c7c7c7;
+}
 
 /******************************************************
 HelpMessageDialog
