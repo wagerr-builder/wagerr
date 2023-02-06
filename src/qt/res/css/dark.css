@@ -685,7 +685,7 @@ QTextEdit {
 QToolBar / QToolButton
 ******************************************************/
 
-QToolBar {
+/*QToolBar {
     background-color: #212121;
 }
 
@@ -707,7 +707,7 @@ QToolBar > QToolButton:checked {
 
 QToolBar > QToolButton:disabled {
     color: #4a4a4b;
-}
+}*/
 
 /******************************************************
 QToolTip
