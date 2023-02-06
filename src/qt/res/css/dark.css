@@ -691,7 +691,6 @@ QToolBar {
 
 QToolBar > QToolButton {
     background-color: #212121;
-    font-size: 11px;
     color: #c1c2c4;
 }
 
