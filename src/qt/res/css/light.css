@@ -277,7 +277,7 @@ QHeaderView
 ******************************************************/
 
 QHeaderView::section { /* Table Header Sections */
-    background-color: #b70000;;
+    background-color: #b70000;
     border-color: #ffffff;
     color: #fff;
 }
@@ -337,7 +337,7 @@ QProgressBar {
 }
 
 QProgressBar::chunk {
-    background-color: #b70000;;
+    background-color: #b70000;
 }
 
 /******************************************************
@@ -362,7 +362,7 @@ QPushButton:hover {
 }
 
 QPushButton:pressed {
-    background-color: #b70000;;
+    background-color: #b70000;
 }
 
 QPushButton:disabled {
@@ -460,7 +460,7 @@ QPushButton - Special case, tabbar replacement buttons
 /* Sign/Verify dialog buttons */
 #btnSignMessage,
 #btnVerifyMessage {
-    border-color: #b70000;;
+    border-color: #b70000;
     color: #ffffff;
 }
 
@@ -570,7 +570,7 @@ QSlider
 ******************************************************/
 
 QSlider::handle:horizontal {
-	background-color: #b70000;;
+	background-color: #b70000;
 }
 QSlider::handle:horizontal:hover {
 	background-color: #f8f6f6;
@@ -653,12 +653,12 @@ QToolBar > QToolButton {
 
 QToolBar > QToolButton:hover:!checked {
     background-color: #11161d;
-    color: #b70000;;
+    color: #b70000;
 }
 
 QToolBar > QToolButton:checked {
     background-color: #11161D;
-    color: #b70000;;
+    color: #b70000;
 }
 
 QToolBar > QToolButton:disabled {
