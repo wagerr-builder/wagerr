@@ -46,9 +46,6 @@ QMainWindow,
 QMessageBox
 WalletFrame {
     background-color:#f8f6f6;
-    border-top:0px solid #000;
-    margin:0;
-    padding:0;
 }
 
 QWidget { /* override text selection background color for all text widgets */
@@ -82,9 +79,7 @@ QComboBox,
 QPlainTextEdit,
 QLineEdit {
     border:1px solid #b70000;
-    padding: 3px 5px 3px 5px;
     background:#fcfcfc;
-    min-height:25px;
     color:#818181;
 }
 
@@ -321,9 +316,9 @@ QMenu::item:disabled {
     color: #585858;
 }
 
-/*QMenu::separator {
+QMenu::separator {
     background-color: #585858;
-}*/
+}
 
 /******************************************************
 QMenuBar
@@ -378,19 +373,8 @@ QPushButton
 
 QPushButton {
     background-color: #b70000;
-    border-width: 1px;
-    border-style: outset;
-    border-color: #454545;
-    border-radius: 2px;
-    color:#f8f6f6;
     font-size:12px;
-    font-weight:bold;
-    padding-left:25px;
-    padding-right:25px;
-    padding-top:1px;
-    padding-bottom:1px;
-    height: 26px;
-    margin: 2px;
+    color:#f8f6f6;
 }
 
 QPushButton:hover {
@@ -404,8 +388,6 @@ QPushButton:focus {
 
 QPushButton:pressed {
     background-color: #b70000;
-    border:1px solid #000000;
-    background-color: qlineargradient(y1:0, y2: 1, stop: 0 #00ff00, stop: 0.1 #00ff00, stop: 0.101 #454545, stop: 0.9 #454545, stop: 0.901 #00ff00, stop: 1 #00ff00);
 }
 
 QPushButton:disabled {
@@ -686,13 +668,12 @@ QTextEdit {
 QToolBar / QToolButton
 ******************************************************/
 
-/*QToolBar {
+ QToolBar {
     background-color: #212121;
 }
 
 QToolBar > QToolButton {
     background-color: #212121;
-    font-size: 11px;
     color: #c1c2c4;
 }
 
@@ -708,17 +689,8 @@ QToolBar > QToolButton:checked {
 
 QToolBar > QToolButton:disabled {
     color: #4a4a4b;
-} */
-QToolBar {
-    background-color: #212121;
-    border:0px
 }
 
-QToolBar > QToolButton {
-    background-color: #212121;
-    color: #f8f6f6;
-    border:0px
-}
 /******************************************************
 QToolTip
 ******************************************************/
@@ -852,14 +824,6 @@ EditAddressDialog
 ******************************************************/
 
 /***** No dark.css specific coloring here yet *****/
-
-/******************************************************
-GovernanceList
-******************************************************/
-
-GovernanceList QTableView {
-    color: #c7c7c7;
-}
 
 /******************************************************
 HelpMessageDialog

@@ -246,7 +246,7 @@ QComboBox::item:alternate {
     background-color: #fcfcfc;
 }
 
-QComboBox::item:selected {
+::item:selected {
     background-color: #f2f2f2;;
 }
 
@@ -277,7 +277,7 @@ QHeaderView
 ******************************************************/
 
 QHeaderView::section { /* Table Header Sections */
-    background-color: ##b70000;
+    background-color: ##b70000;;;
     border-color: #ffffff;
     color: #fff;
 }
@@ -362,13 +362,13 @@ QPushButton:hover {
 }
 
 QPushButton:pressed {
-    background-color: #b70000;
+    background-color: ##b70000;;;
 }
 
 QPushButton:disabled {
     background-color: #eaeaec;
-    border-color: #454545;
-    color: #454545;
+    border-color: #454545;;
+    color: #454545;;
 }
 
 /******************************************************
@@ -570,7 +570,7 @@ QSlider
 ******************************************************/
 
 QSlider::handle:horizontal {
-	background-color: #b70000;
+	background-color: ##b70000;;;
 }
 QSlider::handle:horizontal:hover {
 	background-color: #f8f6f6;
@@ -653,12 +653,12 @@ QToolBar > QToolButton {
 
 QToolBar > QToolButton:hover:!checked {
     background-color: #11161d;
-    color: #b70000;
+    color: ##b70000;;;
 }
 
 QToolBar > QToolButton:checked {
     background-color: #11161D;
-    color: #b70000;
+    color: ##b70000;;;
 }
 
 QToolBar > QToolButton:disabled {
@@ -800,14 +800,6 @@ EditAddressDialog
 /***** No light.css specific coloring here yet *****/
 
 /******************************************************
-GovernanceList
-******************************************************/
-
-GovernanceList QTableView {
-    color: #555;
-}
-
-/******************************************************
 HelpMessageDialog
 ******************************************************/
 
@@ -886,10 +878,6 @@ QWidget#RPCConsole { /* RPC Console Dialog Box */
 
 RPCConsole QTableView {
     color: #fcfcfc;
-}
-
-RPCConsole QWidget#detailWidget {
-    background-color: #f2f2f4;
 }
 
 #rpcAutoCompleter {
