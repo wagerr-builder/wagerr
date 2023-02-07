@@ -246,7 +246,7 @@ QComboBox::item:alternate {
     background-color: #fcfcfc;
 }
 
-::item:selected {
+QComboBox::item:selected {
     background-color: #f2f2f2;
 }
 
