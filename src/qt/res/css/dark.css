@@ -321,9 +321,9 @@ QMenu::item:disabled {
     color: #585858;
 }
 
-QMenu::separator {
+/*QMenu::separator {
     background-color: #585858;
-}
+}*/
 
 /******************************************************
 QMenuBar
@@ -686,7 +686,7 @@ QTextEdit {
 QToolBar / QToolButton
 ******************************************************/
 
-QToolBar {
+/*QToolBar {
     background-color: #212121;
 }
 
@@ -708,8 +708,17 @@ QToolBar > QToolButton:checked {
 
 QToolBar > QToolButton:disabled {
     color: #4a4a4b;
+} */
+QToolBar {
+    background-color: #212121;
+    border:0px
 }
 
+QToolBar > QToolButton {
+    background-color: #212121;
+    color: #f8f6f6;
+    border:0px
+}
 /******************************************************
 QToolTip
 ******************************************************/
