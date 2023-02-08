@@ -113,6 +113,8 @@ bool CNetAddr::SetNetFromBIP155Network(uint8_t possible_bip155_net, size_t addre
 
 bool fAllowPrivateNet = DEFAULT_ALLOWPRIVATENET;
 
+bool fTorEnabled = false;
+
 /**
  * Construct an unspecified IPv6 network address (::/128).
  *
@@ -269,6 +271,7 @@ bool CNetAddr::SetSpecial(const std::string& str)
 
         m_net = NET_ONION;
         m_addr.assign(input_pubkey.begin(), input_pubkey.end());
+        fTorEnabled = true;
         return true;
     }
     }

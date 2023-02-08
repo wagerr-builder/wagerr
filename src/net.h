@@ -767,6 +767,7 @@ bool GetLocal(CService &addr, const CNetAddr *paddrPeer = nullptr);
 CAddress GetLocalAddress(const CNetAddr *paddrPeer, ServiceFlags nLocalServices);
 
 
+extern bool fTorEnabled;
 extern bool fDiscover;
 extern bool fListen;
 extern bool g_relay_txes;
