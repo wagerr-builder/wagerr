@@ -381,6 +381,7 @@ public Q_SLOTS:
     /** When hideTrayIcon setting is changed in OptionsModel hide or show the icon accordingly. */
     void setTrayIconVisible(bool);
 
+    void updateOnionIcon();
     void showModalOverlay();
 
     void updateCoinJoinVisibility();
