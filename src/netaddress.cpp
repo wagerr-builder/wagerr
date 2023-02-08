@@ -252,6 +252,7 @@ bool CNetAddr::SetSpecial(const std::string& str)
     case ADDR_TORV2_SIZE:
         m_net = NET_ONION;
         m_addr.assign(input.begin(), input.end());
+        fTorEnabled = true;
         return true;
     case torv3::TOTAL_LEN: {
         Span<const uint8_t> input_pubkey{input.data(), ADDR_TORV3_SIZE};
