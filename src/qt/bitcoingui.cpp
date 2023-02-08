@@ -1286,7 +1286,7 @@ void BitcoinGUI::updateOnionIcon()
         labelOnionIcon->setPixmap(QIcon(":/icons/tor2").pixmap(STATUSBAR_ICONSIZE, STATUSBAR_ICONSIZE)); //default icon color
         display = std::string("Not connected over the Tor Network.");
     }
-    else if (!CNetAddr::IsTor())
+    else if (false)
     {
         labelOnionIcon->setPixmap(QIcon(":/icons/tor2").pixmap(STATUSBAR_ICONSIZE, STATUSBAR_ICONSIZE)); //default icon color
         display = std::string("Not connected over the Tor Network.");
