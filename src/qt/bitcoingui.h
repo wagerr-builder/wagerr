@@ -123,6 +123,7 @@ private:
     GUIUtil::ClickableLabel* labelConnectionsIcon = nullptr;
     GUIUtil::ClickableLabel* labelProxyIcon = nullptr;
     GUIUtil::ClickableLabel* labelBlocksIcon = nullptr;
+    QLabel* labelOnionIcon = nullptr;
     QLabel* progressBarLabel = nullptr;
     GUIUtil::ClickableProgressBar* progressBar = nullptr;
     QProgressDialog* progressDialog = nullptr;
