@@ -981,6 +981,7 @@ public:
         consensus.nBlockStakeModifierV1A = consensus.nPosStartHeight;
         consensus.nBlockStakeModifierV2 = 400;
         consensus.nBlockTimeProtocolV2 = 500;
+        consensus.ATPStartHeight = consensus.V18DeploymentHeight;
 
         // Proof of stake parameters
         consensus.posLimit = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"); // ~uint256(0) >> 1
