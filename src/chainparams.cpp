@@ -975,8 +975,15 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = 999999999999ULL;
 
 
-        // Wagerr specific parameters
-        // Proof of Stake parameters
+        // Wagerr specific deployment heights
+        consensus.nWagerrProtocolV1StartHeight = 300;                          // Betting protocol v1 activation block
+        consensus.nWagerrProtocolV2StartHeight = 300;                          // Betting protocol v2 activation block
+        consensus.nWagerrProtocolV3StartHeight = 400;                          // Betting protocol v3 activation block
+        consensus.nWagerrProtocolV4StartHeight = 400;                          // Betting protocol v4 activation block
+        consensus.nWagerrProtocolV5StartHeight = consensus.V18DeploymentHeight; // Betting protocol v5 activation block
+        consensus.nQuickGamesEndHeight = 200;
+        consensus.nMaturityV2StartHeight = 200;           // Reduced block maturity required for spending coinstakes and betting payouts
+        consensus.nKeysRotateHeight = 102000;               // Rotate spork key, oracle keys and fee payout keys
         consensus.nPosStartHeight = 251;
         consensus.nBlockStakeModifierV1A = consensus.nPosStartHeight;
         consensus.nBlockStakeModifierV2 = 400;
