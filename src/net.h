@@ -696,7 +696,7 @@ private:
     friend struct CConnmanTest;
     friend struct ConnmanTestMsg;
 };
-std::unique_ptr<CConnman> g_connman;
+friend std::unique_ptr<CConnman> g_connman;
 void Discover();
 unsigned short GetListenPort();
 
