@@ -891,7 +891,7 @@ nodist_libbitcoin_util_a_SOURCES = $(srcdir)/obj/build.h
 wagerrd_SOURCES = bitcoind.cpp
 wagerrd_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
 wagerrd_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-wagerrd_LDFLAGS = $(LDFLAGS_WRAP_EXCEPTIONS) $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS) $(PTHREAD_FLAGS)  "-Wl,--no-allow-textrel"
+wagerrd_LDFLAGS = $(LDFLAGS_WRAP_EXCEPTIONS) $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS) $(PTHREAD_FLAGS)
 
 if TARGET_WINDOWS
 wagerrd_SOURCES += wagerrd-res.rc
