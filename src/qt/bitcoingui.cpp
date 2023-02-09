@@ -40,6 +40,7 @@
 #include <ui_interface.h>
 #include <util/system.h>
 #include <util/translation.h>
+#include <net.h>
 
 #include <QAction>
 #include <QApplication>
