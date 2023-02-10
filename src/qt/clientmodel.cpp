@@ -352,8 +352,9 @@ bool ClientModel::getProxyInfo(std::string& ip_port) const
 
 bool ClientModel::getOnionInfo(std::string& ip_port) const
 {
-    if(pnode->addr.IsTor()) {
-      ip_port = ipv4.proxy.ToStringIPPort();
+    proxyType tor
+    if(addr.IsTor()) {
+      ip_port = tor.proxy.ToStringIPPort();
       return true;
     }
     return false;
