@@ -24,6 +24,7 @@
 #include <vector>
 
 extern bool fAllowPrivateNet;
+extern bool fTorEnable;
 
 /**
  * A flag that is ORed into the protocol version to designate that addresses
