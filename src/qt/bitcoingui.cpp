@@ -1265,12 +1265,20 @@ void BitcoinGUI::updateNetworkState()
 void BitcoinGUI::updateOnionIcon()
 {
     bool onion_enabled = clientModel->getOnionInfo();
+    
+    std::string ipaddress;
+
+    LOCK(cs_mapLocalHost);
+    for (const std::pair<CNetAddr, LocalServiceInfo> &item : mapLocalHost)
+    {
+        ipaddress = item.first.ToString();
+    }
 
     if (onion_enabled) {
         if (labelOnionIcon->pixmap() == nullptr) {
-            QString ip_port_q = QString::fromStdString(ip_port);
+            QString ipaddress_q = QString::fromStdString(ipaddress);
             labelOnionIcon->setPixmap(GUIUtil::getIcon("tor", GUIUtil::ThemedColor::GREEN).pixmap(STATUSBAR_ICONSIZE, STATUSBAR_ICONSIZE));
-            labelOnionIcon->setToolTip(tr("Tor is <b>enabled</b>: %1").arg(ip_port_q));
+            labelOnionIcon->setToolTip(tr("Tor is <b>enabled</b>: %1").arg(ipaddress_q));
         } else {
             labelOnionIcon->show();
         }
