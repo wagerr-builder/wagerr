@@ -1265,7 +1265,7 @@ void BitcoinGUI::updateNetworkState()
 void BitcoinGUI::updateOnionIcon()
 {
     bool onion_enabled = clientModel->getOnionInfo();
-    
+
     std::string ipaddress;
 
     LOCK(cs_mapLocalHost);
@@ -1273,7 +1273,6 @@ void BitcoinGUI::updateOnionIcon()
     {
         ipaddress = item.first.ToString();
     }
-
     if (onion_enabled) {
         if (labelOnionIcon->pixmap() == nullptr) {
             QString ipaddress_q = QString::fromStdString(ipaddress);
@@ -1297,6 +1296,7 @@ void BitcoinGUI::setNumConnections(int count)
 void BitcoinGUI::setNetworkActive(bool networkActive)
 {
     updateNetworkState();
+    updateOnionIcon();
 }
 
 void BitcoinGUI::updateHeadersSyncProgressLabel()
