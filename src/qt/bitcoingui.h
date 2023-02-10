@@ -305,7 +305,6 @@ public Q_SLOTS:
 private:
     /** Set the proxy-enabled icon as shown in the UI. */
     void updateProxyIcon();
-    void updateOnionIcon();
     void updateWindowTitle();
 
 public Q_SLOTS:
