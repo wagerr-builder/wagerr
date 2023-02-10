@@ -1267,7 +1267,7 @@ void BitcoinGUI::updateOnionIcon()
     std::string ip_port;
     bool onion_enabled = clientModel->getOnionInfo(ip_port);
 
-    if (onion_enabled)) {
+    if (onion_enabled) {
         if (labelOnionIcon->pixmap() == nullptr) {
             QString ip_port_q = QString::fromStdString(ip_port);
             labelOnionIcon->setPixmap(GUIUtil::getIcon("tor", GUIUtil::ThemedColor::GREEN).pixmap(STATUSBAR_ICONSIZE, STATUSBAR_ICONSIZE));
