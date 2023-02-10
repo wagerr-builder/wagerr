@@ -354,7 +354,7 @@ bool ClientModel::getOnionInfo(std::string& ip_port) const
 {
     proxyType addrOnion;
     if (addrOnion.IsValid()) {
-      ip_port = tor.proxy.ToStringIPPort();
+      //ip_port = tor.proxy.ToStringIPPort();
       return true;
     }
     return false;
