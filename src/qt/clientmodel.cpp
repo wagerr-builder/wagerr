@@ -351,9 +351,9 @@ bool ClientModel::getProxyInfo(std::string& ip_port) const
 }
 
 bool ClientModel::getOnionInfo(std::string& ip_port) const
-
+{
     proxyType tor;
-    if(m_node.getProxy((Network) 1, tor) {
+    if(m_node.getProxy((Network) 1, tor)) {
       ip_port = tor.proxy.ToStringIPPort();
       return true;
     }
