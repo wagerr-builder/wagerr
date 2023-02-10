@@ -352,11 +352,7 @@ bool ClientModel::getProxyInfo(std::string& ip_port) const
 
 bool ClientModel::getOnionInfo(std::string& ip_port) const
 {
-    bool proxyRandomize = true;
-    CService onionProxy;
-    proxyType addrOnion = proxyType(onionProxy, proxyRandomize);
-    if (addrOnion.IsValid()) {
-      //ip_port = tor.proxy.ToStringIPPort();
+    if (fTorEnabled) {
       return true;
     }
     return false;

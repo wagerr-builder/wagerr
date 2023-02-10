@@ -1276,7 +1276,7 @@ void BitcoinGUI::updateOnionIcon()
             labelOnionIcon->show();
         }
     } else {
-        labelOnionIcon->setPixmap(GUIUtil::getIcon("tor2", GUIUtil::ThemedColor::GREEN).pixmap(STATUSBAR_ICONSIZE, STATUSBAR_ICONSIZE));
+        labelOnionIcon->setPixmap(GUIUtil::getIcon("tor2", GUIUtil::ThemedColor::RED).pixmap(STATUSBAR_ICONSIZE, STATUSBAR_ICONSIZE));
         labelOnionIcon->setToolTip(tr("Tor is <b>disabled</b>"));
         labelOnionIcon->show();
     }
