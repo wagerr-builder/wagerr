@@ -29,6 +29,8 @@
 static int64_t nLastHeaderTipUpdateNotification = 0;
 static int64_t nLastBlockTipUpdateNotification = 0;
 
+bool fTorEnabled;
+
 ClientModel::ClientModel(interfaces::Node& node, OptionsModel *_optionsModel, QObject *parent) :
     QObject(parent),
     m_node(node),
