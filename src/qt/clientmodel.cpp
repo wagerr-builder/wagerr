@@ -350,7 +350,7 @@ bool ClientModel::getProxyInfo(std::string& ip_port) const
     return false;
 }
 
-bool ClientModel::getOnionInfo(std::string& ip_port) const
+bool ClientModel::getOnionInfo() const
 {
     if (fTorEnabled) {
       return true;

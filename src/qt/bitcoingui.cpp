@@ -1264,8 +1264,7 @@ void BitcoinGUI::updateNetworkState()
 
 void BitcoinGUI::updateOnionIcon()
 {
-    std::string ip_port;
-    bool onion_enabled = clientModel->getOnionInfo(ip_port);
+    bool onion_enabled = clientModel->getOnionInfo();
 
     if (onion_enabled) {
         if (labelOnionIcon->pixmap() == nullptr) {
