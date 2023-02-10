@@ -352,7 +352,7 @@ bool ClientModel::getProxyInfo(std::string& ip_port) const
 
 bool ClientModel::getOnionInfo(std::string& ip_port) const
 {
-    bool proxyRandomize = false);
+    bool proxyRandomize = false;
     CService onionProxy;
     proxyType addrOnion = proxyType(onionProxy, proxyRandomize);
     if (addrOnion.IsValid()) {
