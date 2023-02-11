@@ -68,7 +68,6 @@
 #include <QVBoxLayout>
 #include <QWindow>
 
-
 const std::string BitcoinGUI::DEFAULT_UIPLATFORM =
 #if defined(Q_OS_MAC)
         "macosx"
@@ -1272,25 +1271,29 @@ void BitcoinGUI::updateNetworkState()
 
 void BitcoinGUI::updateOnionIcon()
 {
+    // fTorEnabled is an extern defined in netaddress.h
     bool onion_enabled = fTorEnabled;
 
-    std::string ipaddress;
+    std::string ipAddress;
 
     LOCK(cs_mapLocalHost);
     for (const std::pair<CNetAddr, LocalServiceInfo> &item : mapLocalHost)
     {
-        ipaddress = item.first.ToString();
+        ipAddress = item.first.ToString();
     }
-    QString ipaddress_q = QString::fromStdString(ipaddress);
+    QString ipAddress_q = QString::fromStdString(ipAddress);
+    if (ipAddress.empty() || ipAddress.substr(ipAddress.length() - 6, 6).compare(".onion") != 0)
+    {
+        onion_enabled = false;
+    }
     if (!onion_enabled) {
         labelOnionIcon->setPixmap(GUIUtil::getIcon("tor2", GUIUtil::ThemedColor::RED).pixmap(STATUSBAR_ICONSIZE, STATUSBAR_ICONSIZE));
         labelOnionIcon->setToolTip(tr("Tor is <b>disabled</b>"));
-        labelOnionIcon->show();
     } else {
         labelOnionIcon->setPixmap(GUIUtil::getIcon("tor", GUIUtil::ThemedColor::GREEN).pixmap(STATUSBAR_ICONSIZE, STATUSBAR_ICONSIZE));
-        labelOnionIcon->setToolTip(tr("Tor is <b>enabled</b>: %1").arg(ipaddress_q));
-        labelOnionIcon->show();
+        labelOnionIcon->setToolTip(tr("Tor is <b>enabled</b>: %1").arg(ipAddress_q));
     }
+    labelOnionIcon->show();
 }
 
 void BitcoinGUI::setNumConnections(int count)
