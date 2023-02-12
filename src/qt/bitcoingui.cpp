@@ -1281,7 +1281,6 @@ void BitcoinGUI::updateOnionIcon()
     {
         ipAddress = item.first.ToString();
     }
-    QString ipAddress_q = QString::fromStdString(ipAddress);
     if (ipAddress.empty() || ipAddress.substr(ipAddress.length() - 6, 6).compare(".onion") != 0)
     {
         onion_enabled = false;
@@ -1290,6 +1289,7 @@ void BitcoinGUI::updateOnionIcon()
         labelOnionIcon->setPixmap(GUIUtil::getIcon("tor2", GUIUtil::ThemedColor::RED).pixmap(STATUSBAR_ICONSIZE, STATUSBAR_ICONSIZE));
         labelOnionIcon->setToolTip(tr("Tor is <b>disabled</b>"));
     } else {
+        QString ipAddress_q = QString::fromStdString(ipAddress);
         labelOnionIcon->setPixmap(GUIUtil::getIcon("tor", GUIUtil::ThemedColor::GREEN).pixmap(STATUSBAR_ICONSIZE, STATUSBAR_ICONSIZE));
         labelOnionIcon->setToolTip(tr("Tor is <b>enabled</b>: %1").arg(ipAddress_q));
     }
