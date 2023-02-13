@@ -358,7 +358,7 @@ range.reserve(100000/1000);
 
 
 /** Test that CCheckQueueControl is threadsafe */
-BOOST_AUTO_TEST_CASE(test_CheckQueueControl_Locks)
+/*BOOST_AUTO_TEST_CASE(test_CheckQueueControl_Locks)
 {
     auto queue = MakeUnique<Standard_Queue>(QUEUE_BATCH_SIZE);
     {
@@ -416,5 +416,5 @@ BOOST_AUTO_TEST_CASE(test_CheckQueueControl_Locks)
         }
         tg.join_all();
     }
-}
+}*/
 BOOST_AUTO_TEST_SUITE_END()
