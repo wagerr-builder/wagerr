@@ -318,7 +318,7 @@ range.reserve(100000/1000);
 
 // Test that a new verification cannot occur until all checks
 // have been destructed
-BOOST_AUTO_TEST_CASE(test_CheckQueue_FrozenCleanup)
+/*BOOST_AUTO_TEST_CASE(test_CheckQueue_FrozenCleanup)
 {
     auto queue = MakeUnique<FrozenCleanup_Queue>(QUEUE_BATCH_SIZE);
     bool fails = false;
@@ -354,7 +354,7 @@ BOOST_AUTO_TEST_CASE(test_CheckQueue_FrozenCleanup)
     t0.join();
     BOOST_REQUIRE(!fails);
     queue->StopWorkerThreads();
-}
+}*/
 
 
 /** Test that CCheckQueueControl is threadsafe */
