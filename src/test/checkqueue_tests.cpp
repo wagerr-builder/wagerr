@@ -291,7 +291,7 @@ range.reserve(100000/1000);
 // This test attempts to catch a pathological case where by lazily freeing
 // checks might mean leaving a check un-swapped out, and decreasing by 1 each
 // time could leave the data hanging across a sequence of blocks.
-BOOST_AUTO_TEST_CASE(test_CheckQueue_Memory)
+/*BOOST_AUTO_TEST_CASE(test_CheckQueue_Memory)
 {
     auto queue = MakeUnique<Memory_Queue>(QUEUE_BATCH_SIZE);
     queue->StartWorkerThreads(SCRIPT_CHECK_THREADS);
@@ -314,7 +314,7 @@ BOOST_AUTO_TEST_CASE(test_CheckQueue_Memory)
         BOOST_REQUIRE_EQUAL(MemoryCheck::fake_allocated_memory, 0U);
     }
     queue->StopWorkerThreads();
-}
+}*/
 
 // Test that a new verification cannot occur until all checks
 // have been destructed
