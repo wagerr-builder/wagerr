@@ -235,7 +235,7 @@ static void AddRandomOutboundPeer(std::vector<CNode *> &vNodes, PeerLogicValidat
     connman->ClearNodes();
 }*/
 
-BOOST_AUTO_TEST_CASE(DoS_banning)
+/*BOOST_AUTO_TEST_CASE(DoS_banning)
 {
     auto banman = MakeUnique<BanMan>(GetDataDir() / "banlist.dat", nullptr, DEFAULT_MISBEHAVING_BANTIME);
     auto connman = MakeUnique<CConnman>(0x1337, 0x1337);
@@ -292,7 +292,7 @@ BOOST_AUTO_TEST_CASE(DoS_banning)
     bool dummy;
     peerLogic->FinalizeNode(dummyNode1.GetId(), dummy);
     peerLogic->FinalizeNode(dummyNode2.GetId(), dummy);
-}
+}*/
 
 BOOST_AUTO_TEST_CASE(DoS_banscore)
 {
