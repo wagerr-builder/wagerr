@@ -95,7 +95,7 @@ BOOST_FIXTURE_TEST_SUITE(denialofservice_tests, TestingSetup)
 
     // Mock an outbound peer
     CAddress addr1(ip(0xa0b0c001), NODE_NONE);
-    CNode dummyNode1(id++, ServiceFlags(NODE_NETWORK), 0, INVALID_SOCKET, addr1, 0, 0, CAddress(), "", /*fInboundIn=*/ false);
+    CNode dummyNode1(id++, ServiceFlags(NODE_NETWORK), 0, INVALID_SOCKET, addr1, 0, 0, CAddress(), "", /*fInboundIn=*//* false);
 /*    dummyNode1.SetSendVersion(PROTOCOL_VERSION);
 
     peerLogic->InitializeNode(&dummyNode1);
