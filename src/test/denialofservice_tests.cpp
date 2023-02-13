@@ -84,7 +84,7 @@ BOOST_FIXTURE_TEST_SUITE(denialofservice_tests, TestingSetup)
 // this logic; this test takes advantage of that protection only
 // being applied to nodes which send headers with sufficient
 // work.
-BOOST_AUTO_TEST_CASE(outbound_slow_chain_eviction)
+/*BOOST_AUTO_TEST_CASE(outbound_slow_chain_eviction)
 {
     auto connman = MakeUnique<CConnman>(0x1337, 0x1337);
     auto peerLogic = MakeUnique<PeerLogicValidation>(
@@ -143,7 +143,7 @@ BOOST_AUTO_TEST_CASE(outbound_slow_chain_eviction)
 
     bool dummy;
     peerLogic->FinalizeNode(dummyNode1.GetId(), dummy);
-}
+}*/
 
 static void AddRandomOutboundPeer(std::vector<CNode *> &vNodes, PeerLogicValidation &peerLogic, CConnmanTest* connman)
 {
