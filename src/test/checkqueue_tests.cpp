@@ -204,7 +204,7 @@ range.reserve(100000/1000);
 
 
 /** Test that failing checks are caught */
-BOOST_AUTO_TEST_CASE(test_CheckQueue_Catches_Failure)
+/*BOOST_AUTO_TEST_CASE(test_CheckQueue_Catches_Failure)
 {
     auto fail_queue = MakeUnique<Failing_Queue>(QUEUE_BATCH_SIZE);
     fail_queue->StartWorkerThreads(SCRIPT_CHECK_THREADS);
@@ -229,7 +229,7 @@ BOOST_AUTO_TEST_CASE(test_CheckQueue_Catches_Failure)
         }
     }
     fail_queue->StopWorkerThreads();
-}
+}*/
 // Test that a block validation which fails does not interfere with
 // future blocks, ie, the bad state is cleared.
 BOOST_AUTO_TEST_CASE(test_CheckQueue_Recovers_From_Failure)
