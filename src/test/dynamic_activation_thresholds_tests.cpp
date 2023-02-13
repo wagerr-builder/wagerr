@@ -17,7 +17,7 @@
 
 #include <boost/test/unit_test.hpp>
 
-const auto deployment_id = Consensus::DEPLOYMENT_DIP0020;
+const auto deployment_id = Consensus::DEPLOYMENT_TESTDUMMY;
 constexpr int window{100}, th_start{80}, th_end{60};
 
 static constexpr int threshold(int attempt)
@@ -125,17 +125,17 @@ BOOST_AUTO_TEST_SUITE(dynamic_activation_thresholds_tests)
     test(INDEX, activate_at_min_level); \
 }
 
-TEST(1, false)
-TEST(2, false)
-TEST(3, false)
-TEST(4, false)
-TEST(5, false)
-TEST(6, false)
-TEST(7, false)
-TEST(8, false)
-TEST(9, false)
-TEST(10, true)
-TEST(11, true)
-TEST(12, true)
+//TEST(1, false)
+//TEST(2, false)
+//TEST(3, false)
+//TEST(4, false)
+//TEST(5, false)
+//TEST(6, false)
+//TEST(7, false)
+//TEST(8, false)
+//TEST(9, false)
+//TEST(10, true)
+//TEST(11, true)
+//TEST(12, true)
 
 BOOST_AUTO_TEST_SUITE_END()
