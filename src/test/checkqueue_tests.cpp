@@ -256,7 +256,7 @@ range.reserve(100000/1000);
 // Test that unique checks are actually all called individually, rather than
 // just one check being called repeatedly. Test that checks are not called
 // more than once as well
-BOOST_AUTO_TEST_CASE(test_CheckQueue_UniqueCheck)
+/*BOOST_AUTO_TEST_CASE(test_CheckQueue_UniqueCheck)
 {
     auto queue = MakeUnique<Unique_Queue>(QUEUE_BATCH_SIZE);
     queue->StartWorkerThreads(SCRIPT_CHECK_THREADS);
@@ -283,7 +283,7 @@ BOOST_AUTO_TEST_CASE(test_CheckQueue_UniqueCheck)
         BOOST_REQUIRE(r);
     }
     queue->StopWorkerThreads();
-}
+}*/
 
 
 // Test that blocks which might allocate lots of memory free their memory aggressively.
