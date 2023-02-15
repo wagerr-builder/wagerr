@@ -94,26 +94,28 @@ static ScriptErrorDesc script_errors[]={
     {SCRIPT_ERR_INVALID_NUMBER_RANGE, "INVALID_NUMBER_RANGE"},
     {SCRIPT_ERR_DIV_BY_ZERO, "DIV_BY_ZERO"},
     {SCRIPT_ERR_MOD_BY_ZERO, "MOD_BY_ZERO"},
-    {SCRIPT_ERR_NUMBER_OVERFLOW, "NUMBER_OVERFLOW"},
-    {SCRIPT_ERR_NUMBER_BAD_ENCODING, "NUMBER_BAD_ENCODING"},
     {SCRIPT_ERR_OP_CODESEPARATOR, "OP_CODESEPARATOR"},
     {SCRIPT_ERR_SIG_FINDANDDELETE, "SIG_FINDANDDELETE"},
 };
 
 static const char *FormatScriptError(ScriptError_t err)
 {
-    for (unsigned int i=0; i<ARRAYLEN(script_errors); ++i)
-        if (script_errors[i].err == err)
-            return script_errors[i].name;
+    for (const auto& script_error : script_errors) {
+        if (script_error.err == err) {
+            return script_error.name;
+        }
+    }
     BOOST_ERROR("Unknown scripterror enumeration value, update script_errors in script_tests.cpp.");
     return "";
 }
 
 static ScriptError_t ParseScriptError(const std::string& name)
 {
-    for (unsigned int i=0; i<ARRAYLEN(script_errors); ++i)
-        if (script_errors[i].name == name)
-            return script_errors[i].err;
+    for (const auto& script_error : script_errors) {
+        if (script_error.name == name) {
+            return script_error.err;
+        }
+    }
     BOOST_ERROR("Unknown scripterror \"" << name << "\" in test description");
     return SCRIPT_ERR_UNKNOWN_ERROR;
 }
@@ -146,10 +148,10 @@ void DoTest(const CScript& scriptPubKey, const CScript& scriptSig, int flags, co
 #if defined(HAVE_CONSENSUS_LIB)
     CDataStream stream(SER_NETWORK, PROTOCOL_VERSION);
     stream << tx2;
-    int libconsensus_flags = flags & wagerrconsensus_SCRIPT_FLAGS_VERIFY_ALL;
+    int libconsensus_flags = flags & dashconsensus_SCRIPT_FLAGS_VERIFY_ALL;
     if (libconsensus_flags == flags) {
         int expectedSuccessCode = expect ? 1 : 0;
-        BOOST_CHECK_MESSAGE(wagerrconsensus_verify_script(scriptPubKey.data(), scriptPubKey.size(), (const unsigned char*)&stream[0], stream.size(), 0, libconsensus_flags, nullptr) == expectedSuccessCode, message);
+        BOOST_CHECK_MESSAGE(dashconsensus_verify_script(scriptPubKey.data(), scriptPubKey.size(), (const unsigned char*)&stream[0], stream.size(), 0, libconsensus_flags, nullptr) == expectedSuccessCode, message);
     }
 #endif
 }
@@ -1126,7 +1128,7 @@ BOOST_AUTO_TEST_CASE(script_combineSigs)
         BOOST_CHECK(keystore.AddKey(key));
     }
 
-    CMutableTransaction txFrom = BuildCreditingTransaction(GetScriptForDestination(keys[0].GetPubKey().GetID()));
+    CMutableTransaction txFrom = BuildCreditingTransaction(GetScriptForDestination(PKHash(keys[0].GetPubKey())));
     CMutableTransaction txTo = BuildSpendingTransaction(CScript(), CTransaction(txFrom));
     CScript& scriptPubKey = txFrom.vout[0].scriptPubKey;
     SignatureData scriptSig;
@@ -1152,7 +1154,7 @@ BOOST_AUTO_TEST_CASE(script_combineSigs)
     // P2SH, single-signature case:
     CScript pkSingle; pkSingle << ToByteVector(keys[0].GetPubKey()) << OP_CHECKSIG;
     BOOST_CHECK(keystore.AddCScript(pkSingle));
-    scriptPubKey = GetScriptForDestination(CScriptID(pkSingle));
+    scriptPubKey = GetScriptForDestination(ScriptHash(pkSingle));
     BOOST_CHECK(SignSignature(keystore, CTransaction(txFrom), txTo, 0, SIGHASH_ALL));
     scriptSig = DataFromTransaction(txTo, 0, txFrom.vout[0]);
     combined = CombineSignatures(txFrom.vout[0], txTo, scriptSig, empty);
@@ -1406,8 +1408,8 @@ BOOST_AUTO_TEST_CASE(script_FindAndDelete)
 
 #if defined(HAVE_CONSENSUS_LIB)
 
-/* Test simple (successful) usage of wagerrconsensus_verify_script */
-BOOST_AUTO_TEST_CASE(wagerrconsensus_verify_script_returns_true)
+/* Test simple (successful) usage of dashconsensus_verify_script */
+BOOST_AUTO_TEST_CASE(dashconsensus_verify_script_returns_true)
 {
     unsigned int libconsensus_flags = 0;
     int nIn = 0;
@@ -1422,14 +1424,14 @@ BOOST_AUTO_TEST_CASE(wagerrconsensus_verify_script_returns_true)
     CDataStream stream(SER_NETWORK, PROTOCOL_VERSION);
     stream << spendTx;
 
-    wagerrconsensus_error err;
-    int result = wagerrconsensus_verify_script(scriptPubKey.data(), scriptPubKey.size(), (const unsigned char*)&stream[0], stream.size(), nIn, libconsensus_flags, &err);
+    dashconsensus_error err;
+    int result = dashconsensus_verify_script(scriptPubKey.data(), scriptPubKey.size(), (const unsigned char*)&stream[0], stream.size(), nIn, libconsensus_flags, &err);
     BOOST_CHECK_EQUAL(result, 1);
-    BOOST_CHECK_EQUAL(err, wagerrconsensus_ERR_OK);
+    BOOST_CHECK_EQUAL(err, dashconsensus_ERR_OK);
 }
 
-/* Test wagerrconsensus_verify_script returns invalid tx index err*/
-BOOST_AUTO_TEST_CASE(wagerrconsensus_verify_script_tx_index_err)
+/* Test dashconsensus_verify_script returns invalid tx index err*/
+BOOST_AUTO_TEST_CASE(dashconsensus_verify_script_tx_index_err)
 {
     unsigned int libconsensus_flags = 0;
     int nIn = 3;
@@ -1444,14 +1446,14 @@ BOOST_AUTO_TEST_CASE(wagerrconsensus_verify_script_tx_index_err)
     CDataStream stream(SER_NETWORK, PROTOCOL_VERSION);
     stream << spendTx;
 
-    wagerrconsensus_error err;
-    int result = wagerrconsensus_verify_script(scriptPubKey.data(), scriptPubKey.size(), (const unsigned char*)&stream[0], stream.size(), nIn, libconsensus_flags, &err);
+    dashconsensus_error err;
+    int result = dashconsensus_verify_script(scriptPubKey.data(), scriptPubKey.size(), (const unsigned char*)&stream[0], stream.size(), nIn, libconsensus_flags, &err);
     BOOST_CHECK_EQUAL(result, 0);
-    BOOST_CHECK_EQUAL(err, wagerrconsensus_ERR_TX_INDEX);
+    BOOST_CHECK_EQUAL(err, dashconsensus_ERR_TX_INDEX);
 }
 
-/* Test wagerrconsensus_verify_script returns tx size mismatch err*/
-BOOST_AUTO_TEST_CASE(wagerrconsensus_verify_script_tx_size)
+/* Test dashconsensus_verify_script returns tx size mismatch err*/
+BOOST_AUTO_TEST_CASE(dashconsensus_verify_script_tx_size)
 {
     unsigned int libconsensus_flags = 0;
     int nIn = 0;
@@ -1466,14 +1468,14 @@ BOOST_AUTO_TEST_CASE(wagerrconsensus_verify_script_tx_size)
     CDataStream stream(SER_NETWORK, PROTOCOL_VERSION);
     stream << spendTx;
 
-    wagerrconsensus_error err;
-    int result = wagerrconsensus_verify_script(scriptPubKey.data(), scriptPubKey.size(), (const unsigned char*)&stream[0], stream.size() * 2, nIn, libconsensus_flags, &err);
+    dashconsensus_error err;
+    int result = dashconsensus_verify_script(scriptPubKey.data(), scriptPubKey.size(), (const unsigned char*)&stream[0], stream.size() * 2, nIn, libconsensus_flags, &err);
     BOOST_CHECK_EQUAL(result, 0);
-    BOOST_CHECK_EQUAL(err, wagerrconsensus_ERR_TX_SIZE_MISMATCH);
+    BOOST_CHECK_EQUAL(err, dashconsensus_ERR_TX_SIZE_MISMATCH);
 }
 
-/* Test wagerrconsensus_verify_script returns invalid tx serialization error */
-BOOST_AUTO_TEST_CASE(wagerrconsensus_verify_script_tx_serialization)
+/* Test dashconsensus_verify_script returns invalid tx serialization error */
+BOOST_AUTO_TEST_CASE(dashconsensus_verify_script_tx_serialization)
 {
     unsigned int libconsensus_flags = 0;
     int nIn = 0;
@@ -1488,14 +1490,14 @@ BOOST_AUTO_TEST_CASE(wagerrconsensus_verify_script_tx_serialization)
     CDataStream stream(SER_NETWORK, PROTOCOL_VERSION);
     stream << 0xffffffff;
 
-    wagerrconsensus_error err;
-    int result = wagerrconsensus_verify_script(scriptPubKey.data(), scriptPubKey.size(), (const unsigned char*)&stream[0], stream.size(), nIn, libconsensus_flags, &err);
+    dashconsensus_error err;
+    int result = dashconsensus_verify_script(scriptPubKey.data(), scriptPubKey.size(), (const unsigned char*)&stream[0], stream.size(), nIn, libconsensus_flags, &err);
     BOOST_CHECK_EQUAL(result, 0);
-    BOOST_CHECK_EQUAL(err, wagerrconsensus_ERR_TX_DESERIALIZE);
+    BOOST_CHECK_EQUAL(err, dashconsensus_ERR_TX_DESERIALIZE);
 }
 
-/* Test wagerrconsensus_verify_script returns invalid flags err */
-BOOST_AUTO_TEST_CASE(wagerrconsensus_verify_script_invalid_flags)
+/* Test dashconsensus_verify_script returns invalid flags err */
+BOOST_AUTO_TEST_CASE(dashconsensus_verify_script_invalid_flags)
 {
     unsigned int libconsensus_flags = 1 << 3;
     int nIn = 0;
@@ -1510,10 +1512,10 @@ BOOST_AUTO_TEST_CASE(wagerrconsensus_verify_script_invalid_flags)
     CDataStream stream(SER_NETWORK, PROTOCOL_VERSION);
     stream << spendTx;
 
-    wagerrconsensus_error err;
-    int result = wagerrconsensus_verify_script(scriptPubKey.data(), scriptPubKey.size(), (const unsigned char*)&stream[0], stream.size(), nIn, libconsensus_flags, &err);
+    dashconsensus_error err;
+    int result = dashconsensus_verify_script(scriptPubKey.data(), scriptPubKey.size(), (const unsigned char*)&stream[0], stream.size(), nIn, libconsensus_flags, &err);
     BOOST_CHECK_EQUAL(result, 0);
-    BOOST_CHECK_EQUAL(err, wagerrconsensus_ERR_INVALID_FLAGS);
+    BOOST_CHECK_EQUAL(err, dashconsensus_ERR_INVALID_FLAGS);
 }
 
 #endif

@@ -10,7 +10,6 @@
 #include <utility>
 #include <vector>
 
-#include <boost/algorithm/string.hpp>
 #include <boost/test/unit_test.hpp>
 
 namespace getarg_tests{
@@ -27,11 +26,12 @@ BOOST_FIXTURE_TEST_SUITE(getarg_tests, LocalTestingSetup)
 void LocalTestingSetup :: ResetArgs(const std::string& strArg)
 {
     std::vector<std::string> vecArg;
-    if (strArg.size())
-      boost::split(vecArg, strArg, IsSpace, boost::token_compress_on);
+    if (strArg.size()) {
+        vecArg = SplitString(strArg, ' ');
+    }
 
     // Insert dummy executable name:
-    vecArg.insert(vecArg.begin(), "testwagerr");
+    vecArg.insert(vecArg.begin(), "testdash");
 
     // Convert to char*:
     std::vector<const char*> vecChar;
@@ -153,7 +153,7 @@ BOOST_AUTO_TEST_CASE(intarg)
     BOOST_CHECK_EQUAL(m_args.GetArg("-bar", 11), 0);
 }
 
-BOOST_AUTO_TEST_CASE(doublewagerr)
+BOOST_AUTO_TEST_CASE(doubledash)
 {
     const auto foo = std::make_pair("-foo", ArgsManager::ALLOW_ANY);
     const auto bar = std::make_pair("-bar", ArgsManager::ALLOW_ANY);

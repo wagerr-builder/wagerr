@@ -7,7 +7,6 @@
 #include <net.h>
 #include <net_permissions.h>
 #include <netaddress.h>
-#include <optional.h>
 #include <protocol.h>
 #include <random.h>
 #include <test/fuzz/FuzzedDataProvider.h>
@@ -16,15 +15,16 @@
 #include <test/util/setup_common.h>
 
 #include <cstdint>
+#include <optional>
 #include <string>
 #include <vector>
 
-void initialize()
+void initialize_net()
 {
     static const BasicTestingSetup basic_testing_setup;
 }
 
-void test_one_input(const std::vector<uint8_t>& buffer)
+FUZZ_TARGET_INIT(net, initialize_net)
 {
     FuzzedDataProvider fuzzed_data_provider(buffer.data(), buffer.size());
 

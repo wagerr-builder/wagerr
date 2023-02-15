@@ -1,7 +1,7 @@
 Description
 ------------
 
-This directory contains data-driven tests for various aspects of Wagerr.
+This directory contains data-driven tests for various aspects of Dash.
 
 License
 --------

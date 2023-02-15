@@ -2,23 +2,19 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include <rpc/server.h>
-#include <rpc/client.h>
-#include <rpc/util.h>
-
+#include <context.h>
 #include <core_io.h>
 #include <interfaces/chain.h>
 #include <node/context.h>
+#include <rpc/blockchain.h>
+#include <rpc/client.h>
+#include <rpc/server.h>
+#include <rpc/util.h>
 #include <test/util/setup_common.h>
-#include <util/ref.h>
+#include <univalue.h>
 #include <util/time.h>
 
-#include <boost/algorithm/string.hpp>
 #include <boost/test/unit_test.hpp>
-
-#include <univalue.h>
-
-#include <rpc/blockchain.h>
 
 class RPCTestingSetup : public TestingSetup
 {
@@ -28,11 +24,10 @@ public:
 
 UniValue RPCTestingSetup::CallRPC(std::string args)
 {
-    std::vector<std::string> vArgs;
-    boost::split(vArgs, args, boost::is_any_of(" \t"));
+    std::vector<std::string> vArgs{SplitString(args, ' ')};
     std::string strMethod = vArgs[0];
     vArgs.erase(vArgs.begin());
-    util::Ref context{m_node};
+    CoreContext context{m_node};
     JSONRPCRequest request(context);
     request.strMethod = strMethod;
     request.params = RPCConvertValues(strMethod, vArgs);
@@ -114,14 +109,14 @@ BOOST_AUTO_TEST_CASE(rpc_rawsign)
       "\"vout\":1,\"scriptPubKey\":\"a914b10c9df5f7edf436c697f02f1efdba4cf399615187\","
       "\"redeemScript\":\"512103debedc17b3df2badbcdd86d5feb4562b86fe182e5998abd8bcd4f122c6155b1b21027e940bb73ab8732bfdf7f9216ecefca5b94d6df834e77e108f68e66f126044c052ae\"}]";
     r = CallRPC(std::string("createrawtransaction ")+prevout+" "+
-      "{\"Wcw4cQHuky6uYoZNi6U4HdK8ETxFYTigGm\":11}");
+      "{\"7iYoULd4BAqRsRt1UbD5qqna88JvKRU3SL\":11}");
     std::string notsigned = r.get_str();
-    std::string privkey1 = "\"WU7D9AqAwks3HCBxYwoai8WoRQ1tZAhEkievAzqtBXEWdLm95Zpn\"";
-    std::string privkey2 = "\"WZHZTZT53EbHJBrmxuWQy3GNudquv9s2MnFpp9phFqZJJx6CTmb5\"";
+    std::string privkey1 = "\"XEwTRsCX3CiWSQf8YmKMTeb84KyTbibkUv9mDTZHQ5MwuKG2ZzES\"";
+    std::string privkey2 = "\"XDmZ7LjGd94Q81eUBjb2h6uV5Y14s7fmeXWEGYabfBJP8RVpprBu\"";
     r = CallRPC(std::string("signrawtransactionwithkey ")+notsigned+" [] "+prevout);
     BOOST_CHECK(find_value(r.get_obj(), "complete").get_bool() == false);
     r = CallRPC(std::string("signrawtransactionwithkey ")+notsigned+" ["+privkey1+","+privkey2+"] "+prevout);
-    /* BOOST_CHECK(find_value(r.get_obj(), "complete").get_bool() == true); */
+    BOOST_CHECK(find_value(r.get_obj(), "complete").get_bool() == true);
 }
 
 BOOST_AUTO_TEST_CASE(rpc_createraw_op_return)
@@ -323,22 +318,22 @@ BOOST_AUTO_TEST_CASE(rpc_convert_values_generatetoaddress)
 {
     UniValue result;
 
-    BOOST_CHECK_NO_THROW(result = RPCConvertValues("generatetoaddress", {"101", "TBge6RGfX8e8fDdqi4PcemsVVCLEczB3a5"}));
+    BOOST_CHECK_NO_THROW(result = RPCConvertValues("generatetoaddress", {"101", "yhq7ifNCtTKEpY4Yu5XPCcztQco6Fh6JsZ"}));
     BOOST_CHECK_EQUAL(result[0].get_int(), 101);
-    BOOST_CHECK_EQUAL(result[1].get_str(), "TBge6RGfX8e8fDdqi4PcemsVVCLEczB3a5");
+    BOOST_CHECK_EQUAL(result[1].get_str(), "yhq7ifNCtTKEpY4Yu5XPCcztQco6Fh6JsZ");
 
-    BOOST_CHECK_NO_THROW(result = RPCConvertValues("generatetoaddress", {"101", "TCoFQg1Ua9vukfBz4YnApRTWgbKcbH65bD"}));
+    BOOST_CHECK_NO_THROW(result = RPCConvertValues("generatetoaddress", {"101", "yTretFTpoi3oQ3maZk5QadGaDWPiKnmDBc"}));
     BOOST_CHECK_EQUAL(result[0].get_int(), 101);
-    BOOST_CHECK_EQUAL(result[1].get_str(), "TCoFQg1Ua9vukfBz4YnApRTWgbKcbH65bD");
+    BOOST_CHECK_EQUAL(result[1].get_str(), "yTretFTpoi3oQ3maZk5QadGaDWPiKnmDBc");
 
-    BOOST_CHECK_NO_THROW(result = RPCConvertValues("generatetoaddress", {"1", "TQXkafjUExkAvr5ozansHgKSC4FC5zWm55", "9"}));
+    BOOST_CHECK_NO_THROW(result = RPCConvertValues("generatetoaddress", {"1", "yNbNZyCiTYSFtDwEXt7jChV7tZVYX862ua", "9"}));
     BOOST_CHECK_EQUAL(result[0].get_int(), 1);
-    BOOST_CHECK_EQUAL(result[1].get_str(), "TQXkafjUExkAvr5ozansHgKSC4FC5zWm55");
+    BOOST_CHECK_EQUAL(result[1].get_str(), "yNbNZyCiTYSFtDwEXt7jChV7tZVYX862ua");
     BOOST_CHECK_EQUAL(result[2].get_int(), 9);
 
-    BOOST_CHECK_NO_THROW(result = RPCConvertValues("generatetoaddress", {"1", "TRyF3VZyWfZaAjJ5mi9cApuS9GGtkENRMc", "9"}));
+    BOOST_CHECK_NO_THROW(result = RPCConvertValues("generatetoaddress", {"1", "yTG8jLL3MvteKXgbEcHyaN7JvTPCejQpSh", "9"}));
     BOOST_CHECK_EQUAL(result[0].get_int(), 1);
-    BOOST_CHECK_EQUAL(result[1].get_str(), "TRyF3VZyWfZaAjJ5mi9cApuS9GGtkENRMc");
+    BOOST_CHECK_EQUAL(result[1].get_str(), "yTG8jLL3MvteKXgbEcHyaN7JvTPCejQpSh");
     BOOST_CHECK_EQUAL(result[2].get_int(), 9);
 }
 #endif // ENABLE_MINER
