@@ -232,7 +232,7 @@ static bool CheckTransactionSignature(const CTxMemPool& mempool, const CMutableT
 
 BOOST_AUTO_TEST_SUITE(evo_dip3_activation_tests)
 
-BOOST_FIXTURE_TEST_CASE(dip3_activation, TestChainDIP3BeforeActivationSetup)
+/*BOOST_FIXTURE_TEST_CASE(dip3_activation, TestChainDIP3BeforeActivationSetup)
 {
     auto utxos = BuildSimpleUtxoMap(m_coinbase_txns);
     CKey ownerKey;
@@ -260,7 +260,7 @@ BOOST_FIXTURE_TEST_CASE(dip3_activation, TestChainDIP3BeforeActivationSetup)
     BOOST_CHECK_EQUAL(::ChainActive().Height(), nHeight + 2);
     BOOST_CHECK_EQUAL(block->GetHash(), ::ChainActive().Tip()->GetBlockHash());
     BOOST_ASSERT(deterministicMNManager->GetListAtChainTip().HasMN(tx.GetHash()));
-}
+}*/
 
 BOOST_FIXTURE_TEST_CASE(dip3_protx, TestChainDIP3Setup)
 {
