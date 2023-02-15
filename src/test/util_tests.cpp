@@ -5,23 +5,18 @@
 #include <util/system.h>
 
 #include <clientversion.h>
-#include <hash.h> // For Hash()
-#include <key.h> // For CKey
 #include <sync.h>
 #include <test/util/logging.h>
 #include <test/util.h>
-#include <uint256.h>
 #include <util/getuniquepath.h>
 #include <util/strencodings.h>
 #include <util/string.h>
-#include <util/message.h> // For MessageSign(), MessageVerify(), MESSAGE_MAGIC
 #include <util/moneystr.h>
 #include <util/time.h>
 #include <test/util/setup_common.h>
 #include <util/vector.h>
 #include <util/spanparsing.h>
 
-#include <array>
 #include <stdint.h>
 #include <thread>
 #include <univalue.h>
@@ -35,10 +30,6 @@
 
 #include <boost/test/unit_test.hpp>
 
-using namespace std::string_literals;
-
-static const std::string STRING_WITH_EMBEDDED_NULL_CHAR{"1"s "\0" "1"s};
-
 /* defined in logging.cpp */
 namespace BCLog {
     std::string LogEscapeMessage(const std::string& str);
@@ -49,7 +40,7 @@ BOOST_FIXTURE_TEST_SUITE(util_tests, BasicTestingSetup)
 BOOST_AUTO_TEST_CASE(util_check)
 {
     // Check that Assert can forward
-    const std::unique_ptr<int> p_two = Assert(std::make_unique<int>(2));
+    const std::unique_ptr<int> p_two = Assert(MakeUnique<int>(2));
     // Check that Assert works on lvalues and rvalues
     const int two = *Assert(p_two);
     Assert(two == 2);
@@ -141,22 +132,6 @@ BOOST_AUTO_TEST_CASE(util_Join)
     BOOST_CHECK_EQUAL(Join({"foo", "bar"}, ", "), "foo, bar");
 }
 
-BOOST_AUTO_TEST_CASE(util_TrimString)
-{
-    BOOST_CHECK_EQUAL(TrimString(" foo bar "), "foo bar");
-    BOOST_CHECK_EQUAL(TrimString("\t \n  \n \f\n\r\t\v\tfoo \n \f\n\r\t\v\tbar\t  \n \f\n\r\t\v\t\n "), "foo \n \f\n\r\t\v\tbar");
-    BOOST_CHECK_EQUAL(TrimString("\t \n foo \n\tbar\t \n "), "foo \n\tbar");
-    BOOST_CHECK_EQUAL(TrimString("\t \n foo \n\tbar\t \n ", "fobar"), "\t \n foo \n\tbar\t \n ");
-    BOOST_CHECK_EQUAL(TrimString("foo bar"), "foo bar");
-    BOOST_CHECK_EQUAL(TrimString("foo bar", "fobar"), " ");
-    BOOST_CHECK_EQUAL(TrimString(std::string("\0 foo \0 ", 8)), std::string("\0 foo \0", 7));
-    BOOST_CHECK_EQUAL(TrimString(std::string(" foo ", 5)), std::string("foo", 3));
-    BOOST_CHECK_EQUAL(TrimString(std::string("\t\t\0\0\n\n", 6)), std::string("\0\0", 2));
-    BOOST_CHECK_EQUAL(TrimString(std::string("\x05\x04\x03\x02\x01\x00", 6)), std::string("\x05\x04\x03\x02\x01\x00", 6));
-    BOOST_CHECK_EQUAL(TrimString(std::string("\x05\x04\x03\x02\x01\x00", 6), std::string("\x05\x04\x03\x02\x01", 5)), std::string("\0", 1));
-    BOOST_CHECK_EQUAL(TrimString(std::string("\x05\x04\x03\x02\x01\x00", 6), std::string("\x05\x04\x03\x02\x01\x00", 6)), "");
-}
-
 BOOST_AUTO_TEST_CASE(util_FormatParseISO8601DateTime)
 {
     BOOST_CHECK_EQUAL(FormatISO8601DateTime(1317425777), "2011-09-30T23:36:17Z");
@@ -246,27 +221,6 @@ BOOST_AUTO_TEST_CASE(util_ParseParameters)
     BOOST_CHECK(testArgs.m_settings.command_line_options["ccc"].front().get_str() == "argument");
     BOOST_CHECK(testArgs.m_settings.command_line_options["ccc"].back().get_str() == "multiple");
     BOOST_CHECK(testArgs.GetArgs("-ccc").size() == 2);
-}
-
-BOOST_AUTO_TEST_CASE(util_ParseInvalidParameters)
-{
-    TestArgsManager test;
-    test.SetupArgs({{"-registered", ArgsManager::ALLOW_ANY}});
-
-    const char* argv[] = {"ignored", "-registered"};
-    std::string error;
-    BOOST_CHECK(test.ParseParameters(2, (char**)argv, error));
-    BOOST_CHECK_EQUAL(error, "");
-
-    argv[1] = "-unregistered";
-    BOOST_CHECK(!test.ParseParameters(2, (char**)argv, error));
-    BOOST_CHECK_EQUAL(error, "Invalid parameter -unregistered");
-
-    // Make sure registered parameters prefixed with a chain name trigger errors.
-    // (Previously, they were accepted and ignored.)
-    argv[1] = "-test.registered";
-    BOOST_CHECK(!test.ParseParameters(2, (char**)argv, error));
-    BOOST_CHECK_EQUAL(error, "Invalid parameter -test.registered");
 }
 
 static void TestParse(const std::string& str, bool expected_bool, int64_t expected_int)
@@ -757,8 +711,7 @@ struct ArgsMergeTestingSetup : public BasicTestingSetup {
     void ForEachMergeSetup(Fn&& fn)
     {
         ActionList arg_actions = {};
-        // command_line_options do not have sections. Only iterate over SET and NEGATE
-        ForEachNoDup(arg_actions, SET, NEGATE, [&] {
+        ForEachNoDup(arg_actions, SET, SECTION_NEGATE, [&] {
             ActionList conf_actions = {};
             ForEachNoDup(conf_actions, SET, SECTION_NEGATE, [&] {
                 for (bool soft_set : {false, true}) {
@@ -790,7 +743,7 @@ struct ArgsMergeTestingSetup : public BasicTestingSetup {
             if (action == SECTION_SET || action == SECTION_NEGATE) prefix = section + ".";
             if (action == SET || action == SECTION_SET) {
                 for (int i = 0; i < 2; ++i) {
-                    values.push_back(prefix + name + "=" + value_prefix + ToString(++suffix));
+                    values.push_back(prefix + name + "=" + value_prefix + std::to_string(++suffix));
                 }
             }
             if (action == NEGATE || action == SECTION_NEGATE) {
@@ -918,7 +871,7 @@ BOOST_FIXTURE_TEST_CASE(util_ArgsMerge, ArgsMergeTestingSetup)
     // Results file is formatted like:
     //
     //   <input> || <IsArgSet/IsArgNegated/GetArg output> | <GetArgs output> | <GetUnsuitable output>
-    BOOST_CHECK_EQUAL(out_sha_hex, "8fd4877bb8bf337badca950ede6c917441901962f160e52514e06a60dea46cde");
+    BOOST_CHECK_EQUAL(out_sha_hex, "b835eef5977d69114eb039a976201f8c7121f34fe2b7ea2b73cafb516e5c9dc8");
 }
 
 // Similar test as above, but for ArgsManager::GetChainName function.
@@ -1072,59 +1025,60 @@ BOOST_AUTO_TEST_CASE(util_FormatMoney)
 
 BOOST_AUTO_TEST_CASE(util_ParseMoney)
 {
-    BOOST_CHECK_EQUAL(ParseMoney("0.0").value(), 0);
+    CAmount ret = 0;
+    BOOST_CHECK(ParseMoney("0.0", ret));
+    BOOST_CHECK_EQUAL(ret, 0);
 
-    BOOST_CHECK_EQUAL(ParseMoney("12345.6789").value(), (COIN/10000)*123456789);
+    BOOST_CHECK(ParseMoney("12345.6789", ret));
+    BOOST_CHECK_EQUAL(ret, (COIN/10000)*123456789);
 
-    BOOST_CHECK_EQUAL(ParseMoney("10000000.00").value(), COIN*10000000);
-    BOOST_CHECK_EQUAL(ParseMoney("1000000.00").value(), COIN*1000000);
-    BOOST_CHECK_EQUAL(ParseMoney("100000.00").value(), COIN*100000);
-    BOOST_CHECK_EQUAL(ParseMoney("10000.00").value(), COIN*10000);
-    BOOST_CHECK_EQUAL(ParseMoney("1000.00").value(), COIN*1000);
-    BOOST_CHECK_EQUAL(ParseMoney("100.00").value(), COIN*100);
-    BOOST_CHECK_EQUAL(ParseMoney("10.00").value(), COIN*10);
-    BOOST_CHECK_EQUAL(ParseMoney("1.00").value(), COIN);
-    BOOST_CHECK_EQUAL(ParseMoney("1").value(), COIN);
-    BOOST_CHECK_EQUAL(ParseMoney("   1").value(), COIN);
-    BOOST_CHECK_EQUAL(ParseMoney("1   ").value(), COIN);
-    BOOST_CHECK_EQUAL(ParseMoney("  1 ").value(), COIN);
-    BOOST_CHECK_EQUAL(ParseMoney("0.1").value(), COIN/10);
-    BOOST_CHECK_EQUAL(ParseMoney("0.01").value(), COIN/100);
-    BOOST_CHECK_EQUAL(ParseMoney("0.001").value(), COIN/1000);
-    BOOST_CHECK_EQUAL(ParseMoney("0.0001").value(), COIN/10000);
-    BOOST_CHECK_EQUAL(ParseMoney("0.00001").value(), COIN/100000);
-    BOOST_CHECK_EQUAL(ParseMoney("0.000001").value(), COIN/1000000);
-    BOOST_CHECK_EQUAL(ParseMoney("0.0000001").value(), COIN/10000000);
-    BOOST_CHECK_EQUAL(ParseMoney("0.00000001").value(), COIN/100000000);
-    BOOST_CHECK_EQUAL(ParseMoney(" 0.00000001 ").value(), COIN/100000000);
-    BOOST_CHECK_EQUAL(ParseMoney("0.00000001 ").value(), COIN/100000000);
-    BOOST_CHECK_EQUAL(ParseMoney(" 0.00000001").value(), COIN/100000000);
-
-    // Parsing amount that can not be represented should fail
-    BOOST_CHECK(!ParseMoney("100000000.00"));
-    BOOST_CHECK(!ParseMoney("0.000000001"));
-
-    // Parsing empty string should fail
-    BOOST_CHECK(!ParseMoney(""));
-    BOOST_CHECK(!ParseMoney(" "));
-    BOOST_CHECK(!ParseMoney("  "));
-
-    // Parsing two numbers should fail
-    BOOST_CHECK(!ParseMoney("1 2"));
-    BOOST_CHECK(!ParseMoney(" 1 2 "));
-    BOOST_CHECK(!ParseMoney(" 1.2 3 "));
-    BOOST_CHECK(!ParseMoney(" 1 2.3 "));
+    BOOST_CHECK(ParseMoney("100000000.00", ret));
+    BOOST_CHECK_EQUAL(ret, COIN*100000000);
+    BOOST_CHECK(ParseMoney("10000000.00", ret));
+    BOOST_CHECK_EQUAL(ret, COIN*10000000);
+    BOOST_CHECK(ParseMoney("1000000.00", ret));
+    BOOST_CHECK_EQUAL(ret, COIN*1000000);
+    BOOST_CHECK(ParseMoney("100000.00", ret));
+    BOOST_CHECK_EQUAL(ret, COIN*100000);
+    BOOST_CHECK(ParseMoney("10000.00", ret));
+    BOOST_CHECK_EQUAL(ret, COIN*10000);
+    BOOST_CHECK(ParseMoney("1000.00", ret));
+    BOOST_CHECK_EQUAL(ret, COIN*1000);
+    BOOST_CHECK(ParseMoney("100.00", ret));
+    BOOST_CHECK_EQUAL(ret, COIN*100);
+    BOOST_CHECK(ParseMoney("10.00", ret));
+    BOOST_CHECK_EQUAL(ret, COIN*10);
+    BOOST_CHECK(ParseMoney("1.00", ret));
+    BOOST_CHECK_EQUAL(ret, COIN);
+    BOOST_CHECK(ParseMoney("1", ret));
+    BOOST_CHECK_EQUAL(ret, COIN);
+    BOOST_CHECK(ParseMoney("0.1", ret));
+    BOOST_CHECK_EQUAL(ret, COIN/10);
+    BOOST_CHECK(ParseMoney("0.01", ret));
+    BOOST_CHECK_EQUAL(ret, COIN/100);
+    BOOST_CHECK(ParseMoney("0.001", ret));
+    BOOST_CHECK_EQUAL(ret, COIN/1000);
+    BOOST_CHECK(ParseMoney("0.0001", ret));
+    BOOST_CHECK_EQUAL(ret, COIN/10000);
+    BOOST_CHECK(ParseMoney("0.00001", ret));
+    BOOST_CHECK_EQUAL(ret, COIN/100000);
+    BOOST_CHECK(ParseMoney("0.000001", ret));
+    BOOST_CHECK_EQUAL(ret, COIN/1000000);
+    BOOST_CHECK(ParseMoney("0.0000001", ret));
+    BOOST_CHECK_EQUAL(ret, COIN/10000000);
+    BOOST_CHECK(ParseMoney("0.00000001", ret));
+    BOOST_CHECK_EQUAL(ret, COIN/100000000);
 
     // Attempted 63 bit overflow should fail
-    BOOST_CHECK(!ParseMoney("92233720368.54775808"));
+    BOOST_CHECK(!ParseMoney("92233720368.54775808", ret));
 
     // Parsing negative amounts must fail
-    BOOST_CHECK(!ParseMoney("-1"));
+    BOOST_CHECK(!ParseMoney("-1", ret));
 
     // Parsing strings with embedded NUL characters should fail
-    BOOST_CHECK(!ParseMoney(std::string("\0-1", 3)));
-    BOOST_CHECK(!ParseMoney(STRING_WITH_EMBEDDED_NULL_CHAR));
-    BOOST_CHECK(!ParseMoney(std::string("1\0", 2)));
+    BOOST_CHECK(!ParseMoney(std::string("\0-1", 3), ret));
+    BOOST_CHECK(!ParseMoney(std::string("\01", 2), ret));
+    BOOST_CHECK(!ParseMoney(std::string("1\0", 2), ret));
 }
 
 BOOST_AUTO_TEST_CASE(util_IsHex)
@@ -1301,158 +1255,14 @@ BOOST_AUTO_TEST_CASE(test_ParseInt32)
     BOOST_CHECK(!ParseInt32("aap", &n));
     BOOST_CHECK(!ParseInt32("0x1", &n)); // no hex
     BOOST_CHECK(!ParseInt32("0x1", &n)); // no hex
-    BOOST_CHECK(!ParseInt32(STRING_WITH_EMBEDDED_NULL_CHAR, &n));
+    const char test_bytes[] = {'1', 0, '1'};
+    std::string teststr(test_bytes, sizeof(test_bytes));
+    BOOST_CHECK(!ParseInt32(teststr, &n)); // no embedded NULs
     // Overflow and underflow
     BOOST_CHECK(!ParseInt32("-2147483649", nullptr));
     BOOST_CHECK(!ParseInt32("2147483648", nullptr));
     BOOST_CHECK(!ParseInt32("-32482348723847471234", nullptr));
     BOOST_CHECK(!ParseInt32("32482348723847471234", nullptr));
-}
-
-BOOST_AUTO_TEST_CASE(test_ToIntegral)
-{
-    BOOST_CHECK_EQUAL(ToIntegral<int32_t>("1234").value(), 1'234);
-    BOOST_CHECK_EQUAL(ToIntegral<int32_t>("0").value(), 0);
-    BOOST_CHECK_EQUAL(ToIntegral<int32_t>("01234").value(), 1'234);
-    BOOST_CHECK_EQUAL(ToIntegral<int32_t>("00000000000000001234").value(), 1'234);
-    BOOST_CHECK_EQUAL(ToIntegral<int32_t>("-00000000000000001234").value(), -1'234);
-    BOOST_CHECK_EQUAL(ToIntegral<int32_t>("00000000000000000000").value(), 0);
-    BOOST_CHECK_EQUAL(ToIntegral<int32_t>("-00000000000000000000").value(), 0);
-    BOOST_CHECK_EQUAL(ToIntegral<int32_t>("-1234").value(), -1'234);
-    BOOST_CHECK_EQUAL(ToIntegral<int32_t>("-1").value(), -1);
-
-    BOOST_CHECK(!ToIntegral<int32_t>(" 1"));
-    BOOST_CHECK(!ToIntegral<int32_t>("1 "));
-    BOOST_CHECK(!ToIntegral<int32_t>("1a"));
-    BOOST_CHECK(!ToIntegral<int32_t>("1.1"));
-    BOOST_CHECK(!ToIntegral<int32_t>("1.9"));
-    BOOST_CHECK(!ToIntegral<int32_t>("+01.9"));
-    BOOST_CHECK(!ToIntegral<int32_t>(" -1"));
-    BOOST_CHECK(!ToIntegral<int32_t>("-1 "));
-    BOOST_CHECK(!ToIntegral<int32_t>(" -1 "));
-    BOOST_CHECK(!ToIntegral<int32_t>("+1"));
-    BOOST_CHECK(!ToIntegral<int32_t>(" +1"));
-    BOOST_CHECK(!ToIntegral<int32_t>(" +1 "));
-    BOOST_CHECK(!ToIntegral<int32_t>("+-1"));
-    BOOST_CHECK(!ToIntegral<int32_t>("-+1"));
-    BOOST_CHECK(!ToIntegral<int32_t>("++1"));
-    BOOST_CHECK(!ToIntegral<int32_t>("--1"));
-    BOOST_CHECK(!ToIntegral<int32_t>(""));
-    BOOST_CHECK(!ToIntegral<int32_t>("aap"));
-    BOOST_CHECK(!ToIntegral<int32_t>("0x1"));
-    BOOST_CHECK(!ToIntegral<int32_t>("-32482348723847471234"));
-    BOOST_CHECK(!ToIntegral<int32_t>("32482348723847471234"));
-
-    BOOST_CHECK(!ToIntegral<int64_t>("-9223372036854775809"));
-    BOOST_CHECK_EQUAL(ToIntegral<int64_t>("-9223372036854775808").value(), -9'223'372'036'854'775'807LL - 1LL);
-    BOOST_CHECK_EQUAL(ToIntegral<int64_t>("9223372036854775807").value(), 9'223'372'036'854'775'807);
-    BOOST_CHECK(!ToIntegral<int64_t>("9223372036854775808"));
-
-    BOOST_CHECK(!ToIntegral<uint64_t>("-1"));
-    BOOST_CHECK_EQUAL(ToIntegral<uint64_t>("0").value(), 0U);
-    BOOST_CHECK_EQUAL(ToIntegral<uint64_t>("18446744073709551615").value(), 18'446'744'073'709'551'615ULL);
-    BOOST_CHECK(!ToIntegral<uint64_t>("18446744073709551616"));
-
-    BOOST_CHECK(!ToIntegral<int32_t>("-2147483649"));
-    BOOST_CHECK_EQUAL(ToIntegral<int32_t>("-2147483648").value(), -2'147'483'648LL);
-    BOOST_CHECK_EQUAL(ToIntegral<int32_t>("2147483647").value(), 2'147'483'647);
-    BOOST_CHECK(!ToIntegral<int32_t>("2147483648"));
-
-    BOOST_CHECK(!ToIntegral<uint32_t>("-1"));
-    BOOST_CHECK_EQUAL(ToIntegral<uint32_t>("0").value(), 0U);
-    BOOST_CHECK_EQUAL(ToIntegral<uint32_t>("4294967295").value(), 4'294'967'295U);
-    BOOST_CHECK(!ToIntegral<uint32_t>("4294967296"));
-
-    BOOST_CHECK(!ToIntegral<int16_t>("-32769"));
-    BOOST_CHECK_EQUAL(ToIntegral<int16_t>("-32768").value(), -32'768);
-    BOOST_CHECK_EQUAL(ToIntegral<int16_t>("32767").value(), 32'767);
-    BOOST_CHECK(!ToIntegral<int16_t>("32768"));
-
-    BOOST_CHECK(!ToIntegral<uint16_t>("-1"));
-    BOOST_CHECK_EQUAL(ToIntegral<uint16_t>("0").value(), 0U);
-    BOOST_CHECK_EQUAL(ToIntegral<uint16_t>("65535").value(), 65'535U);
-    BOOST_CHECK(!ToIntegral<uint16_t>("65536"));
-
-    BOOST_CHECK(!ToIntegral<int8_t>("-129"));
-    BOOST_CHECK_EQUAL(ToIntegral<int8_t>("-128").value(), -128);
-    BOOST_CHECK_EQUAL(ToIntegral<int8_t>("127").value(), 127);
-    BOOST_CHECK(!ToIntegral<int8_t>("128"));
-
-    BOOST_CHECK(!ToIntegral<uint8_t>("-1"));
-    BOOST_CHECK_EQUAL(ToIntegral<uint8_t>("0").value(), 0U);
-    BOOST_CHECK_EQUAL(ToIntegral<uint8_t>("255").value(), 255U);
-    BOOST_CHECK(!ToIntegral<uint8_t>("256"));
-}
-
-BOOST_AUTO_TEST_CASE(test_LocaleIndependentAtoi)
-{
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<int32_t>("1234"), 1'234);
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<int32_t>("0"), 0);
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<int32_t>("01234"), 1'234);
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<int32_t>("-1234"), -1'234);
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<int32_t>(" 1"), 1);
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<int32_t>("1 "), 1);
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<int32_t>("1a"), 1);
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<int32_t>("1.1"), 1);
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<int32_t>("1.9"), 1);
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<int32_t>("+01.9"), 1);
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<int32_t>("-1"), -1);
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<int32_t>(" -1"), -1);
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<int32_t>("-1 "), -1);
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<int32_t>(" -1 "), -1);
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<int32_t>("+1"), 1);
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<int32_t>(" +1"), 1);
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<int32_t>(" +1 "), 1);
-
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<int32_t>("+-1"), 0);
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<int32_t>("-+1"), 0);
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<int32_t>("++1"), 0);
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<int32_t>("--1"), 0);
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<int32_t>(""), 0);
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<int32_t>("aap"), 0);
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<int32_t>("0x1"), 0);
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<int32_t>("-32482348723847471234"), 0);
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<int32_t>("32482348723847471234"), 0);
-
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<int64_t>("-9223372036854775809"), 0);
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<int64_t>("-9223372036854775808"), -9'223'372'036'854'775'807LL - 1LL);
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<int64_t>("9223372036854775807"), 9'223'372'036'854'775'807);
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<int64_t>("9223372036854775808"), 0);
-
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<uint64_t>("-1"), 0U);
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<uint64_t>("0"), 0U);
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<uint64_t>("18446744073709551615"), 18'446'744'073'709'551'615ULL);
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<uint64_t>("18446744073709551616"), 0U);
-
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<int32_t>("-2147483649"), 0);
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<int32_t>("-2147483648"), -2'147'483'648LL);
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<int32_t>("2147483647"), 2'147'483'647);
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<int32_t>("2147483648"), 0);
-
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<uint32_t>("-1"), 0U);
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<uint32_t>("0"), 0U);
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<uint32_t>("4294967295"), 4'294'967'295U);
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<uint32_t>("4294967296"), 0U);
-
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<int16_t>("-32769"), 0);
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<int16_t>("-32768"), -32'768);
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<int16_t>("32767"), 32'767);
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<int16_t>("32768"), 0);
-
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<uint16_t>("-1"), 0U);
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<uint16_t>("0"), 0U);
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<uint16_t>("65535"), 65'535U);
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<uint16_t>("65536"), 0U);
-
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<int8_t>("-129"), 0);
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<int8_t>("-128"), -128);
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<int8_t>("127"), 127);
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<int8_t>("128"), 0);
-
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<uint8_t>("-1"), 0U);
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<uint8_t>("0"), 0U);
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<uint8_t>("255"), 255U);
-    BOOST_CHECK_EQUAL(LocaleIndependentAtoi<uint8_t>("256"), 0U);
 }
 
 BOOST_AUTO_TEST_CASE(test_ParseInt64)
@@ -1475,48 +1285,14 @@ BOOST_AUTO_TEST_CASE(test_ParseInt64)
     BOOST_CHECK(!ParseInt64("1a", &n));
     BOOST_CHECK(!ParseInt64("aap", &n));
     BOOST_CHECK(!ParseInt64("0x1", &n)); // no hex
-    BOOST_CHECK(!ParseInt64(STRING_WITH_EMBEDDED_NULL_CHAR, &n));
+    const char test_bytes[] = {'1', 0, '1'};
+    std::string teststr(test_bytes, sizeof(test_bytes));
+    BOOST_CHECK(!ParseInt64(teststr, &n)); // no embedded NULs
     // Overflow and underflow
     BOOST_CHECK(!ParseInt64("-9223372036854775809", nullptr));
     BOOST_CHECK(!ParseInt64("9223372036854775808", nullptr));
     BOOST_CHECK(!ParseInt64("-32482348723847471234", nullptr));
     BOOST_CHECK(!ParseInt64("32482348723847471234", nullptr));
-}
-
-BOOST_AUTO_TEST_CASE(test_ParseUInt8)
-{
-    uint8_t n;
-    // Valid values
-    BOOST_CHECK(ParseUInt8("255", nullptr));
-    BOOST_CHECK(ParseUInt8("0", &n) && n == 0);
-    BOOST_CHECK(ParseUInt8("255", &n) && n == 255);
-    BOOST_CHECK(ParseUInt8("0255", &n) && n == 255); // no octal
-    BOOST_CHECK(ParseUInt8("255", &n) && n == static_cast<uint8_t>(255));
-    BOOST_CHECK(ParseUInt8("+255", &n) && n == 255);
-    BOOST_CHECK(ParseUInt8("00000000000000000012", &n) && n == 12);
-    BOOST_CHECK(ParseUInt8("00000000000000000000", &n) && n == 0);
-    // Invalid values
-    BOOST_CHECK(!ParseUInt8("-00000000000000000000", &n));
-    BOOST_CHECK(!ParseUInt8("", &n));
-    BOOST_CHECK(!ParseUInt8(" 1", &n)); // no padding inside
-    BOOST_CHECK(!ParseUInt8(" -1", &n));
-    BOOST_CHECK(!ParseUInt8("++1", &n));
-    BOOST_CHECK(!ParseUInt8("+-1", &n));
-    BOOST_CHECK(!ParseUInt8("-+1", &n));
-    BOOST_CHECK(!ParseUInt8("--1", &n));
-    BOOST_CHECK(!ParseUInt8("-1", &n));
-    BOOST_CHECK(!ParseUInt8("1 ", &n));
-    BOOST_CHECK(!ParseUInt8("1a", &n));
-    BOOST_CHECK(!ParseUInt8("aap", &n));
-    BOOST_CHECK(!ParseUInt8("0x1", &n)); // no hex
-    BOOST_CHECK(!ParseUInt8("0x1", &n)); // no hex
-    BOOST_CHECK(!ParseUInt8(STRING_WITH_EMBEDDED_NULL_CHAR, &n));
-    // Overflow and underflow
-    BOOST_CHECK(!ParseUInt8("-255", &n));
-    BOOST_CHECK(!ParseUInt8("256", &n));
-    BOOST_CHECK(!ParseUInt8("-123", &n));
-    BOOST_CHECK(!ParseUInt8("-123", nullptr));
-    BOOST_CHECK(!ParseUInt8("256", nullptr));
 }
 
 BOOST_AUTO_TEST_CASE(test_ParseUInt32)
@@ -1548,7 +1324,9 @@ BOOST_AUTO_TEST_CASE(test_ParseUInt32)
     BOOST_CHECK(!ParseUInt32("aap", &n));
     BOOST_CHECK(!ParseUInt32("0x1", &n)); // no hex
     BOOST_CHECK(!ParseUInt32("0x1", &n)); // no hex
-    BOOST_CHECK(!ParseUInt32(STRING_WITH_EMBEDDED_NULL_CHAR, &n));
+    const char test_bytes[] = {'1', 0, '1'};
+    std::string teststr(test_bytes, sizeof(test_bytes));
+    BOOST_CHECK(!ParseUInt32(teststr, &n)); // no embedded NULs
     // Overflow and underflow
     BOOST_CHECK(!ParseUInt32("-2147483648", &n));
     BOOST_CHECK(!ParseUInt32("4294967296", &n));
@@ -1577,7 +1355,9 @@ BOOST_AUTO_TEST_CASE(test_ParseUInt64)
     BOOST_CHECK(!ParseUInt64("1a", &n));
     BOOST_CHECK(!ParseUInt64("aap", &n));
     BOOST_CHECK(!ParseUInt64("0x1", &n)); // no hex
-    BOOST_CHECK(!ParseUInt64(STRING_WITH_EMBEDDED_NULL_CHAR, &n));
+    const char test_bytes[] = {'1', 0, '1'};
+    std::string teststr(test_bytes, sizeof(test_bytes));
+    BOOST_CHECK(!ParseUInt64(teststr, &n)); // no embedded NULs
     // Overflow and underflow
     BOOST_CHECK(!ParseUInt64("-9223372036854775809", nullptr));
     BOOST_CHECK(!ParseUInt64("18446744073709551616", nullptr));
@@ -1607,7 +1387,9 @@ BOOST_AUTO_TEST_CASE(test_ParseDouble)
     BOOST_CHECK(!ParseDouble("1a", &n));
     BOOST_CHECK(!ParseDouble("aap", &n));
     BOOST_CHECK(!ParseDouble("0x1", &n)); // no hex
-    BOOST_CHECK(!ParseDouble(STRING_WITH_EMBEDDED_NULL_CHAR, &n));
+    const char test_bytes[] = {'1', 0, '1'};
+    std::string teststr(test_bytes, sizeof(test_bytes));
+    BOOST_CHECK(!ParseDouble(teststr, &n)); // no embedded NULs
     // Overflow and underflow
     BOOST_CHECK(!ParseDouble("-1e10000", nullptr));
     BOOST_CHECK(!ParseDouble("1e10000", nullptr));
@@ -1993,7 +1775,7 @@ BOOST_AUTO_TEST_CASE(test_Capitalize)
     BOOST_CHECK_EQUAL(Capitalize("\x00\xfe\xff"), "\x00\xfe\xff");
 }
 
-static std::string SpanToStr(const Span<const char>& span)
+static std::string SpanToStr(Span<const char>& span)
 {
     return std::string(span.begin(), span.end());
 }
@@ -2116,68 +1898,6 @@ BOOST_AUTO_TEST_CASE(test_spanparsing)
     BOOST_CHECK_EQUAL(SpanToStr(results[3]), "");
 }
 
-BOOST_AUTO_TEST_CASE(test_SplitString)
-{
-    // Empty string.
-    {
-        std::vector<std::string> result = SplitString("", '-');
-        BOOST_CHECK_EQUAL(result.size(), 1);
-        BOOST_CHECK_EQUAL(result[0], "");
-    }
-
-    // Empty items.
-    {
-        std::vector<std::string> result = SplitString("-", '-');
-        BOOST_CHECK_EQUAL(result.size(), 2);
-        BOOST_CHECK_EQUAL(result[0], "");
-        BOOST_CHECK_EQUAL(result[1], "");
-    }
-
-    // More empty items.
-    {
-        std::vector<std::string> result = SplitString("--", '-');
-        BOOST_CHECK_EQUAL(result.size(), 3);
-        BOOST_CHECK_EQUAL(result[0], "");
-        BOOST_CHECK_EQUAL(result[1], "");
-        BOOST_CHECK_EQUAL(result[2], "");
-    }
-
-    // Separator is not present.
-    {
-        std::vector<std::string> result = SplitString("abc", '-');
-        BOOST_CHECK_EQUAL(result.size(), 1);
-        BOOST_CHECK_EQUAL(result[0], "abc");
-    }
-
-    // Basic behavior.
-    {
-        std::vector<std::string> result = SplitString("a-b", '-');
-        BOOST_CHECK_EQUAL(result.size(), 2);
-        BOOST_CHECK_EQUAL(result[0], "a");
-        BOOST_CHECK_EQUAL(result[1], "b");
-    }
-
-    // Case-sensitivity of the separator.
-    {
-        std::vector<std::string> result = SplitString("AAA", 'a');
-        BOOST_CHECK_EQUAL(result.size(), 1);
-        BOOST_CHECK_EQUAL(result[0], "AAA");
-    }
-
-    // multiple split characters
-    {
-        using V = std::vector<std::string>;
-        BOOST_TEST(SplitString("a,b.c:d;e", ",;") == V({"a", "b.c:d", "e"}));
-        BOOST_TEST(SplitString("a,b.c:d;e", ",;:.") == V({"a", "b", "c", "d", "e"}));
-        BOOST_TEST(SplitString("a,b.c:d;e", "") == V({"a,b.c:d;e"}));
-        BOOST_TEST(SplitString("aaa", "bcdefg") == V({"aaa"}));
-        BOOST_TEST(SplitString("x\0a,b"s, "\0"s) == V({"x", "a,b"}));
-        BOOST_TEST(SplitString("x\0a,b"s, '\0') == V({"x", "a,b"}));
-        BOOST_TEST(SplitString("x\0a,b"s, "\0,"s) == V({"x", "a", "b"}));
-        BOOST_TEST(SplitString("abcdefg", "bcd") == V({"a", "", "", "efg"}));
-    }
-}
-
 BOOST_AUTO_TEST_CASE(test_LogEscapeMessage)
 {
     // ASCII and UTF-8 must pass through unaltered.
@@ -2189,111 +1909,6 @@ BOOST_AUTO_TEST_CASE(test_LogEscapeMessage)
     // Embedded NULL characters are escaped too.
     const std::string NUL("O\x00O", 3);
     BOOST_CHECK_EQUAL(BCLog::LogEscapeMessage(NUL), R"(O\x00O)");
-}
-
-BOOST_AUTO_TEST_CASE(message_sign)
-{
-    const std::array<unsigned char, 32> privkey_bytes = {
-        // just some random data
-        // derived address from this private key: XetGnWHsPXV9VSkWzB6Wn2KhZLD24gqa5j
-        0xD9, 0x7F, 0x51, 0x08, 0xF1, 0x1C, 0xDA, 0x6E,
-        0xEE, 0xBA, 0xAA, 0x42, 0x0F, 0xEF, 0x07, 0x26,
-        0xB1, 0xF8, 0x98, 0x06, 0x0B, 0x98, 0x48, 0x9F,
-        0xA3, 0x09, 0x84, 0x63, 0xC0, 0x03, 0x28, 0x66
-    };
-
-    const std::string message = "Trust no one";
-
-    const std::string expected_signature =
-        "IIOzMDkvw3GtLWXkeEYRRRH53MOLHM44sJ428Nu4NNacTPJTGcKesMJ+3s3OadYK34tpSQIhu922EviNNWTsiQg=";
-
-    CKey privkey;
-    std::string generated_signature;
-
-    BOOST_REQUIRE_MESSAGE(!privkey.IsValid(),
-        "Confirm the private key is invalid");
-
-    BOOST_CHECK_MESSAGE(!MessageSign(privkey, message, generated_signature),
-        "Sign with an invalid private key");
-
-    privkey.Set(privkey_bytes.begin(), privkey_bytes.end(), true);
-
-    BOOST_REQUIRE_MESSAGE(privkey.IsValid(),
-        "Confirm the private key is valid");
-
-    BOOST_CHECK_MESSAGE(MessageSign(privkey, message, generated_signature),
-        "Sign with a valid private key");
-
-    BOOST_CHECK_EQUAL(expected_signature, generated_signature);
-}
-
-BOOST_AUTO_TEST_CASE(message_verify)
-{
-    BOOST_CHECK_EQUAL(
-        MessageVerify(
-            "invalid address",
-            "signature should be irrelevant",
-            "message too"),
-        MessageVerificationResult::ERR_INVALID_ADDRESS);
-
-    BOOST_CHECK_EQUAL(
-        MessageVerify(
-            "7iRPy8FEHBzbChrktsG85YbDZ3SuiCxsNq",
-            "signature should be irrelevant",
-            "message too"),
-        MessageVerificationResult::ERR_ADDRESS_NO_KEY);
-
-    BOOST_CHECK_EQUAL(
-        MessageVerify(
-            "XuXS24zs2xP1vPynvNt14kWLa64csH8Mur",
-            "invalid signature, not in base64 encoding",
-            "message should be irrelevant"),
-        MessageVerificationResult::ERR_MALFORMED_SIGNATURE);
-
-    BOOST_CHECK_EQUAL(
-        MessageVerify(
-            "XuXS24zs2xP1vPynvNt14kWLa64csH8Mur",
-            "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
-            "message should be irrelevant"),
-        MessageVerificationResult::ERR_PUBKEY_NOT_RECOVERED);
-
-    BOOST_CHECK_EQUAL(
-        MessageVerify(
-            "XetGnWHsPXV9VSkWzB6Wn2KhZLD24gqa5j",
-            "IPojfrX2dfPnH26UegfbGQQLrdK844DlHq5157/P6h57WyuS/Qsl+h/WSVGDF4MUi4rWSswW38oimDYfNNUBUOk=",
-            "I never signed this"),
-        MessageVerificationResult::ERR_NOT_SIGNED);
-
-    BOOST_CHECK_EQUAL(
-        MessageVerify(
-            "XetGnWHsPXV9VSkWzB6Wn2KhZLD24gqa5j",
-            "IIOzMDkvw3GtLWXkeEYRRRH53MOLHM44sJ428Nu4NNacTPJTGcKesMJ+3s3OadYK34tpSQIhu922EviNNWTsiQg=",
-            "Trust no one"),
-        MessageVerificationResult::OK);
-
-    BOOST_CHECK_EQUAL(
-        MessageVerify(
-            "XenV77v8QQ3rwjyCb3j2fCwfvgbkC4Vwaj",
-            "IOACalWiJTLJ2U7wTKICx5mQ2tOAJ3to8dko8FMb2XSYbmvL+yMWedyfSfaK6V8jwoociyYx628nkXXnrOhPFIY=",
-            "Trust me"),
-        MessageVerificationResult::OK);
-}
-
-BOOST_AUTO_TEST_CASE(message_hash)
-{
-    const std::string unsigned_tx = "...";
-    const std::string prefixed_message =
-        std::string(1, (char)MESSAGE_MAGIC.length()) +
-        MESSAGE_MAGIC +
-        std::string(1, (char)unsigned_tx.length()) +
-        unsigned_tx;
-
-    const uint256 signature_hash = Hash(unsigned_tx.begin(), unsigned_tx.end());
-    const uint256 message_hash1 = Hash(prefixed_message.begin(), prefixed_message.end());
-    const uint256 message_hash2 = MessageHash(unsigned_tx);
-
-    BOOST_CHECK_EQUAL(message_hash1, message_hash2);
-    BOOST_CHECK_NE(message_hash1, signature_hash);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -15,7 +15,7 @@
 #include <string>
 #include <vector>
 
-FUZZ_TARGET(base_encode_decode)
+void test_one_input(const std::vector<uint8_t>& buffer)
 {
     const std::string random_encoded_string(buffer.begin(), buffer.end());
 

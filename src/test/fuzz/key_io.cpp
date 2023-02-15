@@ -13,12 +13,12 @@
 #include <string>
 #include <vector>
 
-void initialize_key_io()
+void initialize()
 {
     SelectParams(CBaseChainParams::REGTEST);
 }
 
-FUZZ_TARGET_INIT(key_io, initialize_key_io)
+void test_one_input(const std::vector<uint8_t>& buffer)
 {
     const std::string random_string(buffer.begin(), buffer.end());
 

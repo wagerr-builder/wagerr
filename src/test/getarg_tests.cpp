@@ -10,6 +10,7 @@
 #include <utility>
 #include <vector>
 
+#include <boost/algorithm/string.hpp>
 #include <boost/test/unit_test.hpp>
 
 namespace getarg_tests{
@@ -26,9 +27,8 @@ BOOST_FIXTURE_TEST_SUITE(getarg_tests, LocalTestingSetup)
 void LocalTestingSetup :: ResetArgs(const std::string& strArg)
 {
     std::vector<std::string> vecArg;
-    if (strArg.size()) {
-        vecArg = SplitString(strArg, ' ');
-    }
+    if (strArg.size())
+      boost::split(vecArg, strArg, IsSpace, boost::token_compress_on);
 
     // Insert dummy executable name:
     vecArg.insert(vecArg.begin(), "testdash");

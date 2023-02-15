@@ -12,13 +12,14 @@
 #include <node/context.h>
 #include <pubkey.h>
 #include <random.h>
+#include <scheduler.h>
 #include <txdb.h>
 #include <txmempool.h>
 #include <util/check.h>
-#include <util/string.h>
 
 #include <type_traits>
-#include <vector>
+
+#include <boost/thread.hpp>
 
 /** This is connected to the logger. Can be used to redirect logs to any other log */
 extern const std::function<void(const std::string&)> G_TEST_LOG_FUN;
@@ -83,20 +84,14 @@ private:
     const fs::path m_path_root;
 };
 
-/** Testing setup that performs all steps up until right before
- * ChainstateManager gets initialized. Meant for testing ChainstateManager
- * initialization behaviour.
- */
-struct ChainTestingSetup : public BasicTestingSetup {
-
-    explicit ChainTestingSetup(const std::string& chainName = CBaseChainParams::MAIN, const std::vector<const char*>& extra_args = {});
-    ~ChainTestingSetup();
-};
-
 /** Testing setup that configures a complete environment.
+ * Included are coins database, script check threads setup.
  */
-struct TestingSetup : public ChainTestingSetup {
+struct TestingSetup : public BasicTestingSetup {
+    boost::thread_group threadGroup;
+
     explicit TestingSetup(const std::string& chainName = CBaseChainParams::MAIN, const std::vector<const char*>& extra_args = {});
+    ~TestingSetup();
 };
 
 /** Identical to TestingSetup, but chain set to regtest */
@@ -140,11 +135,6 @@ struct TestChain100Setup : public TestChainSetup {
 struct TestChainDIP3Setup : public TestChainSetup
 {
     TestChainDIP3Setup() : TestChainSetup(431) {}
-};
-
-struct TestChainDIP3V19Setup : public TestChainSetup
-{
-    TestChainDIP3V19Setup() : TestChainSetup(1000) {}
 };
 
 struct TestChainDIP3BeforeActivationSetup : public TestChainSetup

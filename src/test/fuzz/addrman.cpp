@@ -17,12 +17,12 @@
 #include <string>
 #include <vector>
 
-void initialize_addrman()
+void initialize()
 {
     SelectParams(CBaseChainParams::REGTEST);
 }
 
-FUZZ_TARGET_INIT(addrman, initialize_addrman)
+void test_one_input(const std::vector<uint8_t>& buffer)
 {
     FuzzedDataProvider fuzzed_data_provider(buffer.data(), buffer.size());
 

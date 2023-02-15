@@ -7,14 +7,20 @@
 #include <arith_uint256.h>
 #include <banman.h>
 #include <chainparams.h>
-#include <llmq/context.h>
+#include <llmq/blockprocessor.h>
+#include <llmq/chainlocks.h>
+#include <llmq/dkgsessionmgr.h>
+#include <llmq/instantsend.h>
+#include <llmq/quorums.h>
+#include <llmq/signing_shares.h>
+#include <llmq/signing.h>
 #include <net.h>
 #include <net_processing.h>
 #include <pubkey.h>
 #include <script/sign.h>
 #include <script/signingprovider.h>
 #include <script/standard.h>
-#include <util/string.h>
+#include <util/memory.h>
 #include <util/system.h>
 #include <util/time.h>
 #include <validation.h>
@@ -80,9 +86,11 @@ BOOST_FIXTURE_TEST_SUITE(denialofservice_tests, TestingSetup)
 // work.
 BOOST_AUTO_TEST_CASE(outbound_slow_chain_eviction)
 {
-    auto connman = std::make_unique<CConnman>(0x1337, 0x1337);
-    auto peerLogic = std::make_unique<PeerLogicValidation>(
-        *connman, nullptr, *m_node.scheduler, *m_node.chainman, *m_node.mempool, m_node.llmq_ctx
+    auto connman = MakeUnique<CConnman>(0x1337, 0x1337);
+    auto peerLogic = MakeUnique<PeerLogicValidation>(
+        connman.get(), nullptr, *m_node.scheduler, *m_node.chainman, *m_node.mempool, llmq::quorumBlockProcessor,
+        llmq::quorumDKGSessionManager, llmq::quorumManager, llmq::quorumSigSharesManager, llmq::quorumSigningManager,
+        llmq::chainLocksHandler, llmq::quorumInstantSendManager, false
     );
 
     // Mock an outbound peer
@@ -153,9 +161,11 @@ static void AddRandomOutboundPeer(std::vector<CNode *> &vNodes, PeerLogicValidat
 
 BOOST_AUTO_TEST_CASE(stale_tip_peer_management)
 {
-    auto connman = std::make_unique<CConnmanTest>(0x1337, 0x1337);
-    auto peerLogic = std::make_unique<PeerLogicValidation>(
-        *connman, nullptr, *m_node.scheduler, *m_node.chainman, *m_node.mempool, m_node.llmq_ctx
+    auto connman = MakeUnique<CConnmanTest>(0x1337, 0x1337);
+    auto peerLogic = MakeUnique<PeerLogicValidation>(
+        connman.get(), nullptr, *m_node.scheduler, *m_node.chainman, *m_node.mempool, llmq::quorumBlockProcessor,
+        llmq::quorumDKGSessionManager, llmq::quorumManager, llmq::quorumSigSharesManager, llmq::quorumSigningManager,
+        llmq::chainLocksHandler, llmq::quorumInstantSendManager, false
     );
 
     const Consensus::Params& consensusParams = Params().GetConsensus();
@@ -227,10 +237,12 @@ BOOST_AUTO_TEST_CASE(stale_tip_peer_management)
 
 BOOST_AUTO_TEST_CASE(DoS_banning)
 {
-    auto banman = std::make_unique<BanMan>(GetDataDir() / "banlist.dat", nullptr, DEFAULT_MISBEHAVING_BANTIME);
-    auto connman = std::make_unique<CConnman>(0x1337, 0x1337);
-    auto peerLogic = std::make_unique<PeerLogicValidation>(
-        *connman, banman.get(), *m_node.scheduler, *m_node.chainman, *m_node.mempool, m_node.llmq_ctx
+    auto banman = MakeUnique<BanMan>(GetDataDir() / "banlist.dat", nullptr, DEFAULT_MISBEHAVING_BANTIME);
+    auto connman = MakeUnique<CConnman>(0x1337, 0x1337);
+    auto peerLogic = MakeUnique<PeerLogicValidation>(
+        connman.get(), banman.get(), *m_node.scheduler, *m_node.chainman, *m_node.mempool, llmq::quorumBlockProcessor,
+        llmq::quorumDKGSessionManager, llmq::quorumManager, llmq::quorumSigSharesManager, llmq::quorumSigningManager,
+        llmq::chainLocksHandler, llmq::quorumInstantSendManager, false
     );
 
     banman->ClearBanned();
@@ -284,10 +296,12 @@ BOOST_AUTO_TEST_CASE(DoS_banning)
 
 BOOST_AUTO_TEST_CASE(DoS_banscore)
 {
-    auto banman = std::make_unique<BanMan>(GetDataDir() / "banlist.dat", nullptr, DEFAULT_MISBEHAVING_BANTIME);
-    auto connman = std::make_unique<CConnman>(0x1337, 0x1337);
-    auto peerLogic = std::make_unique<PeerLogicValidation>(
-        *connman, banman.get(), *m_node.scheduler, *m_node.chainman, *m_node.mempool, m_node.llmq_ctx
+    auto banman = MakeUnique<BanMan>(GetDataDir() / "banlist.dat", nullptr, DEFAULT_MISBEHAVING_BANTIME);
+    auto connman = MakeUnique<CConnman>(0x1337, 0x1337);
+    auto peerLogic = MakeUnique<PeerLogicValidation>(
+        connman.get(), banman.get(), *m_node.scheduler, *m_node.chainman, *m_node.mempool, llmq::quorumBlockProcessor,
+        llmq::quorumDKGSessionManager, llmq::quorumManager, llmq::quorumSigSharesManager, llmq::quorumSigningManager,
+        llmq::chainLocksHandler, llmq::quorumInstantSendManager, false
     );
 
     banman->ClearBanned();
@@ -303,7 +317,7 @@ BOOST_AUTO_TEST_CASE(DoS_banscore)
         Misbehaving(dummyNode1.GetId(), 100);
     }
     {
-        LOCK(dummyNode1.cs_sendProcessing);
+        LOCK2(cs_main, dummyNode1.cs_sendProcessing);
         BOOST_CHECK(peerLogic->SendMessages(&dummyNode1));
     }
     BOOST_CHECK(!banman->IsDiscouraged(addr1));
@@ -312,7 +326,7 @@ BOOST_AUTO_TEST_CASE(DoS_banscore)
         Misbehaving(dummyNode1.GetId(), 10);
     }
     {
-        LOCK(dummyNode1.cs_sendProcessing);
+        LOCK2(cs_main, dummyNode1.cs_sendProcessing);
         BOOST_CHECK(peerLogic->SendMessages(&dummyNode1));
     }
     BOOST_CHECK(!banman->IsDiscouraged(addr1));
@@ -321,11 +335,11 @@ BOOST_AUTO_TEST_CASE(DoS_banscore)
         Misbehaving(dummyNode1.GetId(), 1);
     }
     {
-        LOCK(dummyNode1.cs_sendProcessing);
+        LOCK2(cs_main, dummyNode1.cs_sendProcessing);
         BOOST_CHECK(peerLogic->SendMessages(&dummyNode1));
     }
     BOOST_CHECK(banman->IsDiscouraged(addr1));
-    gArgs.ForceSetArg("-banscore", ToString(DEFAULT_BANSCORE_THRESHOLD));
+    gArgs.ForceSetArg("-banscore", std::to_string(DEFAULT_BANSCORE_THRESHOLD));
 
     bool dummy;
     peerLogic->FinalizeNode(dummyNode1.GetId(), dummy);
@@ -333,10 +347,12 @@ BOOST_AUTO_TEST_CASE(DoS_banscore)
 
 BOOST_AUTO_TEST_CASE(DoS_bantime)
 {
-    auto banman = std::make_unique<BanMan>(GetDataDir() / "banlist.dat", nullptr, DEFAULT_MISBEHAVING_BANTIME);
-    auto connman = std::make_unique<CConnman>(0x1337, 0x1337);
-    auto peerLogic = std::make_unique<PeerLogicValidation>(
-        *connman, banman.get(), *m_node.scheduler, *m_node.chainman, *m_node.mempool, m_node.llmq_ctx
+    auto banman = MakeUnique<BanMan>(GetDataDir() / "banlist.dat", nullptr, DEFAULT_MISBEHAVING_BANTIME);
+    auto connman = MakeUnique<CConnman>(0x1337, 0x1337);
+    auto peerLogic = MakeUnique<PeerLogicValidation>(
+        connman.get(), banman.get(), *m_node.scheduler, *m_node.chainman, *m_node.mempool, llmq::quorumBlockProcessor,
+        llmq::quorumDKGSessionManager, llmq::quorumManager, llmq::quorumSigSharesManager, llmq::quorumSigningManager,
+        llmq::chainLocksHandler, llmq::quorumInstantSendManager, false
     );
 
     banman->ClearBanned();
@@ -407,7 +423,7 @@ BOOST_AUTO_TEST_CASE(DoS_mapOrphans)
         tx.vin[0].scriptSig << OP_1;
         tx.vout.resize(1);
         tx.vout[0].nValue = 1*CENT;
-        tx.vout[0].scriptPubKey = GetScriptForDestination(PKHash(key.GetPubKey()));
+        tx.vout[0].scriptPubKey = GetScriptForDestination(key.GetPubKey().GetID());
 
         AddOrphanTx(MakeTransactionRef(tx), i);
     }
@@ -423,7 +439,7 @@ BOOST_AUTO_TEST_CASE(DoS_mapOrphans)
         tx.vin[0].prevout.hash = txPrev->GetHash();
         tx.vout.resize(1);
         tx.vout[0].nValue = 1*CENT;
-        tx.vout[0].scriptPubKey = GetScriptForDestination(PKHash(key.GetPubKey()));
+        tx.vout[0].scriptPubKey = GetScriptForDestination(key.GetPubKey().GetID());
         BOOST_CHECK(SignSignature(keystore, *txPrev, tx, 0, SIGHASH_ALL));
 
         AddOrphanTx(MakeTransactionRef(tx), i);
@@ -437,7 +453,7 @@ BOOST_AUTO_TEST_CASE(DoS_mapOrphans)
         CMutableTransaction tx;
         tx.vout.resize(1);
         tx.vout[0].nValue = 1*CENT;
-        tx.vout[0].scriptPubKey = GetScriptForDestination(PKHash(key.GetPubKey()));
+        tx.vout[0].scriptPubKey = GetScriptForDestination(key.GetPubKey().GetID());
         tx.vin.resize(2777);
         for (unsigned int j = 0; j < tx.vin.size(); j++)
         {

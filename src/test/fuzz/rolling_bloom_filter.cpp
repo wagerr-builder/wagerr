@@ -3,6 +3,7 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include <bloom.h>
+#include <optional.h>
 #include <test/fuzz/FuzzedDataProvider.h>
 #include <test/fuzz/fuzz.h>
 #include <test/fuzz/util.h>
@@ -10,11 +11,10 @@
 
 #include <cassert>
 #include <cstdint>
-#include <optional>
 #include <string>
 #include <vector>
 
-FUZZ_TARGET(rolling_bloom_filter)
+void test_one_input(const std::vector<uint8_t>& buffer)
 {
     FuzzedDataProvider fuzzed_data_provider(buffer.data(), buffer.size());
 
@@ -32,7 +32,7 @@ FUZZ_TARGET(rolling_bloom_filter)
             break;
         }
         case 1: {
-            const std::optional<uint256> u256 = ConsumeDeserializable<uint256>(fuzzed_data_provider);
+            const Optional<uint256> u256 = ConsumeDeserializable<uint256>(fuzzed_data_provider);
             if (!u256) {
                 break;
             }

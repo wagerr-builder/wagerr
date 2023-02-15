@@ -100,22 +100,18 @@ static ScriptErrorDesc script_errors[]={
 
 static const char *FormatScriptError(ScriptError_t err)
 {
-    for (const auto& script_error : script_errors) {
-        if (script_error.err == err) {
-            return script_error.name;
-        }
-    }
+    for (unsigned int i=0; i<ARRAYLEN(script_errors); ++i)
+        if (script_errors[i].err == err)
+            return script_errors[i].name;
     BOOST_ERROR("Unknown scripterror enumeration value, update script_errors in script_tests.cpp.");
     return "";
 }
 
 static ScriptError_t ParseScriptError(const std::string& name)
 {
-    for (const auto& script_error : script_errors) {
-        if (script_error.name == name) {
-            return script_error.err;
-        }
-    }
+    for (unsigned int i=0; i<ARRAYLEN(script_errors); ++i)
+        if (script_errors[i].name == name)
+            return script_errors[i].err;
     BOOST_ERROR("Unknown scripterror \"" << name << "\" in test description");
     return SCRIPT_ERR_UNKNOWN_ERROR;
 }
@@ -1128,7 +1124,7 @@ BOOST_AUTO_TEST_CASE(script_combineSigs)
         BOOST_CHECK(keystore.AddKey(key));
     }
 
-    CMutableTransaction txFrom = BuildCreditingTransaction(GetScriptForDestination(PKHash(keys[0].GetPubKey())));
+    CMutableTransaction txFrom = BuildCreditingTransaction(GetScriptForDestination(keys[0].GetPubKey().GetID()));
     CMutableTransaction txTo = BuildSpendingTransaction(CScript(), CTransaction(txFrom));
     CScript& scriptPubKey = txFrom.vout[0].scriptPubKey;
     SignatureData scriptSig;
@@ -1154,7 +1150,7 @@ BOOST_AUTO_TEST_CASE(script_combineSigs)
     // P2SH, single-signature case:
     CScript pkSingle; pkSingle << ToByteVector(keys[0].GetPubKey()) << OP_CHECKSIG;
     BOOST_CHECK(keystore.AddCScript(pkSingle));
-    scriptPubKey = GetScriptForDestination(ScriptHash(pkSingle));
+    scriptPubKey = GetScriptForDestination(CScriptID(pkSingle));
     BOOST_CHECK(SignSignature(keystore, CTransaction(txFrom), txTo, 0, SIGHASH_ALL));
     scriptSig = DataFromTransaction(txTo, 0, txFrom.vout[0]);
     combined = CombineSignatures(txFrom.vout[0], txTo, scriptSig, empty);

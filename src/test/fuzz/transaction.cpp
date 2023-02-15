@@ -20,12 +20,12 @@
 
 #include <cassert>
 
-void initialize_transaction()
+void initialize()
 {
     SelectParams(CBaseChainParams::REGTEST);
 }
 
-FUZZ_TARGET_INIT(transaction, initialize_transaction)
+void test_one_input(const std::vector<uint8_t>& buffer)
 {
     CDataStream ds(buffer, SER_NETWORK, INIT_PROTO_VERSION);
     try {

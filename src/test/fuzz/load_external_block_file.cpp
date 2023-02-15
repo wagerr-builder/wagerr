@@ -13,12 +13,12 @@
 #include <cstdint>
 #include <vector>
 
-void initialize_load_external_block_file()
+void initialize()
 {
     InitializeFuzzingContext();
 }
 
-FUZZ_TARGET_INIT(load_external_block_file, initialize_load_external_block_file)
+void test_one_input(const std::vector<uint8_t>& buffer)
 {
     FuzzedDataProvider fuzzed_data_provider{buffer.data(), buffer.size()};
     FuzzedFileProvider fuzzed_file_provider = ConsumeFile(fuzzed_data_provider);

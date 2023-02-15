@@ -5,6 +5,7 @@
 #include <pubkey.h>
 #include <script/interpreter.h>
 #include <streams.h>
+#include <util/memory.h>
 #include <version.h>
 
 #include <test/fuzz/fuzz.h>
@@ -12,12 +13,12 @@
 /** Flags that are not forbidden by an assert */
 static bool IsValidFlagCombination(unsigned flags);
 
-void initialize_script_flags()
+void initialize()
 {
     static const ECCVerifyHandle verify_handle;
 }
 
-FUZZ_TARGET_INIT(script_flags, initialize_script_flags)
+void test_one_input(const std::vector<uint8_t>& buffer)
 {
     CDataStream ds(buffer, SER_NETWORK, INIT_PROTO_VERSION);
     try {

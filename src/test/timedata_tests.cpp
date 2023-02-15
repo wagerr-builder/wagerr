@@ -5,7 +5,6 @@
 
 #include <netaddress.h>
 #include <noui.h>
-#include <util/string.h>
 #include <test/util/logging.h>
 #include <test/util/setup_common.h>
 #include <timedata.h>
@@ -47,7 +46,7 @@ static void MultiAddTimeData(int n, int64_t offset)
     static int cnt = 0;
     for (int i = 0; i < n; ++i) {
         CNetAddr addr;
-        addr.SetInternal(ToString(++cnt));
+        addr.SetInternal(std::to_string(++cnt));
         AddTimeData(addr, offset);
     }
 }

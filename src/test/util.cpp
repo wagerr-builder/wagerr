@@ -10,9 +10,7 @@
 #include <key_io.h>
 #include <llmq/blockprocessor.h>
 #include <llmq/chainlocks.h>
-#include <llmq/context.h>
 #include <llmq/instantsend.h>
-#include <evo/evodb.h>
 #include <miner.h>
 #include <node/context.h>
 #include <pow.h>
@@ -81,7 +79,7 @@ std::shared_ptr<CBlock> PrepareBlock(const NodeContext& node, const CScript& coi
 {
     assert(node.mempool);
     auto block = std::make_shared<CBlock>(
-        BlockAssembler{*sporkManager, *governance, *node.llmq_ctx->quorum_block_processor, *node.llmq_ctx->clhandler, *node.llmq_ctx->isman, *node.evodb, *node.mempool, Params()}
+        BlockAssembler{*sporkManager, *governance, *llmq::quorumBlockProcessor, *llmq::chainLocksHandler, *llmq::quorumInstantSendManager, *node.mempool, Params()}
             .CreateNewBlock(coinbase_scriptPubKey)
             ->block);
 

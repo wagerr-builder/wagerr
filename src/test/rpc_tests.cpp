@@ -2,19 +2,23 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include <context.h>
+#include <rpc/server.h>
+#include <rpc/client.h>
+#include <rpc/util.h>
+
 #include <core_io.h>
 #include <interfaces/chain.h>
 #include <node/context.h>
-#include <rpc/blockchain.h>
-#include <rpc/client.h>
-#include <rpc/server.h>
-#include <rpc/util.h>
 #include <test/util/setup_common.h>
-#include <univalue.h>
+#include <util/ref.h>
 #include <util/time.h>
 
+#include <boost/algorithm/string.hpp>
 #include <boost/test/unit_test.hpp>
+
+#include <univalue.h>
+
+#include <rpc/blockchain.h>
 
 class RPCTestingSetup : public TestingSetup
 {
@@ -24,10 +28,11 @@ public:
 
 UniValue RPCTestingSetup::CallRPC(std::string args)
 {
-    std::vector<std::string> vArgs{SplitString(args, ' ')};
+    std::vector<std::string> vArgs;
+    boost::split(vArgs, args, boost::is_any_of(" \t"));
     std::string strMethod = vArgs[0];
     vArgs.erase(vArgs.begin());
-    CoreContext context{m_node};
+    util::Ref context{m_node};
     JSONRPCRequest request(context);
     request.strMethod = strMethod;
     request.params = RPCConvertValues(strMethod, vArgs);

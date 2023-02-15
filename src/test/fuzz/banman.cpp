@@ -24,12 +24,12 @@ int64_t ConsumeBanTimeOffset(FuzzedDataProvider& fuzzed_data_provider) noexcept
 }
 } // namespace
 
-void initialize_banman()
+void initialize()
 {
     InitializeFuzzingContext();
 }
 
-FUZZ_TARGET_INIT(banman, initialize_banman)
+void test_one_input(const std::vector<uint8_t>& buffer)
 {
     FuzzedDataProvider fuzzed_data_provider{buffer.data(), buffer.size()};
     const fs::path banlist_file = GetDataDir() / "fuzzed_banlist.dat";

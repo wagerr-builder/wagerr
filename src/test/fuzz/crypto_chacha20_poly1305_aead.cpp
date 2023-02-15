@@ -13,7 +13,7 @@
 #include <limits>
 #include <vector>
 
-FUZZ_TARGET(crypto_chacha20_poly1305_aead)
+void test_one_input(const std::vector<uint8_t>& buffer)
 {
     FuzzedDataProvider fuzzed_data_provider{buffer.data(), buffer.size()};
 

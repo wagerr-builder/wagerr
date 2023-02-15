@@ -9,7 +9,7 @@
 #include <test/fuzz/fuzz.h>
 #include <version.h>
 
-FUZZ_TARGET(tx_out)
+void test_one_input(const std::vector<uint8_t>& buffer)
 {
     CDataStream ds(buffer, SER_NETWORK, INIT_PROTO_VERSION);
     CTxOut tx_out;

@@ -14,6 +14,7 @@
 #include <script/standard.h>
 #include <streams.h>
 #include <test/fuzz/fuzz.h>
+#include <util/memory.h>
 #include <util/strencodings.h>
 
 #include <cassert>
@@ -22,14 +23,14 @@
 #include <string>
 #include <vector>
 
-void initialize_key()
+void initialize()
 {
     static const ECCVerifyHandle ecc_verify_handle;
     ECC_Start();
     SelectParams(CBaseChainParams::REGTEST);
 }
 
-FUZZ_TARGET_INIT(key, initialize_key)
+void test_one_input(const std::vector<uint8_t>& buffer)
 {
     const CKey key = [&] {
         CKey k;
@@ -129,31 +130,31 @@ FUZZ_TARGET_INIT(key, initialize_key)
         assert(!tx_multisig_script.IsUnspendable());
         assert(tx_multisig_script.size() == 37);
 
-        TxoutType which_type_tx_pubkey;
+        txnouttype which_type_tx_pubkey;
         const bool is_standard_tx_pubkey = IsStandard(tx_pubkey_script, which_type_tx_pubkey);
         assert(is_standard_tx_pubkey);
-        assert(which_type_tx_pubkey == TxoutType::PUBKEY);
+        assert(which_type_tx_pubkey == txnouttype::TX_PUBKEY);
 
-        TxoutType which_type_tx_multisig;
+        txnouttype which_type_tx_multisig;
         const bool is_standard_tx_multisig = IsStandard(tx_multisig_script, which_type_tx_multisig);
         assert(is_standard_tx_multisig);
-        assert(which_type_tx_multisig == TxoutType::MULTISIG);
+        assert(which_type_tx_multisig == txnouttype::TX_MULTISIG);
 
         std::vector<std::vector<unsigned char>> v_solutions_ret_tx_pubkey;
-        const TxoutType outtype_tx_pubkey = Solver(tx_pubkey_script, v_solutions_ret_tx_pubkey);
-        assert(outtype_tx_pubkey == TxoutType::PUBKEY);
+        const txnouttype outtype_tx_pubkey = Solver(tx_pubkey_script, v_solutions_ret_tx_pubkey);
+        assert(outtype_tx_pubkey == txnouttype::TX_PUBKEY);
         assert(v_solutions_ret_tx_pubkey.size() == 1);
         assert(v_solutions_ret_tx_pubkey[0].size() == 33);
 
         std::vector<std::vector<unsigned char>> v_solutions_ret_tx_multisig;
-        const TxoutType outtype_tx_multisig = Solver(tx_multisig_script, v_solutions_ret_tx_multisig);
-        assert(outtype_tx_multisig == TxoutType::MULTISIG);
+        const txnouttype outtype_tx_multisig = Solver(tx_multisig_script, v_solutions_ret_tx_multisig);
+        assert(outtype_tx_multisig == txnouttype::TX_MULTISIG);
         assert(v_solutions_ret_tx_multisig.size() == 3);
         assert(v_solutions_ret_tx_multisig[0].size() == 1);
         assert(v_solutions_ret_tx_multisig[1].size() == 33);
         assert(v_solutions_ret_tx_multisig[2].size() == 1);
 
-        const CTxDestination tx_destination = PKHash(pubkey);
+        const CTxDestination tx_destination = pubkey.GetID();
         const CScript script_for_destination = GetScriptForDestination(tx_destination);
         assert(script_for_destination.size() == 25);
 

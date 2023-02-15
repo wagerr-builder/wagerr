@@ -22,7 +22,7 @@ std::string GetArgumentName(const std::string& name)
 }
 } // namespace
 
-FUZZ_TARGET(system)
+void test_one_input(const std::vector<uint8_t>& buffer)
 {
     FuzzedDataProvider fuzzed_data_provider(buffer.data(), buffer.size());
     ArgsManager args_manager{};
@@ -54,7 +54,7 @@ FUZZ_TARGET(system)
             // Avoid hitting:
             // util/system.cpp:425: void ArgsManager::AddArg(const std::string &, const std::string &, unsigned int, const OptionsCategory &): Assertion `ret.second' failed.
             const std::string argument_name = GetArgumentName(fuzzed_data_provider.ConsumeRandomLengthString(16));
-            if (args_manager.GetArgFlags(argument_name)) {
+            if (args_manager.GetArgFlags(argument_name) != nullopt) {
                 break;
             }
             args_manager.AddArg(argument_name, fuzzed_data_provider.ConsumeRandomLengthString(16), fuzzed_data_provider.ConsumeIntegral<unsigned int>(), options_category);
@@ -67,7 +67,7 @@ FUZZ_TARGET(system)
             std::vector<std::string> hidden_arguments;
             for (const std::string& name : names) {
                 const std::string hidden_argument = GetArgumentName(name);
-                if (args_manager.GetArgFlags(hidden_argument)) {
+                if (args_manager.GetArgFlags(hidden_argument) != nullopt) {
                     continue;
                 }
                 if (std::find(hidden_arguments.begin(), hidden_arguments.end(), hidden_argument) != hidden_arguments.end()) {
@@ -85,7 +85,7 @@ FUZZ_TARGET(system)
         case 7: {
             const std::vector<std::string> random_arguments = ConsumeRandomLengthStringVector(fuzzed_data_provider);
             std::vector<const char*> argv;
-            argv.reserve(random_arguments.size());
+            argv.resize(random_arguments.size());
             for (const std::string& random_argument : random_arguments) {
                 argv.push_back(random_argument.c_str());
             }

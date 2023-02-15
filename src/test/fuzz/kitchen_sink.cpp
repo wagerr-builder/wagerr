@@ -15,7 +15,7 @@
 // The fuzzing kitchen sink: Fuzzing harness for functions that need to be
 // fuzzed but a.) don't belong in any existing fuzzing harness file, and
 // b.) are not important enough to warrant their own fuzzing harness file.
-FUZZ_TARGET(kitchen_sink)
+void test_one_input(const std::vector<uint8_t>& buffer)
 {
     FuzzedDataProvider fuzzed_data_provider(buffer.data(), buffer.size());
 

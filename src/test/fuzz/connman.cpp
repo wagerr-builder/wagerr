@@ -15,12 +15,12 @@
 #include <cstdint>
 #include <vector>
 
-void initialize_connman()
+void initialize()
 {
     InitializeFuzzingContext();
 }
 
-FUZZ_TARGET_INIT(connman, initialize_connman)
+void test_one_input(const std::vector<uint8_t>& buffer)
 {
     FuzzedDataProvider fuzzed_data_provider{buffer.data(), buffer.size()};
     CConnman connman{fuzzed_data_provider.ConsumeIntegral<uint64_t>(), fuzzed_data_provider.ConsumeIntegral<uint64_t>()};
@@ -31,7 +31,7 @@ FUZZ_TARGET_INIT(connman, initialize_connman)
     CSubNet random_subnet;
     std::string random_string;
     while (fuzzed_data_provider.ConsumeBool()) {
-        switch (fuzzed_data_provider.ConsumeIntegralInRange<int>(0, 28)) {
+        switch (fuzzed_data_provider.ConsumeIntegralInRange<int>(0, 30)) {
         case 0:
             random_address = ConsumeAddress(fuzzed_data_provider);
             break;
@@ -127,12 +127,18 @@ FUZZ_TARGET_INIT(connman, initialize_connman)
             connman.SetBestHeight(fuzzed_data_provider.ConsumeIntegral<int>());
             break;
         case 26:
-            connman.SetNetworkActive(fuzzed_data_provider.ConsumeBool());
+            connman.SetMaxOutboundTarget(fuzzed_data_provider.ConsumeIntegral<uint64_t>());
             break;
         case 27:
-            connman.SetServices(random_service, static_cast<ServiceFlags>(fuzzed_data_provider.ConsumeIntegral<uint64_t>()));
+            connman.SetMaxOutboundTimeframe(fuzzed_data_provider.ConsumeIntegral<uint64_t>());
             break;
         case 28:
+            connman.SetNetworkActive(fuzzed_data_provider.ConsumeBool());
+            break;
+        case 29:
+            connman.SetServices(random_service, static_cast<ServiceFlags>(fuzzed_data_provider.ConsumeIntegral<uint64_t>()));
+            break;
+        case 30:
             connman.SetTryNewOutboundPeer(fuzzed_data_provider.ConsumeBool());
             break;
         }
