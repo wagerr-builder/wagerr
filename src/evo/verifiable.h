@@ -22,7 +22,7 @@ enum SignerType : uint8_t {
 };
 template<> struct is_serializable_enum<SignerType> : std::true_type {};
 
-[[maybe_unused]] static constexpr std::array<std::string_view, SignerType::LAST+1> signerTypeDefs = {
+[[maybe_unused]] static std::array<std::string_view, SignerType::LAST+1> signerTypeDefs = {
     "UNKNOWN",
     "MGT",
     "ORAT",
