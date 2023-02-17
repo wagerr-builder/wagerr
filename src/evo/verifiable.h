@@ -8,6 +8,7 @@
 #include <uint256.h>
 #include <serialize.h>
 #include <string_view>
+#include <array>
 
 class CBLSPublicKey;
 class CBLSSignature;
