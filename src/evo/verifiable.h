@@ -14,17 +14,17 @@ class CBLSPublicKey;
 class CBLSSignature;
 class CValidationState;
 
-typedef enum SignerType : uint8_t {
+enum class SignerType : uint8_t {
     UNKNOWN = 0x00,
     MGT     = 0x01,
     ORAT    = 0x02, // unimplemented
     LLMQ    = 0x03, // unimplemented
     LAST     = LLMQ
-} SignerType;
+};
 template<> struct is_serializable_enum<SignerType> : std::true_type {};
 
-constexpr std::array<std::string_view, SignerType::LAST+1> makeSignerTypeDefs() {
-    std::array<std::string_view, SignerType::LAST+1> arr = {
+constexpr std::array<std::string_view, static_cast<uint8_t>(SignerType::LAST)+1> makeSignerTypeDefs() {
+    std::array<std::string_view, static_cast<uint8_t>(SignerType::LAST)+1> arr = {
         "UNKNOWN",
         "MGT",
         "ORAT",
