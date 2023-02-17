@@ -8,6 +8,7 @@
 #include <uint256.h>
 #include <serialize.h>
 #include <string_view>
+#include <array>
 
 class CBLSPublicKey;
 class CBLSSignature;
@@ -20,19 +21,15 @@ enum SignerType : uint8_t {
     LLMQ    = 0x03, // unimplemented
     LAST     = LLMQ
 };
+
 template<> struct is_serializable_enum<SignerType> : std::true_type {};
 
-constexpr std::array<std::string_view, SignerType::LAST+1> makeSignerTypeDefs() {
-    std::array<std::string_view, SignerType::LAST+1> arr = {
-        "UNKNOWN",
-        "MGT",
-        "ORAT",
-        "LLMQ"
-    };
-    return arr;
-}
-
-[[maybe_unused]] static constexpr auto signerTypeDefs = makeSignerTypeDefs();
+[[maybe_unused]] static constexpr std::array<std::string_view, SignerType::LAST+1> signerTypeDefs = {
+    "UNKNOWN",
+    "MGT",
+    "ORAT",
+    "LLMQ"
+};
 
 class Verifiable {
 public:
