@@ -14,14 +14,6 @@ class CBLSPublicKey;
 class CBLSSignature;
 class CValidationState;
 
-enum SignerType : uint8_t {
-    UNKNOWN = 0x00,
-    MGT     = 0x01,
-    ORAT    = 0x02, // unimplemented
-    LLMQ    = 0x03, // unimplemented
-    LAST     = LLMQ
-};
-
 typedef enum SignerType : uint8_t {
     UNKNOWN = 0x00,
     MGT     = 0x01,
