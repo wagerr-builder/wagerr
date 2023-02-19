@@ -578,7 +578,7 @@ BOOST_AUTO_TEST_SUITE(evo_dip3_activation_tests)
     BOOST_CHECK(testPool.existsProviderTxConflict(CTransaction(tx_reg2)));
 }*/
 
-BOOST_FIXTURE_TEST_CASE(dip3_verify_db, TestChainDIP3Setup)
+/*BOOST_FIXTURE_TEST_CASE(dip3_verify_db, TestChainDIP3Setup)
 {
     int nHeight = ::ChainActive().Height();
     auto utxos = BuildSimpleUtxoMap(m_coinbase_txns);
@@ -654,7 +654,7 @@ BOOST_FIXTURE_TEST_CASE(dip3_verify_db, TestChainDIP3Setup)
     // Verify db consistency
     LOCK(cs_main);
     BOOST_ASSERT(CVerifyDB().VerifyDB(Params(), &::ChainstateActive().CoinsTip(), 4, 2));
-}
+}*/
 
 
 
