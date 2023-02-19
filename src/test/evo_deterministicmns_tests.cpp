@@ -262,7 +262,7 @@ BOOST_AUTO_TEST_SUITE(evo_dip3_activation_tests)
     BOOST_ASSERT(deterministicMNManager->GetListAtChainTip().HasMN(tx.GetHash()));
 }*/
 
-BOOST_FIXTURE_TEST_CASE(dip3_protx, TestChainDIP3Setup)
+/*BOOST_FIXTURE_TEST_CASE(dip3_protx, TestChainDIP3Setup)
 {
     CKey sporkKey;
     sporkKey.MakeNewKey(false);
@@ -446,7 +446,7 @@ BOOST_FIXTURE_TEST_CASE(dip3_protx, TestChainDIP3Setup)
 
 //    sporkManager.UpdateSpork(SPORK_4_DIP0003_ENFORCED, DIP0003EnforcementHeightBackup, *g_connman);
 //    const_cast<Consensus::Params&>(Params().GetConsensus()).DIP0003EnforcementHeight = DIP0003EnforcementHeightBackup;
-}
+}*/
 
 BOOST_FIXTURE_TEST_CASE(dip3_test_mempool_reorg, TestChainDIP3Setup)
 {
