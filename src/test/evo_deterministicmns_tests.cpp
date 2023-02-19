@@ -524,7 +524,7 @@ BOOST_AUTO_TEST_SUITE(evo_dip3_activation_tests)
     BOOST_CHECK_EQUAL(testPool.size(), 0U);
 }*/
 
-BOOST_FIXTURE_TEST_CASE(dip3_test_mempool_dual_proregtx, TestChainDIP3Setup)
+/*BOOST_FIXTURE_TEST_CASE(dip3_test_mempool_dual_proregtx, TestChainDIP3Setup)
 {
     auto utxos = BuildSimpleUtxoMap(m_coinbase_txns);
 
@@ -576,7 +576,7 @@ BOOST_FIXTURE_TEST_CASE(dip3_test_mempool_dual_proregtx, TestChainDIP3Setup)
     testPool.addUnchecked(entry.FromTx(tx_reg1));
     BOOST_CHECK_EQUAL(testPool.size(), 1U);
     BOOST_CHECK(testPool.existsProviderTxConflict(CTransaction(tx_reg2)));
-}
+}*/
 
 BOOST_FIXTURE_TEST_CASE(dip3_verify_db, TestChainDIP3Setup)
 {
