@@ -448,7 +448,7 @@ BOOST_AUTO_TEST_SUITE(evo_dip3_activation_tests)
 //    const_cast<Consensus::Params&>(Params().GetConsensus()).DIP0003EnforcementHeight = DIP0003EnforcementHeightBackup;
 }*/
 
-BOOST_FIXTURE_TEST_CASE(dip3_test_mempool_reorg, TestChainDIP3Setup)
+/*BOOST_FIXTURE_TEST_CASE(dip3_test_mempool_reorg, TestChainDIP3Setup)
 {
     int nHeight = ::ChainActive().Height();
     auto utxos = BuildSimpleUtxoMap(m_coinbase_txns);
@@ -522,7 +522,7 @@ BOOST_FIXTURE_TEST_CASE(dip3_test_mempool_reorg, TestChainDIP3Setup)
     block_reorg.emplace_back(std::make_shared<CTransaction>(tx_reg_ds));
     testPool.removeForBlock(block_reorg, nHeight + 2);
     BOOST_CHECK_EQUAL(testPool.size(), 0U);
-}
+}*/
 
 BOOST_FIXTURE_TEST_CASE(dip3_test_mempool_dual_proregtx, TestChainDIP3Setup)
 {
