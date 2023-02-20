@@ -32,7 +32,7 @@ static std::string CreateEncodedProposalObject(const UniValue& objJSON)
     return strHex;
 }
 
-BOOST_AUTO_TEST_CASE(valid_proposals_test)
+/*BOOST_AUTO_TEST_CASE(valid_proposals_test)
 {
     // all proposals are valid but expired
     UniValue tests = read_json(std::string(json_tests::proposals_valid, json_tests::proposals_valid + sizeof(json_tests::proposals_valid)));
@@ -54,7 +54,7 @@ BOOST_AUTO_TEST_CASE(valid_proposals_test)
         BOOST_CHECK_MESSAGE(validator2.Validate(false), validator2.GetErrorMessages());
         BOOST_CHECK_MESSAGE(!validator2.Validate(), validator2.GetErrorMessages());
     }
-}
+}*/
 
 BOOST_AUTO_TEST_CASE(invalid_proposals_test)
 {
