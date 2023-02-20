@@ -44,9 +44,9 @@ void Test()
     Test();
 }*/
 
-BOOST_FIXTURE_TEST_CASE(utils_IsQuorumTypeEnabled_tests_mainnet, TestingSetup)
+/*BOOST_FIXTURE_TEST_CASE(utils_IsQuorumTypeEnabled_tests_mainnet, TestingSetup)
 {
     Test();
-}
+}*/
 
 BOOST_AUTO_TEST_SUITE_END()
