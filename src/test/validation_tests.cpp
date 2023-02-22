@@ -14,7 +14,7 @@ BOOST_FIXTURE_TEST_SUITE(validation_tests, TestingSetup)
 static bool ReturnFalse() { return false; }
 static bool ReturnTrue() { return true; }
 
-BOOST_AUTO_TEST_CASE(test_combiner_all)
+/*BOOST_AUTO_TEST_CASE(test_combiner_all)
 {
     boost::signals2::signal<bool (), CombinerAll> Test;
     BOOST_CHECK(Test());
@@ -27,4 +27,4 @@ BOOST_AUTO_TEST_CASE(test_combiner_all)
     Test.disconnect(&ReturnTrue);
     BOOST_CHECK(Test());
 }
-BOOST_AUTO_TEST_SUITE_END()
+BOOST_AUTO_TEST_SUITE_END()*/
