@@ -185,7 +185,7 @@ BOOST_AUTO_TEST_CASE(key_signature_tests)
         found_small |= sig.size() < 70;
     }
     BOOST_CHECK(found);
-    //BOOST_CHECK(found_small);
+    BOOST_CHECK(found_small);
 }
 
 BOOST_AUTO_TEST_CASE(key_key_negation)
