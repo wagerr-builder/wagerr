@@ -26,5 +26,5 @@ static bool ReturnTrue() { return true; }
     BOOST_CHECK(Test());
     Test.disconnect(&ReturnTrue);
     BOOST_CHECK(Test());
-}
-BOOST_AUTO_TEST_SUITE_END()*/
+}*/
+BOOST_AUTO_TEST_SUITE_END()
