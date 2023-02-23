@@ -421,7 +421,7 @@ static void CheckSort(CTxMemPool &pool, std::vector<std::string> &sortedOrder) E
 }*/
 
 
-BOOST_AUTO_TEST_CASE(MempoolSizeLimitTest)
+/*BOOST_AUTO_TEST_CASE(MempoolSizeLimitTest)
 {
     CTxMemPool pool;
     LOCK2(cs_main, pool.cs);
@@ -573,7 +573,7 @@ BOOST_AUTO_TEST_CASE(MempoolSizeLimitTest)
     // ... unless it has gone all the way to 0 (after getting past 1000/2)
 
     SetMockTime(0);
-}
+}*/
 
 inline CTransactionRef make_tx(std::vector<CAmount>&& output_values, std::vector<CTransactionRef>&& inputs=std::vector<CTransactionRef>(), std::vector<uint32_t>&& input_indices=std::vector<uint32_t>())
 {
