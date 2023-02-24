@@ -20,10 +20,10 @@ import time
 import os
 import ctypes
 
-WGR_WALLET_ORACLE = { "addr": "TXuoB9DNEuZx1RCfKw3Hsv7jNUHTt4sVG1", "key": "TBwvXbNNUiq7tDkR2EXiCbPxEJRTxA1i6euNyAE9Ag753w36c1FZ" }
-WGR_WALLET_EVENT = { "addr": "TFvZVYGdrxxNunQLzSnRSC58BSRA7si6zu", "key": "TCDjD2i4e32kx2Fc87bDJKGBedEyG7oZPaZfp7E1PQG29YnvArQ8" }
-WGR_WALLET_DEV = { "addr": "TLuTVND9QbZURHmtuqD5ESECrGuB9jLZTs", "key": "TFCrxaUt3EjHzMGKXeBqA7sfy3iaeihg5yZPSrf9KEyy4PHUMWVe" }
-WGR_WALLET_OMNO = { "addr": "THofaueWReDjeZQZEECiySqV9GP4byP3qr", "key": "TDJnwRkSk8JiopQrB484Ny9gMcL1x7bQUUFFFNwJZmmWA7U79uRk" }
+WGR_WALLET_ORACLE = { "addr": "TJyZwcss89RsrAV8GQ1axK6DDEhQMvjU5c", "key": "TH2NPnqaLDquwgkQyXXngdPzEkUaEpDP2cBfF4E8PceqFM6gpcDR" }
+WGR_WALLET_EVENT = { "addr": "TTMEg3vTLmZUzMZnuPEL6d1KWHMB7gBJ4C", "key": "TKCXZz97iP2jS8gT18KzgYY9dPKSQFSPiAzyp4EZeXk1SqRLPd3k" }
+WGR_WALLET_DEV = { "addr": "TGSKVF2EuzNxVajzJd9V32hffd3zAKPQfX", "key": "TKfwrcBvsTpnXENKbmb36Z5F7UPXgytsZHbcXdeDLNRjjVqpt47v" }
+WGR_WALLET_OMNO = { "addr": "TBR36AyVgniGgoJqE1TWYhMpxjE73TXUxT", "key": "TFBVVihJZhkAgCaunk8qsmYK4qj1ocEWpRtDMDMwKamxqSgiLfVU" }
 
 sport_names = ["Football", "MMA", "CSGO", "DOTA2", "Test Sport", "V2-V3 Sport", "ML Sport One", "Spread Sport"]
 round_names = ["round1", "round2", "round3", "round4"]
