@@ -126,13 +126,6 @@ class WagerrTestFramework(metaclass=WagerrTestMetaClass):
         self.extra_args_from_options = []
         self.set_test_params()
         self.parse_args()
-        self.default_wallet_name = "default_wallet" if self.options.descriptors else ""
-        # Optional list of wallet names that can be set in set_test_params to
-        # create and import keys to. If unset, default is len(nodes) *
-        # [default_wallet_name]. If wallet names are None, wallet creation is
-        # skipped. If list is truncated, wallet creation is skipped and keys
-        # are not imported.
-        self.wallet_names = None
         if self.options.timeout_factor == 0 :
             self.options.timeout_factor = 99999
         self.rpc_timeout = int(self.rpc_timeout * self.options.timeout_factor) # optionally, increase timeout by a factor
@@ -414,16 +407,14 @@ class WagerrTestFramework(metaclass=WagerrTestMetaClass):
                 assert_equal(chain_info["initialblockdownload"], False)
 
     def import_deterministic_coinbase_privkeys(self):
-        for i in range(self.num_nodes):
-            self.init_wallet(node=i)
+        for n in self.nodes:
+            try:
+                n.getwalletinfo()
+            except JSONRPCException as e:
+                assert str(e).startswith('Method not found')
+                continue
 
-    def init_wallet(self, *, node):
-        wallet_name = self.default_wallet_name if self.wallet_names is None else self.wallet_names[node] if node < len(self.wallet_names) else False
-        if wallet_name is not False:
-            n = self.nodes[node]
-            if wallet_name is not None:
-                n.createwallet(wallet_name=wallet_name, descriptors=self.options.descriptors, load_on_startup=True)
-            n.importprivkey(privkey=n.get_deterministic_priv_key().key, label='coinbase', rescan=True)
+            n.importprivkey(privkey=n.get_deterministic_priv_key().key, label='coinbase')
 
     def run_test(self):
         """Tests must override this method to define test logic"""
