@@ -11,7 +11,7 @@
 
 from test_framework.betting_opcode import *
 from test_framework.authproxy import JSONRPCException
-from test_framework.test_framework import BitcoinTestFramework
+from test_framework.test_framework import WagerrTestFramework
 from test_framework.util import wait_until, rpc_port, assert_equal, assert_raises_rpc_error
 from distutils.dir_util import copy_tree, remove_tree
 from decimal import *
@@ -53,7 +53,7 @@ def check_bet_payouts_info(listbets, listpayoutsinfo):
                             info_found = True
         assert(info_found)
 
-class BettingTest(BitcoinTestFramework):
+class BettingTest(WagerrTestFramework):
     def get_cache_dir_name(self, node_index, block_count):
         return ".test-chain-{0}-{1}-.node{2}".format(self.num_nodes, block_count, node_index)
 
