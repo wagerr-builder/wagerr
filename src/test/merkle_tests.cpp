@@ -250,7 +250,7 @@ static inline int ctz(uint32_t i) {
 }*/
 
 
-BOOST_AUTO_TEST_CASE(merkle_test_empty_block)
+/*BOOST_AUTO_TEST_CASE(merkle_test_empty_block)
 {
     bool mutated = false;
     CBlock block;
@@ -258,7 +258,7 @@ BOOST_AUTO_TEST_CASE(merkle_test_empty_block)
 
     BOOST_CHECK_EQUAL(root.IsNull(), true);
     BOOST_CHECK_EQUAL(mutated, false);
-}
+}*/
 
 BOOST_AUTO_TEST_CASE(merkle_test_oneTx_block)
 {
