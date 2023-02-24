@@ -654,7 +654,7 @@ inline CTransactionRef make_tx(std::vector<CAmount>&& output_values, std::vector
     BOOST_CHECK_EQUAL(ancestors, 3ULL);
     BOOST_CHECK_EQUAL(descendants, 3ULL);
 
-    /* Grand-child 2 */
+    /* Grand-child 2 *
     //
     // [tx1].0 <- [tx2].0 <- [tx3]
     //              |
