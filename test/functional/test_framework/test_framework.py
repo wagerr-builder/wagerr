@@ -126,6 +126,7 @@ class WagerrTestFramework(metaclass=WagerrTestMetaClass):
         self.extra_args_from_options = []
         self.set_test_params()
         self.parse_args()
+        self.default_wallet_name = "default_wallet" if self.options.descriptors else ""
         # Optional list of wallet names that can be set in set_test_params to
         # create and import keys to. If unset, default is len(nodes) *
         # [default_wallet_name]. If wallet names are None, wallet creation is
