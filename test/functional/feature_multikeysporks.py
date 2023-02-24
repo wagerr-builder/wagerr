@@ -52,7 +52,7 @@ class MultiKeySporkTest(WagerrTestFramework):
                                 "-sporkaddr=TC718jAVnKZMk2nkF1GJAAW6kXZ3w6LZcu",
                                 "-sporkaddr=TVkNnmvXDG7PSpqkuey8rC9qXMvSKWpYnb",
                                 "-sporkaddr=TYd2UH2v5eeHYV7REaHfkGsnMMFcYgL9vc",
-+                                "-sporkaddr=TSXFddherPjT1Y1pdpwJsLXM7QBYufxPHQ",
+                                "-sporkaddr=TSXFddherPjT1Y1pdpwJsLXM7QBYufxPHQ",
                                  "-minsporkkeys=3"]
 
         # Node0 extra args to use on normal node restarts
