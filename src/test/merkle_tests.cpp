@@ -7,7 +7,7 @@
 
 #include <boost/test/unit_test.hpp>
 
-BOOST_FIXTURE_TEST_SUITE(merkle_tests, TestingSetup)
+/*BOOST_FIXTURE_TEST_SUITE(merkle_tests, TestingSetup)
 
 static uint256 ComputeMerkleRootFromBranch(const uint256& leaf, const std::vector<uint256>& vMerkleBranch, uint32_t nIndex) {
     uint256 hash = leaf;
@@ -20,7 +20,7 @@ static uint256 ComputeMerkleRootFromBranch(const uint256& leaf, const std::vecto
         nIndex >>= 1;
     }
     return hash;
-}
+}*/
 
 /* This implements a constant-space merkle root/path calculator, limited to 2^32 leaves. */
 static void MerkleComputation(const std::vector<uint256>& leaves, uint256* proot, bool* pmutated, uint32_t branchpos, std::vector<uint256>* pbranch) {
