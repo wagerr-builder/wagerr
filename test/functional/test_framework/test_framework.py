@@ -407,14 +407,8 @@ class WagerrTestFramework(metaclass=WagerrTestMetaClass):
                 assert_equal(chain_info["initialblockdownload"], False)
 
     def import_deterministic_coinbase_privkeys(self):
-        for n in self.nodes:
-            try:
-                n.getwalletinfo()
-            except JSONRPCException as e:
-                assert str(e).startswith('Method not found')
-                continue
-
-            n.importprivkey(privkey=n.get_deterministic_priv_key().key, label='coinbase')
+        for i in range(self.num_nodes):
+            self.init_wallet(node=i)
 
     def run_test(self):
         """Tests must override this method to define test logic"""
