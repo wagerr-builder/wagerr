@@ -126,6 +126,12 @@ class WagerrTestFramework(metaclass=WagerrTestMetaClass):
         self.extra_args_from_options = []
         self.set_test_params()
         self.parse_args()
+        # Optional list of wallet names that can be set in set_test_params to
+        # create and import keys to. If unset, default is len(nodes) *
+        # [default_wallet_name]. If wallet names are None, wallet creation is
+        # skipped. If list is truncated, wallet creation is skipped and keys
+        # are not imported.
+        self.wallet_names = None
         if self.options.timeout_factor == 0 :
             self.options.timeout_factor = 99999
         self.rpc_timeout = int(self.rpc_timeout * self.options.timeout_factor) # optionally, increase timeout by a factor
