@@ -410,6 +410,14 @@ class WagerrTestFramework(metaclass=WagerrTestMetaClass):
         for i in range(self.num_nodes):
             self.init_wallet(node=i)
 
+    def init_wallet(self, *, node):
+        wallet_name = self.default_wallet_name if self.wallet_names is None else self.wallet_names[node] if node < len(self.wallet_names) else False
+        if wallet_name is not False:
+            n = self.nodes[node]
+            if wallet_name is not None:
+                n.createwallet(wallet_name=wallet_name, descriptors=self.options.descriptors, load_on_startup=True)
+            n.importprivkey(privkey=n.get_deterministic_priv_key().key, label='coinbase', rescan=True)
+
     def run_test(self):
         """Tests must override this method to define test logic"""
         raise NotImplementedError
