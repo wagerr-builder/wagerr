@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2015-2017 The Bitcoin Core developers
+# Copyright (c) 2015-2016 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Utilities for doing coverage analysis on the RPC interface.
@@ -61,7 +61,7 @@ class AuthServiceProxyWrapper():
 
     def get_request(self, *args, **kwargs):
         self._log_call()
-        return self.auth_service_proxy_instance.get_request(*args)
+        return self.auth_service_proxy_instance.get_request(*args, **kwargs)
 
 def get_filename(dirname, n_node):
     """
