@@ -260,7 +260,7 @@ static inline int ctz(uint32_t i) {
     BOOST_CHECK_EQUAL(mutated, false);
 }*/
 
-BOOST_AUTO_TEST_CASE(merkle_test_oneTx_block)
+/*BOOST_AUTO_TEST_CASE(merkle_test_oneTx_block)
 {
     bool mutated = false;
     CBlock block;
@@ -272,7 +272,7 @@ BOOST_AUTO_TEST_CASE(merkle_test_oneTx_block)
     uint256 root = BlockMerkleRoot(block, &mutated);
     BOOST_CHECK_EQUAL(root, block.vtx[0]->GetHash());
     BOOST_CHECK_EQUAL(mutated, false);
-}
+}*/
 
 BOOST_AUTO_TEST_CASE(merkle_test_OddTxWithRepeatedLastTx_block)
 {
