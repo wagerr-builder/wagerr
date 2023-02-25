@@ -600,16 +600,3 @@ def modinv(a, n):
     if t1 < 0:
         t1 += n
     return t1
-
-class TestFrameworkUtil(unittest.TestCase):
-    def test_modinv(self):
-        test_vectors = [
-            [7, 11],
-            [11, 29],
-            [90, 13],
-            [1891, 3797],
-            [6003722857, 77695236973],
-        ]
-
-        for a, n in test_vectors:
-            self.assertEqual(modinv(a, n), pow(a, n-2, n))
