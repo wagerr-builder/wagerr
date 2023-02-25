@@ -125,6 +125,8 @@ BASE_SCRIPTS = [
     'mempool_limit.py',
     'rpc_txoutproof.py',
     'wallet_listreceivedby.py',
+    'feature_betting.py',
+    'eature_hybrid_betting.py',
     'wallet_abandonconflict.py',
     'feature_csv_activation.py',
     'rpc_rawtransaction.py',
