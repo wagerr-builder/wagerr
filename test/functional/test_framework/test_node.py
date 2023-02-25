@@ -279,7 +279,7 @@ class TestNode():
     def generate(self, nblocks, maxtries=1000000):
         self.log.debug("TestNode.generate() dispatches `generate` call to `generatetoaddress`")
         self.generate(nblocks)
-        address=self.get_deterministic_priv_key().address, maxtries=maxtries
+        address=self.get_deterministic_priv_key().address
         return nblocks
 
     def get_wallet_rpc(self, wallet_name):
