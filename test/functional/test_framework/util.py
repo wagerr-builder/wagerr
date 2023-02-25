@@ -292,10 +292,11 @@ def initialize_datadir(dirname, n):
         f.write("regtest=1\n")
         f.write("rpcuser=" + rpc_u + "\n")
         f.write("rpcpassword=" + rpc_p + "\n")
-        f.write("port=" + str(p2p_port(n)) + "\n")
-        f.write("rpcport=" + str(rpc_port(n)) + "\n")
         f.write("listenonion=0\n")
         f.write("spendzeroconfchange=1\n")
+        f.write("[regtest]\n")
+        f.write("port=" + str(p2p_port(n)) + "\n")
+        f.write("rpcport=" + str(rpc_port(n)) + "\n")
     return datadir
 
 def rpc_auth_pair(n):
