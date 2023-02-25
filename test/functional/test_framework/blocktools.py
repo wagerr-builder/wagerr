@@ -7,6 +7,8 @@
 from .mininode import *
 from .script import CScript, OP_TRUE, OP_CHECKSIG, OP_RETURN
 
+TIME_GENESIS_BLOCK = 1524496462
+
 # Create a block (with regtest difficulty)
 def create_block(hashprev, coinbase, nTime=None):
     block = CBlock()
