@@ -41,7 +41,7 @@ TEST_EXIT_PASSED = 0
 TEST_EXIT_FAILED = 1
 TEST_EXIT_SKIPPED = 77
 
-class BitcoinTestFramework():
+class WagerrTestFramework():
     """Base class for a wagerr test script.
 
     Individual wagerr test scripts should subclass this class and override the set_test_params() and run_test() methods.
@@ -451,7 +451,7 @@ class BitcoinTestFramework():
         for i in range(self.num_nodes):
             initialize_datadir(self.options.tmpdir, i)
 
-class ComparisonTestFramework(BitcoinTestFramework):
+class ComparisonTestFramework(WagerrTestFramework):
     """Test framework for doing p2p comparison testing
 
     Sets up some wagerrd binaries:
