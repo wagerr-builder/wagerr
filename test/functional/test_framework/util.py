@@ -327,12 +327,13 @@ def initialize_datadir(dirname, n, chain):
     with open(os.path.join(datadir, "wagerr.conf"), 'w', encoding='utf8') as f:
         f.write("{}={}]\n".format(chain_name_conf_arg, chain_name_conf_arg_value))
         f.write("[{}]\n".format(chain_name_conf_section))
-        f.write("port=" + str(p2p_port(n)) + "\n")
-        f.write("rpcport=" + str(rpc_port(n)) + "\n")
         f.write("server=1\n")
         f.write("keypool=1\n")
         f.write("discover=0\n")
         f.write("listenonion=0\n")
+        f.write("[regtest]\n")
+        f.write("port=" + str(p2p_port(n)) + "\n")
+        f.write("rpcport=" + str(rpc_port(n)) + "\n")
     return datadir
 
 def get_datadir_path(dirname, n):
