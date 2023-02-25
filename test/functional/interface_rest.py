@@ -83,7 +83,9 @@ class RESTTest (WagerrTestFramework):
 
         self.nodes[0].generate(1)
         self.sync_all()
-        self.nodes[1].generatetoaddress(100, not_related_address)
+        #self.nodes[1].generatetoaddress(100, not_related_address)
+        self.nodes[1].generate(100)
+        self.nodes[1].sendtoaddress(not_related_address, 1050000)
         self.sync_all()
 
         assert_equal(self.nodes[0].getbalance(), 947000000)
@@ -108,7 +110,9 @@ class RESTTest (WagerrTestFramework):
 
         self.log.info("Query an unspent TXO using the /getutxos URI")
 
-        self.nodes[1].generatetoaddress(1, not_related_address)
+        #self.nodes[1].generatetoaddress(1, not_related_address)
+        self.nodes[1].generate(1)
+        self.nodes[1].sendtoaddress(not_related_address, 10500)
         self.sync_all()
         bb_hash = self.nodes[0].getbestblockhash()
 
