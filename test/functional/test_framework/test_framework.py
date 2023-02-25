@@ -41,6 +41,8 @@ TEST_EXIT_PASSED = 0
 TEST_EXIT_FAILED = 1
 TEST_EXIT_SKIPPED = 77
 
+TIME_GENESIS_BLOCK = 1524496462
+
 class WagerrTestFramework():
     """Base class for a wagerr test script.
 
