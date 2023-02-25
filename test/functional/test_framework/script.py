@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2015-2017 The Bitcoin Core developers
+# Copyright (c) 2015-2016 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Functionality to build scripts, as well as SignatureHash().
@@ -7,18 +7,10 @@
 This file is modified from python-bitcoinlib.
 """
 
-from .mininode import CTransaction, CTxOut, sha256, hash256, uint256_from_str, ser_uint256, ser_string
+
+from .mininode import CTransaction, CTxOut, sha256, hash256
 from binascii import hexlify
 import hashlib
-
-import sys
-bchr = chr
-bord = ord
-if sys.version > '3':
-    long = int
-    bchr = lambda x: bytes([x])
-    bord = lambda x: x
-
 import struct
 
 from .bignum import bn2vch
@@ -40,9 +32,9 @@ class CScriptOp(int):
     def encode_op_pushdata(d):
         """Encode a PUSHDATA op, returning bytes"""
         if len(d) < 0x4c:
-            return b'' + bchr(len(d)) + d # OP_PUSHDATA
+            return b'' + bytes([len(d)]) + d # OP_PUSHDATA
         elif len(d) <= 0xff:
-            return b'\x4c' + bchr(len(d)) + d # OP_PUSHDATA1
+            return b'\x4c' + bytes([len(d)]) + d # OP_PUSHDATA1
         elif len(d) <= 0xffff:
             return b'\x4d' + struct.pack(b'<H', len(d)) + d # OP_PUSHDATA2
         elif len(d) <= 0xffffffff:
@@ -161,10 +153,12 @@ OP_TUCK = CScriptOp(0x7d)
 
 # splice ops
 OP_CAT = CScriptOp(0x7e)
-OP_SUBSTR = CScriptOp(0x7f)
-OP_LEFT = CScriptOp(0x80)
-OP_RIGHT = CScriptOp(0x81)
+OP_SPLIT = CScriptOp(0x7f)
 OP_SIZE = CScriptOp(0x82)
+
+# conversion ops
+OP_NUM2BIN = CScriptOp(0x80)
+OP_BIN2NUM = CScriptOp(0x81)
 
 # bit logic
 OP_INVERT = CScriptOp(0x83)
@@ -227,7 +221,7 @@ OP_CHECKSEQUENCEVERIFY = CScriptOp(0xb2)
 OP_NOP4 = CScriptOp(0xb3)
 OP_NOP5 = CScriptOp(0xb4)
 OP_NOP6 = CScriptOp(0xb5)
-OP_NOP7 = CScriptOp(0xb6)
+OP_GROUP = CScriptOp(0xb6)
 OP_NOP8 = CScriptOp(0xb7)
 OP_NOP9 = CScriptOp(0xb8)
 OP_NOP10 = CScriptOp(0xb9)
@@ -293,9 +287,9 @@ OPCODE_NAMES.update({
     OP_SWAP : 'OP_SWAP',
     OP_TUCK : 'OP_TUCK',
     OP_CAT : 'OP_CAT',
-    OP_SUBSTR : 'OP_SUBSTR',
-    OP_LEFT : 'OP_LEFT',
-    OP_RIGHT : 'OP_RIGHT',
+    OP_SPLIT : 'OP_SPLIT',
+    OP_NUM2BIN : 'OP_NUM2BIN',
+    OP_BIN2NUM : 'OP_BIN2NUM',
     OP_SIZE : 'OP_SIZE',
     OP_INVERT : 'OP_INVERT',
     OP_AND : 'OP_AND',
@@ -348,7 +342,7 @@ OPCODE_NAMES.update({
     OP_NOP4 : 'OP_NOP4',
     OP_NOP5 : 'OP_NOP5',
     OP_NOP6 : 'OP_NOP6',
-    OP_NOP7 : 'OP_NOP7',
+    OP_GROUP : 'OP_GROUP',
     OP_NOP8 : 'OP_NOP8',
     OP_NOP9 : 'OP_NOP9',
     OP_NOP10 : 'OP_NOP10',
@@ -388,7 +382,7 @@ class CScriptNum():
             r.append(0x80 if neg else 0)
         elif neg:
             r[-1] |= 0x80
-        return bytes(bchr(len(r)) + r)
+        return bytes([len(r)]) + r
 
 
 class CScript(bytes):
@@ -405,17 +399,17 @@ class CScript(bytes):
     def __coerce_instance(cls, other):
         # Coerce other into bytes
         if isinstance(other, CScriptOp):
-            other = bchr(other)
+            other = bytes([other])
         elif isinstance(other, CScriptNum):
             if (other.value == 0):
-                other = bchr(CScriptOp(OP_0))
+                other = bytes([CScriptOp(OP_0)])
             else:
                 other = CScriptNum.encode(other)
         elif isinstance(other, int):
             if 0 <= other <= 16:
-                other = bytes(bchr(CScriptOp.encode_op_n(other)))
+                other = bytes([CScriptOp.encode_op_n(other)])
             elif other == -1:
-                other = bytes(bchr(OP_1NEGATE))
+                other = bytes([OP_1NEGATE])
             else:
                 other = CScriptOp.encode_op_pushdata(bn2vch(other))
         elif isinstance(other, (bytes, bytearray)):
@@ -458,7 +452,7 @@ class CScript(bytes):
         i = 0
         while i < len(self):
             sop_idx = i
-            opcode = bord(self[i])
+            opcode = self[i]
             i += 1
 
             if opcode > OP_PUSHDATA4:
@@ -474,21 +468,21 @@ class CScript(bytes):
                     pushdata_type = 'PUSHDATA1'
                     if i >= len(self):
                         raise CScriptInvalidError('PUSHDATA1: missing data length')
-                    datasize = bord(self[i])
+                    datasize = self[i]
                     i += 1
 
                 elif opcode == OP_PUSHDATA2:
                     pushdata_type = 'PUSHDATA2'
                     if i + 1 >= len(self):
                         raise CScriptInvalidError('PUSHDATA2: missing data length')
-                    datasize = bord(self[i]) + (bord(self[i+1]) << 8)
+                    datasize = self[i] + (self[i+1] << 8)
                     i += 2
 
                 elif opcode == OP_PUSHDATA4:
                     pushdata_type = 'PUSHDATA4'
                     if i + 3 >= len(self):
                         raise CScriptInvalidError('PUSHDATA4: missing data length')
-                    datasize = bord(self[i]) + (bord(self[i+1]) << 8) + (bord(self[i+2]) << 16) + (bord(self[i+3]) << 24)
+                    datasize = self[i] + (self[i+1] << 8) + (self[i+2] << 16) + (self[i+3] << 24)
                     i += 4
 
                 else:
@@ -639,7 +633,7 @@ def SignatureHash(script, txTo, inIdx, hashtype):
         txtmp.vin = []
         txtmp.vin.append(tmp)
 
-    s = txtmp.serialize_without_witness()
+    s = txtmp.serialize()
     s += struct.pack(b"<I", hashtype)
 
     hash = hash256(s)
