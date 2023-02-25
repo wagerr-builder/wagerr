@@ -273,6 +273,8 @@ NON_SCRIPTS = [
     "combine_logs.py",
     "create_cache.py",
     "test_runner.py",
+    "group.py",
+    "betting_opcode.py",
 ]
 
 def main():

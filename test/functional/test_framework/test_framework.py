@@ -32,6 +32,8 @@ from .util import (
     sync_mempools,
 )
 
+WAGERR_AUTH_ADDR = "TJA37d7KPVmd5Lqa2EcQsptcfLYsQ1Qcfk"
+
 class TestStatus(Enum):
     PASSED = 1
     FAILED = 2
