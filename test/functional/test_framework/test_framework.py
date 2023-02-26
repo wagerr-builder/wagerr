@@ -338,7 +338,8 @@ class BitcoinTestFramework():
         mocktime then the mempools will not sync due to IBD.
 
         For backwared compatibility of the python scripts with previous
-        versions of the cache, this helper function sets mocktime to Monday, 23 April 2018 + (201 * 10 * 60)
+        versions of the cache, this helper function sets mocktime to Monday, 23 April 2018 + (201 * 10 * 60)"""
+
         self.mocktime = GENESISTIME + (201 * 10 * 60)
 
     def disable_mocktime(self):
@@ -375,10 +376,12 @@ class BitcoinTestFramework():
             rpc_logger.addHandler(rpc_handler)
 
     def _initialize_chain(self):
-        """Initialize a pre-mined blockchain for use by the test.
+        """
+        Initialize a pre-mined blockchain for use by the test.
 
         Create a cache of a 200-block-long chain (with wallet) for MAX_NODES
-        Afterward, create num_nodes copies from the cache."""
+        Afterward, create num_nodes copies from the cache.
+        """
 
         assert self.num_nodes <= MAX_NODES
         create_cache = False
