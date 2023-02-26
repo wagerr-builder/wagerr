@@ -338,8 +338,7 @@ class BitcoinTestFramework():
         mocktime then the mempools will not sync due to IBD.
 
         For backwared compatibility of the python scripts with previous
-        versions of the cache, this helper function sets mocktime to Jan 1,
-        2014 + (201 * 10 * 60)"""
+        versions of the cache, this helper function sets mocktime to Monday, 23 April 2018 + (201 * 10 * 60)
         self.mocktime = GENESISTIME + (201 * 10 * 60)
 
     def disable_mocktime(self):
@@ -418,7 +417,7 @@ class BitcoinTestFramework():
             # blocks are created with timestamps 10 minutes apart
             # starting from 2010 minutes in the past
             self.enable_mocktime()
-            block_time = self.mocktime - (201 * 60)
+            block_time = GENESISTIME
             for i in range(2):
                 for peer in range(4):
                     for j in range(25):
