@@ -5,8 +5,8 @@
 
 from test_framework.betting_opcode import *
 from test_framework.authproxy import JSONRPCException
-from test_framework.test_framework import WagerrTestFramework
-from test_framework.util import wait_until, rpc_port, assert_equal, assert_raises_rpc_error, sync_blocks
+from test_framework.test_framework import WagerrTestFramework, sync_blocks
+from test_framework.util import wait_until, rpc_port, assert_equal, assert_raises_rpc_error
 from distutils.dir_util import copy_tree, remove_tree
 from decimal import *
 import pprint
