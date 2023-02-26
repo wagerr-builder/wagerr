@@ -75,10 +75,10 @@ class BettingTest(WagerrTestFramework):
         node.wait_for_rpc_connection()
 
     def set_test_params(self):
-        self.extra_args = [ ['-sporkkey=6xLZdACFRA53uyxz8gKDLcgVrm5kUUEu2B3BUzWUxHqa2W7irbH'],
-                            ['-sporkkey=6xLZdACFRA53uyxz8gKDLcgVrm5kUUEu2B3BUzWUxHqa2W7irbH'],
-                            ['-sporkkey=6xLZdACFRA53uyxz8gKDLcgVrm5kUUEu2B3BUzWUxHqa2W7irbH'],
-                            ['-sporkkey=6xLZdACFRA53uyxz8gKDLcgVrm5kUUEu2B3BUzWUxHqa2W7irbH'] ]
+        self.extra_args = [ ['-sporkkey=TKhLrhLKEHxhb8C7QgP1vwSmo1jMd49dzaqAcT3bfz18dnAM9Lt7'],
+                            ['-sporkkey=TKhLrhLKEHxhb8C7QgP1vwSmo1jMd49dzaqAcT3bfz18dnAM9Lt7'],
+                            ['-sporkkey=TKhLrhLKEHxhb8C7QgP1vwSmo1jMd49dzaqAcT3bfz18dnAM9Lt7'],
+                            ['-sporkkey=TKhLrhLKEHxhb8C7QgP1vwSmo1jMd49dzaqAcT3bfz18dnAM9Lt7'] ]
 
         self.setup_clean_chain = True
         self.num_nodes = 4
