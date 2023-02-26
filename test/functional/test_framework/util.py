@@ -6,7 +6,7 @@
 """Helpful routines for regression testing."""
 
 from base64 import b64encode
-from binascii import unhexlify
+from binascii import hexlify, unhexlify
 from decimal import Decimal, ROUND_DOWN
 import hashlib
 from subprocess import CalledProcessError
