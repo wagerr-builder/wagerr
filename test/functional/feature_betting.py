@@ -2,17 +2,11 @@
 # Copyright (c) 2014-2017 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
-"""Test running bitcoind with -reindex and -reindex-chainstate options.
-
-- Start a single node and generate 3 blocks.
-- Stop the node and restart it with -reindex. Verify that the node has reindexed up to block 3.
-- Stop the node and restart it with -reindex-chainstate. Verify that the node has reindexed up to block 3.
-"""
 
 from test_framework.betting_opcode import *
 from test_framework.authproxy import JSONRPCException
-from test_framework.test_framework import WagerrTestFramework
-from test_framework.util import wait_until, rpc_port, assert_equal, assert_raises_rpc_error
+from test_framework.test_framework import BitcoinTestFramework
+from test_framework.util import wait_until, rpc_port, assert_equal, assert_raises_rpc_error, sync_blocks
 from distutils.dir_util import copy_tree, remove_tree
 from decimal import *
 import pprint
@@ -20,10 +14,10 @@ import time
 import os
 import ctypes
 
-WGR_WALLET_ORACLE = { "addr": "TJyZwcss89RsrAV8GQ1axK6DDEhQMvjU5c", "key": "TH2NPnqaLDquwgkQyXXngdPzEkUaEpDP2cBfF4E8PceqFM6gpcDR" }
-WGR_WALLET_EVENT = { "addr": "TTMEg3vTLmZUzMZnuPEL6d1KWHMB7gBJ4C", "key": "TKCXZz97iP2jS8gT18KzgYY9dPKSQFSPiAzyp4EZeXk1SqRLPd3k" }
-WGR_WALLET_DEV = { "addr": "TGSKVF2EuzNxVajzJd9V32hffd3zAKPQfX", "key": "TKfwrcBvsTpnXENKbmb36Z5F7UPXgytsZHbcXdeDLNRjjVqpt47v" }
-WGR_WALLET_OMNO = { "addr": "TBR36AyVgniGgoJqE1TWYhMpxjE73TXUxT", "key": "TFBVVihJZhkAgCaunk8qsmYK4qj1ocEWpRtDMDMwKamxqSgiLfVU" }
+WGR_WALLET_ORACLE = { "addr": "TXuoB9DNEuZx1RCfKw3Hsv7jNUHTt4sVG1", "key": "TBwvXbNNUiq7tDkR2EXiCbPxEJRTxA1i6euNyAE9Ag753w36c1FZ" }
+WGR_WALLET_EVENT = { "addr": "TFvZVYGdrxxNunQLzSnRSC58BSRA7si6zu", "key": "TCDjD2i4e32kx2Fc87bDJKGBedEyG7oZPaZfp7E1PQG29YnvArQ8" }
+WGR_WALLET_DEV = { "addr": "TLuTVND9QbZURHmtuqD5ESECrGuB9jLZTs", "key": "TFCrxaUt3EjHzMGKXeBqA7sfy3iaeihg5yZPSrf9KEyy4PHUMWVe" }
+WGR_WALLET_OMNO = { "addr": "THofaueWReDjeZQZEECiySqV9GP4byP3qr", "key": "TDJnwRkSk8JiopQrB484Ny9gMcL1x7bQUUFFFNwJZmmWA7U79uRk" }
 
 sport_names = ["Football", "MMA", "CSGO", "DOTA2", "Test Sport", "V2-V3 Sport", "ML Sport One", "Spread Sport"]
 round_names = ["round1", "round2", "round3", "round4"]
@@ -38,9 +32,6 @@ outcome_spread_away = 5
 outcome_total_over = 6
 outcome_total_under = 7
 
-ODDS_DIVISOR = 10000
-BETX_PERMILLE = 60
-
 def check_bet_payouts_info(listbets, listpayoutsinfo):
     for bet in listbets:
         info_found = False
@@ -53,7 +44,7 @@ def check_bet_payouts_info(listbets, listpayoutsinfo):
                             info_found = True
         assert(info_found)
 
-class BettingTest(WagerrTestFramework):
+class BettingTest(BitcoinTestFramework):
     def get_cache_dir_name(self, node_index, block_count):
         return ".test-chain-{0}-{1}-.node{2}".format(self.num_nodes, block_count, node_index)
 
@@ -84,8 +75,11 @@ class BettingTest(WagerrTestFramework):
         node.wait_for_rpc_connection()
 
     def set_test_params(self):
-        self.extra_args = None
-        #self.extra_args = [["-debug"], ["-debug"], ["-debug"], ["-debug"]]
+        self.extra_args = [ ['-sporkkey=6xLZdACFRA53uyxz8gKDLcgVrm5kUUEu2B3BUzWUxHqa2W7irbH'],
+                            ['-sporkkey=6xLZdACFRA53uyxz8gKDLcgVrm5kUUEu2B3BUzWUxHqa2W7irbH'],
+                            ['-sporkkey=6xLZdACFRA53uyxz8gKDLcgVrm5kUUEu2B3BUzWUxHqa2W7irbH'],
+                            ['-sporkkey=6xLZdACFRA53uyxz8gKDLcgVrm5kUUEu2B3BUzWUxHqa2W7irbH'] ]
+
         self.setup_clean_chain = True
         self.num_nodes = 4
         self.players = []
@@ -101,6 +95,14 @@ class BettingTest(WagerrTestFramework):
             idx_l = n
             idx_r = n + 1 if n + 1 < self.num_nodes else 0
             assert_equal(self.nodes[idx_l].getblockcount(), self.nodes[idx_r].getblockcount())
+
+    def connect_and_sync_blocks(self):
+        for pair in [[n, n + 1 if n + 1 < self.num_nodes else 0] for n in range(self.num_nodes)]:
+            for i in range(len(pair)):
+                assert i < 2
+                self.nodes[pair[i]].addnode(self.get_local_peer(pair[1 - i]), "onetry")
+                wait_until(lambda:  all(peer['version'] != 0 for peer in self.nodes[pair[i]].getpeerinfo()))
+        sync_blocks(self.nodes)
 
     def setup_network(self):
         self.log.info("Setup Network")
@@ -130,6 +132,21 @@ class BettingTest(WagerrTestFramework):
             self.connect_network()
             return True
         return False
+
+    def is_spork_active(self, spork_name):
+        sporks = self.nodes[0].spork("active")
+        return sporks[spork_name]
+
+    def activate_spork(self, spork_name):
+        for node in self.nodes:
+            res = node.spork(spork_name, 1)
+            assert(res == "success")
+
+    def deactivate_spork(self, spork_name):
+        for node in self.nodes:
+            res = node.spork(spork_name, 4070908800)
+            assert(res == "success")
+
 
     def check_minting(self, block_count=250):
         self.log.info("Check Minting...")
@@ -577,6 +594,12 @@ class BettingTest(WagerrTestFramework):
         winnings = Decimal(player2_bet * self.odds_events[3]['awayOdds'])
         player2_expected_win = (winnings - ((winnings - player2_bet * ODDS_DIVISOR) / 1000 * BETX_PERMILLE)) / ODDS_DIVISOR
 
+        #self.log.info("Event Liability")
+        #pprint.pprint(self.nodes[0].geteventliability(3))
+        liability=self.nodes[0].geteventliability(3)
+        gotliability=liability["moneyline-away-liability"]
+        #self.log.info("Monyline Away %s" % liability["moneyline-away-liability"])
+        assert_equal(gotliability, Decimal(165))
         # place result for event 3: Team Liquid wins.
         result_opcode = make_result(3, STANDARD_RESULT, 0, 1)
         post_opcode(self.nodes[1], result_opcode, WGR_WALLET_EVENT['addr'])
@@ -634,8 +657,17 @@ class BettingTest(WagerrTestFramework):
         self.nodes[3].placebet(1, outcome_draw, player2_bet)
         winnings = Decimal(player2_bet * self.odds_events[1]['drawOdds'])
         player2_expected_win = (winnings - ((winnings - player2_bet * ODDS_DIVISOR) / 1000 * BETX_PERMILLE)) / ODDS_DIVISOR
-        #self.log.info("Winnings %d" % winnings)
-        #self.log.info("Expected Win %s" % player2_expected_win)
+
+        self.nodes[3].generate(1)
+        self.sync_all()
+
+        #self.log.info("Event Liability")
+        #pprint.pprint(self.nodes[0].geteventliability(1))
+        liability=self.nodes[0].geteventliability(1)
+        gotliability=liability["moneyline-draw-liability"]
+        assert_equal(gotliability, Decimal(1137))
+        gotliability=liability["moneyline-home-liability"]
+        assert_equal(gotliability, Decimal(312))
 
         # close event 1
         result_opcode = make_result(1, STANDARD_RESULT, 1, 1)
@@ -655,27 +687,11 @@ class BettingTest(WagerrTestFramework):
         height = block['height']
 
         self.sync_all()
-        #print("Player 1 Total Bet", player1_total_bet)
-        #print("Player 2 Total Bet", player2_total_bet)
-
 
         payoutsInfo = self.nodes[0].getpayoutinfosince(1)
 
-        #self.log.info("Listbets")
-        #pprint.pprint(listbets)
-        #self.log.info("Payouts Info")
-        #pprint.pprint(payoutsInfo)
-        # no payout info for losing bet
-        # check_bet_payouts_info(listbets, payoutsInfo)
-
         player1_balance_after = Decimal(self.nodes[2].getbalance())
         player2_balance_after = Decimal(self.nodes[3].getbalance())
-
-        #self.log.info("Player 1 Balance Before %s" % player1_balance_before)
-        #self.log.info("Player 1 Balance After %s" % player1_balance_after)
-        #self.log.info("Player 2 Balance Before %s" % player2_balance_before)
-        #self.log.info("Player 2 Balance After %s" % player2_balance_after)
-        #self.log.info("Player 2 Expected Win %d" % player2_balance_before + player2_expected_win)
 
         assert_equal((player1_balance_before - player1_expected_loss + player1_bet_cost), player1_balance_after)
         assert_equal(player2_balance_before + player2_expected_win, player2_balance_after)
@@ -683,7 +699,7 @@ class BettingTest(WagerrTestFramework):
         self.log.info("Money Line Bets Success")
 
     def check_spreads_bet(self):
-        self.log.info("Check Spreads Bets...")
+        self.log.info("Check Spread Bets...")
 
         global player1_total_bet
         global player2_total_bet
@@ -715,6 +731,15 @@ class BettingTest(WagerrTestFramework):
         self.nodes[3].placebet(0, outcome_spread_home, player2_bet)
         winnings = Decimal(player2_bet * ODDS_DIVISOR)
         player2_expected_win = (winnings - ((winnings - player2_bet * ODDS_DIVISOR) / 1000 * BETX_PERMILLE)) / ODDS_DIVISOR
+
+        #self.log.info("Event Liability")
+        #pprint.pprint(self.nodes[0].geteventliability(0))
+        liability=self.nodes[0].geteventliability(0)
+        gotliability=liability["moneyline-draw-liability"]
+        assert_equal(gotliability, Decimal(1137))
+        gotliability=liability["moneyline-home-liability"]
+        assert_equal(gotliability, Decimal(312))
+
 
         # place result for event 0: RM wins BARC with 2:0.
         result_opcode = make_result(0, STANDARD_RESULT, 2, 0)
@@ -749,10 +774,10 @@ class BettingTest(WagerrTestFramework):
         assert_equal(player1_balance_before + player1_expected_win, player1_balance_after)
         assert_equal(player2_balance_before + player2_expected_win, player2_balance_after)
 
-        self.log.info("Spreads Bets Success")
+        self.log.info("Spread Bets Success")
 
     def check_spreads_bet_v2(self):
-        self.log.info("Check Spreads Bets v2...")
+        self.log.info("Check Spread Bets v2...")
 
         global player1_total_bet
         global player2_total_bet
@@ -787,6 +812,18 @@ class BettingTest(WagerrTestFramework):
         winnings = Decimal(player2_bet * ODDS_DIVISOR)
         player2_expected_win = (winnings - ((winnings - player2_bet * ODDS_DIVISOR) / 1000 * BETX_PERMILLE)) / ODDS_DIVISOR
 
+        self.sync_all()
+        self.nodes[0].generate(1)
+        self.sync_all()
+
+        liability=self.nodes[0].geteventliability(4)
+        gotliability=liability["spread-away-liability"]
+        assert_equal(gotliability, Decimal(384))
+        gotliability=liability["spread-home-liability"]
+        assert_equal(gotliability, Decimal(557))
+        gotliability=liability["spread-push-liability"]
+        assert_equal(gotliability, Decimal(500))
+
         # place result for event 4:
         result_opcode = make_result(4, STANDARD_RESULT, 200, 0)
         post_opcode(self.nodes[1], result_opcode, WGR_WALLET_EVENT['addr'])
@@ -798,26 +835,14 @@ class BettingTest(WagerrTestFramework):
         player1_balance_before = Decimal(self.nodes[2].getbalance())
         player2_balance_before = Decimal(self.nodes[3].getbalance())
 
-        # print("player1 balance before: ", player1_balance_before)
-        # print("player1 exp win: ", player1_expected_win)
-        # print("player2 balance before: ", player2_balance_before)
-        # print("player2 exp win: ", player2_expected_win)
-
         # generate block with payouts
         blockhash = self.nodes[0].generate(1)[0]
         block = self.nodes[0].getblock(blockhash)
 
         self.sync_all()
-        #print("Player 1 Total Bet", player1_total_bet)
-        #print("Player 2 Total Bet", player2_total_bet)
-
-        # print(pprint.pformat(block))
 
         player1_balance_after = Decimal(self.nodes[2].getbalance())
         player2_balance_after = Decimal(self.nodes[3].getbalance())
-
-        # print("player1 balance after: ", player1_balance_after)
-        # print("player2 balance after: ", player2_balance_after)
 
         assert_equal(player1_balance_before + player1_expected_win, player1_balance_after)
         assert_equal(player2_balance_before + player2_expected_win, player2_balance_after)
@@ -848,10 +873,10 @@ class BettingTest(WagerrTestFramework):
         self.nodes[0].generate(1)
         self.sync_all()
 
-        self.log.info("Spreads Bets v2 Success")
+        self.log.info("Spread Bets v2 Success")
 
     def check_totals_bet(self):
-        self.log.info("Check Totals Bets...")
+        self.log.info("Check Total Bets...")
 
         global player1_total_bet
         global player2_total_bet
@@ -882,6 +907,14 @@ class BettingTest(WagerrTestFramework):
         self.nodes[3].placebet(2, outcome_total_under, player2_bet)
         winnings = Decimal(player2_bet * 17000)
         player2_expected_win = (winnings - ((winnings - player2_bet * ODDS_DIVISOR) / 1000 * BETX_PERMILLE)) / ODDS_DIVISOR
+
+        #self.log.info("Event Liability")
+        #pprint.pprint(self.nodes[0].geteventliability(2))
+        liability=self.nodes[0].geteventliability(2)
+        gotliability=liability["total-over-liability"]
+        assert_equal(gotliability, Decimal(406))
+        gotliability=liability["total-push-liability"]
+        assert_equal(gotliability, Decimal(200))
 
         # place result for event 2: Gambit wins with score 11:16
         result_opcode = make_result(2, STANDARD_RESULT, 11, 16)
@@ -915,7 +948,7 @@ class BettingTest(WagerrTestFramework):
         assert_equal(player1_balance_before + player1_expected_win, player1_balance_after)
         assert_equal(player2_balance_before + player2_expected_win, player2_balance_after)
 
-        self.log.info("Totals Bets Success")
+        self.log.info("Total Bets Success")
 
     def check_parlays_bet(self):
         self.log.info("Check Parlay Bets...")
@@ -924,12 +957,12 @@ class BettingTest(WagerrTestFramework):
         global player2_total_bet
 
         # add new events
-        # 4: CSGO - PGL Major Krakow - Astralis vs Gambit round2
+        # 5: CSGO - PGL Major Krakow - Astralis vs Gambit round1
         mlevent = make_event(5, # Event ID
                             self.start_time, # start time = current + hour
                             sport_names.index("CSGO"), # Sport ID
                             tournament_names.index("PGL Major Krakow"), # Tournament ID
-                            round_names.index("round2"), # Round ID
+                            round_names.index("round1"), # Round ID
                             team_names.index("Astralis"), # Home Team
                             team_names.index("Gambit"), # Away Team
                             14000, # home odds
@@ -938,12 +971,12 @@ class BettingTest(WagerrTestFramework):
         self.odds_events.append({'homeOdds': 14000, 'awayOdds': 33000, 'drawOdds': 0})
         post_opcode(self.nodes[1], mlevent, WGR_WALLET_EVENT['addr'])
 
-        # 5: CSGO - PGL Major Krakow - Astralis vs Gambit round3
+        # 6: CSGO - PGL Major Krakow - Astralis vs Gambit round1
         mlevent = make_event(6, # Event ID
                             self.start_time, # start time = current + hour
                             sport_names.index("CSGO"), # Sport ID
                             tournament_names.index("PGL Major Krakow"), # Tournament ID
-                            round_names.index("round3"), # Round ID
+                            round_names.index("round1"), # Round ID
                             team_names.index("Astralis"), # Home Team
                             team_names.index("Gambit"), # Away Team
                             14000, # home odds
@@ -952,8 +985,22 @@ class BettingTest(WagerrTestFramework):
         self.odds_events.append({'homeOdds': 14000, 'awayOdds': 33000, 'drawOdds': 0})
         post_opcode(self.nodes[1], mlevent, WGR_WALLET_EVENT['addr'])
 
-        # 6: Football - UEFA Champions League - Barcelona vs Real Madrid round2
+        # 7: Football - UEFA Champions League - Barcelona vs Real Madrid round1
         mlevent = make_event(7, # Event ID
+                            self.start_time, # start time = current + hour
+                            sport_names.index("Football"), # Sport ID
+                            tournament_names.index("UEFA Champions League"), # Tournament ID
+                            round_names.index("round1"), # Round ID
+                            team_names.index("Barcelona"), # Home Team
+                            team_names.index("Real Madrid"), # Away Team
+                            14000, # home odds
+                            33000, # away odds
+                            0) # draw odds
+        self.odds_events.append({'homeOdds': 14000, 'awayOdds': 33000, 'drawOdds': 0})
+        post_opcode(self.nodes[1], mlevent, WGR_WALLET_EVENT['addr'])
+
+        # 81: Football - UEFA Champions League - Barcelona vs Real Madrid round2
+        mlevent = make_event(81, # Event ID
                             self.start_time, # start time = current + hour
                             sport_names.index("Football"), # Sport ID
                             tournament_names.index("UEFA Champions League"), # Tournament ID
@@ -970,14 +1017,31 @@ class BettingTest(WagerrTestFramework):
         self.nodes[0].generate(1)
         self.sync_all()
 
-        # player 1 make express to events 4, 5, 6 - home win
+         # player 1 make express to nonexistent events
+        assert_raises_rpc_error(-31, "Error: there is no such Event: 501", self.nodes[2].placeparlaybet,
+            [
+                {'eventId': 5, 'outcome': outcome_home_win},
+                {'eventId': 6, 'outcome': outcome_home_win},
+                {'eventId': 501, 'outcome': outcome_home_win} # failed
+            ], 100)
+
+        # player 1 make express to events 6, 7, 81 - home win
+        player1_bet = 200
+        assert_raises_rpc_error(-31, "Error: event 81 cannot be part of parlay bet", self.nodes[2].placeparlaybet,
+            [
+                {'eventId': 6, 'outcome': outcome_home_win},
+                {'eventId': 7, 'outcome': outcome_home_win},
+                {'eventId': 81, 'outcome': outcome_home_win} # failed (round == 1 detected)
+            ], player1_bet)
+
+        # player 1 make express to events 5, 6, 7 - home win
         player1_bet = 200
         player1_total_bet = player1_total_bet + player1_bet
         # 26051 - it is early calculated effective odds for this parlay bet
         player1_expected_win = Decimal(player1_bet * 26051) / ODDS_DIVISOR
         self.nodes[2].placeparlaybet([{'eventId': 5, 'outcome': outcome_home_win}, {'eventId': 6, 'outcome': outcome_home_win}, {'eventId': 7, 'outcome': outcome_home_win}], player1_bet)
 
-        # player 2 make express to events 4, 5, 6 - home win
+        # player 2 make express to events 5, 6, 7 - home win
         player2_bet = 500
         player2_total_bet = player2_total_bet + player2_bet
         # 26051 - it is early calculated effective odds for this parlay bet
@@ -987,6 +1051,22 @@ class BettingTest(WagerrTestFramework):
         self.sync_all()
         self.nodes[0].generate(1)
         self.sync_all()
+
+        #self.log.info("Event Liability")
+        #pprint.pprint(self.nodes[0].geteventliability(5))
+        liability=self.nodes[0].geteventliability(5)
+        gotliability=liability["moneyline-home-bets"]
+        assert_equal(gotliability, Decimal(2))
+        #self.log.info("Event Liability")
+        #pprint.pprint(self.nodes[0].geteventliability(6))
+        liability=self.nodes[0].geteventliability(6)
+        gotliability=liability["moneyline-home-bets"]
+        assert_equal(gotliability, Decimal(2))
+        #pprint.pprint(self.nodes[0].geteventliability(7))
+        liability=self.nodes[0].geteventliability(7)
+        gotliability=liability["moneyline-home-bets"]
+        assert_equal(gotliability, Decimal(2))
+
 
         # place result for event 4: Astralis wins with score 16:9
         result_opcode = make_result(5, STANDARD_RESULT, 16, 9)
@@ -1033,7 +1113,7 @@ class BettingTest(WagerrTestFramework):
         # bets to resulted events shouldn't accepted to memory pool after parlay starting height
         assert_raises_rpc_error(-4, "Error: The transaction was rejected! This might happen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.", self.nodes[2].placebet, 3, outcome_away_win, 1000)
         # bets to nonexistent events shouldn't accepted to memory pool
-        assert_raises_rpc_error(-4, "Error: The transaction was rejected! This might happen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.", self.nodes[3].placeparlaybet, [{'eventId': 7, 'outcome': outcome_home_win}, {'eventId': 8, 'outcome': outcome_home_win}, {'eventId': 9, 'outcome': outcome_home_win}], 5000)
+        assert_raises_rpc_error(-31, "Error: there is no such Event: {}".format(800), self.nodes[3].placeparlaybet, [{'eventId': 7, 'outcome': outcome_home_win}, {'eventId': 800, 'outcome': outcome_home_win}, {'eventId': 9, 'outcome': outcome_home_win}], 5000)
 
         # creating existed mapping
         mapping_opcode = make_mapping(TEAM_MAPPING, 0, "anotherTeamName")
@@ -1070,7 +1150,7 @@ class BettingTest(WagerrTestFramework):
 
         # add new event with time = 2 mins to go
         self.start_time = int(time.time() + 60 * 2)
-        # 7: CSGO - PGL Major Krakow - Astralis vs Gambit round3
+        # 8: CSGO - PGL Major Krakow - Astralis vs Gambit round3
         mlevent = make_event(8, # Event ID
                             self.start_time, # start time = current + 2 mins
                             sport_names.index("CSGO"), # Sport ID
@@ -1086,7 +1166,6 @@ class BettingTest(WagerrTestFramework):
         self.sync_all()
         self.nodes[0].generate(1)
         self.sync_all()
-
         # player 1 bet to Team Gambit with odds 34000 but bet will be refunded
         player1_bet = 1000
         player1_total_bet = player1_total_bet + player1_bet
@@ -1133,7 +1212,7 @@ class BettingTest(WagerrTestFramework):
         self.log.info("Timecut Refund Success")
 
     def check_asian_spreads_bet(self):
-        self.log.info("Check Asian Spreads Bets...")
+        self.log.info("Check Asian Spread Bets...")
 
         global player1_total_bet
         global player2_total_bet
@@ -1188,6 +1267,14 @@ class BettingTest(WagerrTestFramework):
         winnings = Decimal(player2_bet * 0.5 * ODDS_DIVISOR)
         player2_expected_win = winnings / ODDS_DIVISOR
 
+        #self.log.info("Event Liability")
+        #pprint.pprint(self.nodes[0].geteventliability(9))
+        liability=self.nodes[0].geteventliability(9)
+        gotliability=liability["spread-home-liability"]
+        assert_equal(gotliability, Decimal(550))
+        gotliability=liability["spread-push-liability"]
+        assert_equal(gotliability, Decimal(400))
+
         # place result for event 9:
         result_opcode = make_result(9, STANDARD_RESULT, 100, 0)
         post_opcode(self.nodes[1], result_opcode, WGR_WALLET_EVENT['addr'])
@@ -1199,31 +1286,19 @@ class BettingTest(WagerrTestFramework):
         player1_balance_before = Decimal(self.nodes[2].getbalance())
         player2_balance_before = Decimal(self.nodes[3].getbalance())
 
-        # print("player1 balance before: ", player1_balance_before)
-        # print("player1 exp win: ", player1_expected_win)
-        # print("player2 balance before: ", player2_balance_before)
-        # print("player2 exp win: ", player2_expected_win)
-
         # generate block with payouts
         blockhash = self.nodes[0].generate(1)[0]
         block = self.nodes[0].getblock(blockhash)
 
         self.sync_all()
-        #print("Player 1 Total Bet", player1_total_bet)
-        #print("Player 2 Total Bet", player2_total_bet)
-
-        # print(pprint.pformat(block))
 
         player1_balance_after = Decimal(self.nodes[2].getbalance())
         player2_balance_after = Decimal(self.nodes[3].getbalance())
 
-        # print("player1 balance after: ", player1_balance_after)
-        # print("player2 balance after: ", player2_balance_after)
-
         assert_equal(player1_balance_before + player1_expected_win, player1_balance_after)
         assert_equal(player2_balance_before + player2_expected_win, player2_balance_after)
 
-        self.log.info("Asian Spreads Bets Success")
+        self.log.info("Asian Spread Bets Success")
 
 
     #
@@ -1320,15 +1395,13 @@ class BettingTest(WagerrTestFramework):
         self.nodes[0].generate(1)
         self.sync_all()
         self.log.info("Events after updating")
-        pprint.pprint(self.nodes[0].listevents())
 
         # Place Bet to ML Home Win
         player1_bet = 150
         player1_total_bet = player1_total_bet + player1_bet
         self.nodes[2].placebet(10, outcome_home_win, player1_bet)
         winnings = Decimal(player1_bet * self.odds_events[0]['homeOdds'])
-        pprint.pprint(winnings)
-        pprint.pprint(player1_expected_win)
+
         player1_expected_win = player1_expected_win + ((winnings - ((winnings - player1_bet * ODDS_DIVISOR) / 1000 * BETX_PERMILLE)) / ODDS_DIVISOR)
 
         self.sync_all()
@@ -1413,32 +1486,14 @@ class BettingTest(WagerrTestFramework):
         player1_balance_before = Decimal(self.nodes[2].getbalance())
         player2_balance_before = Decimal(self.nodes[3].getbalance())
 
-        #print("player1 balance before: ", player1_balance_before)
-        #print("player1 exp win: ", player1_expected_win)
-        #print("player2 balance before: ", player2_balance_before)
-        #print("player2 exp win: ", player2_expected_win)
-
         # generate block with payouts
         blockhash = self.nodes[0].generate(1)[0]
         block = self.nodes[0].getblock(blockhash)
-        #should be block height 304
-        #self.log.info("Block Height %s " % self.nodes[0].getblockcount())
 
         self.sync_all()
-        #time.sleep(2000)
-        #print("Player 1 Total Bet", player1_total_bet)
-        #print("Player 2 Total Bet", player2_total_bet)
-
-        # print(pprint.pformat(block))
 
         player1_balance_after = Decimal(self.nodes[2].getbalance())
         player2_balance_after = Decimal(self.nodes[3].getbalance())
-
-        #print("player1 balance after: ", player1_balance_after)
-        #print("Player 1 total bet: ", player1_total_bet)
-        #print("player2 balance after: ", player2_balance_after)
-        #print("Player 2 total bet: ", player2_total_bet)
-
 
         assert_equal(player1_balance_before + player1_expected_win, player1_balance_after)
         assert_equal(player2_balance_before + player2_expected_win, player2_balance_after)
@@ -1493,10 +1548,252 @@ class BettingTest(WagerrTestFramework):
         #self.log.info("Total Amount Won Player 2 %s" % betpay2)
         assert_equal(round(Decimal(betpay2), 8), round(Decimal(3546.35000000), 8))
 
+        self.log.info("Debug Events")
+        pprint.pprint(self.nodes[0].listeventsdebug())
+
+        self.log.info("All Bets")
+        allbets=self.nodes[0].getallbets()
+        #pprint.pprint(len(allbets))
+        bettxid=allbets[0]["betTxHash"]
+
+        self.log.info("Bet 0 by getbet")
+        bet0=self.nodes[0].getbet(bettxid, True)
+        pprint.pprint(bet0)
+        self.log.info("Bet 0 by getbetbytxid")
+        bet1=self.nodes[0].getbetbytxid(bettxid)
+        pprint.pprint(bet1)
+        assert_equal(bet0["amount"], bet1[0]["amount"])
+        assert_equal(bet0["result"], bet1[0]["betResultType"])
+        assert_equal(bet0["tx-id"], bet1[0]["betTxHash"])
+
+        #time.sleep(2000)
+        ###
+        ## Not wroking TODO Fix it
+        ###
+        #self.log.info("Get Payout Info")
+        #payinfo={"txhash":bettxid, "nOut":1}
+        #pprint.pprint(self.nodes[0].getpayoutinfo([payinfo]))
+
         self.log.info("Check Bets Success")
+
+    def check_zero_odds_bet(self):
+        self.log.info("Check Zero Odds Bets...")
+
+        event_id = 12
+        mlevent = make_event(12, # Event ID
+                    int(time.time()) + 60*60, # start time = current + hour
+                    sport_names.index("V2-V3 Sport"), # Sport ID
+                    tournament_names.index("V2-V3 Tournament"), # Tournament ID
+                    round_names.index("round1"), # Round ID
+                    team_names.index("V2-V3 Team1"), # Home Team
+                    team_names.index("V2-V3 Team2"), # Away Team
+                    16000, # home odds
+                    0, # away odds
+                    80000) # draw odds
+        post_opcode(self.nodes[1], mlevent, WGR_WALLET_EVENT['addr'])
+
+        self.sync_all()
+        self.nodes[0].generate(1)
+        self.sync_all()
+
+        assert_raises_rpc_error(-31, "Error: potential odds is zero for event: {} outcome: {}".format(event_id, outcome_away_win),
+            self.nodes[1].placebet, event_id, outcome_away_win, 100)
+
+        self.nodes[2].placebet(event_id, outcome_home_win, 25)
+        self.sync_all()
+        self.nodes[0].generate(1)
+        self.sync_all()
+
+        assert_raises_rpc_error(-31, "Error: potential odds is zero for event: {} outcome: {}".format(event_id, outcome_away_win),
+            self.nodes[1].placeparlaybet, [{'eventId':event_id, 'outcome': outcome_away_win}], 100)
+        assert_raises_rpc_error(-31, "Error: potential odds is zero for event: {} outcome: {}".format(event_id, outcome_away_win),
+            self.nodes[1].placeparlaybet, [{'eventId': 2, 'outcome': outcome_home_win}, {'eventId':event_id, 'outcome': outcome_away_win}], 100)
+
+        self.nodes[2].placeparlaybet([{'eventId':event_id, 'outcome': outcome_home_win}], 25)
+        self.sync_all()
+        self.nodes[0].generate(1)
+        self.sync_all()
+
+        homeOdds = 0
+        awayOdds = 0
+        drawOdds = 0
+        update_odds_opcode = make_update_ml_odds(event_id,
+                                                homeOdds,
+                                                awayOdds,
+                                                drawOdds)
+        post_opcode(self.nodes[1], update_odds_opcode, WGR_WALLET_EVENT['addr'])
+        self.sync_all()
+        self.nodes[0].generate(1)
+        self.sync_all()
+
+        assert_raises_rpc_error(-31, "Error: potential odds is zero for event: {} outcome: {}".format(event_id, outcome_away_win),
+            self.nodes[1].placebet, event_id, outcome_away_win, 100)
+        assert_raises_rpc_error(-31, "Error: potential odds is zero for event: {} outcome: {}".format(event_id, outcome_home_win),
+            self.nodes[1].placebet, event_id, outcome_home_win, 100)
+        assert_raises_rpc_error(-31, "Error: potential odds is zero for event: {} outcome: {}".format(event_id, outcome_draw),
+            self.nodes[1].placebet, event_id, outcome_draw, 100)
+
+        assert_raises_rpc_error(-31, "Error: potential odds is zero for event: {} outcome: {}".format(event_id, outcome_away_win),
+            self.nodes[1].placeparlaybet, [{'eventId': 2, 'outcome': outcome_home_win}, {'eventId':event_id, 'outcome': outcome_away_win}], 100)
+        assert_raises_rpc_error(-31, "Error: potential odds is zero for event: {} outcome: {}".format(event_id, outcome_home_win),
+            self.nodes[1].placeparlaybet, [{'eventId': 2, 'outcome': outcome_home_win}, {'eventId':event_id, 'outcome': outcome_home_win}], 100)
+        assert_raises_rpc_error(-31, "Error: potential odds is zero for event: {} outcome: {}".format(event_id, outcome_draw),
+            self.nodes[1].placeparlaybet, [{'eventId': 2, 'outcome': outcome_home_win}, {'eventId':event_id, 'outcome': outcome_draw}], 100)
+
+        self.log.info("Check Zero Odds Bets Success")
+
+    def check_zeroing_odds(self):
+        self.log.info("Check zeroing odds...")
+
+        saved_events = {}
+        for i, node in enumerate(self.nodes):
+            saved_events[i] = {}
+            for event in node.listevents():
+                saved_events[i][event['event_id']] = event
+
+        self.stop_node(3)
+
+        for i, node in enumerate(self.nodes[:3]):
+            for event in node.listevents():
+                # 0 mean ml odds in odds array
+                assert_equal(event['odds'][0]['mlHome'], saved_events[i][event['event_id']]['odds'][0]['mlHome'])
+                assert_equal(event['odds'][0]['mlAway'], saved_events[i][event['event_id']]['odds'][0]['mlAway'])
+                assert_equal(event['odds'][0]['mlDraw'], saved_events[i][event['event_id']]['odds'][0]['mlDraw'])
+                # 1 mean spreads odds in odds array
+                assert_equal(event['odds'][1]['spreadHome'], saved_events[i][event['event_id']]['odds'][1]['spreadHome'])
+                assert_equal(event['odds'][1]['spreadAway'], saved_events[i][event['event_id']]['odds'][1]['spreadAway'])
+                # 2 mean totals odds in odds array
+                assert_equal(event['odds'][2]['totalsOver'],  saved_events[i][event['event_id']]['odds'][2]['totalsOver'])
+                assert_equal(event['odds'][2]['totalsUnder'], saved_events[i][event['event_id']]['odds'][2]['totalsUnder'])
+
+        event_ids = []
+        for event in self.nodes[0].listevents():
+            event_ids.append(event['event_id'])
+
+        zeroing_odds_opcode = make_zeroing_odds(event_ids)
+        post_opcode(self.nodes[1], zeroing_odds_opcode, WGR_WALLET_EVENT['addr'])
+
+        self.sync_all([ self.nodes[:3] ])
+        self.nodes[0].generate(1)
+        self.sync_all([ self.nodes[:3] ])
+
+        for node in self.nodes[:3]:
+            for event in node.listevents():
+                # 0 mean ml odds in odds array
+                assert_equal(event['odds'][0]['mlHome'], 0)
+                assert_equal(event['odds'][0]['mlAway'], 0)
+                assert_equal(event['odds'][0]['mlDraw'], 0)
+                # 1 mean spreads odds in odds array
+                assert_equal(event['odds'][1]['spreadHome'], 0)
+                assert_equal(event['odds'][1]['spreadAway'], 0)
+                # 2 mean totals odds in odds array
+                assert_equal(event['odds'][2]['totalsOver'], 0)
+                assert_equal(event['odds'][2]['totalsUnder'], 0)
+
+        self.log.info("Reverting...")
+        self.nodes[3].rpchost = self.get_local_peer(3, True)
+        self.nodes[3].start()
+        self.nodes[3].wait_for_rpc_connection()
+
+        self.log.info("Generate blocks...")
+        for i in range(5):
+            self.nodes[3].generate(1)
+
+        for event in self.nodes[3].listevents():
+            # 0 mean ml odds in odds array
+            assert_equal(event['odds'][0]['mlHome'], saved_events[3][event['event_id']]['odds'][0]['mlHome'])
+            assert_equal(event['odds'][0]['mlAway'], saved_events[3][event['event_id']]['odds'][0]['mlAway'])
+            assert_equal(event['odds'][0]['mlDraw'], saved_events[3][event['event_id']]['odds'][0]['mlDraw'])
+            # 1 mean spreads odds in odds array
+            assert_equal(event['odds'][1]['spreadHome'], saved_events[3][event['event_id']]['odds'][1]['spreadHome'])
+            assert_equal(event['odds'][1]['spreadAway'], saved_events[3][event['event_id']]['odds'][1]['spreadAway'])
+            # 2 mean totals odds in odds array
+            assert_equal(event['odds'][2]['totalsOver'],  saved_events[3][event['event_id']]['odds'][2]['totalsOver'])
+            assert_equal(event['odds'][2]['totalsUnder'], saved_events[3][event['event_id']]['odds'][2]['totalsUnder'])
+
+        self.log.info("Connect and sync nodes...")
+        self.connect_and_sync_blocks()
+
+        for i, node in enumerate(self.nodes):
+            for event in node.listevents():
+                assert_equal(event['odds'][0]['mlHome'], saved_events[i][event['event_id']]['odds'][0]['mlHome'])
+                assert_equal(event['odds'][0]['mlAway'], saved_events[i][event['event_id']]['odds'][0]['mlAway'])
+                assert_equal(event['odds'][0]['mlDraw'], saved_events[i][event['event_id']]['odds'][0]['mlDraw'])
+                # 1 mean spreads odds in odds array
+                assert_equal(event['odds'][1]['spreadHome'], saved_events[i][event['event_id']]['odds'][1]['spreadHome'])
+                assert_equal(event['odds'][1]['spreadAway'], saved_events[i][event['event_id']]['odds'][1]['spreadAway'])
+                # 2 mean totals odds in odds array
+                assert_equal(event['odds'][2]['totalsOver'],  saved_events[i][event['event_id']]['odds'][2]['totalsOver'])
+                assert_equal(event['odds'][2]['totalsUnder'], saved_events[i][event['event_id']]['odds'][2]['totalsUnder'])
+
+        self.log.info("Check zeroing odds Success")
+
+    def check_closing_event(self):
+
+        self.log.info("Check closing event opcode...")
+
+        event_id = 13
+        mlevent = make_event(event_id, # Event ID
+                    int(time.time()) + 60*60, # start time = current + hour
+                    sport_names.index("V2-V3 Sport"), # Sport ID
+                    tournament_names.index("V2-V3 Tournament"), # Tournament ID
+                    round_names.index("round1"), # Round ID
+                    team_names.index("V2-V3 Team1"), # Home Team
+                    team_names.index("V2-V3 Team2"), # Away Team
+                    16000, # home odds
+                    20000, # away odds
+                    80000) # draw odds
+        post_opcode(self.nodes[1], mlevent, WGR_WALLET_EVENT['addr'])
+
+        self.nodes[0].generate(1)
+        self.sync_all()
+
+        self.nodes[2].placebet(event_id, outcome_home_win, 25)
+
+        self.sync_all()
+        self.nodes[0].generate(1)
+        self.sync_all()
+
+        player1_balance = self.nodes[2].getbalance()
+
+        # get opened events only
+        opened_events = self.nodes[0].listevents(True)
+
+        start_height = self.nodes[3].getblockcount()
+
+        # stop node fo reventing
+        self.stop_node(3)
+
+        # close all events
+        for event in opened_events:
+            result_opcode = make_result(event['event_id'], EVENT_CLOSED, 0, 0)
+            post_opcode(self.nodes[1], result_opcode, WGR_WALLET_EVENT['addr'])
+
+        self.nodes[0].generate(1)
+        self.sync_all([ self.nodes[:3] ])
+        self.nodes[0].generate(1)
+        self.sync_all([ self.nodes[:3] ])
+
+        assert_equal(len(self.nodes[0].listevents(True)), 0)
+        assert_equal(player1_balance, self.nodes[2].getbalance())
+
+        blocks = self.nodes[1].getblockcount() - start_height + 1
+
+        self.nodes[3].rpchost = self.get_local_peer(3, True)
+        self.nodes[3].start()
+        self.nodes[3].wait_for_rpc_connection()
+
+        self.log.info("Generate blocks...")
+        self.nodes[3].generate(blocks)
+        self.connect_and_sync_blocks()
+
+        assert_equal(self.nodes[0].listevents(True), opened_events)
+
+        self.log.info("Check closing event Success")
 
     def run_test(self):
         self.check_minting()
+        # Chain height = 300 after minting -> v4 protocol active
         self.check_mapping()
         self.check_event()
         self.check_event_patch()
@@ -1520,6 +1817,9 @@ class BettingTest(WagerrTestFramework):
         self.check_timecut_refund()
         self.check_asian_spreads_bet()
         self.check_bets()
+        self.check_zero_odds_bet()
+        self.check_zeroing_odds()
+        self.check_closing_event()
 
 if __name__ == '__main__':
     BettingTest().main()
