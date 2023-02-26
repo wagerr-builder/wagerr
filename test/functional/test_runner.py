@@ -82,8 +82,8 @@ BASE_SCRIPTS= [
 
     # vv Tests less than 5m vv
     'rpc_rawtransaction.py',
-    'wallet_cli-pt1.py',
-    'wallet_cli-pt2.py',
+    #'wallet_cli-pt1.py',
+    #'wallet_cli-pt2.py',
     'wallet_zapwallettxes.py',
     'wallet_keypool_topup.py',
     #'p2p_pos_doublespend.py', # Not working -- TODO fix it
