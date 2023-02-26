@@ -32,6 +32,8 @@ from .util import (
     sync_mempools,
 )
 
+WAGERR_AUTH_ADDR = "TJA37d7KPVmd5Lqa2EcQsptcfLYsQ1Qcfk"
+
 class TestStatus(Enum):
     PASSED = 1
     FAILED = 2
@@ -40,6 +42,8 @@ class TestStatus(Enum):
 TEST_EXIT_PASSED = 0
 TEST_EXIT_FAILED = 1
 TEST_EXIT_SKIPPED = 77
+
+GENESISTIME = 1524496462
 
 class BitcoinTestFramework():
     """Base class for a wagerr test script.
@@ -336,7 +340,7 @@ class BitcoinTestFramework():
         For backwared compatibility of the python scripts with previous
         versions of the cache, this helper function sets mocktime to Jan 1,
         2014 + (201 * 10 * 60)"""
-        self.mocktime = 1454124732 + (201 * 10 * 60)
+        self.mocktime = GENESISTIME + (201 * 10 * 60)
 
     def disable_mocktime(self):
         self.mocktime = 0
