@@ -71,6 +71,8 @@ from test_framework.messages import (
 )
 from test_framework.util import wait_until
 
+COIN = 100000000 # 1 btc in satoshis
+
 MSG_TX = 1
 MSG_BLOCK = 2
 MSG_TYPE_MASK = 0xffffffff >> 2
