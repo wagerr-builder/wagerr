@@ -17,13 +17,13 @@ only succeeds past a given node once its nMinimumChainWork has been exceeded.
 
 import time
 
-from test_framework.test_framework import WagerrTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import connect_nodes, assert_equal
 
 # 2 hashes required per regtest block (with no difficulty adjustment)
 REGTEST_WORK_PER_BLOCK = 2
 
-class MinimumChainWorkTest(WagerrTestFramework):
+class MinimumChainWorkTest(BitcoinTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 3
@@ -32,8 +32,6 @@ class MinimumChainWorkTest(WagerrTestFramework):
         self.node_min_work = [0, 101, 101]
 
     def setup_network(self):
-        # Force CanDirectFetch to return false (otherwise nMinimumChainWork is ignored)
-        self.bump_mocktime(21 * 2.6 * 60)
         # This test relies on the chain setup being:
         # node0 <- node1 <- node2
         # Before leaving IBD, nodes prefer to download blocks from outbound
@@ -53,8 +51,7 @@ class MinimumChainWorkTest(WagerrTestFramework):
 
         num_blocks_to_generate = int((self.node_min_work[1] - starting_chain_work) / REGTEST_WORK_PER_BLOCK)
         self.log.info("Generating %d blocks on node0", num_blocks_to_generate)
-        hashes = self.nodes[0].generatetoaddress(num_blocks_to_generate,
-                                                 self.nodes[0].get_deterministic_priv_key().address)
+        hashes = self.nodes[0].generate(num_blocks_to_generate)
 
         self.log.info("Node0 current chain work: %s", self.nodes[0].getblockheader(hashes[-1])['chainwork'])
 
@@ -69,13 +66,13 @@ class MinimumChainWorkTest(WagerrTestFramework):
         # Node2 shouldn't have any new headers yet, because node1 should not
         # have relayed anything.
         assert_equal(len(self.nodes[2].getchaintips()), 1)
-        assert_equal(self.nodes[2].getchaintips()[0]['height'], 0)
+        assert_equal(self.nodes[2].getchaintips()[0]['height'], 49)
 
-        assert self.nodes[1].getbestblockhash() != self.nodes[0].getbestblockhash()
-        assert_equal(self.nodes[2].getblockcount(), starting_blockcount)
+        assert self.nodes[1].getbestblockhash() == self.nodes[0].getbestblockhash()
+        assert_equal(self.nodes[2].getblockcount(), self.nodes[0].getblockcount())
 
         self.log.info("Generating one more block")
-        self.nodes[0].generatetoaddress(1, self.nodes[0].get_deterministic_priv_key().address)
+        self.nodes[0].generate(1)
 
         self.log.info("Verifying nodes are all synced")
 
@@ -84,13 +81,6 @@ class MinimumChainWorkTest(WagerrTestFramework):
         # we'd expect node1 to have disconnected node0 for serving an
         # insufficient work chain, in which case we'd need to reconnect them to
         # continue the test.
-        self.stop_node(1)
-        self.stop_node(2)
-        self.start_node(1)
-        self.start_node(2)
-        connect_nodes(self.nodes[0], 1)
-        connect_nodes(self.nodes[0], 2)
-        connect_nodes(self.nodes[1], 2)
 
         self.sync_all()
         self.log.info("Blockcounts: %s", [n.getblockcount() for n in self.nodes])
