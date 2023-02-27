@@ -162,8 +162,10 @@ class BettingTest(WagerrTestFramework):
 
         self.nodes[0].generate(51)
 
-        self.restart_node(1)
-        self.sync_all()
+        for r in range(self.num_nodes):
+            self.restart_node(r)
+
+        #self.sync_all()
 
         for n in range(self.num_nodes):
             assert_equal( self.nodes[n].getblockcount(), 300)
