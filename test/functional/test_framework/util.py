@@ -211,8 +211,8 @@ def EncodeDecimal(o):
 def count_bytes(hex_string):
     return len(bytearray.fromhex(hex_string))
 
-def count_bytes(hex_string):
-    return len(bytearray.fromhex(hex_string))
+def bytes_to_hex_str(byte_str):
+    return hexlify(byte_str).decode('ascii')
 
 def hash256(byte_str):
     sha256 = hashlib.sha256()
