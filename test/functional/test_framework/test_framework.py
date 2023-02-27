@@ -45,7 +45,27 @@ TEST_EXIT_SKIPPED = 77
 
 TIME_GENESIS_BLOCK = 1524496462
 
-class WagerrTestFramework():
+class WagerrTestMetaClass(type):
+    """Metaclass for WagerrTestFramework.
+
+    Ensures that any attempt to register a subclass of `WagerrTestFramework`
+    adheres to a standard whereby the subclass overrides `set_test_params` and
+    `run_test` but DOES NOT override either `__init__` or `main`. If any of
+    those standards are violated, a ``TypeError`` is raised."""
+
+    def __new__(cls, clsname, bases, dct):
+        if not clsname == 'WagerrTestFramework':
+            if not ('run_test' in dct and 'set_test_params' in dct):
+                raise TypeError("WagerrTestFramework subclasses must override "
+                                "'run_test' and 'set_test_params'")
+            if '__init__' in dct or 'main' in dct:
+                raise TypeError("WagerrTestFramework subclasses may not override "
+                                "'__init__' or 'main'")
+
+        return super().__new__(cls, clsname, bases, dct)
+
+
+class WagerrTestFramework(metaclass=WagerrTestMetaClass):
     """Base class for a wagerr test script.
 
     Individual wagerr test scripts should subclass this class and override the set_test_params() and run_test() methods.
