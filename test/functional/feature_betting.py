@@ -12,7 +12,7 @@
 from test_framework.betting_opcode import *
 from test_framework.authproxy import JSONRPCException
 from test_framework.test_framework import WagerrTestFramework
-from test_framework.util import wait_until, rpc_port, assert_equal, assert_raises_rpc_error
+from test_framework.util import wait_until, rpc_port, assert_equal, assert_raises_rpc_error, connect_nodes_bi
 from distutils.dir_util import copy_tree, remove_tree
 from decimal import *
 import pprint
@@ -164,7 +164,7 @@ class BettingTest(WagerrTestFramework):
 
         for r in range(self.num_nodes):
             self.restart_node(r)
-        self.connect_nodes_bi(self.nodes, 0, 1)
+        connect_nodes_bi(self.nodes, 0, 1)
         self.connect_nodes_bi(self.nodes, 0, 2)
         self.connect_nodes_bi(self.nodes, 0, 3)
         #self.sync_all()
