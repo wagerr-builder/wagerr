@@ -165,6 +165,10 @@ class BettingTest(WagerrTestFramework):
         for r in range(self.num_nodes):
             self.restart_node(r)
 
+        for c in range(self.num_nodes - 1):
+            self.connect_nodes(self.nodes[0], c + 1)
+            self.connect_nodes(self.nodes[0], c + 1)
+            self.connect_nodes(self.nodes[0], c + 1)
         #self.sync_all()
 
         for n in range(self.num_nodes):
