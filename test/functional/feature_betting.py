@@ -888,9 +888,7 @@ class BettingTest(WagerrTestFramework):
         self.log.info("Check Total Bets...")
 
         global player1_total_bet
-        player1_total_bet = 0
         global player2_total_bet
-        player2_total_bet = 0
 
         assert_raises_rpc_error(-131, "Incorrect bet amount. Please ensure your bet is between 25 - 10000 WGR inclusive.", self.nodes[2].placebet, 2, outcome_total_over, 24)
         assert_raises_rpc_error(-131, "Incorrect bet amount. Please ensure your bet is between 25 - 10000 WGR inclusive.", self.nodes[2].placebet, 2, outcome_total_over, 10001)
@@ -1812,7 +1810,7 @@ class BettingTest(WagerrTestFramework):
         self.check_spread_event()
         self.check_spread_event_v2()
         self.check_total_event()
-        # self.check_ml_bet()
+        self.check_ml_bet()
         # disable check spreads bets v1, becouse new spread system
         # uses spreads v1 before wagerr v3 prot, but regtest uses wagerr v3 prot
         # since first PoS block and we always have wagerr v3 prot
