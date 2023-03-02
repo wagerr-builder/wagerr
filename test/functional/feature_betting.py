@@ -621,7 +621,7 @@ class BettingTest(WagerrTestFramework):
         player2_balance_before = Decimal(self.nodes[3].getbalance())
 
         listbets = self.nodes[0].listbetsdb(False)
-
+        breakpoint()
         # generate block with payouts
         blockhash = self.nodes[0].generate(1)[0]
         block = self.nodes[0].getblock(blockhash)
