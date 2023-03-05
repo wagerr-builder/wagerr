@@ -177,7 +177,7 @@ class BettingTest(WagerrTestFramework):
             self.nodes[0].sendtoaddress(self.players[0], 2000)
             self.nodes[0].sendtoaddress(self.players[1], 2000)
 
-        self.nodes[0].generate(51)
+        self.nodes[0].generate(251)
 
         for n in range(self.num_nodes):
             self.stop_node(n)
@@ -192,7 +192,7 @@ class BettingTest(WagerrTestFramework):
         self.sync_all()
 
         for n in range(self.num_nodes):
-            assert_equal( self.nodes[n].getblockcount(), 300)
+            assert_equal( self.nodes[n].getblockcount(), 500)
 
         # check oracle balance
         assert_equal(self.nodes[1].getbalance(), 80000)
@@ -630,7 +630,6 @@ class BettingTest(WagerrTestFramework):
         player2_balance_before = Decimal(self.nodes[3].getbalance())
 
         listbets = self.nodes[0].listbetsdb(False)
-        breakpoint()
         # generate block with payouts
         blockhash = self.nodes[0].generate(1)[0]
         block = self.nodes[0].getblock(blockhash)
@@ -1324,7 +1323,7 @@ class BettingTest(WagerrTestFramework):
         self.log.info("Check V2 to V3 Bets...")
         # generate so we get to block 300 after event creation & first round bets but before payout sent
         # change this number to change where generate block 300 takes place generate(26) is block 301 for payout
-        self.nodes[0].generate(26)
+        self.nodes[0].generate(226)
         player1_expected_win = 0
         player2_expected_win = 0
         global player1_total_bet
