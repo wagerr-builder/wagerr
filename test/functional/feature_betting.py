@@ -178,6 +178,7 @@ class BettingTest(WagerrTestFramework):
             self.nodes[0].sendtoaddress(self.players[1], 2000)
 
         self.nodes[0].generate(251)
+        breakpoint()
 
         for n in range(self.num_nodes):
             self.stop_node(n)
