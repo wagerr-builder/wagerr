@@ -662,7 +662,7 @@ public:
         consensus.nGovernanceMinQuorum = 1;
         consensus.nGovernanceFilterElements = 500;
         consensus.nMasternodeMinimumConfirmations = 1;
-        consensus.V18DeploymentHeight = 500;
+        consensus.V18DeploymentHeight = 600;
         consensus.BIP34Height = 1; // BIP34 activated immediately on devnet
         consensus.BIP34Hash = uint256();
         consensus.BIP65Height = 1; // BIP65 activated immediately on devnet
@@ -950,7 +950,7 @@ public:
         consensus.nGovernanceMinQuorum = 1;
         consensus.nGovernanceFilterElements = 100;
         consensus.nMasternodeMinimumConfirmations = 1;
-        consensus.V18DeploymentHeight = 300;
+        consensus.V18DeploymentHeight = 500;
         consensus.BIP34Height = 500; // BIP34 activated on regtest (Used in functional tests)
         consensus.BIP34Hash = uint256();
         consensus.BIP65Height = consensus.V18DeploymentHeight; // BIP65 activated on regtest (Used in rpc activation tests)
