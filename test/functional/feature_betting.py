@@ -178,7 +178,6 @@ class BettingTest(WagerrTestFramework):
             self.nodes[0].sendtoaddress(self.players[1], 2000)
 
         self.nodes[0].generate(251)
-        breakpoint()
 
         for n in range(self.num_nodes):
             self.stop_node(n)
@@ -645,9 +644,9 @@ class BettingTest(WagerrTestFramework):
         #pprint.pprint(listbets)
         #self.log.info("Payouts Info")
         #pprint.pprint(payoutsInfo)
+        breakpoint()
 
         check_bet_payouts_info(listbets, payoutsInfo)
-
         player1_balance_after = Decimal(self.nodes[2].getbalance())
         player2_balance_after = Decimal(self.nodes[3].getbalance())
 
