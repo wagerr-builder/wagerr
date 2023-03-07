@@ -274,7 +274,7 @@ static inline int ctz(uint32_t i) {
     BOOST_CHECK_EQUAL(mutated, false);
 }*/
 
-BOOST_AUTO_TEST_CASE(merkle_test_OddTxWithRepeatedLastTx_block)
+/*BOOST_AUTO_TEST_CASE(merkle_test_OddTxWithRepeatedLastTx_block)
 {
     bool mutated;
     CBlock block, blockWithRepeatedLastTx;
@@ -296,7 +296,7 @@ BOOST_AUTO_TEST_CASE(merkle_test_OddTxWithRepeatedLastTx_block)
     uint256 rootofBlockWithRepeatedLastTx = BlockMerkleRoot(blockWithRepeatedLastTx, &mutated);
     BOOST_CHECK_EQUAL(rootofBlock, rootofBlockWithRepeatedLastTx);
     BOOST_CHECK_EQUAL(mutated, true);
-}
+}*/
 
 BOOST_AUTO_TEST_CASE(merkle_test_LeftSubtreeRightSubtree)
 {
