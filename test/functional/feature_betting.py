@@ -1690,9 +1690,9 @@ class BettingTest(WagerrTestFramework):
         zeroing_odds_opcode = make_zeroing_odds(event_ids)
         post_opcode(self.nodes[1], zeroing_odds_opcode, WGR_WALLET_EVENT['addr'])
 
-        self.sync_all([ self.nodes[:3] ])
+        self.sync_all()
         self.nodes[0].generate(1)
-        self.sync_all([ self.nodes[:3] ])
+        self.sync_all()
 
         for node in self.nodes[:3]:
             for event in node.listevents():
