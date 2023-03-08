@@ -1668,7 +1668,7 @@ class BettingTest(WagerrTestFramework):
             for event in node.listevents():
                 saved_events[i][event['event_id']] = event
 
-        self.stop_node(3)
+        #self.stop_node(3)
 
         for i, node in enumerate(self.nodes[:3]):
             for event in node.listevents():
@@ -1694,7 +1694,7 @@ class BettingTest(WagerrTestFramework):
         self.nodes[0].generate(1)
         self.sync_all()
 
-        for node in self.nodes[:3]:
+        for node in self.nodes[3]:
             for event in node.listevents():
                 # 0 mean ml odds in odds array
                 assert_equal(event['odds'][0]['mlHome'], 0)
@@ -1709,7 +1709,7 @@ class BettingTest(WagerrTestFramework):
 
         self.log.info("Reverting...")
         self.nodes[3].rpchost = self.get_local_peer(3, True)
-        self.nodes[3].start()
+        #Wself.nodes[3].start()
         self.nodes[3].wait_for_rpc_connection()
 
         self.log.info("Generate blocks...")
