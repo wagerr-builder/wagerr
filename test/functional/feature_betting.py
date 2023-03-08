@@ -1608,7 +1608,10 @@ class BettingTest(WagerrTestFramework):
         self.sync_all()
         self.nodes[0].generate(1)
         self.sync_all()
-        breakpoint()
+
+        # Need to be at betting V4 for this
+        self.nodes[0].generate(86)
+
         assert_raises_rpc_error(-131, "Error: potential odds is zero for event: {} outcome: {}".format(event_id, outcome_away_win),
             self.nodes[1].placebet, event_id, outcome_away_win, 100)
 
@@ -1831,7 +1834,7 @@ class BettingTest(WagerrTestFramework):
         # self.check_timecut_refund() # Not working TODO fix it
         self.check_asian_spreads_bet()
         self.check_bets()
-        #self.check_zero_odds_bet() # Not working TODO fix it
+        self.check_zero_odds_bet()
         self.check_zeroing_odds()
         self.check_closing_event()
 
