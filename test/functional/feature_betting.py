@@ -1764,7 +1764,7 @@ class BettingTest(WagerrTestFramework):
 
         self.nodes[0].generate(5)
         self.sync_all()
-
+        breakpoint()
         self.nodes[2].placebet(event_id, outcome_home_win, 25)
 
         self.sync_all()
