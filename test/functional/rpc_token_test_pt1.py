@@ -65,12 +65,12 @@ class TokenTest (WagerrTestFramework):
         self.nodes[0].sendtoaddress(WAGERR_AUTH_ADDR, 10)
         self.nodes[0].generate(1)
         self.sync_all()
-        XWAGERRTok=self.nodes[0].configuremanagementtoken("XWAGERR", "ExtraWagerr", "https://github.com/wagerr/ATP-descriptions/blob/master/WAGERR-testnet-XWAGERR.json","f5125a90bde180ef073ce1109376d977f5cbddb5582643c81424cc6cc842babd","0", XWAGERRBLS["public"], "true", "true")
+        XWAGERRTok=self.nodes[0].configuremanagementtoken("XWAGERR", "ExtraWagerr", "https://github.com/wagerr/ATP-descriptions/blob/master/WAGERR-testnet-XWAGERR.json","f5125a90bde180ef073ce1109376d977f5cbddb5582643c81424cc6cc842babd","0", self.XWAGERRBLS["public"], "true", "true")
         XWAGERRGroup_ID=XWAGERRTok['groupID']
         self.nodes[0].sendtoaddress(WAGERR_AUTH_ADDR, 10)
-        PARTTok=self.nodes[0].configuremanagementtoken("PART", "PartWagerr", "https://github.com/wagerr/ATP-descriptions/blob/master/WAGERR-testnet-PART.json", "b0425ee4ba234099970c53c28288da749e2a1afc0f49856f4cab82b37f72f6a5","0", PARTBLS["public"], "true", "true")
+        PARTTok=self.nodes[0].configuremanagementtoken("PART", "PartWagerr", "https://github.com/wagerr/ATP-descriptions/blob/master/WAGERR-testnet-PART.json", "b0425ee4ba234099970c53c28288da749e2a1afc0f49856f4cab82b37f72f6a5","0", self.PARTBLS["public"], "true", "true")
         PARTGroup_ID=PARTTok['groupID']
-        LIVETok=self.nodes[0].configuremanagementtoken("LIVE", "LiveWagerr", "https://github.com/wagerr/ATP-descriptions/blob/master/WAGERR-testnet-LIVE.json", "6de2409add060ec4ef03d61c0966dc46508ed3498e202e9459e492a372ddccf5", "13", LiveBLS["public"], "true", "true")
+        LIVETok=self.nodes[0].configuremanagementtoken("LIVE", "LiveWagerr", "https://github.com/wagerr/ATP-descriptions/blob/master/WAGERR-testnet-LIVE.json", "6de2409add060ec4ef03d61c0966dc46508ed3498e202e9459e492a372ddccf5", "13", self.LiveBLS["public"], "true", "true")
         LIVEGroup_ID=LIVETok['groupID']
         self.nodes[0].sendtoaddress(WAGERR_AUTH_ADDR, 10)
         self.nodes[0].generate(1)
