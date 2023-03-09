@@ -1749,20 +1749,8 @@ class BettingTest(WagerrTestFramework):
 
         self.log.info("Check closing event opcode...")
 
-        mlevent = make_event(42, # Event ID
-                             self.start_time, # start time = current + hour
-                             sport_names.index("DOTA2"), # Sport ID
-                             tournament_names.index("EPICENTER Major"), # Tournament ID
-                             round_names.index("round1"), # Round ID
-                             team_names.index("Virtus Pro"), # Home Team
-                             team_names.index("Team Liquid"), # Away Team
-                             10000, # home odds
-                             30000, # away odds
-                             0) # draw odds
-        post_opcode(self.nodes[1], mlevent, WGR_WALLET_EVENT['addr'])
-
         event_id = 82
-        mlevent = make_event(82, # Event ID
+        mlevent = make_event(event_id, # Event ID
                     int(time.time()) + 60*60, # start time = current + hour
                     sport_names.index("V2-V3 Sport"), # Sport ID
                     tournament_names.index("V2-V3 Tournament"), # Tournament ID
@@ -1774,9 +1762,11 @@ class BettingTest(WagerrTestFramework):
                     80000) # draw odds
         post_opcode(self.nodes[1], mlevent, WGR_WALLET_EVENT['addr'])
 
-        self.nodes[0].generate(6)
+        self.nodes[0].generate(1)
         self.sync_all()
-        breakpoint()
+        #breakpoint()
+        time.sleep(10)
+        self.nodes[0].generate(1)
         self.nodes[2].placebet(event_id, outcome_home_win, 25)
 
         self.sync_all()
