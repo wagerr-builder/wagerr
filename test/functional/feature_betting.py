@@ -1711,7 +1711,7 @@ class BettingTest(WagerrTestFramework):
         self.nodes[3].rpchost = self.get_local_peer(3, True)
         self.nodes[3].start()
         #self.nodes[3].wait_for_rpc_connection()
-        connect_nodes(self.nodes[3], 0)
+        #connect_nodes(self.nodes[3], 0)
 
         self.log.info("Generate blocks...")
         for i in range(5):
