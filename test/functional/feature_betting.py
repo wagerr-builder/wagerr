@@ -1711,7 +1711,6 @@ class BettingTest(WagerrTestFramework):
         self.nodes[3].rpchost = self.get_local_peer(3, True)
         self.nodes[3].start()
         self.nodes[3].wait_for_rpc_connection()
-        #connect_nodes(self.nodes[3], 0)
 
         self.log.info("Generate blocks...")
         for i in range(5):
@@ -1763,7 +1762,7 @@ class BettingTest(WagerrTestFramework):
                     80000) # draw odds
         post_opcode(self.nodes[1], mlevent, WGR_WALLET_EVENT['addr'])
 
-        self.nodes[0].generate(1)
+        self.nodes[0].generate(5)
         self.sync_all()
 
         self.nodes[2].placebet(event_id, outcome_home_win, 25)
