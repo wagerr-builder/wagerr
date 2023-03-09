@@ -69,6 +69,7 @@ class TokenTest (WagerrTestFramework):
         self.nodes[0].sendtoaddress(WAGERR_AUTH_ADDR, 10)
         self.nodes[0].generate(1)
         ORAT=self.nodes[0].configuremanagementtoken( "ORAT", "ORAT", "4", "https://www.google.com", "0",  ORATBLS["public"], "false", "true")
+        self.nodes[0].generate(1)
         self.log.info("ORAT %s" % ORAT)
         ORATGroup_ID=ORAT['groupID']
         self.nodes[0].minttoken(ORATGroup_ID, ORATAddr, '82')
