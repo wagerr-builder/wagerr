@@ -1774,7 +1774,7 @@ class BettingTest(WagerrTestFramework):
                     80000) # draw odds
         post_opcode(self.nodes[1], mlevent, WGR_WALLET_EVENT['addr'])
 
-        self.nodes[0].generate(5)
+        self.nodes[0].generate(6)
         self.sync_all()
         breakpoint()
         self.nodes[2].placebet(event_id, outcome_home_win, 25)
