@@ -1709,7 +1709,7 @@ class BettingTest(WagerrTestFramework):
 
         self.log.info("Reverting...")
         self.nodes[3].rpchost = self.get_local_peer(3, True)
-        #Wself.nodes[3].start()
+        self.nodes[3].start()
         self.nodes[3].wait_for_rpc_connection()
 
         self.log.info("Generate blocks...")
