@@ -31,6 +31,7 @@ class TokenTest (WagerrTestFramework):
     def run_test(self):
         connect_nodes(self.nodes[0], 1)
         tmpdir=self.options.tmpdir
+        self.nodes[0].generate(400)
         self.log.info("Generating Tokens...")
         self.nodes[0].importprivkey("TCH8Qby7krfugb2sFWzHQSEmTxBgzBSLkgPtt5EUnzDqfaX9dcsS")
         self.nodes[0].sendtoaddress(WAGERR_AUTH_ADDR, 10)
