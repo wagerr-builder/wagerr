@@ -86,7 +86,7 @@ class TokenTest (WagerrTestFramework):
         self.nodes[0].generate(1)
         self.nodes[0].minttoken(LIVEGroup_ID, LIVEAddr, '1')
         self.nodes[0].generate(1)
-        HULKTok=self.nodes[0].configuretoken("HULK", "HulkToken", "https://raw.githubusercontent.com/CeForce/hulktoken/master/hulk.json", "367750e31cb276f5218c013473449c9e6a4019fed603d045b51e25f5db29283a", "10", "true")
+        HULKTok=self.nodes[0].configuretoken("HULK", "HulkToken", "10", "https://raw.githubusercontent.com/CeForce/hulktoken/master/hulk.json", "367750e31cb276f5218c013473449c9e6a4019fed603d045b51e25f5db29283a", "true")
         HulkGroup_ID=HULKTok['groupID']
         self.nodes[0].generate(1)
         self.nodes[0].minttoken(HulkGroup_ID, HulkAddr, '15')
