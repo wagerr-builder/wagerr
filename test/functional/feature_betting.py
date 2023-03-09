@@ -1749,7 +1749,7 @@ class BettingTest(WagerrTestFramework):
 
         self.log.info("Check closing event opcode...")
 
-        event_id = 13
+        event_id = 82
         mlevent = make_event(event_id, # Event ID
                     int(time.time()) + 60*60, # start time = current + hour
                     sport_names.index("V2-V3 Sport"), # Sport ID
