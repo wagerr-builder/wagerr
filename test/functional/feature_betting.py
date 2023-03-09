@@ -1694,7 +1694,7 @@ class BettingTest(WagerrTestFramework):
         self.nodes[0].generate(1)
         self.sync_all(self.nodes[:3])
 
-        for node in self.nodes[3]:
+        for node in self.nodes[:3]:
             for event in node.listevents():
                 # 0 mean ml odds in odds array
                 assert_equal(event['odds'][0]['mlHome'], 0)
