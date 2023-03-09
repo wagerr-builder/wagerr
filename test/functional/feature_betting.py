@@ -1668,7 +1668,7 @@ class BettingTest(WagerrTestFramework):
             for event in node.listevents():
                 saved_events[i][event['event_id']] = event
 
-        #self.stop_node(3)
+        self.stop_node(3)
 
         for i, node in enumerate(self.nodes[:3]):
             for event in node.listevents():
@@ -1690,9 +1690,9 @@ class BettingTest(WagerrTestFramework):
         zeroing_odds_opcode = make_zeroing_odds(event_ids)
         post_opcode(self.nodes[1], zeroing_odds_opcode, WGR_WALLET_EVENT['addr'])
 
-        self.sync_all()
+        self.sync_all(self.nodes[:3])
         self.nodes[0].generate(1)
-        self.sync_all()
+        self.sync_all(self.nodes[:3])
 
         for node in self.nodes[3]:
             for event in node.listevents():
@@ -1787,9 +1787,9 @@ class BettingTest(WagerrTestFramework):
             post_opcode(self.nodes[1], result_opcode, WGR_WALLET_EVENT['addr'])
 
         self.nodes[0].generate(5)
-        self.sync_all([ self.nodes[:3] ])
+        self.sync_all(self.nodes[:3])
         self.nodes[0].generate(5)
-        self.sync_all([ self.nodes[:3] ])
+        self.sync_all(self.nodes[:3])
 
         assert_equal(len(self.nodes[0].listevents(True)), 0)
         assert_equal(player1_balance, self.nodes[2].getbalance())
