@@ -1810,6 +1810,38 @@ class BettingTest(WagerrTestFramework):
 
         self.log.info("Check closing event Success")
 
+    def run_token_setup(self):
+        self.log.info("Generating Tokens...")
+        self.nodes[0].importprivkey("TCH8Qby7krfugb2sFWzHQSEmTxBgzBSLkgPtt5EUnzDqfaX9dcsS")
+        self.nodes[0].sendtoaddress(WAGERR_AUTH_ADDR, 10)
+        self.nodes[0].generate(87)
+        self.sync_all()
+        self.nodes[0].generate(100)
+        self.sync_all()
+        self.MGTBLS=self.nodes[0].bls("generate")
+        self.ORATBLS=self.nodes[0].bls("generate")
+        self.log.info("MGTBLS %s" % self.MGTBLS["public"])
+        self.log.info("ORATBLS %s" % self.ORATBLS["public"])
+        MGTAddr=self.nodes[0].getnewaddress()
+        ORATAddr=self.nodes[0].getnewaddress()
+        self.nodes[0].sendtoaddress(WAGERR_AUTH_ADDR, 10)
+        self.nodes[0].generate(1)
+        self.MGT=self.nodes[0].configuremanagementtoken( "MGT", "Management", "4", "https://www.google.com", "0",  self.MGTBLS["public"], "false", "true")
+        self.log.info("MGT %s" % self.MGT)
+        MGTGroup_ID=self.MGT['groupID']
+        self.nodes[0].generate(1)
+        self.nodes[0].minttoken(MGTGroup_ID, MGTAddr, '82')
+        self.nodes[0].sendtoaddress(WAGERR_AUTH_ADDR, 10)
+        self.nodes[0].generate(1)
+        self.ORAT=self.nodes[0].configuremanagementtoken( "ORAT", "ORAT", "4", "https://www.google.com", "0",  self.ORATBLS["public"], "false", "true")
+        self.nodes[0].generate(1)
+        self.log.info("ORAT %s" % self.ORAT)
+        ORATGroup_ID=self.ORAT['groupID']
+        self.nodes[0].minttoken(ORATGroup_ID, ORATAddr, '82')
+        self.nodes[0].sendtoaddress(WAGERR_AUTH_ADDR, 10)
+        self.nodes[0].generate(1)
+        self.sync_all()
+
     def run_test(self):
         self.check_minting()
         # Chain height = 300 after minting -> v4 protocol active
@@ -1839,6 +1871,11 @@ class BettingTest(WagerrTestFramework):
         self.check_zero_odds_bet()
         self.check_zeroing_odds()
         self.check_closing_event()
+        self.run_token_setup()
+
+        BET1CONF=self.nodes[0].configurebettoken('0', '1', self.MGT['groupID'], self.MGTBLS['public'])
+        BET1CONFSIG=self.nodes[0].bls('sign', BET1CONF['description_hash'], self.MGTBLS['secret'])
+        BET1CONF=self.nodes[0].configurebettoken('0', '1', self.MGT['groupID'], self.MGTBLS['public'], BET1CONFSIG['signature'], 'true')
 
 if __name__ == '__main__':
     BettingTest().main()
