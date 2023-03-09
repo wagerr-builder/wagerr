@@ -1748,8 +1748,8 @@ class BettingTest(WagerrTestFramework):
     def check_closing_event(self):
 
         self.log.info("Check closing event opcode...")
-"""
-        mlevent = make_event(4, # Event ID
+
+        mlevent = make_event(42, # Event ID
                              self.start_time, # start time = current + hour
                              sport_names.index("DOTA2"), # Sport ID
                              tournament_names.index("EPICENTER Major"), # Tournament ID
@@ -1760,7 +1760,7 @@ class BettingTest(WagerrTestFramework):
                              30000, # away odds
                              0) # draw odds
         post_opcode(self.nodes[1], mlevent, WGR_WALLET_EVENT['addr'])
-"""
+
         event_id = 82
         mlevent = make_event(82, # Event ID
                     int(time.time()) + 60*60, # start time = current + hour
