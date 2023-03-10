@@ -80,7 +80,12 @@ class HybridBettingTest(WagerrTestFramework):
         # 3 - player2
         # 4 - revert testing
         self.num_nodes = 5
-        self.extra_args = [[] for n in range(self.num_nodes)]
+        #self.extra_args = [[] for n in range(self.num_nodes)]
+        self.extra_args = [ ['-sporkkey=6xLZdACFRA53uyxz8gKDLcgVrm5kUUEu2B3BUzWUxHqa2W7irbH', '-minrelaytxfee=0.00000001', '-mintxfee=0.00000001', '-paytxfee=0.01'],
+                            ['-sporkkey=6xLZdACFRA53uyxz8gKDLcgVrm5kUUEu2B3BUzWUxHqa2W7irbH', '-minrelaytxfee=0.00000001', '-mintxfee=0.00000001', '-paytxfee=0.01'],
+                            ['-sporkkey=6xLZdACFRA53uyxz8gKDLcgVrm5kUUEu2B3BUzWUxHqa2W7irbH', '-minrelaytxfee=0.00000001', '-mintxfee=0.00000001', '-paytxfee=0.01'],
+                            ['-sporkkey=6xLZdACFRA53uyxz8gKDLcgVrm5kUUEu2B3BUzWUxHqa2W7irbH', '-minrelaytxfee=0.00000001', '-mintxfee=0.00000001', '-paytxfee=0.01'],
+                            ['-sporkkey=6xLZdACFRA53uyxz8gKDLcgVrm5kUUEu2B3BUzWUxHqa2W7irbH', '-minrelaytxfee=0.00000001', '-mintxfee=0.00000001', '-paytxfee=0.01'] ]
         self.setup_clean_chain = True
         self.players = []
         # { event_id : { contender_id : odds, ... } }
