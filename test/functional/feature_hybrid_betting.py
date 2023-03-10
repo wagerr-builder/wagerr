@@ -224,6 +224,42 @@ class HybridBettingTest(WagerrTestFramework):
 
         self.nodes[0].generate(1)
         sync_blocks(self.nodes)
+        for node in self.nodes:
+            # Check sports mapping
+            for id in range(len(pl_sport_names)):
+                mapping = node.getmappingname("sports", id)[0]
+                assert_equal(mapping['exists'], True)
+                assert_equal(mapping['mapping-name'], pl_sport_names[id])
+                assert_equal(mapping['mapping-type'], "sports")
+                assert_equal(mapping['mapping-index'], id)
+                mappingid = node.getmappingid("sports", pl_sport_names[id])[0]
+                assert_equal(mappingid['exists'], True)
+                assert_equal(mappingid['mapping-index'], "sports")
+                assert_equal(mappingid['mapping-id'], id)
+
+            # Check rounds mapping
+            for id in range(len(round_names)):
+                mapping = node.getmappingname("rounds", id)[0]
+                assert_equal(mapping['exists'], True)
+                assert_equal(mapping['mapping-name'], round_names[id])
+                assert_equal(mapping['mapping-type'], "rounds")
+                assert_equal(mapping['mapping-index'], id)
+                mappingid = node.getmappingid("rounds", round_names[id])[0]
+                assert_equal(mappingid['exists'], True)
+                assert_equal(mappingid['mapping-index'], "rounds")
+                assert_equal(mappingid['mapping-id'], id)
+
+            # Check teams mapping
+            for id in range(len(team_names)):
+                mapping = node.getmappingname("teamnames", id)[0]
+                assert_equal(mapping['exists'], True)
+                assert_equal(mapping['mapping-name'], team_names[id])
+                assert_equal(mapping['mapping-type'], "teamnames")
+                assert_equal(mapping['mapping-index'], id)
+                mappingid = node.getmappingid("teamnames", team_names[id])[0]
+                assert_equal(mappingid['exists'], True)
+                assert_equal(mappingid['mapping-index'], "teamnames")
+                assert_equal(mappingid['mapping-id'], id)
 
         self.log.info("Mapping Success")
 
