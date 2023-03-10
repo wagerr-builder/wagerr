@@ -152,7 +152,7 @@ class TokenTest (WagerrTestFramework):
         LIVE_BlockHash=self.nodes[0].getblockhash(LIVE_BlockCount)
         self.nodes[0].generate(1)
         self.log.info("LiveWagerr Transaction\n%s" % self.nodes[0].gettokentransaction(LIVETrans))
-        self.log.info("Blockhash block %s %s" % LIVE_BlockCount, LIVE_BlockHash)
+        self.log.info("Blockhash block %s %s", LIVE_BlockCount, LIVE_BlockHash)
         self.log.info("\nTransaction ID %s" % LIVETrans)
         self.log.info("Transaction Details %s" % self.nodes[0].gettokentransaction(LIVETrans, LIVE_BlockHash))
         self.log.info("\nList tokens since block 200 ORAT\n%s" % self.nodes[0].listtokenssinceblock(LIVEGroup_ID, LIVE_BlockHash))
