@@ -20,7 +20,9 @@ WGR_WALLET_EVENT = { "addr": "TFvZVYGdrxxNunQLzSnRSC58BSRA7si6zu", "key": "TCDjD
 WGR_WALLET_DEV = { "addr": "TLuTVND9QbZURHmtuqD5ESECrGuB9jLZTs", "key": "TFCrxaUt3EjHzMGKXeBqA7sfy3iaeihg5yZPSrf9KEyy4PHUMWVe" }
 WGR_WALLET_OMNO = { "addr": "THofaueWReDjeZQZEECiySqV9GP4byP3qr", "key": "TDJnwRkSk8JiopQrB484Ny9gMcL1x7bQUUFFFNwJZmmWA7U79uRk" }
 
-pl_sport_names = ["PeerlessSport"]
+#pl_sport_names = ["PeerlessSport"]
+
+pl_sport_names = ["PeerlessSport", "Football", "MMA", "CSGO", "DOTA2", "Test Sport", "V2-V3 Sport", "ML Sport One", "Spread Sport"]
 field_sport_names = ["FieldSport"]
 round_names = ["round0"]
 tournament_names = ["Tournament1", "Tournament2"]
