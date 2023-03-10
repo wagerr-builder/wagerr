@@ -148,10 +148,11 @@ class TokenTest (WagerrTestFramework):
         LIVE_Trans=self.nodes[0].listtokentransactions(LIVEGroup_ID)
         self.log.info("Token Transactions LiveWagerr Token\n%s\n" % LIVE_Trans)
         LIVETransTXID=LIVE_Trans[0]['txid']
-        LIVE_BlockCount=LIVE_Trans[0]['height']
-        LIVE_BlockHash=self.nodes[0].getblockhash(LIVE_BlockCount)
         self.nodes[0].generate(1)
+        LIVE_FullTrans=self.nodes[0].gettokentransaction(LIVETransTXID)
         self.log.info("LiveWagerr Transaction\n%s" % self.nodes[0].gettokentransaction(LIVETransTXID))
+        LIVE_BlockCount=LIVE_FullTrans['height']
+        LIVE_BlockHash=self.nodes[0].getblockhash(LIVE_BlockCount)
         self.log.info("Blockhash block %s %s", LIVE_BlockCount, LIVE_BlockHash)
         self.log.info("\nTransaction ID %s" % LIVETransTXID)
         self.log.info("Transaction Details %s" % self.nodes[0].gettokentransaction(LIVETransTXID, LIVE_BlockHash))
