@@ -6,7 +6,7 @@
 from test_framework.betting_opcode import *
 from test_framework.authproxy import JSONRPCException
 from test_framework.test_framework import WagerrTestFramework
-from test_framework.util import wait_until, rpc_port, assert_equal, assert_raises_rpc_error, sync_blocks, connect_nodes
+from test_framework.util import wait_until, rpc_port, assert_equal, assert_raises_rpc_error, sync_blocks, connect_nodes, disconnect_nodes
 from distutils.dir_util import copy_tree, remove_tree
 from decimal import *
 import pprint
@@ -190,6 +190,18 @@ class HybridBettingTest(WagerrTestFramework):
             mapping_opcode = make_mapping(SPORT_MAPPING, id, pl_sport_names[id])
             post_opcode(self.nodes[1], mapping_opcode, WGR_WALLET_ORACLE['addr'])
         self.nodes[0].generate(1)
+        for n in range(self.num_nodes):
+            self.stop_node(n)
+            self.start_node(n, ["-reindex"])
+        disconnect_nodes(self.nodes[0], 1)
+        connect_nodes(self.nodes[0], 1)
+        disconnect_nodes(self.nodes[0], 2)
+        connect_nodes(self.nodes[0], 2)
+        disconnect_nodes(self.nodes[0], 3)
+        connect_nodes(self.nodes[0], 3)
+        connect_nodes(self.nodes[0], 4)
+        self.sync_all()
+
         sync_blocks(self.nodes)
         # add field sports to mapping
         for id in range(len(field_sport_names)):
