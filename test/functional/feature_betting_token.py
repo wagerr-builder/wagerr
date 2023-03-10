@@ -215,7 +215,7 @@ class BettingTest(WagerrTestFramework):
         self.sync_all()
         self.nodes[0].generate(1)
         for n in range(self.num_nodes):
-            breakpoint()
+            
             self.stop_node(n)
             self.start_node(n, ["-reindex"])
         disconnect_nodes(self.nodes[0], 1)
@@ -1611,7 +1611,7 @@ class BettingTest(WagerrTestFramework):
         self.sync_all()
         self.nodes[0].generate(1)
         self.sync_all()
-        breakpoint()
+        
         assert_raises_rpc_error(-131, "Error: potential odds is zero for event: {} outcome: {}".format(event_id, outcome_away_win),
             self.nodes[1].placebet, event_id, outcome_away_win, 100)
 
@@ -1855,9 +1855,9 @@ class BettingTest(WagerrTestFramework):
 
         BET1CONF=self.nodes[0].configurebettoken('0', '1', self.MGT['groupID'], self.MGTBLS['public'])
         BET1CONFSIG=self.nodes[0].bls('sign', BET1CONF['description_hash'], self.MGTBLS['secret'])
-        breakpoint()
+        
         BET1CONF=self.nodes[0].configurebettoken('0', '1', self.MGT['groupID'], self.MGTBLS['public'], BET1CONFSIG['signature'], 'true')
-        breakpoint()
+        
 
 if __name__ == '__main__':
     BettingTest().main()
