@@ -178,6 +178,7 @@ class HybridBettingTest(WagerrTestFramework):
         self.log.info("Check Mapping...")
 
         self.nodes[0].generate(199)
+        breakpoint()
         sync_blocks(self.nodes)
 
         assert_raises_rpc_error(-1, "No mapping exist for the mapping index you provided.", self.nodes[0].getmappingid, "", "")
@@ -277,7 +278,6 @@ class HybridBettingTest(WagerrTestFramework):
                             15000, # home odds
                             18000, # away odds
                             13000) # draw odds
-        breakpoint()
         post_opcode(self.nodes[1], plEvent, WGR_WALLET_EVENT['addr'])
 
         # make pl event 2
