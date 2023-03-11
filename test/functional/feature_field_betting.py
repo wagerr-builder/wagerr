@@ -800,6 +800,7 @@ class BettingTest(WagerrTestFramework):
         )
         post_opcode(self.nodes[1], field_update_odds_opcode, WGR_WALLET_EVENT['addr'])
 
+        sync_blocks(self.nodes[0:4])
         self.nodes[0].generate(1)
         sync_blocks(self.nodes[0:4])
 
