@@ -563,6 +563,7 @@ class BettingTest(WagerrTestFramework):
         # pprint.pprint(self.nodes[1].listfieldevents()[0]['contenders'])
 
         # for node in self.nodes[0:4]:
+        breakpoint()
         list_events = self.nodes[3].listfieldevents()
         assert_equal(len(list_events), 1)
         event_id = list_events[0]['event_id']
