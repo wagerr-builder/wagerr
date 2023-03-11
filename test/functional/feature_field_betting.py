@@ -529,6 +529,7 @@ class BettingTest(WagerrTestFramework):
         # Test revert
         revert_chain_height = self.nodes[4].getblockcount()
         self.stop_node(4)
+        self.start_node(4)
 
         # CASE: none animal sport group
         field_event_opcode = make_field_event(
@@ -554,9 +555,9 @@ class BettingTest(WagerrTestFramework):
         )
         post_opcode(self.nodes[1], field_event_opcode, WGR_WALLET_EVENT['addr'])
 
-        sync_blocks(self.nodes[0:4])
+        self.sync_all()
         self.nodes[0].generate(1)
-        sync_blocks(self.nodes[0:4])
+        self.sync_all()
 
         #assert_raises_rpc_error(-25, "",
         #    post_opcode, self.nodes[1], field_event_opcode, WGR_WALLET_ORACLE['addr'])
