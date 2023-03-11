@@ -622,9 +622,8 @@ class BettingTest(WagerrTestFramework):
         )
         post_opcode(self.nodes[1], field_event_opcode, WGR_WALLET_EVENT['addr'])
 
-        self.sync_all()
+        sync_blocks(self.nodes[0:4])
         self.nodes[1].generate(1)
-        self.sync_all()
         sync_blocks(self.nodes[0:4])
 
         # pprint.pprint(self.nodes[1].listfieldevents()[1]['contenders'])
