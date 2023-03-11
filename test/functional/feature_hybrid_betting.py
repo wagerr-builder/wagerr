@@ -24,7 +24,7 @@ WGR_WALLET_OMNO = { "addr": "THofaueWReDjeZQZEECiySqV9GP4byP3qr", "key": "TDJnwR
 
 pl_sport_names = ["PeerlessSport", "Football", "MMA", "CSGO", "DOTA2", "Test Sport", "V2-V3 Sport", "ML Sport One", "Spread Sport"]
 field_sport_names = ["FieldSport", "Fieldsport-2"]
-round_names = ["round0", "round1"]
+round_names = ["round0", "round1", "round2", "round3", "round4"]
 tournament_names = ["Tournament1", "Tournament2"]
 team_names = ["Team1", "Team2", "Team3", "Team4"]
 contender_names = ["cont1", "cont2", "cont3", "cont4", "cont5", "cont6", "cont7", "cont8", "cont9",
