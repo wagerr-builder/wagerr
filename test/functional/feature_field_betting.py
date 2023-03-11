@@ -811,7 +811,6 @@ class BettingTest(WagerrTestFramework):
             if event['event_id'] == 1:
                 assert_equal(len(event['contenders']), 1)
                 assert_equal(event['contenders'][0]['name'], "cont1")
-                breakpoint()
                 assert_equal(event['contenders'][0]['input-odds'], make_odds(50))
                 assert_equal(event['contenders'][0]['place-odds'], 0)
                 assert_equal(event['contenders'][0]['show-odds'], 0)
@@ -834,6 +833,7 @@ class BettingTest(WagerrTestFramework):
         )
         post_opcode(self.nodes[1], field_update_odds_opcode, WGR_WALLET_EVENT['addr'])
 
+        sync_blocks(self.nodes[0:4])
         self.nodes[0].generate(1)
         sync_blocks(self.nodes[0:4])
 
