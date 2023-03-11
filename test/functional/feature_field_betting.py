@@ -554,7 +554,9 @@ class BettingTest(WagerrTestFramework):
         )
         post_opcode(self.nodes[1], field_event_opcode, WGR_WALLET_EVENT['addr'])
 
+        self.sync_all()
         self.nodes[0].generate(1)
+        self.sync_all()
         sync_blocks(self.nodes[0:4])
 
         #assert_raises_rpc_error(-25, "",
@@ -563,7 +565,6 @@ class BettingTest(WagerrTestFramework):
         # pprint.pprint(self.nodes[1].listfieldevents()[0]['contenders'])
 
         # for node in self.nodes[0:4]:
-        breakpoint()
         list_events = self.nodes[3].listfieldevents()
         assert_equal(len(list_events), 1)
         event_id = list_events[0]['event_id']
@@ -621,7 +622,9 @@ class BettingTest(WagerrTestFramework):
         )
         post_opcode(self.nodes[1], field_event_opcode, WGR_WALLET_EVENT['addr'])
 
+        self.sync_all()
         self.nodes[1].generate(1)
+        self.sync_all()
         sync_blocks(self.nodes[0:4])
 
         # pprint.pprint(self.nodes[1].listfieldevents()[1]['contenders'])
@@ -677,7 +680,9 @@ class BettingTest(WagerrTestFramework):
         for node in self.nodes:
             assert_equal(len(node.listfieldevents()), 0)
 
+        self.sync_all()
         self.nodes[0].generate(1)
+        self.sync_all()
         sync_blocks(self.nodes)
 
         self.log.info("Event creation Success")
@@ -720,7 +725,9 @@ class BettingTest(WagerrTestFramework):
         )
         post_opcode(self.nodes[1], field_event_opcode, WGR_WALLET_EVENT['addr'])
 
+        self.sync_all()
         self.nodes[0].generate(1)
+        self.sync_all()
         sync_blocks(self.nodes)
 
         saved_other_event = {}
