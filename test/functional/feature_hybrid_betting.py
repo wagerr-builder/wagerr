@@ -290,40 +290,40 @@ class HybridBettingTest(WagerrTestFramework):
                 assert_equal(mappingid['mapping-index'], "teamnames")
                 assert_equal(mappingid['mapping-id'], id)
 
-            # Check fieldsportnames mapping
+            # Check individualSports mapping
             for id in range(len(field_sport_names)):
-                mapping = node.getmappingname("fieldsportnames", id)[0]
+                mapping = node.getmappingname("individualSports", id)[0]
                 assert_equal(mapping['exists'], True)
                 assert_equal(mapping['mapping-name'], field_sport_names[id])
-                assert_equal(mapping['mapping-type'], "fieldsportnames")
+                assert_equal(mapping['mapping-type'], "individualSports")
                 assert_equal(mapping['mapping-index'], id)
-                mappingid = node.getmappingid("fieldsportnames", field_sport_names[id])[0]
+                mappingid = node.getmappingid("individualSports", field_sport_names[id])[0]
                 assert_equal(mappingid['exists'], True)
-                assert_equal(mappingid['mapping-index'], "fieldsportnames")
+                assert_equal(mappingid['mapping-index'], "individualSports")
                 assert_equal(mappingid['mapping-id'], id)
 
-            # Check tournamentnames mapping
+            # Check tournaments mapping
             for id in range(len(tournament_names)):
-                mapping = node.getmappingname("tournamentnames", id)[0]
+                mapping = node.getmappingname("tournaments", id)[0]
                 assert_equal(mapping['exists'], True)
                 assert_equal(mapping['mapping-name'], tournament_names[id])
-                assert_equal(mapping['mapping-type'], "tournamentnames")
+                assert_equal(mapping['mapping-type'], "tournaments")
                 assert_equal(mapping['mapping-index'], id)
-                mappingid = node.getmappingid("tournamentnames", tournament_names[id])[0]
+                mappingid = node.getmappingid("tournaments", tournament_names[id])[0]
                 assert_equal(mappingid['exists'], True)
-                assert_equal(mappingid['mapping-index'], "tournamentnames")
+                assert_equal(mappingid['mapping-index'], "tournaments")
                 assert_equal(mappingid['mapping-id'], id)
 
-            # Check contendernames mapping
+            # Check contenders mapping
             for id in range(len(team_names)):
-                mapping = node.getmappingname("contendernames", id)[0]
+                mapping = node.getmappingname("contenders", id)[0]
                 assert_equal(mapping['exists'], True)
                 assert_equal(mapping['mapping-name'], contender_names[id])
-                assert_equal(mapping['mapping-type'], "contendernames")
+                assert_equal(mapping['mapping-type'], "contenders")
                 assert_equal(mapping['mapping-index'], id)
                 mappingid = node.getmappingid("contendernames", contender_names[id])[0]
                 assert_equal(mappingid['exists'], True)
-                assert_equal(mappingid['mapping-index'], "contendernames")
+                assert_equal(mappingid['mapping-index'], "contenders")
                 assert_equal(mappingid['mapping-id'], id)
 
         self.log.info("Mapping Success")
