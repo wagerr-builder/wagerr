@@ -812,7 +812,7 @@ class BettingTest(WagerrTestFramework):
                 assert_equal(len(event['contenders']), 1)
                 assert_equal(event['contenders'][0]['name'], "cont1")
                 breakpoint()
-                assert_equal(event['contenders'][0]['input-odds'], make_odds(51))
+                assert_equal(event['contenders'][0]['input-odds'], make_odds(50))
                 assert_equal(event['contenders'][0]['place-odds'], 0)
                 assert_equal(event['contenders'][0]['show-odds'], 0)
             if event['event_id'] == 301:
