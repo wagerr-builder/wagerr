@@ -189,7 +189,7 @@ class HybridBettingTest(WagerrTestFramework):
         for id in range(len(pl_sport_names)):
             mapping_opcode = make_mapping(SPORT_MAPPING, id, pl_sport_names[id])
             post_opcode(self.nodes[1], mapping_opcode, WGR_WALLET_ORACLE['addr'])
-        self.nodes[0].generate(1)
+        self.nodes[0].generate(201)
         self.sync_all()
         for n in range(self.num_nodes):
             self.stop_node(n)
