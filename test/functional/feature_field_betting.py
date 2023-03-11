@@ -396,7 +396,6 @@ class BettingTest(WagerrTestFramework):
         self.log.info("Check Mapping...")
 
         self.nodes[0].generate(101)
-        self.log.info("At block %s" %self.nodes[0].getblockcount())
         sync_blocks(self.nodes)
         assert_raises_rpc_error(-1, "No mapping exist for the mapping index you provided.", self.nodes[0].getmappingid, "", "")
         assert_raises_rpc_error(-1, "No mapping exist for the mapping index you provided.", self.nodes[0].getmappingname, "abc123", 0)
@@ -555,8 +554,12 @@ class BettingTest(WagerrTestFramework):
         )
         post_opcode(self.nodes[1], field_event_opcode, WGR_WALLET_EVENT['addr'])
 
-        self.nodes[0].generate(1)
-        sync_blocks(self.nodes[0:4])
+        # self.nodes[0].generate(1)
+        # sync_blocks(self.nodes[0:4])
+
+        self.sync_all()
+        self.nodes[0].generate(5)
+        self.sync_all()
 
         #assert_raises_rpc_error(-25, "",
         #    post_opcode, self.nodes[1], field_event_opcode, WGR_WALLET_ORACLE['addr'])
