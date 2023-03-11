@@ -207,6 +207,8 @@ class HybridBettingTest(WagerrTestFramework):
         for id in range(len(field_sport_names)):
             mapping_opcode = make_mapping(INDIVIDUAL_SPORT_MAPPING, id, field_sport_names[id])
             post_opcode(self.nodes[1], mapping_opcode, WGR_WALLET_ORACLE['addr'])
+
+        # generate block for unlocking used Oracle's UTXO
         self.sync_all()
         self.nodes[0].generate(1)
         self.sync_all()
@@ -215,6 +217,8 @@ class HybridBettingTest(WagerrTestFramework):
         for id in range(len(tournament_names)):
             mapping_opcode = make_mapping(TOURNAMENT_MAPPING, id, tournament_names[id])
             post_opcode(self.nodes[1], mapping_opcode, WGR_WALLET_ORACLE['addr'])
+
+        # generate block for unlocking used Oracle's UTXO
         self.sync_all()
         self.nodes[0].generate(1)
         self.sync_all()
@@ -223,6 +227,8 @@ class HybridBettingTest(WagerrTestFramework):
         for id in range(len(round_names)):
             mapping_opcode = make_mapping(ROUND_MAPPING, id, round_names[id])
             post_opcode(self.nodes[1], mapping_opcode, WGR_WALLET_ORACLE['addr'])
+
+        # generate block for unlocking used Oracle's UTXO
         self.sync_all()
         self.nodes[0].generate(1)
         self.sync_all()
@@ -231,6 +237,8 @@ class HybridBettingTest(WagerrTestFramework):
         for id in range(len(contender_names)):
             mapping_opcode = make_mapping(CONTENDER_MAPPING, id, contender_names[id])
             post_opcode(self.nodes[1], mapping_opcode, WGR_WALLET_ORACLE['addr'])
+
+        # generate block for unlocking used Oracle's UTXO
         self.sync_all()
         self.nodes[0].generate(1)
         self.sync_all()
@@ -239,6 +247,8 @@ class HybridBettingTest(WagerrTestFramework):
         for id in range(len(team_names)):
             mapping_opcode = make_mapping(TEAM_MAPPING, id, team_names[id])
             post_opcode(self.nodes[1], mapping_opcode, WGR_WALLET_ORACLE['addr'])
+
+        # generate block for unlocking used Oracle's UTXO
         self.sync_all()
         self.nodes[0].generate(1)
         self.sync_all()
@@ -255,7 +265,7 @@ class HybridBettingTest(WagerrTestFramework):
                 assert_equal(mappingid['exists'], True)
                 assert_equal(mappingid['mapping-index'], "sports")
                 assert_equal(mappingid['mapping-id'], id)
-            breakpoint()
+
             # Check rounds mapping
             for id in range(len(round_names)):
                 mapping = node.getmappingname("rounds", id)[0]
