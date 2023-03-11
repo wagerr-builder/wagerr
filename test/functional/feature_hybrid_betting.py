@@ -251,7 +251,7 @@ class HybridBettingTest(WagerrTestFramework):
                 assert_equal(mappingid['exists'], True)
                 assert_equal(mappingid['mapping-index'], "sports")
                 assert_equal(mappingid['mapping-id'], id)
-
+            breakpoint()
             # Check rounds mapping
             for id in range(len(round_names)):
                 mapping = node.getmappingname("rounds", id)[0]
