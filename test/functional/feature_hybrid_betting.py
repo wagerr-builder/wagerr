@@ -443,35 +443,35 @@ class HybridBettingTest(WagerrTestFramework):
 
         # try to place hybrid bet with one leg
         #assert_raises_rpc_error(-31, "Error: Incorrect legs count.",
-        self.nodes[2].placehybridparlaybet(player1_legs[:1], 100)
+        self.nodes[2].placeparlaybet(player1_legs[:1], 100)
 
         # invalid amount
         #assert_raises_rpc_error(-31, "Incorrect bet amount. Please ensure your bet is between 25 - 10000 WGR inclusive.",
-        self.nodes[2].placehybridparlaybet(player1_legs, 24)
+        self.nodes[2].placeparlaybet(player1_legs, 24)
         #assert_raises_rpc_error(-31, "Incorrect bet amount. Please ensure your bet is between 25 - 10000 WGR inclusive.",
-        self.nodes[2].placehybridparlaybet(player1_legs, 10001)
+        self.nodes[2].placeparlaybet(player1_legs, 10001)
 
         # invalid pl event
         failed_legs = copy.deepcopy(player1_legs)
         failed_legs[0]['legObj']['eventId'] = 101
         assert_raises_rpc_error(-31, "Error: there is no such Event: {}".format(101),
-            self.nodes[2].placehybridparlaybet, failed_legs, 30)
+            self.nodes[2].placeparlaybet, failed_legs, 30)
         # invalid field event
         failed_legs = copy.deepcopy(player1_legs)
         failed_legs[3]['legObj']['eventId'] = 201
         assert_raises_rpc_error(-31, "Error: there is no such FieldEvent: {}".format(201),
-            self.nodes[2].placehybridparlaybet, failed_legs, 30)
+            self.nodes[2].placeparlaybet, failed_legs, 30)
 
         revert_chain_height = self.nodes[4].getblockcount()
         self.stop_node(4)
 
-        player1_bet_tx = self.nodes[2].placehybridparlaybet(player1_legs, 100)
+        player1_bet_tx = self.nodes[2].placeparlaybet(player1_legs, 100)
 
         player2_legs = copy.deepcopy(player1_legs)
         # make for player2 3rd leg as loss
         # cont2 will not take 1st place
         player2_legs[2]['legObj']['contenderId'] = contender_names.index("cont2")
-        player2_bet_tx = self.nodes[3].placehybridparlaybet(player2_legs, 200)
+        player2_bet_tx = self.nodes[3].placeparlaybet(player2_legs, 200)
 
         self.nodes[1].generate(1)
         sync_blocks(self.nodes[0:4])
