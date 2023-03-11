@@ -529,7 +529,6 @@ class BettingTest(WagerrTestFramework):
         # Test revert
         revert_chain_height = self.nodes[4].getblockcount()
         self.stop_node(4)
-        self.start_node(4)
 
         # CASE: none animal sport group
         field_event_opcode = make_field_event(
@@ -660,7 +659,7 @@ class BettingTest(WagerrTestFramework):
         assert_equal(event['contenders'][4]['place-odds'], 31554)
         assert_equal(event['contenders'][4]['show-odds'], 21344)
 
-        self.log.info("Revering...")
+        self.log.info("Reverting...")
         current_chain_height = self.nodes[0].getblockcount()
         self.nodes[4].rpchost = self.get_local_peer(4, True)
         self.nodes[4].start()
