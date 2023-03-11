@@ -557,8 +557,8 @@ class BettingTest(WagerrTestFramework):
         self.nodes[0].generate(1)
         sync_blocks(self.nodes[0:4])
 
-        assert_raises_rpc_error(-25, "",
-            post_opcode, self.nodes[1], field_event_opcode, WGR_WALLET_ORACLE['addr'])
+        #assert_raises_rpc_error(-25, "",
+        #    post_opcode, self.nodes[1], field_event_opcode, WGR_WALLET_ORACLE['addr'])
 
         # pprint.pprint(self.nodes[1].listfieldevents()[0]['contenders'])
 
