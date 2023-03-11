@@ -406,23 +406,45 @@ class BettingTest(WagerrTestFramework):
         self.nodes[0].generate(1)
         sync_blocks(self.nodes)
 
+        self.nodes[0].generate(1)
+        self.sync_all()
+        for n in range(self.num_nodes):
+            self.stop_node(n)
+            self.start_node(n, ["-reindex"])
+        disconnect_nodes(self.nodes[0], 1)
+        connect_nodes(self.nodes[0], 1)
+        disconnect_nodes(self.nodes[0], 2)
+        connect_nodes(self.nodes[0], 2)
+        disconnect_nodes(self.nodes[0], 3)
+        connect_nodes(self.nodes[0], 3)
+        connect_nodes(self.nodes[0], 4)
+        self.sync_all()
+
         for id in range(len(round_names)):
             mapping_opcode = make_mapping(ROUND_MAPPING, id, round_names[id])
             post_opcode(self.nodes[1], mapping_opcode, WGR_WALLET_ORACLE['addr'])
+        # generate block for unlocking used Oracle's UTXO
+        self.sync_all()
         self.nodes[0].generate(1)
-        sync_blocks(self.nodes)
+        self.sync_all()
 
         for id in range(len(contender_names)):
             mapping_opcode = make_mapping(CONTENDER_MAPPING, id, contender_names[id])
             post_opcode(self.nodes[1], mapping_opcode, WGR_WALLET_ORACLE['addr'])
+
+       # generate block for unlocking used Oracle's UTXO
+        self.sync_all()
         self.nodes[0].generate(1)
-        sync_blocks(self.nodes)
+        self.sync_all()
 
         for id in range(len(tournament_names)):
             mapping_opcode = make_mapping(TOURNAMENT_MAPPING, id, tournament_names[id])
             post_opcode(self.nodes[1], mapping_opcode, WGR_WALLET_ORACLE['addr'])
+
+       # generate block for unlocking used Oracle's UTXO
+        self.sync_all()
         self.nodes[0].generate(1)
-        sync_blocks(self.nodes)
+        self.sync_all()
 
         for node in self.nodes:
             # Check sports mapping
