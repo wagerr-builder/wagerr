@@ -321,7 +321,7 @@ class HybridBettingTest(WagerrTestFramework):
                 assert_equal(mapping['mapping-name'], contender_names[id])
                 assert_equal(mapping['mapping-type'], "contenders")
                 assert_equal(mapping['mapping-index'], id)
-                mappingid = node.getmappingid("contendernames", contender_names[id])[0]
+                mappingid = node.getmappingid("contenders", contender_names[id])[0]
                 assert_equal(mappingid['exists'], True)
                 assert_equal(mappingid['mapping-index'], "contenders")
                 assert_equal(mappingid['mapping-id'], id)
