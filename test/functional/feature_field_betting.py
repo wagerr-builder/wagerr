@@ -555,9 +555,9 @@ class BettingTest(WagerrTestFramework):
         )
         post_opcode(self.nodes[1], field_event_opcode, WGR_WALLET_EVENT['addr'])
 
-        self.sync_all()
-        self.nodes[0].generate(1)
-        self.sync_all()
+        sync_blocks(self.nodes[0:4])
+        self.nodes[1].generate(1)
+        sync_blocks(self.nodes[0:4])
 
         #assert_raises_rpc_error(-25, "",
         #    post_opcode, self.nodes[1], field_event_opcode, WGR_WALLET_ORACLE['addr'])
