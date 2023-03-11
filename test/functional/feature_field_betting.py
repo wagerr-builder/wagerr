@@ -890,6 +890,7 @@ class BettingTest(WagerrTestFramework):
         )
         post_opcode(self.nodes[1], field_update_odds_opcode, WGR_WALLET_EVENT['addr'])
 
+        sync_blocks(self.nodes[0:4])
         self.nodes[0].generate(1)
         sync_blocks(self.nodes[0:4])
 
@@ -977,6 +978,7 @@ class BettingTest(WagerrTestFramework):
         )
         post_opcode(self.nodes[1], field_update_odds_opcode, WGR_WALLET_EVENT['addr'])
 
+        sync_blocks(self.nodes[0:4])
         self.nodes[0].generate(1)
         sync_blocks(self.nodes[0:4])
 
@@ -1118,6 +1120,7 @@ class BettingTest(WagerrTestFramework):
         field_zeroing_opcode = make_field_zeroing_odds(2)
         post_opcode(self.nodes[1], field_zeroing_opcode, WGR_WALLET_ORACLE['addr'])
 
+        sync_blocks(self.nodes[0:4])
         self.nodes[0].generate(1)
         sync_blocks(self.nodes[0:4])
 
@@ -1248,6 +1251,8 @@ class BettingTest(WagerrTestFramework):
         effective_odds = calc_effective_odds(Decimal(bet_contender_info['outright-odds']))
         player1_expected_win = effective_odds * player1_bet / ODDS_DIVISOR
 
+
+        sync_blocks(self.nodes[0:4])
         self.nodes[0].generate(1)
         sync_blocks(self.nodes[0:4])
 
@@ -1270,6 +1275,7 @@ class BettingTest(WagerrTestFramework):
 
         post_opcode(self.nodes[1], field_result_opcode, WGR_WALLET_EVENT['addr'])
 
+        sync_blocks(self.nodes[0:4])
         self.nodes[0].generate(1)
         sync_blocks(self.nodes[0:4])
 
@@ -1604,6 +1610,7 @@ class BettingTest(WagerrTestFramework):
             player1_bet
         )
 
+        sync_blocks(self.nodes[0:4])
         self.nodes[0].generate(1)
         sync_blocks(self.nodes[0:4])
 
@@ -1639,6 +1646,7 @@ class BettingTest(WagerrTestFramework):
         })
         post_opcode(self.nodes[1], field_result_opcode, WGR_WALLET_EVENT['addr'])
 
+        sync_blocks(self.nodes[0:4])
         self.nodes[0].generate(1)
         sync_blocks(self.nodes[0:4])
 
