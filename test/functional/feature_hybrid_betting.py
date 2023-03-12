@@ -410,21 +410,18 @@ class HybridBettingTest(WagerrTestFramework):
 
         player1_legs = [
             {
-                "legType": "peerless",
                 "legObj": {
                     "eventId": 0, # pl event 0
                     "outcome": outcome_home_win # Team1 win
                 }
             },
             {
-                "legType": "peerless",
                 "legObj": {
                     "eventId": 1, # pl event 1
                     "outcome": outcome_away_win # Team4 win
                 }
             },
             {
-                "legType": "field",
                 "legObj": {
                     "eventId": 0, # field event 0
                     "marketType": market_outright, # contender1 will take 1st place
@@ -432,7 +429,6 @@ class HybridBettingTest(WagerrTestFramework):
                 }
             },
             {
-                "legType": "field",
                 "legObj": {
                     "eventId": 1, # field event 0
                     "marketType": market_place, # contender2 will take 1st or 2nd place
@@ -465,7 +461,7 @@ class HybridBettingTest(WagerrTestFramework):
         revert_chain_height = self.nodes[4].getblockcount()
         self.stop_node(4)
 
-        player1_bet_tx = self.nodes[2].placeparlaybet(player1_legs, 100)
+        player1_bet_tx = 
 
         player2_legs = copy.deepcopy(player1_legs)
         # make for player2 3rd leg as loss
