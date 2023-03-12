@@ -428,25 +428,24 @@ class HybridBettingTest(WagerrTestFramework):
             #    "contenderId": contender_names.index("cont2")
             #}
         ]
-        breakpoint()
         # try to place hybrid bet with one leg
         #assert_raises_rpc_error(-31, "Error: Incorrect legs count.",
         self.nodes[2].placeparlaybet(player1_legs[:1], 1, 100)
 
         # invalid amount
-        #assert_raises_rpc_error(-31, "Incorrect bet amount. Please ensure your bet is between 25 - 10000 WGR inclusive.",
-        self.nodes[2].placeparlaybet(player1_legs, 2, 24)
-        #assert_raises_rpc_error(-31, "Incorrect bet amount. Please ensure your bet is between 25 - 10000 WGR inclusive.",
-        self.nodes[2].placeparlaybet(player1_legs, 2, 10001)
+        assert_raises_rpc_error(-31, "Incorrect bet amount. Please ensure your bet is between 25 - 10000 WGR inclusive.",
+            self.nodes[2].placeparlaybet(player1_legs, 24)
+        assert_raises_rpc_error(-31, "Incorrect bet amount. Please ensure your bet is between 25 - 10000 WGR inclusive.",
+            self.nodes[2].placeparlaybet(player1_legs, 10001)
 
         # invalid pl event
         failed_legs = copy.deepcopy(player1_legs)
-        failed_legs[0]['legObj']['eventId'] = 101
+        failed_legs[0]['eventId'] = 101
         assert_raises_rpc_error(-31, "Error: there is no such Event: {}".format(101),
             self.nodes[2].placeparlaybet, failed_legs, 30)
         # invalid field event
         failed_legs = copy.deepcopy(player1_legs)
-        failed_legs[3]['legObj']['eventId'] = 201
+        failed_legs[3]['eventId'] = 201
         assert_raises_rpc_error(-31, "Error: there is no such FieldEvent: {}".format(201),
             self.nodes[2].placeparlaybet, failed_legs, 30)
 
