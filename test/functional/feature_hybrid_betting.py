@@ -434,10 +434,8 @@ class HybridBettingTest(WagerrTestFramework):
 
         # invalid amount
         breakpoint()
-        assert_raises_rpc_error(-131, "Incorrect bet amount. Please ensure your bet is between 25 - 10000 WGR inclusive.",
-            self.nodes[2].placeparlaybet(player1_legs, 24))
-        assert_raises_rpc_error(-131, "Incorrect bet amount. Please ensure your bet is between 25 - 10000 WGR inclusive.",
-            self.nodes[2].placeparlaybet(player1_legs, 10001))
+        assert_raises_rpc_error(-131, "Incorrect bet amount. Please ensure your bet is between 25 - 10000 WGR inclusive.", self.nodes[2].placeparlaybet(player1_legs, 24))
+        assert_raises_rpc_error(-131, "Incorrect bet amount. Please ensure your bet is between 25 - 10000 WGR inclusive.", self.nodes[2].placeparlaybet(player1_legs, 10001))
 
         # invalid pl event
         failed_legs = copy.deepcopy(player1_legs)
