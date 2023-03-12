@@ -830,7 +830,7 @@ class BettingTest(WagerrTestFramework):
         sync_blocks(self.nodes[0:4])
         self.nodes[0].generate(1)
         sync_blocks(self.nodes[0:4])
-
+        breakpoint()
         field_update_odds_opcode = make_field_update_odds(301, {
                 contender_names.index("cont2") : make_odds(49) # Add new conteder
             }
