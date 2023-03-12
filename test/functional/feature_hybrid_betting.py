@@ -440,12 +440,12 @@ class HybridBettingTest(WagerrTestFramework):
         # invalid pl event
         failed_legs = copy.deepcopy(player1_legs)
         failed_legs[0]['eventId'] = 101
-        assert_raises_rpc_error(-31, "Error: there is no such Event: {}".format(101),
+        assert_raises_rpc_error(-131, "Error: there is no such Event: {}".format(101),
             self.nodes[2].placeparlaybet, failed_legs, 30)
         # invalid field event
         failed_legs = copy.deepcopy(player1_legs)
         failed_legs[3]['eventId'] = 201
-        assert_raises_rpc_error(-31, "Error: there is no such FieldEvent: {}".format(201),
+        assert_raises_rpc_error(-131, "Error: there is no such Event: {}".format(201),
             self.nodes[2].placeparlaybet, failed_legs, 30)
 
         revert_chain_height = self.nodes[4].getblockcount()
