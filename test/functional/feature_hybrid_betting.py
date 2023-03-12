@@ -332,7 +332,7 @@ class HybridBettingTest(WagerrTestFramework):
 
         self.start_time = int(time.time() + 60 * 60)
         # make pl event 1
-        plEvent = make_event(1, # Event ID
+        plEvent = make_event(0, # Event ID
                             self.start_time, # start time = current + hour
                             pl_sport_names.index("PeerlessSport"), # Sport ID
                             tournament_names.index("Tournament1"), # Tournament ID
@@ -345,7 +345,7 @@ class HybridBettingTest(WagerrTestFramework):
         post_opcode(self.nodes[1], plEvent, WGR_WALLET_EVENT['addr'])
 
         # make pl event 2
-        plEvent = make_event(2, # Event ID
+        plEvent = make_event(1, # Event ID
                             self.start_time, # start time = current + hour
                             pl_sport_names.index("PeerlessSport"), # Sport ID
                             tournament_names.index("Tournament1"), # Tournament ID
