@@ -461,7 +461,7 @@ class HybridBettingTest(WagerrTestFramework):
         revert_chain_height = self.nodes[4].getblockcount()
         self.stop_node(4)
 
-        player1_bet_tx = 
+        player1_bet_tx = self.nodes[2].placeparlaybet(player1_legs, 100)
 
         player2_legs = copy.deepcopy(player1_legs)
         # make for player2 3rd leg as loss
