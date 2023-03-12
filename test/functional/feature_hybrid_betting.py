@@ -444,7 +444,7 @@ class HybridBettingTest(WagerrTestFramework):
             self.nodes[2].placeparlaybet, failed_legs, 30)
         # invalid field event
         failed_legs = copy.deepcopy(player1_legs)
-        failed_legs[3]['eventId'] = 201
+        failed_legs[1]['eventId'] = 201
         assert_raises_rpc_error(-131, "Error: there is no such Event: {}".format(201),
             self.nodes[2].placeparlaybet, failed_legs, 30)
 
