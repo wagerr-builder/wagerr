@@ -440,7 +440,7 @@ class HybridBettingTest(WagerrTestFramework):
                 }
             }
         ]
-
+        breakpoint()
         # try to place hybrid bet with one leg
         #assert_raises_rpc_error(-31, "Error: Incorrect legs count.",
         self.nodes[2].placeparlaybet(player1_legs[:1], 1, 100)
