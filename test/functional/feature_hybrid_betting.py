@@ -410,30 +410,22 @@ class HybridBettingTest(WagerrTestFramework):
 
         player1_legs = [
             {
-                "legObj": {
-                    "eventId": 0, # pl event 0
-                    "outcome": outcome_home_win # Team1 win
-                }
+                "eventId": 0, # pl event 0
+                "outcome": outcome_home_win # Team1 win
             },
             {
-                "legObj": {
-                    "eventId": 1, # pl event 1
-                    "outcome": outcome_away_win # Team4 win
-                }
+                "eventId": 1, # pl event 1
+                "outcome": outcome_away_win # Team4 win
             },
             {
-                "legObj": {
-                    "eventId": 0, # field event 0
-                    "marketType": market_outright, # contender1 will take 1st place
-                    "contenderId": contender_names.index("cont1")
-                }
+                "eventId": 0, # field event 0
+                "marketType": market_outright, # contender1 will take 1st place
+                "contenderId": contender_names.index("cont1")
             },
             {
-                "legObj": {
-                    "eventId": 1, # field event 0
-                    "marketType": market_place, # contender2 will take 1st or 2nd place
-                    "contenderId": contender_names.index("cont2")
-                }
+                "eventId": 1, # field event 0
+                "marketType": market_place, # contender2 will take 1st or 2nd place
+                "contenderId": contender_names.index("cont2")
             }
         ]
         breakpoint()
