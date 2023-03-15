@@ -1,7 +1,12 @@
 #!/usr/bin/env python3
-# Copyright (c) 2015-2021 The Wagerr Core developers
+# Copyright (c) 2015-2021 The Dash Core developers
+# Copyright (c) 2018-2021 The Wagerr Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
+
+from test_framework.mininode import *
+from test_framework.test_framework import WagerrTestFramework
+from test_framework.util import set_node_times, isolate_node, reconnect_isolated_node
 
 '''
 feature_llmq_is_retroactive.py
@@ -13,12 +18,6 @@ Mempool inconsistencies are simulated via disconnecting/reconnecting node 3
 and by having a higher relay fee on nodes 4 and 5.
 '''
 
-import time
-
-from test_framework.test_framework import WagerrTestFramework
-from test_framework.util import set_node_times, isolate_node, reconnect_isolated_node
-
-
 class LLMQ_IS_RetroactiveSigning(WagerrTestFramework):
     def set_test_params(self):
         # -whitelist is needed to avoid the trickling logic on node0
@@ -28,9 +27,9 @@ class LLMQ_IS_RetroactiveSigning(WagerrTestFramework):
     def run_test(self):
         self.activate_dip8()
 
-        self.nodes[0].sporkupdate("SPORK_17_QUORUM_DKG_ENABLED", 0)
+        self.nodes[0].spork("SPORK_17_QUORUM_DKG_ENABLED", 0)
         # Turn mempool IS signing off
-        self.nodes[0].sporkupdate("SPORK_2_INSTANTSEND_ENABLED", 1)
+        self.nodes[0].spork("SPORK_2_INSTANTSEND_ENABLED", 1)
         self.wait_for_sporks_same()
 
         self.mine_quorum()
@@ -45,18 +44,18 @@ class LLMQ_IS_RetroactiveSigning(WagerrTestFramework):
         # are the only "neighbours" in intra-quorum connections for one of them.
         self.wait_for_instantlock(txid, self.nodes[0], False, 5)
         # Have to disable ChainLocks to avoid signing a block with a "safe" tx too early
-        self.nodes[0].sporkupdate("SPORK_19_CHAINLOCKS_ENABLED", 4000000000)
+        self.nodes[0].spork("SPORK_19_CHAINLOCKS_ENABLED", 4000000000)
         self.wait_for_sporks_same()
         # We have to wait in order to include tx in block
         self.bump_mocktime(10 * 60 + 1)
         block = self.nodes[0].generate(1)[0]
         self.wait_for_instantlock(txid, self.nodes[0])
-        self.nodes[0].sporkupdate("SPORK_19_CHAINLOCKS_ENABLED", 0)
+        self.nodes[0].spork("SPORK_19_CHAINLOCKS_ENABLED", 0)
         self.wait_for_sporks_same()
         self.wait_for_chainlocked_block_all_nodes(block)
 
         self.log.info("Enable mempool IS signing")
-        self.nodes[0].sporkupdate("SPORK_2_INSTANTSEND_ENABLED", 0)
+        self.nodes[0].spork("SPORK_2_INSTANTSEND_ENABLED", 0)
         self.wait_for_sporks_same()
 
         self.log.info("trying normal IS lock")
@@ -87,18 +86,19 @@ class LLMQ_IS_RetroactiveSigning(WagerrTestFramework):
         # and this should be enough to complete an IS lock
         self.wait_for_instantlock(txid, self.nodes[0])
 
-        self.log.info("testing retroactive signing with unknown TX")
-        isolate_node(self.nodes[3])
-        rawtx = self.nodes[0].createrawtransaction([], {self.nodes[0].getnewaddress(): 1})
-        rawtx = self.nodes[0].fundrawtransaction(rawtx)['hex']
-        rawtx = self.nodes[0].signrawtransactionwithwallet(rawtx)['hex']
-        txid = self.nodes[3].sendrawtransaction(rawtx)
+        # generatetoaddress does not work in POS
+        #self.log.info("testing retroactive signing with unknown TX")
+        #isolate_node(self.nodes[3])
+        #rawtx = self.nodes[0].createrawtransaction([], {self.nodes[0].getnewaddress(): 1})
+        #rawtx = self.nodes[0].fundrawtransaction(rawtx)['hex']
+        #rawtx = self.nodes[0].signrawtransactionwithwallet(rawtx)['hex']
+        #txid = self.nodes[3].sendrawtransaction(rawtx)
         # Make node 3 consider the TX as safe
-        self.bump_mocktime(10 * 60 + 1)
-        block = self.nodes[3].generatetoaddress(1, self.nodes[0].getnewaddress())[0]
-        reconnect_isolated_node(self.nodes[3], 0)
-        self.wait_for_chainlocked_block_all_nodes(block)
-        self.nodes[0].setmocktime(self.mocktime)
+        #self.bump_mocktime(10 * 60 + 1)
+        #block = self.nodes[0].generatetoaddress(1, self.nodes[0].getnewaddress())[0]
+        #reconnect_isolated_node(self.nodes[3], 0)
+        #self.wait_for_chainlocked_block_all_nodes(block)
+        #self.nodes[0].setmocktime(self.mocktime)
 
         self.log.info("testing retroactive signing with partially known TX")
         isolate_node(self.nodes[3])
@@ -116,7 +116,7 @@ class LLMQ_IS_RetroactiveSigning(WagerrTestFramework):
         # Make node0 consider the TX as safe
         self.bump_mocktime(10 * 60 + 1)
         block = self.nodes[0].generate(1)[0]
-        assert txid in self.nodes[0].getblock(block, 1)['tx']
+        assert(txid in self.nodes[0].getblock(block, 1)['tx'])
         self.wait_for_chainlocked_block_all_nodes(block)
 
         self.log.info("testing retroactive signing with partially known TX and all nodes session timeout")
@@ -162,7 +162,7 @@ class LLMQ_IS_RetroactiveSigning(WagerrTestFramework):
         # Make node 0 consider the TX as safe
         self.bump_mocktime(10 * 60 + 1)
         block = self.nodes[0].generate(1)[0]
-        assert txid in self.nodes[0].getblock(block, 1)['tx']
+        assert(txid in self.nodes[0].getblock(block, 1)['tx'])
         self.wait_for_chainlocked_block_all_nodes(block)
 
     def test_single_node_session_timeout(self, do_cycle_llmqs):
@@ -194,7 +194,7 @@ class LLMQ_IS_RetroactiveSigning(WagerrTestFramework):
         # Make node 0 consider the TX as safe
         self.bump_mocktime(10 * 60 + 1)
         block = self.nodes[0].generate(1)[0]
-        assert txid in self.nodes[0].getblock(block, 1)['tx']
+        assert(txid in self.nodes[0].getblock(block, 1)['tx'])
         self.wait_for_chainlocked_block_all_nodes(block)
 
 if __name__ == '__main__':

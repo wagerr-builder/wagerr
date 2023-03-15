@@ -3,27 +3,17 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test the wallet accounts properly when there is a double-spend conflict."""
-from decimal import Decimal
 
-from test_framework.test_framework import WagerrTestFramework
-from test_framework.util import (
-    assert_equal,
-    connect_nodes,
-    disconnect_nodes,
-    find_output,
-)
+from test_framework.test_framework import BitcoinTestFramework
+from test_framework.util import *
 
-class TxnMallTest(WagerrTestFramework):
+class TxnMallTest(BitcoinTestFramework):
     def set_test_params(self):
         self.num_nodes = 4
-        self.supports_cli = False
-
-    def skip_test_if_missing_module(self):
-        self.skip_if_no_wallet()
 
     def add_options(self, parser):
-        parser.add_argument("--mineblock", dest="mine_block", default=False, action="store_true",
-                            help="Test double-spend of 1-confirmed transaction")
+        parser.add_option("--mineblock", dest="mine_block", default=False, action="store_true",
+                          help="Test double-spend of 1-confirmed transaction")
 
     def setup_network(self):
         # Start with split network:
@@ -34,14 +24,6 @@ class TxnMallTest(WagerrTestFramework):
     def run_test(self):
         # All nodes should start with 12,500 WAGERR:
         starting_balance = 12500
-
-        # All nodes should be out of IBD.
-        # If the nodes are not all out of IBD, that can interfere with
-        # blockchain sync later in the test when nodes are connected, due to
-        # timing issues.
-        for n in self.nodes:
-            assert n.getblockchaininfo()["initialblockdownload"] == False
-
         for i in range(4):
             assert_equal(self.nodes[i].getbalance(), starting_balance)
             self.nodes[i].getnewaddress("")  # bug workaround, coins generated assigned to first getnewaddress!

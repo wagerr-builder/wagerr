@@ -8,21 +8,18 @@
 
 # Add python-bitcoinrpc to module search path:
 
-import time
+import sys
 
-from test_framework.authproxy import JSONRPCException
-from test_framework.test_framework import WagerrTestFramework
-from test_framework.util import assert_equal, assert_raises_rpc_error
+from test_framework.test_framework import BitcoinTestFramework
+from test_framework.util import *
 
-class KeyPoolTest(WagerrTestFramework):
+class KeyPoolTest(BitcoinTestFramework):
 
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 1
         self.extra_args = [['-usehd=1']]
-
-    def skip_test_if_missing_module(self):
-        self.skip_if_no_wallet()
+        self.stderr = sys.stdout
 
     def run_test(self):
         nodes = self.nodes
@@ -31,7 +28,7 @@ class KeyPoolTest(WagerrTestFramework):
         addr_before_encrypting = nodes[0].getnewaddress()
         addr_before_encrypting_data = nodes[0].getaddressinfo(addr_before_encrypting)
         wallet_info_old = nodes[0].getwalletinfo()
-        assert addr_before_encrypting_data['hdchainid'] == wallet_info_old['hdchainid']
+        assert(addr_before_encrypting_data['hdchainid'] == wallet_info_old['hdchainid'])
 
         # Encrypt wallet and wait to terminate
         nodes[0].encryptwallet('test')
@@ -39,14 +36,14 @@ class KeyPoolTest(WagerrTestFramework):
         addr = nodes[0].getnewaddress()
         addr_data = nodes[0].getaddressinfo(addr)
         wallet_info = nodes[0].getwalletinfo()
-        assert addr_before_encrypting_data['hdchainid'] == wallet_info['hdchainid']
-        assert addr_data['hdchainid'] == wallet_info['hdchainid']
+        assert(addr_before_encrypting_data['hdchainid'] == wallet_info['hdchainid'])
+        assert(addr_data['hdchainid'] == wallet_info['hdchainid'])
 
         try:
             addr = nodes[0].getnewaddress()
             raise AssertionError('Keypool should be exhausted after one address')
         except JSONRPCException as e:
-            assert(e.error['code']==-32603)
+            assert(e.error['code']==-12)
 
         # put six (plus 2) new keys in the keypool (100% external-, +100% internal-keys, 1 in min)
         nodes[0].walletpassphrase('test', 12000)
@@ -68,7 +65,7 @@ class KeyPoolTest(WagerrTestFramework):
             nodes[0].getrawchangeaddress()
             raise AssertionError('Keypool should be exhausted after six addresses')
         except JSONRPCException as e:
-            assert e.error['code']==-12
+            assert(e.error['code']==-12)
 
         addr = set()
         # drain the external keys
@@ -78,13 +75,13 @@ class KeyPoolTest(WagerrTestFramework):
         addr.add(nodes[0].getnewaddress())
         addr.add(nodes[0].getnewaddress())
         addr.add(nodes[0].getnewaddress())
-        assert len(addr) == 6
+        assert(len(addr) == 6)
         # the next one should fail
         try:
             addr = nodes[0].getnewaddress()
             raise AssertionError('Keypool should be exhausted after six addresses')
         except JSONRPCException as e:
-            assert e.error['code']==-12
+            assert(e.error['code']==-12)
 
         # refill keypool with three new addresses
         nodes[0].walletpassphrase('test', 1)
@@ -93,10 +90,15 @@ class KeyPoolTest(WagerrTestFramework):
         time.sleep(1.1)
         assert_equal(nodes[0].getwalletinfo()["unlocked_until"], 0)
 
-        # drain the keypool
-        for _ in range(3):
-            nodes[0].getnewaddress()
-        assert_raises_rpc_error(-12, "Keypool ran out", nodes[0].getnewaddress)
+        # drain them by mining
+        nodes[0].generate(1)
+        nodes[0].generate(1)
+        nodes[0].generate(1)
+        try:
+            nodes[0].generate(1)
+            raise AssertionError('Keypool should be exhausted after three addesses')
+        except JSONRPCException as e:
+            assert(e.error['code']==-32603)
 
         nodes[0].walletpassphrase('test', 100)
         nodes[0].keypoolrefill(100)

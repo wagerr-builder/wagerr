@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-# Copyright (c) 2019-2021 The Wagerr Core developers
+# Copyright (c) 2019-2021 The Dash Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-from test_framework.test_framework import WagerrTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import assert_equal
 
 '''
@@ -12,12 +12,9 @@ rpc_coinjoin.py
 Tests CoinJoin basic RPC
 '''
 
-class CoinJoinTest(WagerrTestFramework):
+class CoinJoinTest(BitcoinTestFramework):
     def set_test_params(self):
         self.num_nodes = 1
-
-    def skip_test_if_missing_module(self):
-        self.skip_if_no_wallet()
 
     def run_test(self):
         self.test_coinjoin_start_stop()

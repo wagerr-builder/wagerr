@@ -5,7 +5,7 @@
 """Test the functionality of all CLI commands.
 
 """
-from test_framework.test_framework import WagerrTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 
 from test_framework.util import *
 
@@ -18,70 +18,66 @@ import os
 import subprocess
 
 WAGERR_TX_FEE = 0.001
-WAGERR_AUTH_ADDR = "TDn9ZfHrYvRXyXC6KxRgN6ZRXgJH2JKZWe"
+WAGERR_AUTH_ADDR = "TJA37d7KPVmd5Lqa2EcQsptcfLYsQ1Qcfk"
 
-class TokenTest (WagerrTestFramework):
+class TokenTest (BitcoinTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 2
-        self.mn_count = 0
-        self.extra_args = [["-debug"], ["-debug"]]
-        self.fast_dip3_enforcement = False
+        #self.extra_args = [["-debug"],["-debug"]]
 
     def run_test(self):
-        connect_nodes(self.nodes[0], 1)
+        connect_nodes_bi(self.nodes, 0, 1)
         tmpdir=self.options.tmpdir
         self.log.info("Generating Tokens...")
         self.nodes[0].generate(100)
-        self.nodes[0].importprivkey("TCH8Qby7krfugb2sFWzHQSEmTxBgzBSLkgPtt5EUnzDqfaX9dcsS")
+        self.nodes[0].importprivkey("TGVmKzjo3A4TJeBjU95VYZERj5sUq5BM68rv5UzT5KVszdgy5JCK")
         self.nodes[0].generate(100)
         self.nodes[0].generate(100)
         self.nodes[0].sendtoaddress(WAGERR_AUTH_ADDR, 10)
         self.nodes[0].generate(1)
         MGTBLS=self.nodes[0].bls("generate")
-        ORATBLS=self.nodes[0].bls("generate")
+        GVTBLS=self.nodes[0].bls("generate")
         XWAGERRBLS=self.nodes[0].bls("generate")
         PARTBLS=self.nodes[0].bls("generate")
         LiveBLS=self.nodes[0].bls("generate")
         HulkBLS=self.nodes[0].bls("generate")
         self.log.info("MGTBLS %s" % MGTBLS["public"])
-        self.log.info("ORATBLS %s" % ORATBLS["public"])
         MGTAddr=self.nodes[0].getnewaddress()
-        ORATAddr=self.nodes[0].getnewaddress()
+        GVTAddr=self.nodes[0].getnewaddress()
         XWAGERRAddr=self.nodes[0].getnewaddress()
         PARTAddr=self.nodes[0].getnewaddress()
         LIVEAddr=self.nodes[0].getnewaddress()
         HulkAddr=self.nodes[0].getnewaddress()
-        self.nodes[0].sendtoaddress(WAGERR_AUTH_ADDR, 10)
-        self.nodes[0].generate(100)
-        self.nodes[0].generate(100)
-        MGT=self.nodes[0].configuremanagementtoken( "MGT", "Management", "4", "https://www.google.com", "0",  MGTBLS["public"], "false", "true")
+        MGT=self.nodes[0].configuremanagementtoken( "MGT", "Management", "4", "https://www.google.com", "0", MGTBLS["public"], "false", "true")
+        self.nodes[0].generate(1)
         self.log.info("MGT %s" % MGT)
         MGTGroup_ID=MGT['groupID']
-        self.nodes[0].generate(100)
-        breakpoint()
         self.nodes[0].minttoken(MGTGroup_ID, MGTAddr, '82')
         self.nodes[0].sendtoaddress(WAGERR_AUTH_ADDR, 10)
         self.nodes[0].generate(1)
+        GVT=self.nodes[0].configuremanagementtoken("GVT", "GuardianValidator","0",  "https://www.google.com", "0", GVTBLS["public"], "false", "true")
+        self.nodes[0].generate(1)
+        self.log.info("GVT %s" % GVT)
+        GVTGroup_ID=GVT['groupID']
+        self.nodes[0].minttoken(GVTGroup_ID, GVTAddr, '43')
         mintaddr=self.nodes[0].getnewaddress()
         self.nodes[0].sendtoaddress(WAGERR_AUTH_ADDR, 10)
+        self.nodes[0].generate(1)
         self.nodes[0].minttoken(MGTGroup_ID, mintaddr, 500)
+        self.nodes[0].generate(1)
         self.nodes[0].sendtoaddress(WAGERR_AUTH_ADDR, 10)
         self.nodes[0].generate(1)
-        ORAT=self.nodes[0].configuremanagementtoken( "ORAT", "ORAT", "4", "https://www.google.com", "0",  ORATBLS["public"], "false", "true")
-        self.log.info("ORAT %s" % ORAT)
-        ORATGroup_ID=ORAT['groupID']
-        self.nodes[0].minttoken(ORATGroup_ID, ORATAddr, '82')
-        self.nodes[0].sendtoaddress(WAGERR_AUTH_ADDR, 10)
-        self.nodes[0].generate(1)
-        XWAGERRTok=self.nodes[0].configuremanagementtoken("XWAGERR", "ExtraWagerr", "https://github.com/wagerr/ATP-descriptions/blob/master/WAGERR-testnet-XWAGERR.json","f5125a90bde180ef073ce1109376d977f5cbddb5582643c81424cc6cc842babd","0", XWAGERRBLS["public"], "true", "true")
+        XWAGERRTok=self.nodes[0].configuremanagementtoken("XWAGERR", "ExtraWagerr", "0", "https://github.com/wagerr/ATP-descriptions/blob/master/WAGERR-testnet-XWAGERR.json","f5125a90bde180ef073ce1109376d977f5cbddb5582643c81424cc6cc842babd",XWAGERRBLS["public"], "true", "true")
         XWAGERRGroup_ID=XWAGERRTok['groupID']
         self.nodes[0].sendtoaddress(WAGERR_AUTH_ADDR, 10)
-        PARTTok=self.nodes[0].configuremanagementtoken("PART", "PartWagerr", "https://github.com/wagerr/ATP-descriptions/blob/master/WAGERR-testnet-PART.json", "b0425ee4ba234099970c53c28288da749e2a1afc0f49856f4cab82b37f72f6a5","0", PARTBLS["public"], "true", "true")
+        self.nodes[0].generate(1)
+        PARTTok=self.nodes[0].configuremanagementtoken("PART", "PartWagerr", "0", "https://github.com/wagerr/ATP-descriptions/blob/master/WAGERR-testnet-PART.json", "b0425ee4ba234099970c53c28288da749e2a1afc0f49856f4cab82b37f72f6a5",PARTBLS["public"], "true", "true")
         PARTGroup_ID=PARTTok['groupID']
-        LIVETok=self.nodes[0].configuremanagementtoken("LIVE", "LiveWagerr", "https://github.com/wagerr/ATP-descriptions/blob/master/WAGERR-testnet-LIVE.json", "6de2409add060ec4ef03d61c0966dc46508ed3498e202e9459e492a372ddccf5", "13", LiveBLS["public"], "true", "true")
-        LIVEGroup_ID=LIVETok['groupID']
         self.nodes[0].sendtoaddress(WAGERR_AUTH_ADDR, 10)
+        self.nodes[0].generate(1)
+        LIVETok=self.nodes[0].configuremanagementtoken("LIVE", "LiveWagerr", "13", "https://github.com/wagerr/ATP-descriptions/blob/master/WAGERR-testnet-LIVE.json", "6de2409add060ec4ef03d61c0966dc46508ed3498e202e9459e492a372ddccf5", LiveBLS["public"], "true", "true")
+        LIVEGroup_ID=LIVETok['groupID']
         self.nodes[0].generate(1)
         self.log.info("Token Info %s" % json.dumps(self.nodes[0].tokeninfo("all"), indent=4))
         self.nodes[0].minttoken(MGTGroup_ID, MGTAddr, '4975')
@@ -92,7 +88,7 @@ class TokenTest (WagerrTestFramework):
         self.nodes[0].generate(1)
         self.nodes[0].minttoken(LIVEGroup_ID, LIVEAddr, '1')
         self.nodes[0].generate(1)
-        HULKTok=self.nodes[0].configuretoken("HULK", "HulkToken", "https://raw.githubusercontent.com/CeForce/hulktoken/master/hulk.json", "367750e31cb276f5218c013473449c9e6a4019fed603d045b51e25f5db29283a", "10", "true")
+        HULKTok=self.nodes[0].configuretoken("HULK", "HulkToken", "10", "https://raw.githubusercontent.com/CeForce/hulktoken/master/hulk.json", "367750e31cb276f5218c013473449c9e6a4019fed603d045b51e25f5db29283a", "true")
         HulkGroup_ID=HULKTok['groupID']
         self.nodes[0].generate(1)
         self.nodes[0].minttoken(HulkGroup_ID, HulkAddr, '15')
@@ -158,18 +154,18 @@ class TokenTest (WagerrTestFramework):
         self.log.info("Blockhash block 200 %s" % LIVE_BlockHash)
         self.log.info("\nTransaction ID %s" % LIVETrans)
         self.log.info("Transaction Details %s" % self.nodes[0].gettokentransaction(LIVETrans, LIVE_BlockHash))
-        self.log.info("\nList tokens since block 200 ORAT\n%s" % self.nodes[0].listtokenssinceblock(LIVEGroup_ID, LIVE_BlockHash))
-        tokenORATUnspent=self.nodes[0].listunspenttokens(ORATGroup_ID)
-        newORAT=self.nodes[0].getnewaddress()
-        self.log.info("Send tokens to new address %s" % self.nodes[0].sendtoken(ORATGroup_ID, newORAT, 2))
+        self.log.info("\nList tokens since block 200 GVT\n%s" % self.nodes[0].listtokenssinceblock(LIVEGroup_ID, LIVE_BlockHash))
+        tokenGVTUnspent=self.nodes[0].listunspenttokens(GVTGroup_ID)
+        newGVT=self.nodes[0].getnewaddress()
+        self.log.info("Send tokens to new address %s" % self.nodes[0].sendtoken(GVTGroup_ID, newGVT, 2))
         self.nodes[0].generate(1)
         self.log.info(self.nodes[1].getaddressbalance)
-        subgroupID=self.nodes[0].getsubgroupid(ORATGroup_ID,"credit")
+        subgroupID=self.nodes[0].getsubgroupid(GVTGroup_ID,"credit")
         self.log.info("Subgroup Info %s " % self.nodes[0].tokeninfo('groupid',subgroupID))
-        self.log.info("\nUnspent Tokens ORAT Token\n%s\n" % tokenORATUnspent)
+        self.log.info("\nUnspent Tokens GVT Token\n%s\n" % tokenGVTUnspent)
         tokenReceiveAddr=self.nodes[1].getnewaddress()
-        rawTxid=tokenORATUnspent[0]['txid']
-        rawVout=tokenORATUnspent[0]['vout']
+        rawTxid=tokenGVTUnspent[0]['txid']
+        rawVout=tokenGVTUnspent[0]['vout']
         rawAddr=tokenReceiveAddr
         rawAmount=0.01
         self.log.info("txid %s" % rawTxid)
@@ -179,7 +175,7 @@ class TokenTest (WagerrTestFramework):
         inputs=[{ "txid" : rawTxid, "vout" : rawVout }]
         inputs = []
         outputs={ rawAddr : rawAmount }
-        token={ "groupid" : ORATGroup_ID, "token_amount" : 0.1 }
+        token={ "groupid" : GVTGroup_ID, "token_amount" : 0.1 }
         self.log.info(str(inputs))
         self.log.info(outputs)
         self.log.info(token)

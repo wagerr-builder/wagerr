@@ -5,19 +5,14 @@
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test the wallet keypool and interaction with wallet encryption/locking."""
 
-import time
+from test_framework.test_framework import BitcoinTestFramework
+from test_framework.util import *
 
-from test_framework.test_framework import WagerrTestFramework
-from test_framework.util import assert_equal, assert_raises_rpc_error
-
-class KeyPoolTest(WagerrTestFramework):
+class KeyPoolTest(BitcoinTestFramework):
     def set_test_params(self):
         self.num_nodes = 1
         self.extra_args = [['-usehd=0']]
         self.setup_clean_chain = True
-
-    def skip_test_if_missing_module(self):
-        self.skip_if_no_wallet()
 
     def run_test(self):
         nodes = self.nodes
@@ -28,7 +23,7 @@ class KeyPoolTest(WagerrTestFramework):
         # Keep creating keys
         addr = nodes[0].getnewaddress()
 
-        assert_raises_rpc_error(-32603, "No key for coinbase available", nodes[0].generate, 1)
+        assert_raises_rpc_error(-12, "Error: Keypool ran out, please call keypoolrefill first", nodes[0].getnewaddress)
 
         # put three new keys in the keypool
         nodes[0].walletpassphrase('test', 12000)
@@ -41,7 +36,7 @@ class KeyPoolTest(WagerrTestFramework):
         addr.add(nodes[0].getrawchangeaddress())
         addr.add(nodes[0].getrawchangeaddress())
         # assert that three unique addresses were returned
-        assert len(addr) == 3
+        assert(len(addr) == 3)
         # the next one should fail
         assert_raises_rpc_error(-12, "Keypool ran out", nodes[0].getrawchangeaddress)
 
@@ -52,10 +47,11 @@ class KeyPoolTest(WagerrTestFramework):
         time.sleep(1.1)
         assert_equal(nodes[0].getwalletinfo()["unlocked_until"], 0)
 
-        # drain the keypool
-        for _ in range(3):
-            nodes[0].getnewaddress()
-        assert_raises_rpc_error(-12, "Keypool ran out", nodes[0].getnewaddress)
+        # drain them by mining
+        nodes[0].generate(1)
+        nodes[0].generate(1)
+        nodes[0].generate(1)
+        assert_raises_rpc_error(-32603, "No key for coinbase available", nodes[0].generate, 1)
 
 if __name__ == '__main__':
     KeyPoolTest().main()

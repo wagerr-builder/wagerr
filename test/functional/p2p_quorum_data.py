@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2021-2022 The Wagerr Core developers
+# Copyright (c) 2021 The Dash Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -8,6 +8,8 @@ import time
 from test_framework.messages import msg_qgetdata, msg_qwatch
 from test_framework.mininode import (
     mininode_lock,
+    network_thread_start,
+    network_thread_join,
     P2PInterface,
 )
 from test_framework.test_framework import WagerrTestFramework
@@ -148,6 +150,9 @@ class QuorumDataMessagesTest(WagerrTestFramework):
             self.log.info("Testing basics of QGETDATA/QDATA")
             p2p_node0 = p2p_connection(node0)
             p2p_mn1 = p2p_connection(mn1.node)
+            network_thread_start()
+            p2p_node0.wait_for_verack()
+            p2p_mn1.wait_for_verack()
             id_p2p_node0 = get_mininode_id(node0)
             id_p2p_mn1 = get_mininode_id(mn1.node)
 
@@ -167,7 +172,10 @@ class QuorumDataMessagesTest(WagerrTestFramework):
             # Open a fake MNAUTH authenticated P2P connection to the masternode to allow qgetdata
             node0.disconnect_p2ps()
             mn1.node.disconnect_p2ps()
+            network_thread_join()
             p2p_mn1 = p2p_connection(mn1.node)
+            network_thread_start()
+            p2p_mn1.wait_for_verack()
             id_p2p_mn1 = get_mininode_id(mn1.node)
             mnauth(mn1.node, id_p2p_mn1, fake_mnauth_1[0], fake_mnauth_1[1])
             # The masternode should now respond to qgetdata requests
@@ -186,9 +194,13 @@ class QuorumDataMessagesTest(WagerrTestFramework):
             p2p_mn1.test_qgetdata(qgetdata_all, 0, self.llmq_threshold, self.llmq_size)
             wait_for_banscore(mn1.node, id_p2p_mn1, 50)
             mn1.node.disconnect_p2ps()
+            network_thread_join()
             self.log.info("Test ban score increase for invalid / unexpected QDATA")
             p2p_mn1 = p2p_connection(mn1.node)
             p2p_mn2 = p2p_connection(mn2.node)
+            network_thread_start()
+            p2p_mn1.wait_for_verack()
+            p2p_mn2.wait_for_verack()
             id_p2p_mn1 = get_mininode_id(mn1.node)
             id_p2p_mn2 = get_mininode_id(mn2.node)
             mnauth(mn1.node, id_p2p_mn1, fake_mnauth_1[0], fake_mnauth_1[1])
@@ -234,11 +246,14 @@ class QuorumDataMessagesTest(WagerrTestFramework):
             wait_for_banscore(mn1.node, id_p2p_mn1, 50)
             mn1.node.disconnect_p2ps()
             mn2.node.disconnect_p2ps()
+            network_thread_join()
             self.log.info("Test all available error codes")
             p2p_mn1 = p2p_connection(mn1.node)
+            network_thread_start()
+            p2p_mn1.wait_for_verack()
             id_p2p_mn1 = get_mininode_id(mn1.node)
             mnauth(mn1.node, id_p2p_mn1, fake_mnauth_1[0], fake_mnauth_1[1])
-            qgetdata_invalid_type = msg_qgetdata(quorum_hash_int, 105, 0x01, protx_hash_int)
+            qgetdata_invalid_type = msg_qgetdata(quorum_hash_int, 103, 0x01, protx_hash_int)
             qgetdata_invalid_block = msg_qgetdata(protx_hash_int, 100, 0x01, protx_hash_int)
             qgetdata_invalid_quorum = msg_qgetdata(int(mn1.node.getblockhash(0), 16), 100, 0x01, protx_hash_int)
             qgetdata_invalid_no_member = msg_qgetdata(quorum_hash_int, 100, 0x02, quorum_hash_int)
@@ -248,10 +263,14 @@ class QuorumDataMessagesTest(WagerrTestFramework):
             p2p_mn1.test_qgetdata(qgetdata_invalid_no_member, MASTERNODE_IS_NO_MEMBER)
             # The last two error case require the node to miss its DKG data so we just reindex the node.
             mn1.node.disconnect_p2ps()
+            network_thread_join()
             self.restart_mn(mn1, reindex=True)
             # Re-connect to the masternode
             p2p_mn1 = p2p_connection(mn1.node)
             p2p_mn2 = p2p_connection(mn2.node)
+            network_thread_start()
+            p2p_mn1.wait_for_verack()
+            p2p_mn2.wait_for_verack()
             id_p2p_mn1 = get_mininode_id(mn1.node)
             id_p2p_mn2 = get_mininode_id(mn2.node)
             assert id_p2p_mn1 is not None
@@ -283,6 +302,7 @@ class QuorumDataMessagesTest(WagerrTestFramework):
             # Restart one more time and make sure data gets saved to db
             mn1.node.disconnect_p2ps()
             mn2.node.disconnect_p2ps()
+            network_thread_join()
             self.restart_mn(mn1)
             self.wait_for_quorum_data([mn1], 100, quorum_hash, recover=False)
 
@@ -302,6 +322,8 @@ class QuorumDataMessagesTest(WagerrTestFramework):
             self.log.info("Test request limiting / banscore increases")
 
             p2p_mn1 = p2p_connection(mn1.node)
+            network_thread_start()
+            p2p_mn1.wait_for_verack()
             id_p2p_mn1 = get_mininode_id(mn1.node)
             mnauth(mn1.node, id_p2p_mn1, fake_mnauth_1[0], fake_mnauth_1[1])
             p2p_mn1.test_qgetdata(qgetdata_vvec, 0, self.llmq_threshold, 0)
@@ -313,10 +335,14 @@ class QuorumDataMessagesTest(WagerrTestFramework):
             p2p_mn1.test_qgetdata(qgetdata_vvec, 0, self.llmq_threshold, 0)
             wait_for_banscore(mn1.node, id_p2p_mn1, 25)
             mn1.node.disconnect_p2ps()
+            network_thread_join()
             # Requesting one QDATA with mn1 and mn2 from mn3 should not result
             # in banscore increase for either of both.
             p2p_mn3_1 = p2p_connection(mn3.node, uacomment_m3_1)
             p2p_mn3_2 = p2p_connection(mn3.node, uacomment_m3_2)
+            network_thread_start()
+            p2p_mn3_1.wait_for_verack()
+            p2p_mn3_2.wait_for_verack()
             id_p2p_mn3_1 = get_mininode_id(mn3.node, uacomment_m3_1)
             id_p2p_mn3_2 = get_mininode_id(mn3.node, uacomment_m3_2)
             assert id_p2p_mn3_1 != id_p2p_mn3_2
@@ -338,6 +364,7 @@ class QuorumDataMessagesTest(WagerrTestFramework):
             # mn2 should be "banned" now
             wait_until(lambda: not p2p_mn3_2.is_connected, timeout=10)
             mn3.node.disconnect_p2ps()
+            network_thread_join()
 
         # Test that QWATCH connections are also allowed to query data but all
         # QWATCH connections share one request limit slot
@@ -346,6 +373,9 @@ class QuorumDataMessagesTest(WagerrTestFramework):
             force_request_expire()
             p2p_mn3_1 = p2p_connection(mn3.node, uacomment_m3_1)
             p2p_mn3_2 = p2p_connection(mn3.node, uacomment_m3_2)
+            network_thread_start()
+            p2p_mn3_1.wait_for_verack()
+            p2p_mn3_2.wait_for_verack()
             id_p2p_mn3_1 = get_mininode_id(mn3.node, uacomment_m3_1)
             id_p2p_mn3_2 = get_mininode_id(mn3.node, uacomment_m3_2)
             assert id_p2p_mn3_1 != id_p2p_mn3_2
@@ -365,6 +395,7 @@ class QuorumDataMessagesTest(WagerrTestFramework):
             p2p_mn3_1.test_qgetdata(qgetdata_all, 0, self.llmq_threshold, self.llmq_size)
             wait_for_banscore(mn3.node, id_p2p_mn3_1, 25)
             mn3.node.disconnect_p2ps()
+            network_thread_join()
 
         def test_watchquorums():
             self.log.info("Test -watchquorums support")
@@ -374,6 +405,9 @@ class QuorumDataMessagesTest(WagerrTestFramework):
                     connect_nodes(node0, i + 1)
                 p2p_node0 = p2p_connection(node0)
                 p2p_mn2 = p2p_connection(mn2.node)
+                network_thread_start()
+                p2p_node0.wait_for_verack()
+                p2p_mn2.wait_for_verack()
                 id_p2p_node0 = get_mininode_id(node0)
                 id_p2p_mn2 = get_mininode_id(mn2.node)
                 mnauth(node0, id_p2p_node0, fake_mnauth_1[0], fake_mnauth_1[1])
@@ -385,6 +419,7 @@ class QuorumDataMessagesTest(WagerrTestFramework):
                 wait_for_banscore(node0, id_p2p_node0, (1 - len(extra_args)) * 10)
                 node0.disconnect_p2ps()
                 mn2.node.disconnect_p2ps()
+                network_thread_join()
 
         def test_rpc_quorum_getdata_protx_hash():
             self.log.info("Test optional proTxHash of `quorum getdata`")
@@ -395,8 +430,8 @@ class QuorumDataMessagesTest(WagerrTestFramework):
                                     "0000000000000000000000000000000000000000000000000000000000000000")
 
         # Enable DKG and disable ChainLocks
-        self.nodes[0].sporkupdate("SPORK_17_QUORUM_DKG_ENABLED", 0)
-        self.nodes[0].sporkupdate("SPORK_19_CHAINLOCKS_ENABLED", 4070908800)
+        self.nodes[0].spork("SPORK_17_QUORUM_DKG_ENABLED", 0)
+        self.nodes[0].spork("SPORK_19_CHAINLOCKS_ENABLED", 4070908800)
 
         self.wait_for_sporks_same()
         quorum_hash = self.mine_quorum()

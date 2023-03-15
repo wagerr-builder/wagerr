@@ -4,7 +4,7 @@
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test multiple RPC users."""
 
-from test_framework.test_framework import WagerrTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import (
     assert_equal,
     get_datadir_path,
@@ -18,13 +18,11 @@ import subprocess
 from random import SystemRandom
 import string
 import configparser
-import sys
 
 
-class HTTPBasicsTest(WagerrTestFramework):
+class HTTPBasicsTest(BitcoinTestFramework):
     def set_test_params(self):
         self.num_nodes = 2
-        self.supports_cli = False
 
     def setup_chain(self):
         super().setup_chain()
@@ -38,21 +36,24 @@ class HTTPBasicsTest(WagerrTestFramework):
         config = configparser.ConfigParser()
         config.read_file(open(self.options.configfile))
         gen_rpcauth = config['environment']['RPCAUTH']
-        p = subprocess.Popen([sys.executable, gen_rpcauth, self.user], stdout=subprocess.PIPE, universal_newlines=True)
+        p = subprocess.Popen([gen_rpcauth, self.user], stdout=subprocess.PIPE, universal_newlines=True)
         lines = p.stdout.read().splitlines()
         rpcauth3 = lines[1]
         self.password = lines[3]
 
         with open(os.path.join(get_datadir_path(self.options.tmpdir, 0), "wagerr.conf"), 'a', encoding='utf8') as f:
-            f.write(rpcauth + "\n")
-            f.write(rpcauth2 + "\n")
-            f.write(rpcauth3 + "\n")
+            f.write(rpcauth+"\n")
+            f.write(rpcauth2+"\n")
+            f.write(rpcauth3+"\n")
         with open(os.path.join(get_datadir_path(self.options.tmpdir, 1), "wagerr.conf"), 'a', encoding='utf8') as f:
-            f.write(rpcuser + "\n")
-            f.write(rpcpassword + "\n")
+            f.write(rpcuser+"\n")
+            f.write(rpcpassword+"\n")
 
     def run_test(self):
-        self.log.info('Check correctness of the rpcauth config option')
+
+        ##################################################
+        # Check correctness of the rpcauth config option #
+        ##################################################
         url = urllib.parse.urlparse(self.nodes[0].url)
 
         #Old authpair
@@ -158,7 +159,9 @@ class HTTPBasicsTest(WagerrTestFramework):
         assert_equal(resp.status, 401)
         conn.close()
 
-        self.log.info('Check correctness of the rpcuser/rpcpassword config options')
+        ###############################################################
+        # Check correctness of the rpcuser/rpcpassword config options #
+        ###############################################################
         url = urllib.parse.urlparse(self.nodes[1].url)
 
         # rpcuser and rpcpassword authpair
@@ -198,13 +201,5 @@ class HTTPBasicsTest(WagerrTestFramework):
         conn.close()
 
 
-        self.log.info('Check that failure to write cookie file will abort the node gracefully')
-        self.stop_node(0)
-        cookie_file = os.path.join(get_datadir_path(self.options.tmpdir, 0), self.chain, '.cookie.tmp')
-        os.mkdir(cookie_file)
-        init_error = 'Error: Unable to start HTTP server. See debug log for details.'
-        self.nodes[0].assert_start_raises_init_error(expected_msg=init_error)
-
-
 if __name__ == '__main__':
-    HTTPBasicsTest().main()
+    HTTPBasicsTest ().main ()

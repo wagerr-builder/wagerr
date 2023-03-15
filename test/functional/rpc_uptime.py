@@ -9,10 +9,10 @@ Test corresponds to code in rpc/server.cpp.
 
 import time
 
-from test_framework.test_framework import WagerrTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 
 
-class UptimeTest(WagerrTestFramework):
+class UptimeTest(BitcoinTestFramework):
     def set_test_params(self):
         self.num_nodes = 1
         self.setup_clean_chain = True
@@ -23,7 +23,7 @@ class UptimeTest(WagerrTestFramework):
     def _test_uptime(self):
         wait_time = 10
         self.nodes[0].setmocktime(int(time.time() + wait_time))
-        assert self.nodes[0].uptime() >= wait_time
+        assert(self.nodes[0].uptime() >= wait_time)
 
 
 if __name__ == '__main__':

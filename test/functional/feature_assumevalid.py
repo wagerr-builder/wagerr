@@ -32,19 +32,19 @@ Start three nodes:
 import time
 
 from test_framework.blocktools import (create_block, create_coinbase)
-from test_framework.key import ECKey
-from test_framework.messages import (
-    CBlockHeader,
-    COutPoint,
-    CTransaction,
-    CTxIn,
-    CTxOut,
-    msg_block,
-    msg_headers,
-)
-from test_framework.mininode import P2PInterface
+from test_framework.key import CECKey
+from test_framework.mininode import (CBlockHeader,
+                                     COutPoint,
+                                     CTransaction,
+                                     CTxIn,
+                                     CTxOut,
+                                     network_thread_join,
+                                     network_thread_start,
+                                     P2PInterface,
+                                     msg_block,
+                                     msg_headers)
 from test_framework.script import (CScript, OP_TRUE)
-from test_framework.test_framework import WagerrTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import (assert_equal, set_node_times)
 
 class BaseNode(P2PInterface):
@@ -53,7 +53,7 @@ class BaseNode(P2PInterface):
         headers_message.headers = [CBlockHeader(b) for b in new_blocks]
         self.send_message(headers_message)
 
-class AssumeValidTest(WagerrTestFramework):
+class AssumeValidTest(BitcoinTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 3
@@ -88,7 +88,7 @@ class AssumeValidTest(WagerrTestFramework):
                 last_height = current_height
                 if timeout < 0:
                     assert False, "blockchain too short after timeout: %d" % current_height
-                timeout -= 0.25
+                timeout - 0.25
                 continue
             elif current_height > height:
                 assert False, "blockchain too long: %d" % current_height
@@ -96,7 +96,12 @@ class AssumeValidTest(WagerrTestFramework):
                 break
 
     def run_test(self):
+
+        # Connect to node0
         p2p0 = self.nodes[0].add_p2p_connection(BaseNode())
+
+        network_thread_start()
+        self.nodes[0].p2p.wait_for_verack()
 
         # Build the blockchain
         self.tip = int(self.nodes[0].getbestblockhash(), 16)
@@ -105,9 +110,9 @@ class AssumeValidTest(WagerrTestFramework):
         self.blocks = []
 
         # Get a pubkey for the coinbase TXO
-        coinbase_key = ECKey()
-        coinbase_key.generate()
-        coinbase_pubkey = coinbase_key.get_pubkey().get_bytes()
+        coinbase_key = CECKey()
+        coinbase_key.set_secretbytes(b"horsebattery")
+        coinbase_pubkey = coinbase_key.get_pubkey()
 
         # Create the first block with a coinbase output to our key
         height = 1
@@ -156,7 +161,9 @@ class AssumeValidTest(WagerrTestFramework):
             self.block_time += 1
             height += 1
 
+        # We're adding new connections so terminate the network thread
         self.nodes[0].disconnect_p2ps()
+        network_thread_join()
 
         # Start node1 and node2 with assumevalid so they accept a block with a bad signature.
         self.start_node(1, extra_args=self.extra_args + ["-assumevalid=" + hex(block102.sha256)])
@@ -165,6 +172,12 @@ class AssumeValidTest(WagerrTestFramework):
         p2p0 = self.nodes[0].add_p2p_connection(BaseNode())
         p2p1 = self.nodes[1].add_p2p_connection(BaseNode())
         p2p2 = self.nodes[2].add_p2p_connection(BaseNode())
+
+        network_thread_start()
+
+        p2p0.wait_for_verack()
+        p2p1.wait_for_verack()
+        p2p2.wait_for_verack()
 
         # Make sure nodes actually accept the many headers
         self.mocktime = self.block_time
@@ -190,7 +203,7 @@ class AssumeValidTest(WagerrTestFramework):
         for i in range(200):
             p2p1.send_message(msg_block(self.blocks[i]))
         # Syncing so many blocks can take a while on slow systems. Give it plenty of time to sync.
-        p2p1.sync_with_ping(960)
+        p2p1.sync_with_ping(300)
         assert_equal(self.nodes[1].getblock(self.nodes[1].getbestblockhash())['height'], 200)
 
         # Send blocks to node2. Block 102 will be rejected.

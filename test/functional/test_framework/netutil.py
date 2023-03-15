@@ -12,7 +12,7 @@ import socket
 import struct
 import array
 import os
-from binascii import unhexlify
+from binascii import unhexlify, hexlify
 
 # STATE_ESTABLISHED = '01'
 # STATE_SYN_SENT  = '02'
@@ -129,28 +129,29 @@ def addr_to_hex(addr):
                 if i == 0 or i == (len(addr)-1): # skip empty component at beginning or end
                     continue
                 x += 1 # :: skips to suffix
-                assert x < 2
+                assert(x < 2)
             else: # two bytes per component
                 val = int(comp, 16)
                 sub[x].append(val >> 8)
                 sub[x].append(val & 0xff)
         nullbytes = 16 - len(sub[0]) - len(sub[1])
-        assert (x == 0 and nullbytes == 0) or (x == 1 and nullbytes > 0)
+        assert((x == 0 and nullbytes == 0) or (x == 1 and nullbytes > 0))
         addr = sub[0] + ([0] * nullbytes) + sub[1]
     else:
         raise ValueError('Could not parse address %s' % addr)
-    return bytearray(addr).hex()
+    return hexlify(bytearray(addr)).decode('ascii')
 
 def test_ipv6_local():
     '''
     Check for (local) IPv6 support.
     '''
+    import socket
     # By using SOCK_DGRAM this will not actually make a connection, but it will
     # fail if there is no route to IPv6 localhost.
     have_ipv6 = True
     try:
         s = socket.socket(socket.AF_INET6, socket.SOCK_DGRAM)
-        s.connect(('::1', 1))
+        s.connect(('::1', 0))
     except socket.error:
         have_ipv6 = False
     return have_ipv6

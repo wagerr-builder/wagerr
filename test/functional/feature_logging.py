@@ -7,11 +7,9 @@
 
 import os
 
-from test_framework.test_framework import WagerrTestFramework
-from test_framework.test_node import ErrorMatch
+from test_framework.test_framework import BitcoinTestFramework
 
-
-class LoggingTest(WagerrTestFramework):
+class LoggingTest(BitcoinTestFramework):
     def set_test_params(self):
         self.num_nodes = 1
         self.setup_clean_chain = True
@@ -37,8 +35,8 @@ class LoggingTest(WagerrTestFramework):
         invdir = self.relative_log_path("foo")
         invalidname = os.path.join("foo", "foo.log")
         self.stop_node(0)
-        exp_stderr = r"Error: Could not open debug log file \S+$"
-        self.nodes[0].assert_start_raises_init_error(["-debuglogfile=%s" % (invalidname)], exp_stderr, match=ErrorMatch.FULL_REGEX)
+        exp_stderr = "Error: Could not open debug log file \S+$"
+        self.nodes[0].assert_start_raises_init_error(["-debuglogfile=%s" % (invalidname)], exp_stderr)
         assert not os.path.isfile(os.path.join(invdir, "foo.log"))
 
         # check that invalid log (relative) works after path exists
@@ -51,7 +49,7 @@ class LoggingTest(WagerrTestFramework):
         self.stop_node(0)
         invdir = os.path.join(self.options.tmpdir, "foo")
         invalidname = os.path.join(invdir, "foo.log")
-        self.nodes[0].assert_start_raises_init_error(["-debuglogfile=%s" % invalidname], exp_stderr, match=ErrorMatch.FULL_REGEX)
+        self.nodes[0].assert_start_raises_init_error(["-debuglogfile=%s" % invalidname], exp_stderr)
         assert not os.path.isfile(os.path.join(invdir, "foo.log"))
 
         # check that invalid log (absolute) works after path exists

@@ -46,15 +46,15 @@ from decimal import Decimal
 from itertools import product
 from io import BytesIO
 
-from test_framework.blocktools import create_coinbase, create_block, create_transaction, TIME_GENESIS_BLOCK
-from test_framework.messages import ToHex, CTransaction
-from test_framework.mininode import P2PDataStore
+from test_framework.blocktools import create_coinbase, create_block
+from test_framework.mininode import ToHex, CTransaction
+from test_framework.mininode import network_thread_start, P2PDataStore
 from test_framework.script import (
     CScript,
     OP_CHECKSEQUENCEVERIFY,
     OP_DROP,
 )
-from test_framework.test_framework import WagerrTestFramework
+from test_framework.test_framework import (BitcoinTestFramework, GENESISTIME)
 from test_framework.util import (
     assert_equal,
     get_bip9_status,
@@ -84,6 +84,15 @@ def relative_locktime(sdf, srhb, stf, srlb):
 def all_rlt_txs(txs):
     return [tx['tx'] for tx in txs]
 
+def create_transaction(node, txid, to_address, amount):
+    inputs = [{"txid": txid, "vout": 0}]
+    outputs = {to_address: amount}
+    rawtx = node.createrawtransaction(inputs, outputs)
+    tx = CTransaction()
+    f = BytesIO(hex_str_to_bytes(rawtx))
+    tx.deserialize(f)
+    return tx
+
 def sign_transaction(node, unsignedtx):
     rawtx = ToHex(unsignedtx)
     signresult = node.signrawtransactionwithwallet(rawtx)
@@ -93,22 +102,23 @@ def sign_transaction(node, unsignedtx):
     return tx
 
 def create_bip112special(node, input, txversion, address):
-    tx = create_transaction(node, input, address, amount=Decimal("499.98"))
+    tx = create_transaction(node, input, address, Decimal("499.98"))
     tx.nVersion = txversion
     signtx = sign_transaction(node, tx)
     signtx.vin[0].scriptSig = CScript([-1, OP_CHECKSEQUENCEVERIFY, OP_DROP] + list(CScript(signtx.vin[0].scriptSig)))
     return signtx
 
 def send_generic_input_tx(node, coinbases, address):
-    return node.sendrawtransaction(ToHex(sign_transaction(node, create_transaction(node, node.getblock(coinbases.pop())['tx'][0], address, amount=Decimal("499.99")))))
+    amount = Decimal("499.99")
+    return node.sendrawtransaction(ToHex(sign_transaction(node, create_transaction(node, node.getblock(coinbases.pop())['tx'][0], address, amount))))
 
 def create_bip68txs(node, bip68inputs, txversion, address, locktime_delta=0):
     """Returns a list of bip68 transactions with different bits set."""
     txs = []
-    assert len(bip68inputs) >= 16
+    assert(len(bip68inputs) >= 16)
     for i, (sdf, srhb, stf, srlb) in enumerate(product(*[[True, False]] * 4)):
         locktime = relative_locktime(sdf, srhb, stf, srlb)
-        tx = create_transaction(node, bip68inputs[i], address, amount=Decimal("499.98"))
+        tx = create_transaction(node, bip68inputs[i], address, Decimal("499.98"))
         tx.nVersion = txversion
         tx.vin[0].nSequence = locktime + locktime_delta
         tx = sign_transaction(node, tx)
@@ -120,10 +130,10 @@ def create_bip68txs(node, bip68inputs, txversion, address, locktime_delta=0):
 def create_bip112txs(node, bip112inputs, varyOP_CSV, txversion, address, locktime_delta=0):
     """Returns a list of bip68 transactions with different bits set."""
     txs = []
-    assert len(bip112inputs) >= 16
+    assert(len(bip112inputs) >= 16)
     for i, (sdf, srhb, stf, srlb) in enumerate(product(*[[True, False]] * 4)):
         locktime = relative_locktime(sdf, srhb, stf, srlb)
-        tx = create_transaction(node, bip112inputs[i], address, amount=Decimal("499.98"))
+        tx = create_transaction(node, bip112inputs[i], address, Decimal("499.98"))
         if (varyOP_CSV):  # if varying OP_CSV, nSequence is fixed
             tx.vin[0].nSequence = BASE_RELATIVE_LOCKTIME + locktime_delta
         else:  # vary nSequence instead, OP_CSV is fixed
@@ -138,20 +148,16 @@ def create_bip112txs(node, bip112inputs, varyOP_CSV, txversion, address, locktim
         txs.append({'tx': signtx, 'sdf': sdf, 'stf': stf})
     return txs
 
-class BIP68_112_113Test(WagerrTestFramework):
+class BIP68_112_113Test(BitcoinTestFramework):
     def set_test_params(self):
         self.num_nodes = 1
         self.setup_clean_chain = True
         # Must also set '-maxtipage=600100' to allow syncing from very old blocks
         # and '-dip3params=2000:2000' to create pre-dip3 blocks only
         self.extra_args = [['-whitelist=127.0.0.1', '-blockversion=4', '-maxtipage=600100', '-dip3params=2000:2000']]
-        self.supports_cli = False
 
     def setup_network(self):
         self.setup_nodes()
-
-    def skip_test_if_missing_module(self):
-        self.skip_if_no_wallet()
 
     def generate_blocks(self, number, version, test_blocks=None):
         if test_blocks is None:
@@ -173,22 +179,24 @@ class BIP68_112_113Test(WagerrTestFramework):
         block.solve()
         return block
 
-    def send_blocks(self, blocks, success=True):
+    def send_blocks(self, blocks, success=True, reject_code=None, reject_reason=None, request_block=True):
         """Sends blocks to test node. Syncs and verifies that tip has advanced to most recent block.
 
         Call with success = False if the tip shouldn't advance to the most recent block."""
-        self.nodes[0].p2p.send_blocks_and_test(blocks, self.nodes[0], success=success)
+        self.nodes[0].p2p.send_blocks_and_test(blocks, self.nodes[0], success=success, reject_code=reject_code, reject_reason=reject_reason, request_block=request_block)
 
     def run_test(self):
         self.nodes[0].add_p2p_connection(P2PDataStore())
+        network_thread_start()
+        self.nodes[0].p2p.wait_for_verack()
 
         self.log.info("Generate blocks in the past for coinbase outputs.")
         self.coinbase_blocks = self.nodes[0].generate(1 + 16 + 2 * 32 + 1)  # 82 blocks generated for inputs
         # set time so that there was enough time to build up to 1000 blocks 10 minutes apart on top of the last one
         # without worrying about getting into the future
-        self.nodes[0].setmocktime(TIME_GENESIS_BLOCK + 600 * 1000 + 100)
+        self.nodes[0].setmocktime(GENESISTIME + 600 * 1000 + 100)
         self.tipheight = 82  # height of the next block to build
-        self.last_block_time = TIME_GENESIS_BLOCK
+        self.last_block_time = GENESISTIME
         self.tip = int(self.nodes[0].getbestblockhash(), 16)
         self.nodeaddress = self.nodes[0].getnewaddress()
 
@@ -261,7 +269,7 @@ class BIP68_112_113Test(WagerrTestFramework):
 
         self.nodes[0].setmocktime(self.last_block_time + 600)
         inputblockhash = self.nodes[0].generate(1)[0]  # 1 block generated for inputs to be in chain at height 572
-        self.nodes[0].setmocktime(TIME_GENESIS_BLOCK + 600 * 1000 + 100)
+        self.nodes[0].setmocktime(GENESISTIME + 600 * 1000 + 100)
         self.tip = int(inputblockhash, 16)
         self.tipheight += 1
         self.last_block_time += 600
@@ -276,10 +284,10 @@ class BIP68_112_113Test(WagerrTestFramework):
 
         # Test both version 1 and version 2 transactions for all tests
         # BIP113 test transaction will be modified before each use to put in appropriate block time
-        bip113tx_v1 = create_transaction(self.nodes[0], bip113input, self.nodeaddress, amount=Decimal("499.98"))
+        bip113tx_v1 = create_transaction(self.nodes[0], bip113input, self.nodeaddress, Decimal("499.98"))
         bip113tx_v1.vin[0].nSequence = 0xFFFFFFFE
         bip113tx_v1.nVersion = 1
-        bip113tx_v2 = create_transaction(self.nodes[0], bip113input, self.nodeaddress, amount=Decimal("499.98"))
+        bip113tx_v2 = create_transaction(self.nodes[0], bip113input, self.nodeaddress, Decimal("499.98"))
         bip113tx_v2.vin[0].nSequence = 0xFFFFFFFE
         bip113tx_v2.nVersion = 2
 

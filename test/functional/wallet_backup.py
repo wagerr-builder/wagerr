@@ -31,32 +31,20 @@ confirm 1/2/3/4 balances are same as before.
 Shutdown again, restore using importwallet,
 and confirm again balances are correct.
 """
-from decimal import Decimal
-import os
 from random import randint
 import shutil
 
-from test_framework.test_framework import WagerrTestFramework
-from test_framework.util import assert_equal, assert_raises_rpc_error, connect_nodes
+from test_framework.test_framework import BitcoinTestFramework
+from test_framework.util import *
 
-class WalletBackupTest(WagerrTestFramework):
+class WalletBackupTest(BitcoinTestFramework):
     def set_test_params(self):
         self.num_nodes = 4
         self.setup_clean_chain = True
         # nodes 1, 2,3 are spenders, let's give them a keypool=100
-        # whitelist all peers to speed up tx relay / mempool sync
-        self.extra_args = [
-            ["-keypool=100", "-whitelist=127.0.0.1"],
-            ["-keypool=100", "-whitelist=127.0.0.1"],
-            ["-keypool=100", "-whitelist=127.0.0.1"],
-            ["-whitelist=127.0.0.1"]
-        ]
-        self.rpc_timeout = 120
+        self.extra_args = [["-keypool=100"], ["-keypool=100"], ["-keypool=100"], []]
 
-    def skip_test_if_missing_module(self):
-        self.skip_if_no_wallet()
-
-    def setup_network(self):
+    def setup_network(self, split=False):
         self.setup_nodes()
         connect_nodes(self.nodes[0], 3)
         connect_nodes(self.nodes[1], 3)

@@ -4,17 +4,9 @@
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test BIP68 implementation."""
 
-from test_framework.blocktools import create_block, create_coinbase
-from test_framework.messages import COIN, COutPoint, CTransaction, CTxIn, CTxOut, FromHex, ToHex
-from test_framework.test_framework import WagerrTestFramework
-from test_framework.util import (
-    assert_equal,
-    assert_greater_than,
-    assert_raises_rpc_error,
-    get_bip9_status,
-    satoshi_round
-)
-from test_framework.script_util import DUMMY_P2SH_SCRIPT
+from test_framework.test_framework import BitcoinTestFramework
+from test_framework.util import *
+from test_framework.blocktools import *
 
 SEQUENCE_LOCKTIME_DISABLE_FLAG = (1<<31)
 SEQUENCE_LOCKTIME_TYPE_FLAG = (1<<22) # this means use time (0 means height)
@@ -24,16 +16,10 @@ SEQUENCE_LOCKTIME_MASK = 0x0000ffff
 # RPC error for non-BIP68 final transactions
 NOT_FINAL_ERROR = "non-BIP68-final (code 64)"
 
-class BIP68Test(WagerrTestFramework):
+class BIP68Test(BitcoinTestFramework):
     def set_test_params(self):
         self.num_nodes = 2
-        self.extra_args = [
-            ["-acceptnonstdtxn=1"],
-            ["-acceptnonstdtxn=0"],
-        ]
-
-    def skip_test_if_missing_module(self):
-        self.skip_if_no_wallet()
+        self.extra_args = [[], ["-acceptnonstdtxn=0"]]
 
     def run_test(self):
         self.relayfee = self.nodes[0].getnetworkinfo()["relayfee"]
@@ -70,7 +56,7 @@ class BIP68Test(WagerrTestFramework):
         self.nodes[0].sendtoaddress(new_addr, 2) # send 2 BTC
 
         utxos = self.nodes[0].listunspent(0, 0)
-        assert len(utxos) > 0
+        assert(len(utxos) > 0)
 
         utxo = utxos[0]
 
@@ -82,7 +68,7 @@ class BIP68Test(WagerrTestFramework):
         # input to mature.
         sequence_value = SEQUENCE_LOCKTIME_DISABLE_FLAG | 1
         tx1.vin = [CTxIn(COutPoint(int(utxo["txid"], 16), utxo["vout"]), nSequence=sequence_value)]
-        tx1.vout = [CTxOut(value, DUMMY_P2SH_SCRIPT)]
+        tx1.vout = [CTxOut(value, CScript([b'a']))]
 
         tx1_signed = self.nodes[0].signrawtransactionwithwallet(ToHex(tx1))["hex"]
         tx1_id = self.nodes[0].sendrawtransaction(tx1_signed)
@@ -94,7 +80,7 @@ class BIP68Test(WagerrTestFramework):
         tx2.nVersion = 2
         sequence_value = sequence_value & 0x7fffffff
         tx2.vin = [CTxIn(COutPoint(tx1_id, 0), nSequence=sequence_value)]
-        tx2.vout = [CTxOut(int(value - self.relayfee * COIN), DUMMY_P2SH_SCRIPT)]
+        tx2.vout = [CTxOut(int(value-self.relayfee*COIN), CScript([b'a']))]
         tx2.rehash()
 
         assert_raises_rpc_error(-26, NOT_FINAL_ERROR, self.nodes[0].sendrawtransaction, ToHex(tx2))
@@ -189,7 +175,7 @@ class BIP68Test(WagerrTestFramework):
                 value += utxos[j]["amount"]*COIN
             # Overestimate the size of the tx - signatures should be less than 120 bytes, and leave 50 for the output
             tx_size = len(ToHex(tx))//2 + 120*num_inputs + 50
-            tx.vout.append(CTxOut(int(value-self.relayfee*tx_size*COIN/1000), DUMMY_P2SH_SCRIPT))
+            tx.vout.append(CTxOut(int(value-self.relayfee*tx_size*COIN/1000), CScript([b'a'])))
             rawtx = self.nodes[0].signrawtransactionwithwallet(ToHex(tx))["hex"]
 
             if (using_sequence_locks and not should_pass):
@@ -218,7 +204,7 @@ class BIP68Test(WagerrTestFramework):
         tx2 = CTransaction()
         tx2.nVersion = 2
         tx2.vin = [CTxIn(COutPoint(tx1.sha256, 0), nSequence=0)]
-        tx2.vout = [CTxOut(int(tx1.vout[0].nValue - self.relayfee*COIN), DUMMY_P2SH_SCRIPT)]
+        tx2.vout = [CTxOut(int(tx1.vout[0].nValue - self.relayfee*COIN), CScript([b'a']))]
         tx2_raw = self.nodes[0].signrawtransactionwithwallet(ToHex(tx2))["hex"]
         tx2 = FromHex(tx2, tx2_raw)
         tx2.rehash()
@@ -236,7 +222,7 @@ class BIP68Test(WagerrTestFramework):
             tx = CTransaction()
             tx.nVersion = 2
             tx.vin = [CTxIn(COutPoint(orig_tx.sha256, 0), nSequence=sequence_value)]
-            tx.vout = [CTxOut(int(orig_tx.vout[0].nValue - relayfee * COIN), DUMMY_P2SH_SCRIPT)]
+            tx.vout = [CTxOut(int(orig_tx.vout[0].nValue - relayfee*COIN), CScript([b'a']))]
             tx.rehash()
 
             if (orig_tx.hash in node.getrawmempool()):
@@ -260,7 +246,7 @@ class BIP68Test(WagerrTestFramework):
             self.nodes[0].generate(1)
             cur_time += 600
 
-        assert tx2.hash in self.nodes[0].getrawmempool()
+        assert(tx2.hash in self.nodes[0].getrawmempool())
 
         test_nonzero_locks(tx2, self.nodes[0], self.relayfee, use_height_lock=True)
         test_nonzero_locks(tx2, self.nodes[0], self.relayfee, use_height_lock=False)
@@ -271,23 +257,23 @@ class BIP68Test(WagerrTestFramework):
         # Advance the time on the node so that we can test timelocks
         self.nodes[0].setmocktime(cur_time+600)
         self.nodes[0].generate(1)
-        assert tx2.hash not in self.nodes[0].getrawmempool()
+        assert(tx2.hash not in self.nodes[0].getrawmempool())
 
         # Now that tx2 is not in the mempool, a sequence locked spend should
         # succeed
         tx3 = test_nonzero_locks(tx2, self.nodes[0], self.relayfee, use_height_lock=False)
-        assert tx3.hash in self.nodes[0].getrawmempool()
+        assert(tx3.hash in self.nodes[0].getrawmempool())
 
         self.nodes[0].generate(1)
-        assert tx3.hash not in self.nodes[0].getrawmempool()
+        assert(tx3.hash not in self.nodes[0].getrawmempool())
 
         # One more test, this time using height locks
         tx4 = test_nonzero_locks(tx3, self.nodes[0], self.relayfee, use_height_lock=True)
-        assert tx4.hash in self.nodes[0].getrawmempool()
+        assert(tx4.hash in self.nodes[0].getrawmempool())
 
         # Now try combining confirmed and unconfirmed inputs
         tx5 = test_nonzero_locks(tx4, self.nodes[0], self.relayfee, use_height_lock=True)
-        assert tx5.hash not in self.nodes[0].getrawmempool()
+        assert(tx5.hash not in self.nodes[0].getrawmempool())
 
         utxos = self.nodes[0].listunspent()
         tx5.vin.append(CTxIn(COutPoint(int(utxos[0]["txid"], 16), utxos[0]["vout"]), nSequence=1))
@@ -306,8 +292,8 @@ class BIP68Test(WagerrTestFramework):
         # If we invalidate the tip, tx3 should get added to the mempool, causing
         # tx4 to be removed (fails sequence-lock).
         self.nodes[0].invalidateblock(self.nodes[0].getbestblockhash())
-        assert tx4.hash not in self.nodes[0].getrawmempool()
-        assert tx3.hash in self.nodes[0].getrawmempool()
+        assert(tx4.hash not in self.nodes[0].getrawmempool())
+        assert(tx3.hash in self.nodes[0].getrawmempool())
 
         # Now mine 2 empty blocks to reorg out the current tip (labeled tip-1 in
         # diagram above).
@@ -326,8 +312,8 @@ class BIP68Test(WagerrTestFramework):
             cur_time += 1
 
         mempool = self.nodes[0].getrawmempool()
-        assert tx3.hash not in mempool
-        assert tx2.hash in mempool
+        assert(tx3.hash not in mempool)
+        assert(tx2.hash in mempool)
 
         # Reset the chain and get rid of the mocktimed-blocks
         self.nodes[0].setmocktime(self.mocktime)
@@ -339,7 +325,7 @@ class BIP68Test(WagerrTestFramework):
     # being run, then it's possible the test has activated the soft fork, and
     # this test should be moved to run earlier, or deleted.
     def test_bip68_not_consensus(self):
-        assert get_bip9_status(self.nodes[0], 'csv')['status'] != 'active'
+        assert(get_bip9_status(self.nodes[0], 'csv')['status'] != 'active')
         txid = self.nodes[0].sendtoaddress(self.nodes[0].getnewaddress(), 2)
 
         tx1 = FromHex(CTransaction(), self.nodes[0].getrawtransaction(txid))
@@ -349,7 +335,7 @@ class BIP68Test(WagerrTestFramework):
         tx2 = CTransaction()
         tx2.nVersion = 1
         tx2.vin = [CTxIn(COutPoint(tx1.sha256, 0), nSequence=0)]
-        tx2.vout = [CTxOut(int(tx1.vout[0].nValue - self.relayfee*COIN), DUMMY_P2SH_SCRIPT)]
+        tx2.vout = [CTxOut(int(tx1.vout[0].nValue - self.relayfee*COIN), CScript([b'a']))]
 
         # sign tx2
         tx2_raw = self.nodes[0].signrawtransactionwithwallet(ToHex(tx2))["hex"]
@@ -364,7 +350,7 @@ class BIP68Test(WagerrTestFramework):
         tx3 = CTransaction()
         tx3.nVersion = 2
         tx3.vin = [CTxIn(COutPoint(tx2.sha256, 0), nSequence=sequence_value)]
-        tx3.vout = [CTxOut(int(tx2.vout[0].nValue - self.relayfee * COIN), DUMMY_P2SH_SCRIPT)]
+        tx3.vout = [CTxOut(int(tx2.vout[0].nValue - self.relayfee*COIN), CScript([b'a']))]
         tx3.rehash()
 
         assert_raises_rpc_error(-26, NOT_FINAL_ERROR, self.nodes[0].sendrawtransaction, ToHex(tx3))

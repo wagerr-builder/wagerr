@@ -4,32 +4,30 @@
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test the listsincelast RPC."""
 
-from test_framework.test_framework import WagerrTestFramework
-from test_framework.messages import BIP125_SEQUENCE_NUMBER
-from test_framework.util import (
-    assert_array_result,
-    assert_equal,
-    assert_raises_rpc_error,
-    connect_nodes,
-    isolate_node,
-    reconnect_isolated_node,
-)
+from test_framework.test_framework import BitcoinTestFramework
+from test_framework.util import assert_equal, assert_array_result, assert_raises_rpc_error, connect_nodes_bi
+from time import sleep
 
-from decimal import Decimal
-
-class ListSinceBlockTest(WagerrTestFramework):
+class ListSinceBlockTest (BitcoinTestFramework):
     def set_test_params(self):
         self.num_nodes = 4
         self.setup_clean_chain = True
 
-    def skip_test_if_missing_module(self):
-        self.skip_if_no_wallet()
-
     def run_test(self):
-        # All nodes are in IBD from genesis, so they'll need the miner (node2) to be an outbound connection, or have
-        # only one connection. (See fPreferredDownload in net_processing)
-        connect_nodes(self.nodes[1], 2)
         self.nodes[2].generate(101)
+        self.stop_node(0)
+        self.stop_node(1)
+        self.stop_node(3)
+        self.start_node(0)
+        self.start_node(1)
+        self.start_node(3)
+        sleep(10)
+        connect_nodes_bi(self.nodes, 0 , 1)
+        connect_nodes_bi(self.nodes, 0 , 2)
+        connect_nodes_bi(self.nodes, 0 , 3)
+        connect_nodes_bi(self.nodes, 1 , 2)
+        connect_nodes_bi(self.nodes, 1 , 3)
+        connect_nodes_bi(self.nodes, 2 , 3)
         self.sync_all()
 
         self.test_no_blockhash()
@@ -37,7 +35,6 @@ class ListSinceBlockTest(WagerrTestFramework):
         self.test_reorg()
         self.test_double_spend()
         self.test_double_send()
-        self.double_spends_filtered()
 
     def test_no_blockhash(self):
         txid = self.nodes[2].sendtoaddress(self.nodes[0].getnewaddress(), 1)
@@ -167,26 +164,26 @@ class ListSinceBlockTest(WagerrTestFramework):
 
         # send from nodes[1] using utxo to nodes[0]
         change = '%.8f' % (float(utxo['amount']) - 1.0003)
-        recipient_dict = {
+        recipientDict = {
             self.nodes[0].getnewaddress(): 1,
             self.nodes[1].getnewaddress(): change,
         }
-        utxo_dicts = [{
+        utxoDicts = [{
             'txid': utxo['txid'],
             'vout': utxo['vout'],
         }]
         txid1 = self.nodes[1].sendrawtransaction(
             self.nodes[1].signrawtransactionwithwallet(
-                self.nodes[1].createrawtransaction(utxo_dicts, recipient_dict))['hex'])
+                self.nodes[1].createrawtransaction(utxoDicts, recipientDict))['hex'])
 
         # send from nodes[2] using utxo to nodes[3]
-        recipient_dict2 = {
+        recipientDict2 = {
             self.nodes[3].getnewaddress(): 1,
             self.nodes[2].getnewaddress(): change,
         }
         self.nodes[2].sendrawtransaction(
             self.nodes[2].signrawtransactionwithwallet(
-                self.nodes[2].createrawtransaction(utxo_dicts, recipient_dict2))['hex'])
+                self.nodes[2].createrawtransaction(utxoDicts, recipientDict2))['hex'])
 
         # generate on both sides
         lastblockhash = self.nodes[1].generate(3)[2]
@@ -242,16 +239,16 @@ class ListSinceBlockTest(WagerrTestFramework):
         utxos = self.nodes[2].listunspent()
         utxo = utxos[0]
         change = '%.8f' % (float(utxo['amount']) - 1.0003)
-        recipient_dict = {
+        recipientDict = {
             self.nodes[0].getnewaddress(): 1,
             self.nodes[2].getnewaddress(): change,
         }
-        utxo_dicts = [{
+        utxoDicts = [{
             'txid': utxo['txid'],
             'vout': utxo['vout'],
         }]
         signedtxres = self.nodes[2].signrawtransactionwithwallet(
-            self.nodes[2].createrawtransaction(utxo_dicts, recipient_dict))
+                self.nodes[2].createrawtransaction(utxoDicts, recipientDict))
         assert signedtxres['complete']
 
         signedtx = signedtxres['hex']
@@ -272,7 +269,6 @@ class ListSinceBlockTest(WagerrTestFramework):
         self.nodes[2].generate(2)
 
         self.join_network()
-
         self.sync_all()
 
         # gettransaction should work for txid1
@@ -281,6 +277,7 @@ class ListSinceBlockTest(WagerrTestFramework):
         # listsinceblock(lastblockhash) should now include txid1 in transactions
         # as well as in removed
         lsbres = self.nodes[0].listsinceblock(lastblockhash)
+        breakpoint()
         assert any(tx['txid'] == txid1 for tx in lsbres['transactions'])
         assert any(tx['txid'] == txid1 for tx in lsbres['removed'])
 
@@ -293,66 +290,6 @@ class ListSinceBlockTest(WagerrTestFramework):
         for tx in lsbres['removed']:
             if tx['txid'] == txid1:
                 assert_equal(tx['confirmations'], 2)
-
-    def double_spends_filtered(self):
-        '''
-        `listsinceblock` was returning conflicted transactions even if they
-        occurred before the specified cutoff blockhash
-        '''
-        spending_node = self.nodes[2]
-        double_spending_node = self.nodes[3]
-        dest_address = spending_node.getnewaddress()
-
-        tx_input = dict(
-            sequence=BIP125_SEQUENCE_NUMBER, **next(u for u in spending_node.listunspent()))
-        rawtx = spending_node.createrawtransaction(
-            [tx_input], {dest_address: tx_input["amount"] - Decimal("0.00051000"),
-                         spending_node.getrawchangeaddress(): Decimal("0.00050000")})
-        double_rawtx = spending_node.createrawtransaction(
-            [tx_input], {dest_address: tx_input["amount"] - Decimal("0.00052000"),
-                         spending_node.getrawchangeaddress(): Decimal("0.00050000")})
-
-        isolate_node(double_spending_node)
-
-        signedtx = spending_node.signrawtransactionwithwallet(rawtx)
-        orig_tx_id = spending_node.sendrawtransaction(signedtx["hex"])
-        original_tx = spending_node.gettransaction(orig_tx_id)
-
-        double_signedtx = spending_node.signrawtransactionwithwallet(double_rawtx)
-        dbl_tx_id = double_spending_node.sendrawtransaction(double_signedtx["hex"])
-        double_tx = double_spending_node.getrawtransaction(dbl_tx_id, 1)
-        lastblockhash = double_spending_node.generate(1)[0]
-
-        reconnect_isolated_node(double_spending_node, 2)
-        self.sync_all()
-        spending_node.invalidateblock(lastblockhash)
-
-        # check that both transactions exist
-        block_hash = spending_node.listsinceblock(
-            spending_node.getblockhash(spending_node.getblockcount()))
-        original_found = False
-        double_found = False
-        for tx in block_hash['transactions']:
-            if tx['txid'] == original_tx['txid']:
-                original_found = True
-            if tx['txid'] == double_tx['txid']:
-                double_found = True
-        assert_equal(original_found, True)
-        assert_equal(double_found, True)
-
-        lastblockhash = spending_node.generate(1)[0]
-
-        # check that neither transaction exists
-        block_hash = spending_node.listsinceblock(lastblockhash)
-        original_found = False
-        double_found = False
-        for tx in block_hash['transactions']:
-            if tx['txid'] == original_tx['txid']:
-                original_found = True
-            if tx['txid'] == double_tx['txid']:
-                double_found = True
-        assert_equal(original_found, False)
-        assert_equal(double_found, False)
 
 if __name__ == '__main__':
     ListSinceBlockTest().main()

@@ -1,7 +1,12 @@
 #!/usr/bin/env python3
-# Copyright (c) 2015-2021 The Wagerr Core developers
+# Copyright (c) 2015-2021 The Dash Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
+
+import time
+
+from test_framework.test_framework import WagerrTestFramework
+from test_framework.util import *
 
 '''
 feature_llmq_simplepose.py
@@ -10,12 +15,6 @@ Checks simple PoSe system based on LLMQ commitments
 
 '''
 
-import time
-
-from test_framework.test_framework import WagerrTestFramework
-from test_framework.util import connect_nodes, force_finish_mnsync, p2p_port, wait_until
-
-
 class LLMQSimplePoSeTest(WagerrTestFramework):
     def set_test_params(self):
         self.set_wagerr_test_params(6, 5, fast_dip3_enforcement=True)
@@ -23,7 +22,7 @@ class LLMQSimplePoSeTest(WagerrTestFramework):
 
     def run_test(self):
 
-        self.nodes[0].sporkupdate("SPORK_17_QUORUM_DKG_ENABLED", 0)
+        self.nodes[0].spork("SPORK_17_QUORUM_DKG_ENABLED", 0)
         self.wait_for_sporks_same()
 
         # check if mining quorums with all nodes being online succeeds without punishment/banning
@@ -34,8 +33,8 @@ class LLMQSimplePoSeTest(WagerrTestFramework):
 
         self.repair_masternodes(False)
 
-        self.nodes[0].sporkupdate("SPORK_21_QUORUM_ALL_CONNECTED", 0)
-        self.nodes[0].sporkupdate("SPORK_23_QUORUM_POSE", 0)
+        self.nodes[0].spork("SPORK_21_QUORUM_ALL_CONNECTED", 0)
+        self.nodes[0].spork("SPORK_23_QUORUM_POSE", 0)
         self.wait_for_sporks_same()
 
         self.reset_probe_timeouts()
@@ -52,7 +51,7 @@ class LLMQSimplePoSeTest(WagerrTestFramework):
         self.test_banning(self.force_old_mn_proto, 3)
 
         # With PoSe off there should be no punishing for non-reachable and outdated nodes
-        self.nodes[0].sporkupdate("SPORK_23_QUORUM_POSE", 4070908800)
+        self.nodes[0].spork("SPORK_23_QUORUM_POSE", 4070908800)
         self.wait_for_sporks_same()
 
         self.repair_masternodes(True)
@@ -66,7 +65,7 @@ class LLMQSimplePoSeTest(WagerrTestFramework):
     def isolate_mn(self, mn):
         mn.node.setnetworkactive(False)
         wait_until(lambda: mn.node.getconnectioncount() == 0)
-        return True, True
+        return True
 
     def close_mn_port(self, mn):
         self.stop_node(mn.node.index)
@@ -77,20 +76,20 @@ class LLMQSimplePoSeTest(WagerrTestFramework):
             if mn2 is not mn:
                 connect_nodes(mn.node, mn2.node.index)
         self.reset_probe_timeouts()
-        return False, False
+        return False
 
     def force_old_mn_proto(self, mn):
         self.stop_node(mn.node.index)
         self.start_masternode(mn, ["-pushversion=70915"])
         connect_nodes(mn.node, 0)
         self.reset_probe_timeouts()
-        return False, True
+        return False
 
     def test_no_banning(self, expected_connections=None):
         for i in range(3):
             self.mine_quorum(expected_connections=expected_connections)
         for mn in self.mninfo:
-            assert not self.check_punished(mn) and not self.check_banned(mn)
+            assert(not self.check_punished(mn) and not self.check_banned(mn))
 
     def test_banning(self, invalidate_proc, expected_connections):
         mninfos_online = self.mninfo.copy()
@@ -98,22 +97,17 @@ class LLMQSimplePoSeTest(WagerrTestFramework):
         expected_contributors = len(mninfos_online)
         for i in range(2):
             mn = mninfos_valid.pop()
-            went_offline, instant_ban = invalidate_proc(mn)
+            went_offline = invalidate_proc(mn)
             if went_offline:
                 mninfos_online.remove(mn)
                 expected_contributors -= 1
 
-            # NOTE: Min PoSe penalty is 100 (see CDeterministicMNList::CalcMaxPoSePenalty()),
-            # so nodes are PoSe-banned in the same DKG they misbehave without being PoSe-punished first.
-            if not instant_ban:
-                # it's ok to miss probes/quorum connections up to 5 times
-                for i in range(5):
-                    self.reset_probe_timeouts()
-                    self.mine_quorum(expected_connections=expected_connections, expected_members=expected_contributors, expected_contributions=expected_contributors, expected_complaints=0, expected_commitments=expected_contributors, mninfos_online=mninfos_online, mninfos_valid=mninfos_valid)
-            self.reset_probe_timeouts()
-            self.mine_quorum(expected_connections=expected_connections, expected_members=expected_contributors, expected_contributions=expected_contributors, expected_complaints=expected_contributors-1, expected_commitments=expected_contributors, mninfos_online=mninfos_online, mninfos_valid=mninfos_valid)
+            t = time.time()
+            while (not self.check_banned(mn)) and (time.time() - t) < 120:
+                self.reset_probe_timeouts()
+                self.mine_quorum(expected_connections=expected_connections, expected_members=expected_contributors, expected_contributions=expected_contributors, expected_complaints=expected_contributors-1, expected_commitments=expected_contributors, mninfos_online=mninfos_online, mninfos_valid=mninfos_valid)
 
-            assert self.check_banned(mn)
+            assert(self.check_banned(mn))
 
             if not went_offline:
                 # we do not include PoSe banned mns in quorums, so the next one should have 1 contributor less
@@ -129,7 +123,7 @@ class LLMQSimplePoSeTest(WagerrTestFramework):
                 # Make sure this tx "safe" to mine even when InstantSend and ChainLocks are no longer functional
                 self.bump_mocktime(60 * 10 + 1)
                 self.nodes[0].generate(1)
-                assert not self.check_banned(mn)
+                assert(not self.check_banned(mn))
 
                 if restart:
                     self.stop_node(mn.node.index)

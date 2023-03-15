@@ -9,13 +9,14 @@ multiple functional tests. This helper script is executed by test_runner when mu
 tests are being run in parallel.
 """
 
-from test_framework.test_framework import WagerrTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 
-class CreateCache(WagerrTestFramework):
+class CreateCache(BitcoinTestFramework):
     # Test network and test nodes are not required:
 
     def set_test_params(self):
         self.num_nodes = 0
+        self.supports_cli = True
 
     def setup_network(self):
         pass
