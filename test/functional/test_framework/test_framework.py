@@ -402,7 +402,7 @@ class BitcoinTestFramework():
     def _start_logging(self):
         # Add logger and logging handlers
         self.log = logging.getLogger('TestFramework')
-        self.log.setLevel(logging.INFO)
+        self.log.setLevel(logging.DEBUG)
         # Create file handler to log all messages
         fh = logging.FileHandler(self.options.tmpdir + '/test_framework.log', encoding='utf-8')
         fh.setLevel(logging.DEBUG)
@@ -776,13 +776,13 @@ class WagerrTestFramework(BitcoinTestFramework):
  
         spork4height=500
         if not self.fast_dip3_enforcement:
-            self.nodes[0].spork("SPORK_4_DIP0003_ENFORCED", spork4height)
+            self.nodes[0].sporkupdate("SPORK_4_DIP0003_ENFORCED", spork4height)
             self.wait_for_sporks_same()
             while self.nodes[0].getblockcount() < spork4height:
                 self.nodes[0].generate(10)
         else:
             spork4height = self.nodes[0].getblockcount() + 1
-            self.nodes[0].spork("SPORK_4_DIP0003_ENFORCED", spork4height)
+            self.nodes[0].sporkupdate("SPORK_4_DIP0003_ENFORCED", spork4height)
             self.wait_for_sporks_same()
             self.nodes[0].generate(1)
 
@@ -804,10 +804,10 @@ class WagerrTestFramework(BitcoinTestFramework):
         # sync nodes
         self.sync_all()
         # Enable InstantSend (including block filtering) and ChainLocks by default
-        self.nodes[0].spork("SPORK_4_DIP0003_ENFORCED", spork4height)
-        self.nodes[0].spork("SPORK_2_INSTANTSEND_ENABLED", 0)
-        self.nodes[0].spork("SPORK_3_INSTANTSEND_BLOCK_FILTERING", 0)
-        self.nodes[0].spork("SPORK_19_CHAINLOCKS_ENABLED", 0)
+        self.nodes[0].sporkupdate("SPORK_4_DIP0003_ENFORCED", spork4height)
+        self.nodes[0].sporkupdate("SPORK_2_INSTANTSEND_ENABLED", 0)
+        self.nodes[0].sporkupdate("SPORK_3_INSTANTSEND_BLOCK_FILTERING", 0)
+        self.nodes[0].sporkupdate("SPORK_19_CHAINLOCKS_ENABLED", 0)
         self.wait_for_sporks_same()
         self.bump_mocktime(1)
 
@@ -1036,7 +1036,7 @@ class WagerrTestFramework(BitcoinTestFramework):
         wait_until(check_dkg_comitments, timeout=timeout, sleep=0.1)
 
     def wait_for_quorum_list(self, quorum_hash, nodes, timeout=15, sleep=0.1):
-        self.nodes[0].spork("SPORK_4_DIP0003_ENFORCED", 10)
+        self.nodes[0].sporkupdate("SPORK_4_DIP0003_ENFORCED", 10)
         def wait_func():
             if quorum_hash in self.nodes[0].quorum("list")["llmq_test"]:
                 return True
