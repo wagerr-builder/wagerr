@@ -402,7 +402,7 @@ class BitcoinTestFramework():
     def _start_logging(self):
         # Add logger and logging handlers
         self.log = logging.getLogger('TestFramework')
-        self.log.setLevel(logging.DEBUG)
+        self.log.setLevel(logging.INFO)
         # Create file handler to log all messages
         fh = logging.FileHandler(self.options.tmpdir + '/test_framework.log', encoding='utf-8')
         fh.setLevel(logging.DEBUG)
