@@ -11,6 +11,7 @@ from test_framework.test_framework import WagerrTestFramework
 
 class ConfArgsTest(WagerrTestFramework):
     def set_test_params(self):
+        self.extra_args = [ [''] ]
         self.setup_clean_chain = True
         self.num_nodes = 1
         self.supports_cli = False
