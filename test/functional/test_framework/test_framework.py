@@ -111,7 +111,7 @@ class BitcoinTestFramework():
                           help="Directory for caching pregenerated datadirs (default: %default)")
         parser.add_option("--tmpdir", dest="tmpdir", help="Root directory for datadirs")
         parser.add_option("-l", "--loglevel", dest="loglevel", default="INFO",
-                          help="log events at this level and higher to the console. Can be set to DEBUG, INFO, WARNING, ERROR or CRITICAL. Passing --loglevel DEBUG will output all logs to console. Note that logs at all levels are always written to the test_framework.log file in the temporary test directory.")
+                          help="log events at this level and higher to the console. Can be set to DEBUG, INFO, WARNING, ERROR or CRITICAL. Passing --loglevel INFO will output all logs to console. Note that logs at all levels are always written to the test_framework.log file in the temporary test directory.")
         parser.add_option("--tracerpc", dest="trace_rpc", default=False, action="store_true",
                           help="Print out all RPC calls as they are made")
         parser.add_option("--portseed", dest="port_seed", default=os.getpid(), type='int',
@@ -402,13 +402,13 @@ class BitcoinTestFramework():
     def _start_logging(self):
         # Add logger and logging handlers
         self.log = logging.getLogger('TestFramework')
-        self.log.setLevel(logging.DEBUG)
+        self.log.setLevel(logging.INFO)
         # Create file handler to log all messages
         fh = logging.FileHandler(self.options.tmpdir + '/test_framework.log', encoding='utf-8')
-        fh.setLevel(logging.DEBUG)
+        fh.setLevel(logging.INFO)
         # Create console handler to log messages to stderr. By default this logs only error messages, but can be configured with --loglevel.
         ch = logging.StreamHandler(sys.stdout)
-        # User can provide log level as a number or string (eg DEBUG). loglevel was caught as a string, so try to convert it to an int
+        # User can provide log level as a number or string (eg INFO). loglevel was caught as a string, so try to convert it to an int
         ll = int(self.options.loglevel) if self.options.loglevel.isdigit() else self.options.loglevel.upper()
         ch.setLevel(ll)
         # Format logs the same as wagerrd's debug.log with microprecision (so log files can be concatenated and sorted)
@@ -422,9 +422,9 @@ class BitcoinTestFramework():
 
         if self.options.trace_rpc:
             rpc_logger = logging.getLogger("BitcoinRPC")
-            rpc_logger.setLevel(logging.DEBUG)
+            rpc_logger.setLevel(logging.INFO)
             rpc_handler = logging.StreamHandler(sys.stdout)
-            rpc_handler.setLevel(logging.DEBUG)
+            rpc_handler.setLevel(logging.INFO)
             rpc_logger.addHandler(rpc_handler)
 
     def _initialize_chain(self, extra_args=None, stderr=None):
