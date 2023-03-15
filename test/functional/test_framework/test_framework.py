@@ -495,7 +495,7 @@ class BitcoinTestFramework():
 
             for i in range(MAX_NODES):
                 for entry in os.listdir(cache_path(i)):
-                    if entry not in ['wallets', 'chainstate', 'blocks', 'evodb', 'llmq', 'backups', 'tokens', 'zerocoin', 'betting']:
+                    if entry not in ['wallets', 'chainstate', 'blocks', 'evodb', 'llmq', 'backups', 'tokens', 'zerocoin', 'indexes', 'betting']:
                         os.remove(cache_path(i, entry))
 
         for i in range(self.num_nodes):
