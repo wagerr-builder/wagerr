@@ -261,7 +261,7 @@ def main():
     enable_wallet = config["components"].getboolean("ENABLE_WALLET")
     enable_utils = config["components"].getboolean("ENABLE_UTILS")
     enable_bitcoind = config["components"].getboolean("ENABLE_BITCOIND")
-
+    breakpoint()
     if config["environment"]["EXEEXT"] == ".exe" and not args.force:
         # https://github.com/bitcoin/bitcoin/commit/d52802551752140cf41f0d9a225a43e84404d3e9
         # https://github.com/bitcoin/bitcoin/pull/5677#issuecomment-136646964
