@@ -259,7 +259,7 @@ def main():
     logging.debug("Temporary test directory at %s" % tmpdir)
 
     enable_wallet = config["components"].getboolean("ENABLE_WALLET")
-    enable_utils = config["components"].getboolean("ENABLE_UTILS")
+    enable_utils = config["components"].getboolean("ENABLE_CLI")
     enable_bitcoind = config["components"].getboolean("ENABLE_BITCOIND")
     breakpoint()
     if config["environment"]["EXEEXT"] == ".exe" and not args.force:
