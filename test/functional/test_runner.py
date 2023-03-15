@@ -258,19 +258,11 @@ def main():
 
     logging.debug("Temporary test directory at %s" % tmpdir)
 
-    enable_wallet = config["components"].getboolean("ENABLE_WALLET")
-    enable_utils = config["components"].getboolean("ENABLE_CLI")
     enable_bitcoind = config["components"].getboolean("ENABLE_BITCOIND")
-    breakpoint()
-    if config["environment"]["EXEEXT"] == ".exe" and not args.force:
-        # https://github.com/bitcoin/bitcoin/commit/d52802551752140cf41f0d9a225a43e84404d3e9
-        # https://github.com/bitcoin/bitcoin/pull/5677#issuecomment-136646964
-        print("Tests currently disabled on Windows by default. Use --force option to enable")
-        sys.exit(0)
 
-    if not (enable_wallet and enable_utils and enable_bitcoind):
-        print("No functional tests to run. Wallet, utils, and wagerrd must all be enabled")
-        print("Rerun `configure` with -enable-wallet, -with-utils and -with-daemon and rerun make")
+    if not enable_bitcoind:
+        print("No functional tests to run.")
+        print("Rerun ./configure with --with-daemon and then make")
         sys.exit(0)
 
     # Build list of tests
