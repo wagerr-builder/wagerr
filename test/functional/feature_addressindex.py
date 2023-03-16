@@ -219,7 +219,7 @@ class AddressIndexTest(WagerrTestFramework):
         assert_equal(len(deltasAll), len(deltas))
 
         # Check that deltas can be returned from range of block heights
-        deltas = self.nodes[1].getaddressdeltas({"addresses": [address2], "start": 113, "end": 113})
+        deltas = self.nodes[1].getaddressdeltas({"addresses": [address2], "start": 154, "end": 154})
         assert_equal(len(deltas), 1)
 
         # Check that unspent outputs can be queried
