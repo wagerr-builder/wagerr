@@ -75,6 +75,7 @@ class AddressIndexTest(WagerrTestFramework):
         # Check that balances are correct
         balance0 = self.nodes[1].getbalance()
         balance_mining = self.nodes[0].getwalletinfo()
+        breakpoint()
         assert_equal(balance0["balance"], 0)
         assert_equal(balance_mining["balance"], 196610471)
         assert_equal(balance_mining["immature_balance"], 2500000)
