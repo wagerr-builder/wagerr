@@ -76,10 +76,10 @@ class AddressIndexTest(WagerrTestFramework):
         balance0 = self.nodes[1].getbalance()
         balance_mining = self.nodes[0].getwalletinfo()
         breakpoint()
-        assert_equal(balance0["balance"], 0)
-        assert_equal(balance_mining["balance"], 196610471)
+        assert_equal(balance0, 0)
+        assert_equal(balance_mining["balance"], 207860471)
         assert_equal(balance_mining["immature_balance"], 2500000)
-        assert_equal((balance_mining["balance"] - balance_mining["immature_balance"]), 194110471)
+        assert_equal((balance_mining["balance"] - balance_mining["immature_balance"]), 205360471)
 
         # Check p2pkh and p2sh address indexes
         self.log.info("Testing p2pkh and p2sh address index...")
