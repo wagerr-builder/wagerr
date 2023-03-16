@@ -123,8 +123,8 @@ class AddressIndexTest(WagerrTestFramework):
         self.log.info("Testing querying txids by range of block heights..")
         height_txids = self.nodes[1].getaddresstxids({
             "addresses": [sendto_address],
-            "start": 105,
-            "end": 110
+            "start": 150``,
+            "end": 155
         })
         assert_equal(len(height_txids), 2)
         assert_equal(height_txids[0], txidb0)
