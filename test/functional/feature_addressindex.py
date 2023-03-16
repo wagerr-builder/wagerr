@@ -55,7 +55,7 @@ class AddressIndexTest(WagerrTestFramework):
         self.log.info("Mining blocks...")
         mining_address = self.nodes[0].getnewaddress()
         sendto_address = self.nodes[1].getnewaddress()
-        self.nodes[0].generate(105)
+        self.nodes[0].generate(159)
         disconnect_nodes(self.nodes[0], 1)
         connect_nodes(self.nodes[0], 1)
         disconnect_nodes(self.nodes[0], 2)
