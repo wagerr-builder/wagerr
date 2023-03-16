@@ -7,6 +7,7 @@
 import contextlib
 import decimal
 import errno
+from enum import Enum
 import http.client
 import json
 import logging
