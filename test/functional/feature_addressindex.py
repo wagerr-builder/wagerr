@@ -58,7 +58,10 @@ class AddressIndexTest(WagerrTestFramework):
         self.nodes[0].generate(150)
         for n in range(self.num_nodes):
             self.stop_node(n)
-            self.start_node(n, ["-reindex"])
+        self.start_node(0, ["-reindex"])
+        self.start_node(1, ["-addressindex", "-reindex"])
+        self.start_node(2, ["-reindex"])
+        self.start_node(3, ["-reindex"])
         disconnect_nodes(self.nodes[0], 1)
         connect_nodes(self.nodes[0], 1)
         disconnect_nodes(self.nodes[0], 2)
