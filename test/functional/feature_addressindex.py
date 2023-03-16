@@ -118,7 +118,6 @@ class AddressIndexTest(WagerrTestFramework):
         assert_equal(txidsb[1], txidb1)
         assert_equal(txidsb[2], txidb2)
 
-        breakpoint()
         # Check that limiting by height works
         self.log.info("Testing querying txids by range of block heights..")
         height_txids = self.nodes[1].getaddresstxids({
