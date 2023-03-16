@@ -259,8 +259,8 @@ class AddressIndexTest(WagerrTestFramework):
         utxos3 = self.nodes[1].getaddressutxos({"addresses": [address2]})
         assert_equal(len(utxos3), 3)
         assert_equal(utxos3[0]["height"], 159)
-        assert_equal(utxos3[1]["height"], 264)
-        assert_equal(utxos3[2]["height"], 265)
+        assert_equal(utxos3[1]["height"], 309)
+        assert_equal(utxos3[2]["height"], 310)
 
         # Check mempool indexing
         self.log.info("Testing mempool indexing...")
