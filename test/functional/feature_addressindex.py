@@ -102,7 +102,7 @@ class AddressIndexTest(WagerrTestFramework):
         self.nodes[0].generate(1)
 
         self.sync_all()
-
+        breakpoint()
         txids = self.nodes[1].getaddresstxids("TTzu4XKjnSeWPVJHmrWw5uaApihdRxQrB7")
         assert_equal(len(txids), 3)
         assert_equal(txids[0], txid0)
