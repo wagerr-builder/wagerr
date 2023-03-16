@@ -259,7 +259,7 @@ class AddressIndexTest(WagerrTestFramework):
 
         utxos3 = self.nodes[1].getaddressutxos({"addresses": [address2]})
         assert_equal(len(utxos3), 3)
-        assert_equal(utxos3[0]["height"], 114)
+        assert_equal(utxos3[0]["height"], 159)
         assert_equal(utxos3[1]["height"], 264)
         assert_equal(utxos3[2]["height"], 265)
 
