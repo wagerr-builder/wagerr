@@ -320,6 +320,7 @@ class AddressIndexTest(WagerrTestFramework):
         tx.vout = [CTxOut(int(amount / 2 - 10000), scriptPubKey2)]
         tx.rehash()
         self.nodes[2].importprivkey(privKey3)
+        breakpoint()
         signed_tx3 = self.nodes[2].signrawtransactionwithwallet(tx.serialize().hex())
         self.nodes[2].sendrawtransaction(signed_tx3["hex"], 0)
         self.bump_mocktime(2)
