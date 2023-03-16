@@ -73,7 +73,7 @@ class AddressIndexTest(WagerrTestFramework):
         assert_equal(self.nodes[2].getbalance(), 0)
 
         # Check that balances are correct
-        balance0 = self.nodes[1].getaddressbalance(sendto_address)
+        balance0 = self.nodes[1].getbalance()
         balance_mining = self.nodes[0].getwalletinfo()
         assert_equal(balance0["balance"], 0)
         assert_equal(balance_mining["balance"], 196610471)
