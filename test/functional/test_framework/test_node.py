@@ -38,6 +38,10 @@ BITCOIND_PROC_WAIT_TIMEOUT = 60
 class FailedToStartError(Exception):
     """Raised when a node fails to start correctly."""
 
+class ErrorMatch(Enum):
+    FULL_TEXT = 1
+    FULL_REGEX = 2
+    PARTIAL_REGEX = 3
 
 class TestNode():
     """A class for representing a wagerrd node under test.
