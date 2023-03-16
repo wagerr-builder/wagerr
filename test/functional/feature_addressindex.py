@@ -298,6 +298,7 @@ class AddressIndexTest(WagerrTestFramework):
         self.bump_mocktime(2)
 
         mempool = self.nodes[2].getaddressmempool({"addresses": [address3]})
+        breakpoint()
         assert_equal(len(mempool), 3)
         assert_equal(mempool[0]["txid"], memtxid1)
         assert_equal(mempool[0]["address"], address3)
@@ -320,7 +321,6 @@ class AddressIndexTest(WagerrTestFramework):
         tx.vout = [CTxOut(int(amount / 2 - 10000), scriptPubKey2)]
         tx.rehash()
         self.nodes[2].importprivkey(privKey3)
-        breakpoint()
         signed_tx3 = self.nodes[2].signrawtransactionwithwallet(tx.serialize().hex())
         self.nodes[2].sendrawtransaction(signed_tx3["hex"], 0)
         self.bump_mocktime(2)
