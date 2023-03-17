@@ -587,35 +587,69 @@ class WagerrTestFramework(BitcoinTestFramework):
             connect_nodes(self.nodes[i], idx)
 
     def create_management_tokens(self):
-        self.log.info("Generating Management Tokens...")
-        self.nodes[0].generate(280)
+
+#        self.log.info("Generating Management Tokens...")
+#        self.nodes[0].generate(280)
+#        WAGERR_AUTH_ADDR = "TJA37d7KPVmd5Lqa2EcQsptcfLYsQ1Qcfk"
+#        global creditsubgroupID
+#        MGTAddr=self.nodes[0].getnewaddress()
+#        GVTAddr=self.nodes[0].getnewaddress()
+#        self.nodes[0].importprivkey("TGVmKzjo3A4TJeBjU95VYZERj5sUq5BM68rv5UzT5KVszdgy5JCK")
+#        self.nodes[0].sendtoaddress(WAGERR_AUTH_ADDR, 10)
+#        MGTBLS=self.nodes[0].bls("generate")
+#        GVTBLS=self.nodes[0].bls("generate")
+#        MGT=self.nodes[0].configuremanagementtoken( "MGT", "Management", "4", "https://www.google.com", "4f92d91db24bb0b8ca24a2ec86c4b012ccdc4b2e9d659c2079f5cc358413a765", MGTBLS["public"], "false", "true")
+#        self.nodes[0].generate(1)
+#        MGTGroup_ID=MGT['groupID']
+#        self.nodes[0].minttoken(MGTGroup_ID, MGTAddr, '25')
+#        self.nodes[0].sendtoaddress(WAGERR_AUTH_ADDR, 10)
+#        self.nodes[0].generate(1)
+#        GVT=self.nodes[0].configuremanagementtoken("GVT", "GuardianValidator", "0", "https://www.google.com", "4f92d91db24bb0b8ca24a2ec86c4b012ccdc4b2e9d659c2079f5cc358413a765", GVTBLS["public"], "true", "true")
+#        self.nodes[0].generate(1)
+#        GVTGroup_ID=GVT['groupID']
+#        self.nodes[0].minttoken(GVTGroup_ID, GVTAddr, '25')
+#        self.nodes[0].generate(1)
+#        self.log.info("Creating GVT.credits")
+#        creditsubgroupID=self.nodes[0].getsubgroupid(GVTGroup_ID,"credit")
+#        creditaddr=self.nodes[0].getnewaddress()
+#        self.nodes[0].minttoken(creditsubgroupID, creditaddr, 100)
+#        self.nodes[0].generate(1)
+
+        self.log.info("Generating Tokens...")
         WAGERR_AUTH_ADDR = "TJA37d7KPVmd5Lqa2EcQsptcfLYsQ1Qcfk"
-        global creditsubgroupID
+        self.nodes[0].generate(400)
+        self.nodes[0].importprivkey("TCH8Qby7krfugb2sFWzHQSEmTxBgzBSLkgPtt5EUnzDqfaX9dcsS")
+        self.nodes[0].sendtoaddress(WAGERR_AUTH_ADDR, 10)
+        self.nodes[0].generate(87)
+        self.sync_all()
+        self.nodes[0].generate(100)
+        self.sync_all()
+        self.MGTBLS=self.nodes[0].bls("generate")
+        self.ORATBLS=self.nodes[0].bls("generate")
+        self.log.info("MGTBLS %s" % self.MGTBLS["public"])
+        self.log.info("ORATBLS %s" % self.ORATBLS["public"])
         MGTAddr=self.nodes[0].getnewaddress()
-        GVTAddr=self.nodes[0].getnewaddress()
-        self.nodes[0].importprivkey("TGVmKzjo3A4TJeBjU95VYZERj5sUq5BM68rv5UzT5KVszdgy5JCK")
-        self.nodes[0].sendtoaddress(WAGERR_AUTH_ADDR, 10)
-        MGTBLS=self.nodes[0].bls("generate")
-        GVTBLS=self.nodes[0].bls("generate")
-        MGT=self.nodes[0].configuremanagementtoken( "MGT", "Management", "4", "https://www.google.com", "4f92d91db24bb0b8ca24a2ec86c4b012ccdc4b2e9d659c2079f5cc358413a765", MGTBLS["public"], "false", "true")
-        self.nodes[0].generate(1)
-        MGTGroup_ID=MGT['groupID']
-        self.nodes[0].minttoken(MGTGroup_ID, MGTAddr, '25')
+        ORATAddr=self.nodes[0].getnewaddress()
         self.nodes[0].sendtoaddress(WAGERR_AUTH_ADDR, 10)
         self.nodes[0].generate(1)
-        GVT=self.nodes[0].configuremanagementtoken("GVT", "GuardianValidator", "0", "https://www.google.com", "4f92d91db24bb0b8ca24a2ec86c4b012ccdc4b2e9d659c2079f5cc358413a765", GVTBLS["public"], "true", "true")
+        self.MGT=self.nodes[0].configuremanagementtoken( "MGT", "Management", "4", "https://www.google.com", "0",  self.MGTBLS["public"], "false", "true")
+        self.log.info("MGT %s" % self.MGT)
+        MGTGroup_ID=self.MGT['groupID']
         self.nodes[0].generate(1)
-        GVTGroup_ID=GVT['groupID']
-        self.nodes[0].minttoken(GVTGroup_ID, GVTAddr, '25')
+        self.nodes[0].minttoken(MGTGroup_ID, MGTAddr, '82')
+        self.nodes[0].sendtoaddress(WAGERR_AUTH_ADDR, 10)
         self.nodes[0].generate(1)
-        self.log.info("Creating GVT.credits")
-        creditsubgroupID=self.nodes[0].getsubgroupid(GVTGroup_ID,"credit")
-        creditaddr=self.nodes[0].getnewaddress()
-        self.nodes[0].minttoken(creditsubgroupID, creditaddr, 100)
+        self.ORAT=self.nodes[0].configuremanagementtoken( "ORAT", "ORAT", "4", "https://www.google.com", "0",  self.ORATBLS["public"], "false", "true")
         self.nodes[0].generate(1)
+        self.log.info("ORAT %s" % self.ORAT)
+        ORATGroup_ID=self.ORAT['groupID']
+        self.nodes[0].minttoken(ORATGroup_ID, ORATAddr, '82')
+        self.nodes[0].sendtoaddress(WAGERR_AUTH_ADDR, 10)
+        self.nodes[0].generate(1)
+        self.sync_all()
 
     def prepare_masternodes(self):
-        
+
         self.log.info("Preparing %d masternodes" % self.mn_count)
         for idx in range(0, self.mn_count):
             self.prepare_masternode(idx)
