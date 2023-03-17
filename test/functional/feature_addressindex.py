@@ -310,7 +310,6 @@ class AddressIndexTest(WagerrTestFramework):
         # assert_equal(len(mempool2), 0)
 
         tx = CTransaction()
-        breakpoint()
         tx.vin = [
             CTxIn(COutPoint(int(memtxid2, 16), 0)),
             CTxIn(COutPoint(int(memtxid2, 16), 1))
@@ -323,6 +322,7 @@ class AddressIndexTest(WagerrTestFramework):
         self.bump_mocktime(2)
 
         mempool3 = self.nodes[2].getaddressmempool({"addresses": [address3]})
+        breakpoint()
         assert_equal(len(mempool3), 2)
         assert_equal(mempool3[0]["prevtxid"], memtxid2)
         assert_equal(mempool3[0]["prevout"], 0)
