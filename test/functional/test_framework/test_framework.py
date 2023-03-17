@@ -676,11 +676,11 @@ class WagerrTestFramework(BitcoinTestFramework):
         #self.nodes[0].generate(1)
 
         #txraw_fee = self.nodes[0].getrawtransaction(txid_fee, True)
-        collateral_vout_fee = 0
-        for vout_idx_fee in range(0, len(txraw_fee["vout"])):
-            vout_fee = txraw_fee["vout"][vout_idx_fee]
-            if vout_fee["value"] == 0.001 and vout_fee["addresses"][0] == address:
-                collateral_vout_fee = vout_idx_fee
+        #collateral_vout_fee = 0
+        #for vout_idx_fee in range(0, len(txraw_fee["vout"])):
+        #    vout_fee = txraw_fee["vout"][vout_idx_fee]
+        #    if vout_fee["value"] == 0.001 and vout_fee["addresses"][0] == address:
+        #        collateral_vout_fee = vout_idx_fee
 
         ownerAddr = self.nodes[0].getnewaddress()
         votingAddr = self.nodes[0].getnewaddress()
