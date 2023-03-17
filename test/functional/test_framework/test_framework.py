@@ -675,7 +675,7 @@ class WagerrTestFramework(BitcoinTestFramework):
         #txid_fee = self.nodes[0].sendtoaddress(address, 0.001)
         #self.nodes[0].generate(1)
 
-        txraw_fee = self.nodes[0].getrawtransaction(txid_fee, True)
+        #txraw_fee = self.nodes[0].getrawtransaction(txid_fee, True)
         collateral_vout_fee = 0
         for vout_idx_fee in range(0, len(txraw_fee["vout"])):
             vout_fee = txraw_fee["vout"][vout_idx_fee]
@@ -696,9 +696,9 @@ class WagerrTestFramework(BitcoinTestFramework):
             self.nodes[0].lockunspent(True, [{'txid': txid, 'vout': collateral_vout}])
             protx_result = self.nodes[0].protx('register_fund', address, ipAndPort, ownerAddr, bls['public'], votingAddr, operatorReward, rewardsAddr, address, submit)
         else:
-            self.nodes[0].lockunspent(False, [{'txid': txid_fee, 'vout': collateral_vout_fee}])
+            #self.nodes[0].lockunspent(False, [{'txid': txid_fee, 'vout': collateral_vout_fee}])
             self.nodes[0].generate(1)
-            self.nodes[0].lockunspent(True, [{'txid': txid_fee, 'vout': collateral_vout_fee}])
+            #self.nodes[0].lockunspent(True, [{'txid': txid_fee, 'vout': collateral_vout_fee}])
             protx_result = self.nodes[0].protx('register', txid, collateral_vout, ipAndPort, ownerAddr, bls['public'], votingAddr, operatorReward, rewardsAddr, address, submit)
 
         if submit:
