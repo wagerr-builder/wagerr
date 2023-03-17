@@ -19,7 +19,7 @@ from test_framework.script import (
     CScript,
     OP_NOP,
 )
-from test_framework.test_framework import WagerrTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.descriptors import descsum_create
 from test_framework.util import (
     assert_equal,
@@ -32,7 +32,7 @@ from test_framework.wallet_util import (
     test_address,
 )
 
-class ImportMultiTest(WagerrTestFramework):
+class ImportMultiTest(BitcoinTestFramework):
     def set_test_params(self):
         self.num_nodes = 2
         self.setup_clean_chain = True
@@ -252,7 +252,7 @@ class ImportMultiTest(WagerrTestFramework):
 
         # P2SH address
         multisig = get_multisig(self.nodes[0])
-        self.nodes[1].generate(10)
+        self.nodes[1].generate(100)
         self.nodes[1].sendtoaddress(multisig.p2sh_addr, 10.00)
         self.nodes[1].generate(1)
         timestamp = self.nodes[1].getblock(self.nodes[1].getbestblockhash())['mediantime']
@@ -273,7 +273,7 @@ class ImportMultiTest(WagerrTestFramework):
 
         # P2SH + Redeem script
         multisig = get_multisig(self.nodes[0])
-        self.nodes[1].generate(10)
+        self.nodes[1].generate(100)
         self.nodes[1].sendtoaddress(multisig.p2sh_addr, 10.00)
         self.nodes[1].generate(1)
         timestamp = self.nodes[1].getblock(self.nodes[1].getbestblockhash())['mediantime']

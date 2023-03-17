@@ -1,34 +1,31 @@
 #!/usr/bin/env python3
 # Copyright (c) 2014-2016 The Bitcoin Core developers
-# Copyright (c) 2021 The Wagerr Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test the wallet keypool and interaction with wallet encryption/locking."""
 
 import time
 
-from test_framework.test_framework import WagerrTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import assert_equal, assert_raises_rpc_error
 
-class KeyPoolTest(WagerrTestFramework):
+class KeyPoolTest(BitcoinTestFramework):
     def set_test_params(self):
         self.num_nodes = 1
         self.extra_args = [['-usehd=0']]
-        self.setup_clean_chain = True
 
     def skip_test_if_missing_module(self):
         self.skip_if_no_wallet()
 
     def run_test(self):
         nodes = self.nodes
-        nodes[0].generate(100)
 
         # Encrypt wallet and wait to terminate
         nodes[0].encryptwallet('test')
         # Keep creating keys
         addr = nodes[0].getnewaddress()
 
-        assert_raises_rpc_error(-32603, "No key for coinbase available", nodes[0].generate, 1)
+        assert_raises_rpc_error(-12, "Error: Keypool ran out, please call keypoolrefill first", nodes[0].getnewaddress)
 
         # put three new keys in the keypool
         nodes[0].walletpassphrase('test', 12000)

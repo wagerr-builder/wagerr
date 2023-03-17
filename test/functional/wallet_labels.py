@@ -11,10 +11,10 @@ RPCs tested are:
 """
 from collections import defaultdict
 
-from test_framework.test_framework import WagerrTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import assert_equal, assert_raises_rpc_error
 
-class WalletLabelsTest(WagerrTestFramework):
+class WalletLabelsTest(BitcoinTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 1
@@ -31,24 +31,24 @@ class WalletLabelsTest(WagerrTestFramework):
         # the same address, so we call twice to get two addresses w/500 each
         node.generatetoaddress(nblocks=1, address=node.getnewaddress(label='coinbase'))
         node.generatetoaddress(nblocks=101, address=node.getnewaddress(label='coinbase'))
-        assert_equal(node.getbalance(), 947760000)
+        assert_equal(node.getbalance(), 1000)
 
         # there should be 2 address groups
-        # each with 1 address with a balance of 500 Wagerr
+        # each with 1 address with a balance of 500 Dash
         address_groups = node.listaddressgroupings()
-        assert_equal(len(address_groups), 102)
+        assert_equal(len(address_groups), 2)
         # the addresses aren't linked now, but will be after we send to the
         # common address
         linked_addresses = set()
         for address_group in address_groups:
             assert_equal(len(address_group), 1)
             assert_equal(len(address_group[0]), 3)
-            assert_equal(address_group[0][1], 10000.00000000)
+            assert_equal(address_group[0][1], 500)
             assert_equal(address_group[0][2], 'coinbase')
             linked_addresses.add(address_group[0][0])
 
         # send 500 from each address to a third address not in this wallet
-        common_address = "TKCjZUMw7Hjq5vUSKdcuQnotxcG9De2oxH"
+        common_address = "yd5KMREs3GLMe6mTJYr3YrH1juwNwrFCfB"
         node.sendmany(
             amounts={common_address: 1000},
             minconf=1,

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 # Copyright (c) 2014-2018 The Bitcoin Core developers
-# Copyright (c) 2021 The Wagerr Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test mining RPCs
@@ -22,7 +21,7 @@ from test_framework.messages import (
 from test_framework.mininode import (
     P2PDataStore,
 )
-from test_framework.test_framework import WagerrTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import (
     assert_equal,
     assert_raises_rpc_error,
@@ -38,7 +37,7 @@ def assert_template(node, block, expect, rehash=True):
     assert_equal(rsp, expect)
 
 
-class MiningTest(WagerrTestFramework):
+class MiningTest(BitcoinTestFramework):
     def set_test_params(self):
         self.num_nodes = 2
         self.setup_clean_chain = True
@@ -74,7 +73,7 @@ class MiningTest(WagerrTestFramework):
         assert 'currentblocksize' not in mining_info
         assert 'currentblocktx' not in mining_info
         assert_equal(mining_info['difficulty'], Decimal('4.656542373906925E-10'))
-        assert_equal(mining_info['networkhashps'], Decimal('12'))
+        assert_equal(mining_info['networkhashps'], Decimal('0.01282051282051282'))
         assert_equal(mining_info['pooledtx'], 0)
 
         # Mine a block to leave initial block download
@@ -109,13 +108,13 @@ class MiningTest(WagerrTestFramework):
         assert_template(node, block, None)
 
         self.log.info("submitblock: Test block decode failure")
-        assert_raises_rpc_error(-22, "Block does not start with a coinbase", node.submitblock, block.serialize()[:-15])
+        assert_raises_rpc_error(-22, "Block decode failed", node.submitblock, block.serialize()[:-15].hex())
 
         self.log.info("getblocktemplate: Test bad input hash for coinbase transaction")
         bad_block = copy.deepcopy(block)
         bad_block.vtx[0].vin[0].prevout.hash += 1
         bad_block.vtx[0].rehash()
-        assert_template(node, bad_block, 'bad-txnmrklroot')
+        assert_template(node, bad_block, 'bad-cb-missing')
 
         self.log.info("submitblock: Test invalid coinbase transaction")
         assert_raises_rpc_error(-22, "Block does not start with a coinbase", node.submitblock, bad_block.serialize().hex())
@@ -189,7 +188,7 @@ class MiningTest(WagerrTestFramework):
 
         def filter_tip_keys(chaintips):
             """
-            Wagerr chaintips rpc returns extra info in each tip (difficulty, chainwork, and
+            Dash chaintips rpc returns extra info in each tip (difficulty, chainwork, and
             forkpoint). Filter down to relevant ones checked in this test.
             """
             check_keys = ["hash", "height", "branchlen", "status"]

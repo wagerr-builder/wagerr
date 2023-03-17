@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 # Copyright (c) 2014-2016 The Bitcoin Core developers
-# Copyright (c) 2021 The Wagerr Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test the REST API."""
@@ -15,7 +14,7 @@ from struct import pack, unpack
 import http.client
 import urllib.parse
 
-from test_framework.test_framework import WagerrTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import (
     assert_equal,
     assert_greater_than,
@@ -38,7 +37,7 @@ def filter_output_indices_by_value(vouts, value):
         if vout['value'] == value:
             yield vout['n']
 
-class RESTTest (WagerrTestFramework):
+class RESTTest (BitcoinTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 2
@@ -76,7 +75,7 @@ class RESTTest (WagerrTestFramework):
 
     def run_test(self):
         self.url = urllib.parse.urlparse(self.nodes[0].url)
-        self.log.info("Mine blocks and send Wagerr to node 1")
+        self.log.info("Mine blocks and send Dash to node 1")
 
         # Random address so node1's balance doesn't increase
         not_related_address = "yj949n1UH6fDhw6HtVE5VMj2iSTaSWBMcW"
@@ -86,7 +85,7 @@ class RESTTest (WagerrTestFramework):
         self.nodes[1].generatetoaddress(100, not_related_address)
         self.sync_all()
 
-        assert_equal(self.nodes[0].getbalance(), 947000000)
+        assert_equal(self.nodes[0].getbalance(), 500)
 
         txid = self.nodes[0].sendtoaddress(self.nodes[1].getnewaddress(), 0.1)
         self.sync_all()
@@ -227,9 +226,9 @@ class RESTTest (WagerrTestFramework):
 
         # Compare with block header
         response_header = self.test_rest_request("/headers/1/{}".format(bb_hash), req_type=ReqType.BIN, ret_type=RetType.OBJ)
-        assert_equal(int(response_header.getheader('content-length')), 112)
+        assert_equal(int(response_header.getheader('content-length')), 80)
         response_header_bytes = response_header.read()
-        assert_equal(response_bytes[:112], response_header_bytes)
+        assert_equal(response_bytes[:80], response_header_bytes)
 
         # Check block hex format
         response_hex = self.test_rest_request("/block/{}".format(bb_hash), req_type=ReqType.HEX, ret_type=RetType.OBJ)

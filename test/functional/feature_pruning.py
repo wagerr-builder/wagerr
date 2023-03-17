@@ -13,7 +13,7 @@ import os
 from test_framework.blocktools import create_coinbase
 from test_framework.messages import CBlock, ToHex
 from test_framework.script import CScript, OP_RETURN, OP_NOP
-from test_framework.test_framework import WagerrTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import assert_equal, assert_greater_than, assert_raises_rpc_error, connect_nodes, disconnect_nodes, wait_until
 
 # Rescans start at the earliest block up to 2 hours before a key timestamp, so
@@ -67,7 +67,7 @@ def mine_large_blocks(node, n):
 def calc_usage(blockdir):
     return sum(os.path.getsize(blockdir + f) for f in os.listdir(blockdir) if os.path.isfile(os.path.join(blockdir, f))) / (1024. * 1024.)
 
-class PruneTest(WagerrTestFramework):
+class PruneTest(BitcoinTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 6
@@ -112,7 +112,7 @@ class PruneTest(WagerrTestFramework):
     def create_big_chain(self):
         # Start by creating some coinbases we can spend later
         self.nodes[1].generate(200)
-        connect_nodes(self.nodes[0], 1)
+        self.sync_blocks(self.nodes[0:2])
         self.nodes[0].generate(150)
 
         # Then mine enough full blocks to create more than 550MiB of data

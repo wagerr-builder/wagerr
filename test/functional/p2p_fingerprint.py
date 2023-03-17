@@ -18,13 +18,13 @@ from test_framework.mininode import (
     msg_getdata,
     msg_getheaders,
 )
-from test_framework.test_framework import WagerrTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import (
     assert_equal,
     wait_until,
 )
 
-class P2PFingerprintTest(WagerrTestFramework):
+class P2PFingerprintTest(BitcoinTestFramework):
 
     def set_test_params(self):
         self.setup_clean_chain = True
@@ -95,7 +95,7 @@ class P2PFingerprintTest(WagerrTestFramework):
             node0.send_and_ping(msg_block(block))
 
         # Check that reorg succeeded
-        assert_equal(self.nodes[0].getblockcount(), 10)
+        assert_equal(self.nodes[0].getblockcount(), 13)
 
         stale_hash = int(block_hashes[-1], 16)
 
@@ -112,7 +112,7 @@ class P2PFingerprintTest(WagerrTestFramework):
         # Longest chain is extended so stale is much older than chain tip
         self.nodes[0].setmocktime(0)
         tip = self.nodes[0].generatetoaddress(1, self.nodes[0].get_deterministic_priv_key().address)[0]
-        assert_equal(self.nodes[0].getblockcount(), 11)
+        assert_equal(self.nodes[0].getblockcount(), 14)
 
         # Send getdata & getheaders to refresh last received getheader message
         block_hash = int(tip, 16)

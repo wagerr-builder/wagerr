@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 # Copyright (c) 2014-2015 The Bitcoin Core developers
-# Copyright (c) 2021 The Wagerr Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -12,11 +11,11 @@ import binascii
 
 from test_framework.messages import COutPoint, CTransaction, CTxIn, CTxOut
 from test_framework.script import CScript, OP_CHECKSIG, OP_DUP, OP_EQUALVERIFY, OP_HASH160
-from test_framework.test_framework import WagerrTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import assert_equal, connect_nodes
 
 
-class TxIndexTest(WagerrTestFramework):
+class TxIndexTest(BitcoinTestFramework):
 
     def set_test_params(self):
         self.setup_clean_chain = True
@@ -42,9 +41,6 @@ class TxIndexTest(WagerrTestFramework):
     def run_test(self):
         self.log.info("Mining blocks...")
         self.nodes[0].generate(105)
-        connect_nodes(self.nodes[0], 1)
-        connect_nodes(self.nodes[0], 2)
-        connect_nodes(self.nodes[0], 3)
         self.sync_all()
 
         chain_height = self.nodes[1].getblockcount()
@@ -56,7 +52,7 @@ class TxIndexTest(WagerrTestFramework):
         scriptPubKey = CScript([OP_DUP, OP_HASH160, addressHash, OP_EQUALVERIFY, OP_CHECKSIG])
         unspent = self.nodes[0].listunspent()
         tx = CTransaction()
-        tx_fee_sat = 1600
+        tx_fee_sat = 1000
         amount = int(unspent[0]["amount"] * 100000000) - tx_fee_sat
         tx.vin = [CTxIn(COutPoint(int(unspent[0]["txid"], 16), unspent[0]["vout"]))]
         tx.vout = [CTxOut(amount, scriptPubKey)]
@@ -69,8 +65,8 @@ class TxIndexTest(WagerrTestFramework):
 
         # Check verbose raw transaction results
         verbose = self.nodes[3].getrawtransaction(txid, 1)
-        assert_equal(verbose["vout"][0]["valueSat"], 1000000000000 - tx_fee_sat)
-        assert_equal(verbose["vout"][0]["value"] * 100000000, 1000000000000 - tx_fee_sat)
+        assert_equal(verbose["vout"][0]["valueSat"], 50000000000 - tx_fee_sat)
+        assert_equal(verbose["vout"][0]["value"] * 100000000, 50000000000 - tx_fee_sat)
 
         self.log.info("Passed")
 

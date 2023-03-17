@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2015-2021 The Wagerr Core developers
+# Copyright (c) 2015-2021 The Dash Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -12,14 +12,14 @@ Checks simple PoSe system based on LLMQ commitments
 
 import time
 
-from test_framework.test_framework import WagerrTestFramework
+from test_framework.test_framework import DashTestFramework
 from test_framework.util import connect_nodes, force_finish_mnsync, p2p_port, wait_until
 
 
-class LLMQSimplePoSeTest(WagerrTestFramework):
+class LLMQSimplePoSeTest(DashTestFramework):
     def set_test_params(self):
-        self.set_wagerr_test_params(6, 5, fast_dip3_enforcement=True)
-        self.set_wagerr_llmq_test_params(5, 3)
+        self.set_dash_test_params(6, 5, fast_dip3_enforcement=True)
+        self.set_dash_llmq_test_params(5, 3)
 
     def run_test(self):
 
@@ -81,7 +81,7 @@ class LLMQSimplePoSeTest(WagerrTestFramework):
 
     def force_old_mn_proto(self, mn):
         self.stop_node(mn.node.index)
-        self.start_masternode(mn, ["-pushversion=70915"])
+        self.start_masternode(mn, ["-pushversion=70216"])
         connect_nodes(mn.node, 0)
         self.reset_probe_timeouts()
         return False, True
@@ -149,7 +149,7 @@ class LLMQSimplePoSeTest(WagerrTestFramework):
 
     def reset_probe_timeouts(self):
         # Make sure all masternodes will reconnect/re-probe
-        self.bump_mocktime(62 * 60 + 1)
+        self.bump_mocktime(10 * 60 + 1)
         # Sleep a couple of seconds to let mn sync tick to happen
         time.sleep(2)
 

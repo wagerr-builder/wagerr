@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 # Copyright (c) 2014-2016 The Bitcoin Core developers
-# Copyright (c) 2021 The Wagerr Core Developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test the wallet backup features.
@@ -36,10 +35,10 @@ import os
 from random import randint
 import shutil
 
-from test_framework.test_framework import WagerrTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import assert_equal, assert_raises_rpc_error, connect_nodes
 
-class WalletBackupTest(WagerrTestFramework):
+class WalletBackupTest(BitcoinTestFramework):
     def set_test_params(self):
         self.num_nodes = 4
         self.setup_clean_chain = True
@@ -110,20 +109,18 @@ class WalletBackupTest(WagerrTestFramework):
     def run_test(self):
         self.log.info("Generating initial blockchain")
         self.nodes[0].generate(1)
-        self.stop_three()
-        self.start_three()
         self.sync_blocks()
-        self.nodes[1].generate(20)
+        self.nodes[1].generate(1)
         self.sync_blocks()
-        self.nodes[2].generate(10)
+        self.nodes[2].generate(1)
         self.sync_blocks()
         self.nodes[3].generate(100)
         self.sync_blocks()
 
-        assert_equal(self.nodes[0].getbalance(), 947000000)
-        assert_equal(self.nodes[1].getbalance(), 100000)
-        assert_equal(self.nodes[2].getbalance(), 100000)
-        assert_equal(self.nodes[3].getbalance(), 850000)
+        assert_equal(self.nodes[0].getbalance(), 500)
+        assert_equal(self.nodes[1].getbalance(), 500)
+        assert_equal(self.nodes[2].getbalance(), 500)
+        assert_equal(self.nodes[3].getbalance(), 0)
 
         self.log.info("Creating transactions")
         # Five rounds of sending each other transactions.
@@ -155,7 +152,7 @@ class WalletBackupTest(WagerrTestFramework):
 
         # At this point, there are 214 blocks (103 for setup, then 10 rounds, then 101.)
         # 114 are mature, so the sum of all wallets should be 114 * 500 = 57000.
-        #assert_equal(total, 949013660)
+        assert_equal(total, 57000)
 
         ##
         # Test restoring spender wallets from backups

@@ -6,7 +6,7 @@
 
 import time
 
-from test_framework.test_framework import WagerrTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import (
     assert_equal,
     assert_raises_rpc_error,
@@ -14,7 +14,7 @@ from test_framework.util import (
     assert_greater_than_or_equal,
 )
 
-class WalletEncryptionTest(WagerrTestFramework):
+class WalletEncryptionTest(BitcoinTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 1
@@ -29,7 +29,7 @@ class WalletEncryptionTest(WagerrTestFramework):
         # Make sure the wallet isn't encrypted first
         address = self.nodes[0].getnewaddress()
         privkey = self.nodes[0].dumpprivkey(address)
-        assert_equal(privkey[:1], "T")
+        assert_equal(privkey[:1], "c")
         assert_equal(len(privkey), 52)
         assert_raises_rpc_error(-15, "Error: running with an unencrypted wallet, but walletpassphrase was called", self.nodes[0].walletpassphrase, 'ff', 1)
         assert_raises_rpc_error(-15, "Error: running with an unencrypted wallet, but walletpassphrasechange was called.", self.nodes[0].walletpassphrasechange, 'ff', 'ff')

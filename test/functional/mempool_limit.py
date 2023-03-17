@@ -6,10 +6,10 @@
 
 from decimal import Decimal
 
-from test_framework.test_framework import WagerrTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import assert_equal, assert_greater_than, assert_raises_rpc_error, create_confirmed_utxos, create_lots_of_big_transactions, gen_return_txouts
 
-class MempoolLimitTest(WagerrTestFramework):
+class MempoolLimitTest(BitcoinTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 1
@@ -28,8 +28,8 @@ class MempoolLimitTest(WagerrTestFramework):
         relayfee = self.nodes[0].getnetworkinfo()['relayfee']
 
         self.log.info('Check that mempoolminfee is minrelytxfee')
-        assert_equal(self.nodes[0].getmempoolinfo()['minrelaytxfee'], Decimal('0.00010000'))
-        assert_equal(self.nodes[0].getmempoolinfo()['mempoolminfee'], Decimal('0.00010000'))
+        assert_equal(self.nodes[0].getmempoolinfo()['minrelaytxfee'], Decimal('0.00001000'))
+        assert_equal(self.nodes[0].getmempoolinfo()['mempoolminfee'], Decimal('0.00001000'))
 
         txids = []
         utxos = create_confirmed_utxos(relayfee, self.nodes[0], 491)

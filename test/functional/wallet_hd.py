@@ -7,13 +7,13 @@
 import shutil
 import os
 
-from test_framework.test_framework import WagerrTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import (
     assert_equal,
     connect_nodes,
 )
 
-class WalletHDTest(WagerrTestFramework):
+class WalletHDTest(BitcoinTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 2
@@ -70,10 +70,6 @@ class WalletHDTest(WagerrTestFramework):
         change_addr = self.nodes[1].getrawchangeaddress()
         change_addrV= self.nodes[1].getaddressinfo(change_addr)
         assert_equal(change_addrV["hdkeypath"], "m/44'/1'/0'/1/1") #second internal child key
-
-        self.stop_node(1)
-        self.start_node(1)
-        connect_nodes_bi(self.nodes, 0, 1)
 
         self.sync_all()
         assert_equal(self.nodes[1].getbalance(), NUM_HD_ADDS + 1)

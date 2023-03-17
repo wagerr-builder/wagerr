@@ -7,12 +7,12 @@
 # Test timestampindex generation and fetching
 #
 
-from test_framework.test_framework import WagerrTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.test_node import ErrorMatch
 from test_framework.util import assert_equal, connect_nodes
 
 
-class TimestampIndexTest(WagerrTestFramework):
+class TimestampIndexTest(BitcoinTestFramework):
 
     def set_test_params(self):
         self.setup_clean_chain = True
@@ -49,12 +49,6 @@ class TimestampIndexTest(WagerrTestFramework):
         blockhashes = self.nodes[0].generate(5)
         low = self.nodes[0].getblock(blockhashes[0])["time"]
         high = self.nodes[0].getblock(blockhashes[4])["time"]
-        disconnect_nodes(self.nodes[0], 1)
-        disconnect_nodes(self.nodes[0], 2)
-        disconnect_nodes(self.nodes[0], 3)
-        connect_nodes(self.nodes[0], 1)
-        connect_nodes(self.nodes[0], 2)
-        connect_nodes(self.nodes[0], 3)
         self.sync_all()
         self.log.info("Checking timestamp index...")
         hashes = self.nodes[1].getblockhashes(high, low)

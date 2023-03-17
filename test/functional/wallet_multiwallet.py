@@ -4,7 +4,7 @@
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test multiwallet.
 
-Verify that a wagerrd node can load multiple wallet files
+Verify that a dashd node can load multiple wallet files
 """
 from threading import Thread
 from decimal import Decimal
@@ -13,7 +13,7 @@ import shutil
 import time
 
 from test_framework.authproxy import JSONRPCException
-from test_framework.test_framework import WagerrTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.test_node import ErrorMatch
 from test_framework.util import (
     assert_equal,
@@ -38,7 +38,7 @@ def test_load_unload(node, name):
                 return
 
 
-class MultiWalletTest(WagerrTestFramework):
+class MultiWalletTest(BitcoinTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 2
@@ -155,7 +155,7 @@ class MultiWalletTest(WagerrTestFramework):
         assert_equal(set(node.listwallets()), {"w4", "w5"})
         w5 = wallet("w5")
         w5_info = w5.getwalletinfo()
-        assert_equal(w5_info['immature_balance'], 947000000)
+        assert_equal(w5_info['immature_balance'], 500)
 
         competing_wallet_dir = os.path.join(self.options.tmpdir, 'competing_walletdir')
         os.mkdir(competing_wallet_dir)
@@ -174,7 +174,7 @@ class MultiWalletTest(WagerrTestFramework):
         node.generatetoaddress(nblocks=1, address=wallets[0].getnewaddress())
         for wallet_name, wallet in zip(wallet_names, wallets):
             info = wallet.getwalletinfo()
-            assert_equal(info['immature_balance'], 0 if wallet is wallets[0] else 0)
+            assert_equal(info['immature_balance'], 500 if wallet is wallets[0] else 0)
             assert_equal(info['walletname'], wallet_name)
 
         # accessing invalid wallet fails
@@ -185,7 +185,7 @@ class MultiWalletTest(WagerrTestFramework):
 
         w1, w2, w3, w4, *_ = wallets
         node.generatetoaddress(nblocks=101, address=w1.getnewaddress())
-        assert_equal(w1.getbalance(), 770000)
+        assert_equal(w1.getbalance(), 1000)
         assert_equal(w2.getbalance(), 0)
         assert_equal(w3.getbalance(), 0)
         assert_equal(w4.getbalance(), 0)
@@ -365,7 +365,7 @@ class MultiWalletTest(WagerrTestFramework):
         assert_raises_rpc_error(
             -4,
             'Wallet loading failed. Error loading {}: Wallet requires newer version of {}'.format(
-                wallet_dir('high_minversion', 'wallet.dat'), "Wagerr Core"),
+                wallet_dir('high_minversion', 'wallet.dat'), "Dash Core"),
             lambda: self.nodes[0].loadwallet(filename='high_minversion'),
         )
 

@@ -5,7 +5,7 @@
 """Test the wallet."""
 from decimal import Decimal
 
-from test_framework.test_framework import WagerrTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import (
     assert_array_result,
     assert_equal,
@@ -17,7 +17,7 @@ from test_framework.util import (
 )
 
 
-class WalletTest(WagerrTestFramework):
+class WalletTest(BitcoinTestFramework):
     def set_test_params(self):
         self.num_nodes = 4
         self.extra_args = [[
@@ -56,21 +56,21 @@ class WalletTest(WagerrTestFramework):
         self.nodes[0].generate(1)
 
         walletinfo = self.nodes[0].getwalletinfo()
-        assert_equal(walletinfo['immature_balance'], 947000000.00000000)
+        assert_equal(walletinfo['immature_balance'], 500)
         assert_equal(walletinfo['balance'], 0)
 
         self.sync_all(self.nodes[0:3])
         self.nodes[1].generate(101)
         self.sync_all(self.nodes[0:3])
 
-        assert_equal(self.nodes[0].getbalance(), 947000000)
-        assert_equal(self.nodes[1].getbalance(), 760000)
+        assert_equal(self.nodes[0].getbalance(), 500)
+        assert_equal(self.nodes[1].getbalance(), 500)
         assert_equal(self.nodes[2].getbalance(), 0)
 
         # Check that only first and second nodes have UTXOs
         utxos = self.nodes[0].listunspent()
         assert_equal(len(utxos), 1)
-        assert_equal(len(self.nodes[1].listunspent()), 86)
+        assert_equal(len(self.nodes[1].listunspent()), 1)
         assert_equal(len(self.nodes[2].listunspent()), 0)
 
         self.log.info("test gettxout")
@@ -78,11 +78,11 @@ class WalletTest(WagerrTestFramework):
         # First, outputs that are unspent both in the chain and in the
         # mempool should appear with or without include_mempool
         txout = self.nodes[0].gettxout(txid=confirmed_txid, n=confirmed_index, include_mempool=False)
-        assert_equal(txout['value'], 947000000)
+        assert_equal(txout['value'], 500)
         txout = self.nodes[0].gettxout(txid=confirmed_txid, n=confirmed_index, include_mempool=True)
-        assert_equal(txout['value'], 947000000)
+        assert_equal(txout['value'], 500)
 
-        # Send 210 WAGERR from 0 to 2 using sendtoaddress call.
+        # Send 210 DASH from 0 to 2 using sendtoaddress call.
         # Second transaction will be child of first, and will require a fee
         self.nodes[0].sendtoaddress(self.nodes[2].getnewaddress(), 110)
         mempool_txid = self.nodes[0].sendtoaddress(self.nodes[2].getnewaddress(), 100)
@@ -91,7 +91,7 @@ class WalletTest(WagerrTestFramework):
         # utxo spent in mempool should be visible if you exclude mempool
         # but invisible if you include mempool
         txout = self.nodes[0].gettxout(confirmed_txid, confirmed_index, False)
-        assert_equal(txout['value'], 947000000)
+        assert_equal(txout['value'], 500)
         txout = self.nodes[0].gettxout(confirmed_txid, confirmed_index, True)
         assert txout is None
         # new utxo from mempool should be invisible if you exclude mempool
@@ -142,9 +142,9 @@ class WalletTest(WagerrTestFramework):
         self.nodes[1].generate(100)
         self.sync_all(self.nodes[0:3])
 
-        # node0 should end up with 947010000 WAGERR in block rewards plus fees, but
+        # node0 should end up with 1000 DASH in block rewards plus fees, but
         # minus the 210 plus fees sent to node2
-        assert_equal(self.nodes[0].getbalance(), 947010000-210)
+        assert_equal(self.nodes[0].getbalance(), 1000 - 210)
         assert_equal(self.nodes[2].getbalance(), 210)
 
         # Node0 should have two unspent outputs.
@@ -153,7 +153,7 @@ class WalletTest(WagerrTestFramework):
         node0utxos = self.nodes[0].listunspent(1)
         assert_equal(len(node0utxos), 2)
 
-        fee_per_input = Decimal('0.00002')
+        fee_per_input = Decimal('0.00001')
         totalfee = 0
         # create both transactions
         txns_to_send = []
@@ -175,15 +175,15 @@ class WalletTest(WagerrTestFramework):
         self.sync_all(self.nodes[0:3])
 
         assert_equal(self.nodes[0].getbalance(), 0)
-        assert_equal(self.nodes[2].getbalance(), 947010000 - totalfee)
+        assert_equal(self.nodes[2].getbalance(), 1000 - totalfee)
 
         # Verify that a spent output cannot be locked anymore
         spent_0 = {"txid": node0utxos[0]["txid"], "vout": node0utxos[0]["vout"]}
         assert_raises_rpc_error(-8, "Invalid parameter, expected unspent output", self.nodes[0].lockunspent, False, [spent_0])
 
-        # Send 100 WAGERR normal
+        # Send 100 DASH normal
         address = self.nodes[0].getnewaddress("test")
-        fee_per_byte = Decimal('0.00002') / 1000
+        fee_per_byte = Decimal('0.00001') / 1000
         self.nodes[2].settxfee(fee_per_byte * 1000)
         txid = self.nodes[2].sendtoaddress(address, 100, "", "", False)
         self.nodes[2].generate(1)
@@ -321,14 +321,14 @@ class WalletTest(WagerrTestFramework):
         # This will raise an exception for attempting to dump the private key of an address you do not own
         assert_raises_rpc_error(-4, "Private key for address %s is not known" % temp_address, self.nodes[0].dumpprivkey, temp_address)
 
-        # This will raise an exception for attempting to get the private key of an invalid Wagerr address
-        assert_raises_rpc_error(-5, "Invalid Wagerr address", self.nodes[0].dumpprivkey, "invalid")
+        # This will raise an exception for attempting to get the private key of an invalid Dash address
+        assert_raises_rpc_error(-5, "Invalid Dash address", self.nodes[0].dumpprivkey, "invalid")
 
-        # This will raise an exception for attempting to set a label for an invalid Wagerr address
-        assert_raises_rpc_error(-5, "Invalid Wagerr address", self.nodes[0].setlabel, "invalid address", "label")
+        # This will raise an exception for attempting to set a label for an invalid Dash address
+        assert_raises_rpc_error(-5, "Invalid Dash address", self.nodes[0].setlabel, "invalid address", "label")
 
         # This will raise an exception for importing an invalid address
-        assert_raises_rpc_error(-5, "Invalid Wagerr address or script", self.nodes[0].importaddress, "invalid")
+        assert_raises_rpc_error(-5, "Invalid Dash address or script", self.nodes[0].importaddress, "invalid")
 
         # This will raise an exception for attempting to import a pubkey that isn't in hex
         assert_raises_rpc_error(-5, "Pubkey must be a hex string", self.nodes[0].importpubkey, "not hex")

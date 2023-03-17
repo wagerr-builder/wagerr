@@ -1,19 +1,19 @@
 #!/usr/bin/env python3
-# Copyright (c) 2018-2021 The Wagerr Core developers
+# Copyright (c) 2018-2021 The Dash Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-from test_framework.test_framework import WagerrTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import connect_nodes, wait_until
 
 '''
 '''
 
-class SporkTest(WagerrTestFramework):
+class SporkTest(BitcoinTestFramework):
     def set_test_params(self):
         self.num_nodes = 3
         self.setup_clean_chain = True
-        self.extra_args = [["-sporkkey=6xLZdACFRA53uyxz8gKDLcgVrm5kUUEu2B3BUzWUxHqa2W7irbH"], [], []]
+        self.extra_args = [["-sporkkey=cP4EKFyJsHT39LDqgdcB43Y3YXjNyjb5Fuas1GQSeAtjnZWmZEQK"], [], []]
 
     def setup_network(self):
         self.disable_mocktime()
@@ -43,7 +43,7 @@ class SporkTest(WagerrTestFramework):
         # check spork propagation for connected nodes
         spork_new_state = not spork_default_state
         self.set_test_spork_state(self.nodes[0], spork_new_state)
-        wait_until(lambda: self.get_test_spork_state(self.nodes[1]), sleep=0.1, timeout=60)
+        wait_until(lambda: self.get_test_spork_state(self.nodes[1]), sleep=0.1, timeout=10)
 
         # restart nodes to check spork persistence
         self.stop_node(0)

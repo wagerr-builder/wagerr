@@ -4,7 +4,7 @@
 # Copyright (c) 2010-2016 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
-"""Wagerr P2P network half-a-node.
+"""Dash P2P network half-a-node.
 
 This python code was modified from ArtForz' public domain half-a-node, as
 found in the mini-node branch of http://github.com/jgarzik/pynode.
@@ -106,7 +106,7 @@ MESSAGEMAP = {
     b"tx": msg_tx,
     b"verack": msg_verack,
     b"version": msg_version,
-    # Wagerr Specific
+    # Dash Specific
     b"clsig": msg_clsig,
     b"getmnlistd": msg_getmnlistd,
     b"getsporks": None,
@@ -125,10 +125,10 @@ MESSAGEMAP = {
 }
 
 MAGIC_BYTES = {
-    "mainnet": b"\x84\x2d\x61\xfd",   # mainnet
-    "testnet3": b"\x87\x9e\xd1\x99",  # testnet3
-    "devnet": b"\xc5\x2a\x93\xeb",    # devnet
-    "regtest": b"\x12\x76\xa1\xfa",   # regtest
+    "mainnet": b"\xbf\x0c\x6b\xbd",   # mainnet
+    "testnet3": b"\xce\xe2\xca\xff",  # testnet3
+    "regtest": b"\xfc\xc1\xb7\xdc",   # regtest
+    "devnet": b"\xe2\xca\xff\xce",    # devnet
 }
 
 
@@ -176,7 +176,7 @@ class P2PConnection(asyncio.Protocol):
         else:
             self.strSubVer = MY_SUBVERSION % b""
 
-        logger.debug('Connecting to Wagerr Node: %s:%d' % (self.dstaddr, self.dstport))
+        logger.debug('Connecting to Dash Node: %s:%d' % (self.dstaddr, self.dstport))
 
         loop = NetworkThread.network_event_loop
         conn_gen_unsafe = loop.create_connection(lambda: self, host=self.dstaddr, port=self.dstport)

@@ -22,7 +22,7 @@ from decimal import Decimal
 import http.client
 import subprocess
 
-from test_framework.test_framework import WagerrTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import (
     assert_equal,
     assert_greater_than,
@@ -48,7 +48,7 @@ from test_framework.mininode import (
 )
 
 
-class BlockchainTest(WagerrTestFramework):
+class BlockchainTest(BitcoinTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 1
@@ -185,7 +185,7 @@ class BlockchainTest(WagerrTestFramework):
         node = self.nodes[0]
         res = node.gettxoutsetinfo()
 
-        assert_equal(res['total_amount'], Decimal('948890000.00000000'))
+        assert_equal(res['total_amount'], Decimal('98214.28571450'))
         assert_equal(res['transactions'], 200)
         assert_equal(res['height'], 200)
         assert_equal(res['txouts'], 200)

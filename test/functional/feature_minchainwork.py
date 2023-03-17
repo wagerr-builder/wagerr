@@ -17,13 +17,13 @@ only succeeds past a given node once its nMinimumChainWork has been exceeded.
 
 import time
 
-from test_framework.test_framework import WagerrTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import connect_nodes, assert_equal
 
 # 2 hashes required per regtest block (with no difficulty adjustment)
 REGTEST_WORK_PER_BLOCK = 2
 
-class MinimumChainWorkTest(WagerrTestFramework):
+class MinimumChainWorkTest(BitcoinTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 3
@@ -84,13 +84,6 @@ class MinimumChainWorkTest(WagerrTestFramework):
         # we'd expect node1 to have disconnected node0 for serving an
         # insufficient work chain, in which case we'd need to reconnect them to
         # continue the test.
-        self.stop_node(1)
-        self.stop_node(2)
-        self.start_node(1)
-        self.start_node(2)
-        connect_nodes(self.nodes[0], 1)
-        connect_nodes(self.nodes[0], 2)
-        connect_nodes(self.nodes[1], 2)
 
         self.sync_all()
         self.log.info("Blockcounts: %s", [n.getblockcount() for n in self.nodes])

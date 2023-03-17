@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2015-2022 The Wagerr Core developers
+# Copyright (c) 2015-2022 The Dash Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -11,15 +11,13 @@ from decimal import Decimal
 
 from test_framework.blocktools import create_block, create_coinbase, get_masternode_payment
 from test_framework.messages import CCbTx, COIN, CTransaction, FromHex, ToHex, uint256_to_string
-from test_framework.test_framework import WagerrTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import assert_equal, connect_nodes, force_finish_mnsync, get_bip9_status, p2p_port
-
-WAGERR_AUTH_ADDR = "TJA37d7KPVmd5Lqa2EcQsptcfLYsQ1Qcfk"
 
 class Masternode(object):
     pass
 
-class DIP3Test(WagerrTestFramework):
+class DIP3Test(BitcoinTestFramework):
     def set_test_params(self):
         self.num_initial_mn = 11 # Should be >= 11 to make sure quorums are not always the same MNs
         self.num_nodes = 1 + self.num_initial_mn + 2 # +1 for controller, +1 for mn-qt, +1 for mn created after dip3 activation
@@ -27,9 +25,8 @@ class DIP3Test(WagerrTestFramework):
         self.supports_cli = False
 
         self.extra_args = ["-budgetparams=10:10:10"]
-        self.extra_args += ["-sporkkey=6xLZdACFRA53uyxz8gKDLcgVrm5kUUEu2B3BUzWUxHqa2W7irbH"]
+        self.extra_args += ["-sporkkey=cP4EKFyJsHT39LDqgdcB43Y3YXjNyjb5Fuas1GQSeAtjnZWmZEQK"]
         self.extra_args += ["-dip3params=135:150"]
-        self.extra_args += ["-reservebalance=12000000"]
 
 
     def skip_test_if_missing_module(self):
@@ -52,7 +49,7 @@ class DIP3Test(WagerrTestFramework):
         self.log.info("funding controller node")
         while self.nodes[0].getbalance() < (self.num_initial_mn + 3) * 1000:
             self.nodes[0].generate(10) # generate enough for collaterals
-        self.log.info("controller node has {} wagerr".format(self.nodes[0].getbalance()))
+        self.log.info("controller node has {} dash".format(self.nodes[0].getbalance()))
 
         # Make sure we're below block 135 (which activates dip3)
         self.log.info("testing rejection of ProTx before dip3 activation")
@@ -75,13 +72,6 @@ class DIP3Test(WagerrTestFramework):
 
         # We have hundreds of blocks to sync here, give it more time
         self.log.info("syncing blocks for all nodes")
-        #for n in range(self.num_nodes):
-        #    self.stop_node(n)
-        #    self.start_node(n)
-
-        for n in range(self.num_nodes -1 ):
-            connect_nodes(self.nodes[0], (n+1))
-
         self.sync_blocks(self.nodes, timeout=120)
 
         # DIP3 is fully enforced here
@@ -236,20 +226,20 @@ class DIP3Test(WagerrTestFramework):
 
     def create_mn_collateral(self, node, mn):
         mn.collateral_address = node.getnewaddress()
-        mn.collateral_txid = node.sendtoaddress(mn.collateral_address, 25000)
+        mn.collateral_txid = node.sendtoaddress(mn.collateral_address, 1000)
         mn.collateral_vout = None
         node.generate(1)
 
         rawtx = node.getrawtransaction(mn.collateral_txid, 1)
         for txout in rawtx['vout']:
-            if txout['value'] == Decimal(25000):
+            if txout['value'] == Decimal(1000):
                 mn.collateral_vout = txout['n']
                 break
         assert mn.collateral_vout is not None
 
     # register a protx MN and also fund it (using collateral inside ProRegTx)
     def register_fund_mn(self, node, mn):
-        node.sendtoaddress(mn.fundsAddr, 25000.001)
+        node.sendtoaddress(mn.fundsAddr, 1000.001)
         mn.collateral_address = node.getnewaddress()
         mn.rewards_address = node.getnewaddress()
 
@@ -259,7 +249,7 @@ class DIP3Test(WagerrTestFramework):
 
         rawtx = node.getrawtransaction(mn.collateral_txid, 1)
         for txout in rawtx['vout']:
-            if txout['value'] == Decimal(25000):
+            if txout['value'] == Decimal(1000):
                 mn.collateral_vout = txout['n']
                 break
         assert mn.collateral_vout is not None
@@ -283,7 +273,7 @@ class DIP3Test(WagerrTestFramework):
         self.sync_all()
 
     def spend_mn_collateral(self, mn, with_dummy_input_output=False):
-        return self.spend_input(mn.collateral_txid, mn.collateral_vout, 25000, with_dummy_input_output)
+        return self.spend_input(mn.collateral_txid, mn.collateral_vout, 1000, with_dummy_input_output)
 
     def update_mn_payee(self, mn, payee):
         self.nodes[0].sendtoaddress(mn.fundsAddr, 0.001)

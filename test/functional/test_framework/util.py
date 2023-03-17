@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 # Copyright (c) 2014-2016 The Bitcoin Core developers
-# Copyright (c) 2014-2022 The Wagerr Core developers
+# Copyright (c) 2014-2022 The Dash Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Helpful routines for regression testing."""
 
 from base64 import b64encode
-from binascii import hexlify, unhexlify
+from binascii import unhexlify
 from decimal import Decimal, ROUND_DOWN
 import hashlib
 from subprocess import CalledProcessError
@@ -211,9 +211,6 @@ def EncodeDecimal(o):
 def count_bytes(hex_string):
     return len(bytearray.fromhex(hex_string))
 
-def bytes_to_hex_str(byte_str):
-    return hexlify(byte_str).decode('ascii')
-
 def hash256(byte_str):
     sha256 = hashlib.sha256()
     sha256.update(byte_str)
@@ -333,7 +330,7 @@ def initialize_datadir(dirname, n, chain):
     if not os.path.isdir(datadir):
         os.makedirs(datadir)
     # Translate chain name to config name
-    if chain == 'testnet':
+    if chain == 'testnet3':
         chain_name_conf_arg = 'testnet'
         chain_name_conf_section = 'test'
         chain_name_conf_arg_value = '1'
@@ -345,7 +342,7 @@ def initialize_datadir(dirname, n, chain):
         chain_name_conf_arg = chain
         chain_name_conf_section = chain
         chain_name_conf_arg_value = '1'
-    with open(os.path.join(datadir, "wagerr.conf"), 'w', encoding='utf8') as f:
+    with open(os.path.join(datadir, "dash.conf"), 'w', encoding='utf8') as f:
         f.write("{}={}\n".format(chain_name_conf_arg, chain_name_conf_arg_value))
         f.write("[{}]\n".format(chain_name_conf_section))
         f.write("port=" + str(p2p_port(n)) + "\n")
@@ -373,15 +370,15 @@ def get_datadir_path(dirname, n):
     return os.path.join(dirname, "node" + str(n))
 
 def append_config(datadir, options):
-    with open(os.path.join(datadir, "wagerr.conf"), 'a', encoding='utf8') as f:
+    with open(os.path.join(datadir, "dash.conf"), 'a', encoding='utf8') as f:
         for option in options:
             f.write(option + "\n")
 
 def get_auth_cookie(datadir, chain):
     user = None
     password = None
-    if os.path.isfile(os.path.join(datadir, "wagerr.conf")):
-        with open(os.path.join(datadir, "wagerr.conf"), 'r', encoding='utf8') as f:
+    if os.path.isfile(os.path.join(datadir, "dash.conf")):
+        with open(os.path.join(datadir, "dash.conf"), 'r', encoding='utf8') as f:
             for line in f:
                 if line.startswith("rpcuser="):
                     assert user is None  # Ensure that there is only one rpcuser line
@@ -483,23 +480,6 @@ def isolate_node(node, timeout=5):
 def reconnect_isolated_node(node, node_num):
     node.setnetworkactive(True)
     connect_nodes(node, node_num)
-
-def sync_blocks(rpc_connections, *, wait=1, timeout=60):
-    """
-    Wait until everybody has the same tip.
-
-    sync_blocks needs to be called with an rpc_connections set that has least
-    one node already synced to the latest, stable tip, otherwise there's a
-    chance it might return before all nodes are stably synced.
-    """
-    timeout *= Options.timeout_scale
-    stop_time = time.time() + timeout
-    while time.time() <= stop_time:
-        best_hash = [x.getbestblockhash() for x in rpc_connections]
-        if best_hash.count(best_hash[0]) == len(rpc_connections):
-            return
-        time.sleep(wait)
-    raise AssertionError("Block sync timed out:{}".format("".join("\n  {!r}".format(b) for b in best_hash)))
 
 def force_finish_mnsync(node):
     """

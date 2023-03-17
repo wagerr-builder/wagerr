@@ -5,13 +5,13 @@
 """Test the importprunedfunds and removeprunedfunds RPCs."""
 from decimal import Decimal
 
-from test_framework.test_framework import WagerrTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import (
     assert_equal,
     assert_raises_rpc_error,
 )
 
-class ImportPrunedFundsTest(WagerrTestFramework):
+class ImportPrunedFundsTest(BitcoinTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 2
@@ -22,9 +22,7 @@ class ImportPrunedFundsTest(WagerrTestFramework):
     def run_test(self):
         self.log.info("Mining blocks...")
         self.nodes[0].generate(101)
-        self.stop_node(1)
-        self.start_node(1)
-        connect_nodes_bi(self.nodes, 0 , 1)
+
         self.sync_all()
 
         # address

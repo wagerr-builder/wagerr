@@ -2,7 +2,7 @@
 # Copyright (c) 2017 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
-"""Class for wagerrd node under test"""
+"""Class for dashd node under test"""
 
 import contextlib
 import decimal
@@ -49,7 +49,7 @@ class ErrorMatch(Enum):
 
 
 class TestNode():
-    """A class for representing a wagerrd node under test.
+    """A class for representing a dashd node under test.
 
     This class contains:
 
@@ -72,7 +72,7 @@ class TestNode():
         self.index = i
         self.datadir = datadir
         self.chain = chain
-        self.bitcoinconf = os.path.join(self.datadir, "wagerr.conf")
+        self.bitcoinconf = os.path.join(self.datadir, "dash.conf")
         self.stdout_dir = os.path.join(self.datadir, "stdout")
         self.stderr_dir = os.path.join(self.datadir, "stderr")
         self.rpchost = rpchost
@@ -136,26 +136,26 @@ class TestNode():
     AddressKeyPair = collections.namedtuple('AddressKeyPair', ['address', 'key'])
     PRIV_KEYS = [
             # address , privkey
-            AddressKeyPair('Tp2wuzGwtPsaixsGVK5farNoY1wi52SQxH', 'NLuyhQn6pQEo2Yo6uvV86PogGdENwJi96sEFYFNmbAY6tvyChS16'),
-            AddressKeyPair('ThS4VhDJ3Axpj1BsCnLnyXgWY46khrbCWi', 'NKYNbKbeVhNvadSYKuX6ekS2m4WwCiZvSWG2neYG1ytxc3vom5Nq'),
-            AddressKeyPair('TuYdUYrd54mxZk3jjaHKdKyqtiehH1Qqjm', 'NM66dpnRRqcgQeiHaPeCK47HgmMbGS9WLLqpc334gMLVmoauPPxL'),
-            AddressKeyPair('TwFYrydfXVG7zZaX98hN8zq3t1Ra9RKXSB', 'NJZFCodw16NH6mtDSYSU4Tbx9uCig1CgairprYdAok5SAaUsZSDp'),
-            AddressKeyPair('TqjLrmGEqxspMtZhDLc7wy3zjPNEoUPmhq', 'NJunYHT37SEYhmSJhs6xTXnxYBuTj93hjXer36yBUEqLj9KM214h'),
-            AddressKeyPair('TnVVuQ3BjZ8TgP3rbQYbM28ZURKmhijk38', 'NNq53nVUGYUqTeuuzGyP2DrzFmKhVrqAgPUiEAYw3SBKMJ41BqtB'),
-            AddressKeyPair('TdRkWMeASPL3pi2rRbdST8AtYV69t1VzSG', 'NLRhmwDmPkr1NC54NXLvx4KAnfz92z1VVgJG15od2E6X42JuyPVx'),
-            AddressKeyPair('To1dpzFgFK59ywJRyuj35cqsmC9huhdFsv', 'NPnPE8nunAbBUWTPY9ac3fYp7YfwTxnEaPuDB5mcyTEL2RHrhmoK'),
-            AddressKeyPair('Tjh7agqsebtVXhLqL75VYSheAJ1PWziqUM', 'NSfhTMnXvj9ypUjcyY7jUcFNAdzk5uV1axdfJm32qeVJUZpD5sQi'),
-            AddressKeyPair('Tjh7agqsebtVXhLqL75VYSheAJ1PWziqUM', 'NSfhTMnXvj9ypUjcyY7jUcFNAdzk5uV1axdfJm32qeVJUZpD5sQi'),
-            AddressKeyPair('ToUTCSjAS6etUBMEvgqtNY8nAbW24AF4cx', 'NQxoWZeHhJg9Tn1EVZzAUCmGRaDcn43YCyNXD98enD3bgkh6J2Va'),
-            AddressKeyPair('TcuC7dmGpsrr3B5YX2yxKAX1XcAKhs4sMH', 'NJqxZigjV1tAwjyYYZBqypSjyjuiEaknEqKbjzDbfYzrLrjPHDCA'),
-            AddressKeyPair('TeTcYY5axdpk7RaUB4cQmo3ZWB4SchJoxu', 'NKMNYrvwRCkyVCRofvtYc1mm6NRRzrkjE2gJS323CYVPKfTySK57'),
-            AddressKeyPair('TnpHYEGEs9roZMWENggcbB4eNDNyQyV6nm', 'NL7bKDBhB2S4tJXy28ynGNR9MkQj2x7k8nsJLSfufqGhmXA6jGag'),
-            AddressKeyPair('Tjc2jAku1by1kTFZKjHHkQYT2LqhvRXoTn', 'NKWp32tLu5VwV1PrWCvozRtukndUv45EKNXHxDBbb9P6hFJwUeLD'),
-            AddressKeyPair('TdjE3Xyq4gDQ2EETLSdqQeBWSaeQyE6Lvv', 'NKipjL5F5mWh62TQPfShjexFi2ERcwhr9ZqMBeEQHTBzcKvCpHph'),
-            AddressKeyPair('ThMJS9eF8zpaPxhBwsFur1xXR9w8dDbdA6', 'NLPAjt8LD6FtXowM4mGR5A1bvpP32Ju5jg8HddusRutfSEum8SqP'),
-            AddressKeyPair('Tryuo4UbUMdMkA8K3GP6wgbQqm7vH15yjj', 'NMHZNRnJbNeUwVJiAgXpMGEAysQMWjz41AyHt3Tt5TVnHMnhxyJj'),
-            AddressKeyPair('TmhXvGgLiRDcbmAs5PFVegLfX8FksWN3x3', 'NQ6ZRLuZKFR6Ah5PQVMj78SdCdSoFUh5BAwES9fWPgGwc74TJYi6'),
-            AddressKeyPair('TvhoZDE5yE9V5bpxCcHuXP5qGi9qQaghs8', 'NPcyZvxdVYocBrjvM524UNPbhpkL6ZZ3yQDhNrkeWFEHfBxEmmEr'),
+            AddressKeyPair('yYdShjQSptFKitYLksFEUSwHe4hnbar5rf', 'cMfbiEsnG5b8Gwm6vEgfWvZLuXZNC4zsN2y7Es3An9xHRWRjmwgR'),
+            AddressKeyPair('yfTFJgvq65UZsb9RBbpdYAAzsJoCGXqH2w', 'cStuFACUD1N6JjKQxNLUQ443qJUtSzLitKKEkA8x6utxTPZTLUtA'),
+            AddressKeyPair('yU3w4VDjKhHiZpWszkUZVnFTS56AfgdfPV', 'cQb5yh2sTiG7dsxxbXHhWSBLMByYT7jY49A1kC7zKhgL9WNHysWW'),
+            AddressKeyPair('yYhzix2R5LiYnDixsUnF8XwBYGYpyeTgB4', 'cW9Gu6uU4KoZJQcdyUvjULNRg4C8srPJw1adhgdTZMr9YQdKHtcn'),
+            AddressKeyPair('yiQ3qLx5L1BW9XA6JAG7hC8UQDktcBCeYG', 'cSq7gHVC1QPsswyX2pE5C38UnWZXfCLr7XnkjnDwuZ68NkWp183T'),
+            AddressKeyPair('yUL8h8mR7aNDRsU5zhcDbpp6YtA6ieUtK2', 'cTk7hiDKgxZX3JSb37vywdYYjjJows4DQjEaxBJDGF6LC6GXvPKo'),
+            AddressKeyPair('yfy21e12jn3A3uDicNehCq486o9fMwJKMc', 'cMuko9rLDbtxCFWuBSrFgBDRSMxsLWKpJKScRGNuWKbhuQsnsjKT'),
+            AddressKeyPair('yURgENB3b2YRMWnbhKF7iGs3KoaVRVXsJr', 'cQhdjTMh57MaHCDk9FsWGPtftRMBUuhaYAtouWnetcewmBuSrLSM'),
+            AddressKeyPair('yYC9AxBEUs3ZZxfcQvj2LUF5PVxxtqaEs7', 'cQFueiiP13mfytV3Svoe4o4Ux79fRJvwuSgHapXsnBwrHod57EeL'),
+            AddressKeyPair('yVs9jXGyLWLLFbpESnoppk7F8DtXcuCCTf', 'cN55daf1HotwBAgAKWVgDcoppmUNDtQSfb7XLutTLeAgVc3u8hik'),
+            AddressKeyPair('yV3eqNNshZJ4Pv6NCyYsbdJb1ERFFygFqf', 'cT7qK7g1wkYEMvKowd2ZrX1E5f6JQ7TM246UfqbCiyF7kZhorpX3'),
+            AddressKeyPair('yfE8gZCiFW9Uqu21v3JGibr3WVSPQWmY8n', 'cPiRWE8KMjTRxH1MWkPerhfoHFn5iHPWVK5aPqjW8NxmdwenFinJ'),
+            AddressKeyPair('yLLVXzya7GzmVkjQzsCG4iDpqYJyJFDSEV', 'cVLCocFyWxzyCwEknkWvDeWneTBsh9Jf3u4yiJCYjcy3gt8Jw1cM'),
+            AddressKeyPair('yLNNR3HeJxgR669oRePksYmCqHuPUG79mF', 'cQawC3oUgoToGDJBw1Ub2PpDmf44kVtcaVaTcHyzXMRKGwdn9UYW'),
+            AddressKeyPair('yLPKVwRTXME7Q3JfKAPJ4FHEaGdWgJuhpj', 'cVcFaWTbkCUZPFTHfDs8iHurPWns5QXc5rqcfkPMHUdmv17o8UYB'),
+            AddressKeyPair('yLPUundzTpvjU8KYVyM4Zmnr4REf3FFvhZ', 'cRVeRmRaYuEYP9HbCZFsf1ifYYZ4KQD9rttRoTNb9wjPzhvRwqMb'),
+            AddressKeyPair('yLRhHqau58AS1ALtnaowv1Pyztxi1Q6fXG', 'cNYFW52pJswYbfPR9fpiRpWHEQygg5tyMih2ASPsgMgPy9SUSSEV'),
+            AddressKeyPair('yLRwHeMkXwYrkDzC4q12vej243AyTeWiPm', 'cRqfZ3dAp8BJUcGhSv7ueCXNGbki1bpcXEKk5dEJN344H52GuHQY'),
+            AddressKeyPair('yLTMCXJhG1mpaWhbHcsr7zUt9wDWuQSPSk', 'cVWGbeCT5QcVGVTL5NuiLs9JfL8HFDb9PN5Gq2xudw6ZsDFeDy1V'),
+            AddressKeyPair('yLU9vxiAWUdiKKxn6EazLDFq9WXrK2T7RP', 'cVCzrzfxMhUMxV34UhTmdmntAqHvosAuNo2KUZsiHZSKLm73g35o'),
     ]
 
     def get_deterministic_priv_key(self):
@@ -172,7 +172,7 @@ class TestNode():
         raise AssertionError(self._node_msg(msg))
 
     def __del__(self):
-        # Ensure that we don't leave any wagerrd processes lying around after
+        # Ensure that we don't leave any dashd processes lying around after
         # the test ends
         if self.process and self.cleanup_on_exit:
             # Should only happen on test failure
@@ -194,7 +194,7 @@ class TestNode():
         if extra_args is None:
             extra_args = self.extra_args
 
-        # Add a new stdout and stderr file each time wagerrd is started
+        # Add a new stdout and stderr file each time dashd is started
         if stderr is None:
             stderr = tempfile.NamedTemporaryFile(dir=self.stderr_dir, delete=False)
         if stdout is None:
@@ -210,7 +210,7 @@ class TestNode():
             all_args = all_args + ["-mocktime=%d" % self.mocktime]
 
         # Delete any existing cookie file -- if such a file exists (eg due to
-        # unclean shutdown), it will get overwritten anyway by wagerrd, and
+        # unclean shutdown), it will get overwritten anyway by dashd, and
         # potentially interfere with our attempt to authenticate
         delete_cookie_file(self.datadir, self.chain)
 
@@ -220,19 +220,19 @@ class TestNode():
         self.process = subprocess.Popen(all_args, env=subp_env, stdout=stdout, stderr=stderr, cwd=cwd, **kwargs)
 
         self.running = True
-        self.log.debug("wagerrd started, waiting for RPC to come up")
+        self.log.debug("dashd started, waiting for RPC to come up")
 
         if self.start_perf:
             self._start_perf()
 
     def wait_for_rpc_connection(self):
-        """Sets up an RPC connection to the wagerrd process. Returns False if unable to connect."""
+        """Sets up an RPC connection to the dashd process. Returns False if unable to connect."""
         # Poll at a rate of four times per second
         poll_per_s = 4
         for _ in range(poll_per_s * self.rpc_timeout):
             if self.process.poll() is not None:
                 raise FailedToStartError(self._node_msg(
-                    'wagerrd exited with status {} during initialization'.format(self.process.returncode)))
+                    'dashd exited with status {} during initialization'.format(self.process.returncode)))
             try:
                 rpc = get_rpc_proxy(rpc_url(self.datadir, self.index, self.chain, self.rpchost), self.index, timeout=self.rpc_timeout, coveragedir=self.coverage_dir)
                 rpc.getblockcount()
@@ -270,15 +270,15 @@ class TestNode():
             except OSError as e:
                 if e.errno != errno.ECONNREFUSED:  # Port not yet open?
                     raise  # unknown OS error
-            except ValueError as e:  # cookie file not found and no rpcuser or rpcassword. wagerrd still starting
+            except ValueError as e:  # cookie file not found and no rpcuser or rpcassword. dashd still starting
                 if "No RPC credentials" not in str(e):
                     raise
             time.sleep(1.0 / poll_per_s)
-        self._raise_assertion_error("Unable to connect to wagerrd")
+        self._raise_assertion_error("Unable to connect to dashd")
 
-    #def generate(self, nblocks):
-    #    self.log.debug("TestNode.generate() dispatches `generate` call to `generatetoaddress`")
-    #    return self.generate(nblocks=nblocks)
+    def generate(self, nblocks, maxtries=1000000):
+        self.log.debug("TestNode.generate() dispatches `generate` call to `generatetoaddress`")
+        return self.generatetoaddress(nblocks=nblocks, address=self.get_deterministic_priv_key().address, maxtries=maxtries)
 
     def get_wallet_rpc(self, wallet_name):
         if self.use_cli:
@@ -453,11 +453,11 @@ class TestNode():
     def assert_start_raises_init_error(self, extra_args=None, expected_msg=None, match=ErrorMatch.FULL_TEXT, *args, **kwargs):
         """Attempt to start the node and expect it to raise an error.
 
-        extra_args: extra arguments to pass through to wagerrd
-        expected_msg: regex that stderr should match when wagerrd fails
+        extra_args: extra arguments to pass through to dashd
+        expected_msg: regex that stderr should match when dashd fails
 
-        Will throw if wagerrd starts without an error.
-        Will throw if an expected_msg is provided and it does not match wagerrd's stdout."""
+        Will throw if dashd starts without an error.
+        Will throw if an expected_msg is provided and it does not match dashd's stdout."""
         with tempfile.NamedTemporaryFile(dir=self.stderr_dir, delete=False) as log_stderr, \
              tempfile.NamedTemporaryFile(dir=self.stdout_dir, delete=False) as log_stdout:
             try:
@@ -466,7 +466,7 @@ class TestNode():
                 self.stop_node()
                 self.wait_until_stopped()
             except FailedToStartError as e:
-                self.log.debug('wagerrd failed to start: %s', e)
+                self.log.debug('dashd failed to start: %s', e)
                 self.running = False
                 self.process = None
                 # Check stderr for expected message
@@ -487,9 +487,9 @@ class TestNode():
                                 'Expected message "{}" does not fully match stderr:\n"{}"'.format(expected_msg, stderr))
             else:
                 if expected_msg is None:
-                    assert_msg = "wagerrd should have exited with an error"
+                    assert_msg = "dashd should have exited with an error"
                 else:
-                    assert_msg = "wagerrd should have exited with expected error " + expected_msg
+                    assert_msg = "dashd should have exited with expected error " + expected_msg
                 self._raise_assertion_error(assert_msg)
 
     def add_p2p_connection(self, p2p_conn, *, wait_for_verack=True, **kwargs):
@@ -569,17 +569,17 @@ def arg_to_cli(arg):
 
 
 class TestNodeCLI():
-    """Interface to wagerr-cli for an individual node"""
+    """Interface to dash-cli for an individual node"""
 
     def __init__(self, binary, datadir):
         self.options = []
         self.binary = binary
         self.datadir = datadir
         self.input = None
-        self.log = logging.getLogger('TestFramework.wagerrcli')
+        self.log = logging.getLogger('TestFramework.dashcli')
 
     def __call__(self, *options, input=None):
-        # TestNodeCLI is callable with wagerr-cli command-line options
+        # TestNodeCLI is callable with dash-cli command-line options
         cli = TestNodeCLI(self.binary, self.datadir)
         cli.options = [str(o) for o in options]
         cli.input = input
@@ -598,17 +598,17 @@ class TestNodeCLI():
         return results
 
     def send_cli(self, command=None, *args, **kwargs):
-        """Run wagerr-cli command. Deserializes returned string as python object."""
+        """Run dash-cli command. Deserializes returned string as python object."""
         pos_args = [arg_to_cli(arg) for arg in args]
         named_args = [str(key) + "=" + arg_to_cli(value) for (key, value) in kwargs.items()]
-        assert not (pos_args and named_args), "Cannot use positional arguments and named arguments in the same wagerr-cli call"
+        assert not (pos_args and named_args), "Cannot use positional arguments and named arguments in the same dash-cli call"
         p_args = [self.binary, "-datadir=" + self.datadir] + self.options
         if named_args:
             p_args += ["-named"]
         if command is not None:
             p_args += [command]
         p_args += pos_args + named_args
-        self.log.debug("Running wagerr-cli command: %s" % command)
+        self.log.debug("Running dash-cli command: %s" % command)
         process = subprocess.Popen(p_args, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
         cli_stdout, cli_stderr = process.communicate(input=self.input)
         returncode = process.poll()

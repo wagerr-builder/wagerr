@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # Copyright (c) 2014-2016 The Bitcoin Core developers
-# Copyright (c) 2014-2022 The Wagerr Core developers
+# Copyright (c) 2014-2022 The Dash Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Base class for RPC testing."""
@@ -23,10 +23,8 @@ from .authproxy import JSONRPCException
 from test_framework.blocktools import TIME_GENESIS_BLOCK
 from . import coverage
 from .messages import (
-    BlockTransactions,
     CTransaction,
     FromHex,
-    ToHex,
     hash256,
     msg_islock,
     msg_isdlock,
@@ -55,7 +53,6 @@ from .util import (
     get_chain_folder,
 )
 
-WAGERR_AUTH_ADDR = "TDn9ZfHrYvRXyXC6KxRgN6ZRXgJH2JKZWe"
 
 class TestStatus(Enum):
     PASSED = 1
@@ -66,9 +63,7 @@ TEST_EXIT_PASSED = 0
 TEST_EXIT_FAILED = 1
 TEST_EXIT_SKIPPED = 77
 
-GENESISTIME = 1524496462
-
-TMPDIR_PREFIX = "wagerr_func_test_"
+TMPDIR_PREFIX = "dash_func_test_"
 
 class SkipTest(Exception):
     """This exception is raised to skip a test"""
@@ -77,27 +72,27 @@ class SkipTest(Exception):
         self.message = message
 
 
-class WagerrTestMetaClass(type):
-    """Metaclass for WagerrTestFramework.
+class BitcoinTestMetaClass(type):
+    """Metaclass for BitcoinTestFramework.
 
-    Ensures that any attempt to register a subclass of `WagerrTestFramework`
+    Ensures that any attempt to register a subclass of `BitcoinTestFramework`
     adheres to a standard whereby the subclass overrides `set_test_params` and
     `run_test` but DOES NOT override either `__init__` or `main`. If any of
     those standards are violated, a ``TypeError`` is raised."""
 
     def __new__(cls, clsname, bases, dct):
-        if not clsname == 'WagerrTestFramework':
+        if not clsname == 'BitcoinTestFramework':
             if not ('run_test' in dct and 'set_test_params' in dct):
-                raise TypeError("WagerrTestFramework subclasses must override "
+                raise TypeError("BitcoinTestFramework subclasses must override "
                                 "'run_test' and 'set_test_params'")
             if '__init__' in dct or 'main' in dct:
-                raise TypeError("WagerrTestFramework subclasses may not override "
+                raise TypeError("BitcoinTestFramework subclasses may not override "
                                 "'__init__' or 'main'")
 
         return super().__new__(cls, clsname, bases, dct)
 
 
-class WagerrTestFramework(metaclass=WagerrTestMetaClass):
+class BitcoinTestFramework(metaclass=BitcoinTestMetaClass):
     """Base class for a bitcoin test script.
 
     Individual bitcoin test scripts should subclass this class and override the set_test_params() and run_test() methods.
@@ -163,9 +158,9 @@ class WagerrTestFramework(metaclass=WagerrTestMetaClass):
     def parse_args(self):
         parser = argparse.ArgumentParser(usage="%(prog)s [options]")
         parser.add_argument("--nocleanup", dest="nocleanup", default=False, action="store_true",
-                            help="Leave wagerrds and test.* datadir on exit or error")
+                            help="Leave dashds and test.* datadir on exit or error")
         parser.add_argument("--noshutdown", dest="noshutdown", default=False, action="store_true",
-                            help="Don't stop wagerrds after the test execution")
+                            help="Don't stop dashds after the test execution")
         parser.add_argument("--cachedir", dest="cachedir", default=os.path.abspath(os.path.dirname(os.path.realpath(__file__)) + "/../../cache"),
                             help="Directory for caching pregenerated datadirs (default: %(default)s)")
         parser.add_argument("--tmpdir", dest="tmpdir", help="Root directory for datadirs")
@@ -183,9 +178,9 @@ class WagerrTestFramework(metaclass=WagerrTestMetaClass):
         parser.add_argument("--pdbonfailure", dest="pdbonfailure", default=False, action="store_true",
                             help="Attach a python debugger if test fails")
         parser.add_argument("--usecli", dest="usecli", default=False, action="store_true",
-                            help="use wagerr-cli instead of RPC for all commands")
-        parser.add_argument("--wagerrd-arg", dest="wagerrd_extra_args", default=[], action="append",
-                            help="Pass extra args to all wagerrd instances")
+                            help="use dash-cli instead of RPC for all commands")
+        parser.add_argument("--dashd-arg", dest="dashd_extra_args", default=[], action="append",
+                            help="Pass extra args to all dashd instances")
         parser.add_argument("--timeoutscale", dest="timeout_scale", default=1, type=int,
                             help="Scale the test timeouts by multiplying them with the here provided value (default: %(default)s)")
         parser.add_argument("--perf", dest="perf", default=False, action="store_true",
@@ -219,10 +214,10 @@ class WagerrTestFramework(metaclass=WagerrTestMetaClass):
         config = configparser.ConfigParser()
         config.read_file(open(self.options.configfile))
         self.config = config
-        self.options.bitcoind = os.getenv("BITCOIND", default=config["environment"]["BUILDDIR"] + '/src/wagerrd' + config["environment"]["EXEEXT"])
-        self.options.bitcoincli = os.getenv("BITCOINCLI", default=config["environment"]["BUILDDIR"] + '/src/wagerr-cli' + config["environment"]["EXEEXT"])
+        self.options.bitcoind = os.getenv("BITCOIND", default=config["environment"]["BUILDDIR"] + '/src/dashd' + config["environment"]["EXEEXT"])
+        self.options.bitcoincli = os.getenv("BITCOINCLI", default=config["environment"]["BUILDDIR"] + '/src/dash-cli' + config["environment"]["EXEEXT"])
 
-        self.extra_args_from_options = self.options.wagerrd_extra_args
+        self.extra_args_from_options = self.options.dashd_extra_args
 
         os.environ['PATH'] = os.pathsep.join([
             os.path.join(config['environment']['BUILDDIR'], 'src'),
@@ -288,7 +283,7 @@ class WagerrTestFramework(metaclass=WagerrTestMetaClass):
         else:
             for node in self.nodes:
                 node.cleanup_on_exit = False
-            self.log.info("Note: wagerrds were not stopped and may still be running")
+            self.log.info("Note: dashds were not stopped and may still be running")
 
         should_clean_up = (
             not self.options.nocleanup and
@@ -413,7 +408,8 @@ class WagerrTestFramework(metaclass=WagerrTestMetaClass):
             except JSONRPCException as e:
                 assert str(e).startswith('Method not found')
                 continue
-            #n.importprivkey(privkey=n.get_deterministic_priv_key().key, label='coinbase')
+
+            n.importprivkey(privkey=n.get_deterministic_priv_key().key, label='coinbase')
 
     def run_test(self):
         """Tests must override this method to define test logic"""
@@ -460,7 +456,7 @@ class WagerrTestFramework(metaclass=WagerrTestMetaClass):
             ))
 
     def start_node(self, i, *args, **kwargs):
-        """Start a wagerrd"""
+        """Start a dashd"""
 
         node = self.nodes[i]
 
@@ -471,7 +467,7 @@ class WagerrTestFramework(metaclass=WagerrTestMetaClass):
             coverage.write_all_rpc_commands(self.options.coveragedir, node.rpc)
 
     def start_nodes(self, extra_args=None, *args, **kwargs):
-        """Start multiple wagerrds"""
+        """Start multiple dashds"""
 
         if extra_args is None:
             extra_args = [None] * self.num_nodes
@@ -491,12 +487,12 @@ class WagerrTestFramework(metaclass=WagerrTestMetaClass):
                 coverage.write_all_rpc_commands(self.options.coveragedir, node.rpc)
 
     def stop_node(self, i, expected_stderr='', wait=0):
-        """Stop a wagerrd test node"""
+        """Stop a dashd test node"""
         self.nodes[i].stop_node(expected_stderr=expected_stderr, wait=wait)
         self.nodes[i].wait_until_stopped()
 
     def stop_nodes(self, expected_stderr='', wait=0):
-        """Stop multiple wagerrd test nodes"""
+        """Stop multiple dashd test nodes"""
         for node in self.nodes:
             # Issue RPC to stop nodes
             node.stop_node(expected_stderr=expected_stderr, wait=wait)
@@ -613,7 +609,7 @@ class WagerrTestFramework(metaclass=WagerrTestMetaClass):
         # User can provide log level as a number or string (eg DEBUG). loglevel was caught as a string, so try to convert it to an int
         ll = int(self.options.loglevel) if self.options.loglevel.isdigit() else self.options.loglevel.upper()
         ch.setLevel(ll)
-        # Format logs the same as wagerrd's debug.log with microprecision (so log files can be concatenated and sorted)
+        # Format logs the same as dashd's debug.log with microprecision (so log files can be concatenated and sorted)
         formatter = logging.Formatter(fmt='%(asctime)s.%(msecs)03d000Z %(name)s (%(levelname)s): %(message)s', datefmt='%Y-%m-%dT%H:%M:%S')
         formatter.converter = time.gmtime
         fh.setFormatter(formatter)
@@ -692,14 +688,14 @@ class WagerrTestFramework(metaclass=WagerrTestMetaClass):
 
             os.rmdir(cache_path('wallets'))  # Remove empty wallets dir
             for entry in os.listdir(cache_path()):
-                if entry not in ['wallets', 'chainstate', 'blocks', 'evodb', 'llmq', 'backups', 'tokens', 'zerocoin']:
+                if entry not in ['chainstate', 'blocks', 'indexes', 'evodb', 'llmq']:  # Keep some folders
                     os.remove(cache_path(entry))
 
         for i in range(self.num_nodes):
             self.log.debug("Copy cache directory {} to node {}".format(cache_node_dir, i))
             to_dir = get_datadir_path(self.options.tmpdir, i)
             shutil.copytree(cache_node_dir, to_dir)
-            initialize_datadir(self.options.tmpdir, i, self.chain)  # Overwrite port/rpcport in wagerr.conf
+            initialize_datadir(self.options.tmpdir, i, self.chain)  # Overwrite port/rpcport in dash.conf
 
     def _initialize_chain_clean(self):
         """Initialize empty blockchain for use by the test.
@@ -717,9 +713,9 @@ class WagerrTestFramework(metaclass=WagerrTestMetaClass):
             raise SkipTest("python3-zmq module not available.")
 
     def skip_if_no_bitcoind_zmq(self):
-        """Skip the running test if wagerrd has not been compiled with zmq support."""
+        """Skip the running test if dashd has not been compiled with zmq support."""
         if not self.is_zmq_compiled():
-            raise SkipTest("wagerrd has not been built with zmq enabled.")
+            raise SkipTest("dashd has not been built with zmq enabled.")
 
     def skip_if_no_wallet(self):
         """Skip the running test if wallet has not been compiled."""
@@ -727,17 +723,17 @@ class WagerrTestFramework(metaclass=WagerrTestMetaClass):
             raise SkipTest("wallet has not been compiled.")
 
     def skip_if_no_wallet_tool(self):
-        """Skip the running test if wagerr-wallet has not been compiled."""
+        """Skip the running test if dash-wallet has not been compiled."""
         if not self.is_wallet_tool_compiled():
-            raise SkipTest("wagerr-wallet has not been compiled")
+            raise SkipTest("dash-wallet has not been compiled")
 
     def skip_if_no_cli(self):
-        """Skip the running test if wagerr-cli has not been compiled."""
+        """Skip the running test if dash-cli has not been compiled."""
         if not self.is_cli_compiled():
-            raise SkipTest("wagerr-cli has not been compiled.")
+            raise SkipTest("dash-cli has not been compiled.")
 
     def is_cli_compiled(self):
-        """Checks whether wagerr-cli was compiled."""
+        """Checks whether dash-cli was compiled."""
         return self.config["components"].getboolean("ENABLE_CLI")
 
     def is_wallet_compiled(self):
@@ -745,7 +741,7 @@ class WagerrTestFramework(metaclass=WagerrTestMetaClass):
         return self.config["components"].getboolean("ENABLE_WALLET")
 
     def is_wallet_tool_compiled(self):
-        """Checks whether wagerr-wallet was compiled."""
+        """Checks whether dash-wallet was compiled."""
         return self.config["components"].getboolean("ENABLE_WALLET_TOOL")
 
     def is_zmq_compiled(self):
@@ -753,7 +749,7 @@ class WagerrTestFramework(metaclass=WagerrTestMetaClass):
         return self.config["components"].getboolean("ENABLE_ZMQ")
 
 
-MASTERNODE_COLLATERAL = 25000
+MASTERNODE_COLLATERAL = 1000
 
 
 class MasternodeInfo:
@@ -768,7 +764,7 @@ class MasternodeInfo:
         self.collateral_vout = collateral_vout
 
 
-class WagerrTestFramework(WagerrTestFramework):
+class DashTestFramework(BitcoinTestFramework):
     def set_test_params(self):
         """Tests must this method to change default values for number of nodes, topology, etc"""
         raise NotImplementedError
@@ -780,7 +776,7 @@ class WagerrTestFramework(WagerrTestFramework):
         """Tests must override this method to define test logic"""
         raise NotImplementedError
 
-    def set_wagerr_test_params(self, num_nodes, masterodes_count, extra_args=None, fast_dip3_enforcement=False):
+    def set_dash_test_params(self, num_nodes, masterodes_count, extra_args=None, fast_dip3_enforcement=False):
         self.mn_count = masterodes_count
         self.num_nodes = num_nodes
         self.mninfo = []
@@ -790,25 +786,25 @@ class WagerrTestFramework(WagerrTestFramework):
             extra_args = [[]] * num_nodes
         assert_equal(len(extra_args), num_nodes)
         self.extra_args = [copy.deepcopy(a) for a in extra_args]
-        self.extra_args[0] += ["-sporkkey=6xLZdACFRA53uyxz8gKDLcgVrm5kUUEu2B3BUzWUxHqa2W7irbH"]
+        self.extra_args[0] += ["-sporkkey=cP4EKFyJsHT39LDqgdcB43Y3YXjNyjb5Fuas1GQSeAtjnZWmZEQK"]
         self.fast_dip3_enforcement = fast_dip3_enforcement
         if fast_dip3_enforcement:
             for i in range(0, num_nodes):
                 self.extra_args[i].append("-dip3params=30:50")
 
         # make sure to activate dip8 after prepare_masternodes has finished its job already
-        self.set_wagerr_dip8_activation(200)
+        self.set_dash_dip8_activation(200)
 
         # LLMQ default test params (no need to pass -llmqtestparams)
         self.llmq_size = 3
         self.llmq_threshold = 2
 
-        # This is nRequestTimeout in wagerr-q-recovery thread
+        # This is nRequestTimeout in dash-q-recovery thread
         self.quorum_data_thread_request_timeout_seconds = 10
         # This is EXPIRATION_TIMEOUT in CQuorumDataRequest
         self.quorum_data_request_expiration_timeout = 300
 
-    def set_wagerr_dip8_activation(self, activate_after_block):
+    def set_dash_dip8_activation(self, activate_after_block):
         self.dip8_activation_height = activate_after_block
         for i in range(0, self.num_nodes):
             self.extra_args[i].append("-dip8params=%d" % (activate_after_block))
@@ -845,7 +841,7 @@ class WagerrTestFramework(WagerrTestFramework):
                 self.sync_blocks()
         self.sync_blocks()
 
-    def set_wagerr_llmq_test_params(self, llmq_size, llmq_threshold):
+    def set_dash_llmq_test_params(self, llmq_size, llmq_threshold):
         self.llmq_size = llmq_size
         self.llmq_threshold = llmq_threshold
         for i in range(0, self.num_nodes):
@@ -927,7 +923,6 @@ class WagerrTestFramework(WagerrTestFramework):
     def remove_masternode(self, idx):
         mn = self.mninfo[idx]
         rawtx = self.nodes[0].createrawtransaction([{"txid": mn.collateral_txid, "vout": mn.collateral_vout}], {self.nodes[0].getnewaddress(): 999.9999})
-        self.nodes[0].fundrawtransaction(rawtx['hex'], '{"feeRate":3000}')
         rawtx = self.nodes[0].signrawtransactionwithwallet(rawtx)
         self.nodes[0].sendrawtransaction(rawtx["hex"])
         self.nodes[0].generate(1)
@@ -1007,17 +1002,9 @@ class WagerrTestFramework(WagerrTestFramework):
             self.create_simple_node()
 
         self.log.info("Activating DIP3")
-
-        spork4height=500
         if not self.fast_dip3_enforcement:
-            spork4height = self.nodes[0].getblockcount() + 1
-            self.nodes[0].sporkupdate("SPORK_4_DIP0003_ENFORCED", spork4height)
-            self.wait_for_sporks_same()
-            while self.nodes[0].getblockcount() < spork4height:
+            while self.nodes[0].getblockcount() < 500:
                 self.nodes[0].generate(10)
-        else:
-            self.nodes[0].sporkupdate("SPORK_4_DIP0003_ENFORCED", 50)
-            self.wait_for_sporks_same()
         self.sync_all()
 
         # create masternodes
@@ -1039,7 +1026,6 @@ class WagerrTestFramework(WagerrTestFramework):
             force_finish_mnsync(self.nodes[i + 1])
 
         # Enable InstantSend (including block filtering) and ChainLocks by default
-        self.nodes[0].sporkupdate("SPORK_4_DIP0003_ENFORCED", spork4height)
         self.nodes[0].sporkupdate("SPORK_2_INSTANTSEND_ENABLED", 0)
         self.nodes[0].sporkupdate("SPORK_3_INSTANTSEND_BLOCK_FILTERING", 0)
         self.nodes[0].sporkupdate("SPORK_19_CHAINLOCKS_ENABLED", 0)
@@ -1296,7 +1282,6 @@ class WagerrTestFramework(WagerrTestFramework):
         wait_until(check_dkg_comitments, timeout=timeout, sleep=1)
 
     def wait_for_quorum_list(self, quorum_hash, nodes, timeout=15, sleep=2, llmq_type_name="llmq_test"):
-        self.nodes[0].sporkupdate("SPORK_4_DIP0003_ENFORCED", 10)
         def wait_func():
             self.log.info("quorums: " + str(self.nodes[0].quorum("list")))
             if quorum_hash in self.nodes[0].quorum("list")[llmq_type_name]:
@@ -1349,7 +1334,7 @@ class WagerrTestFramework(WagerrTestFramework):
         nodes = [self.nodes[0]] + [mn.node for mn in mninfos_online]
 
         # move forward to next DKG
-        skip_count = 30 - (self.nodes[0].getblockcount() % 30)
+        skip_count = 24 - (self.nodes[0].getblockcount() % 24)
         if skip_count != 0:
             self.bump_mocktime(1, nodes=nodes)
             self.nodes[0].generate(skip_count)

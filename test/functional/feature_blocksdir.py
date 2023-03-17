@@ -8,10 +8,10 @@
 import os
 import shutil
 
-from test_framework.test_framework import WagerrTestFramework, initialize_datadir
+from test_framework.test_framework import BitcoinTestFramework, initialize_datadir
 
 
-class BlocksdirTest(WagerrTestFramework):
+class BlocksdirTest(BitcoinTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 1

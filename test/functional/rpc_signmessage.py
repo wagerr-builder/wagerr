@@ -4,10 +4,10 @@
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test RPC commands for signing and verifying messages."""
 
-from test_framework.test_framework import WagerrTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import assert_equal
 
-class SignMessagesTest(WagerrTestFramework):
+class SignMessagesTest(BitcoinTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 1
@@ -19,9 +19,9 @@ class SignMessagesTest(WagerrTestFramework):
         message = 'This is just a test message'
 
         self.log.info('test signing with priv_key')
-        priv_key = 'THTeyaP8QLTG8zwG1AdYrnWqCaaAjbj7TcW9xRhJ7n6LRLCeg6Bc'
-        address = 'TPEdK89Rwds4rxdbBApYCKM6AQPcDZf8qh'
-        expected_signature = 'IBT84y/5SuwQhW6FUfYfa5FwDAuTQ+JrN2+IQFJPHzUMfezt8F1SQGeNvBXzKBOluGQ8LQiF2Vlh6aGwOP9whqQ='
+        priv_key = 'cU4zhap7nPJAWeMFu4j6jLrfPmqakDAzy8zn8Fhb3oEevdm4e5Lc'
+        address = 'yeMpGzMj3rhtnz48XsfpB8itPHhHtgxLc3'
+        expected_signature = 'ICzMhjIUmmXcPWy2+9nw01zQMawo+s5FIy6F7VMkL+TmIeNq1j3AMEuw075os29kh5KYLbysKkDlDD+EAqERBd4='
         signature = self.nodes[0].signmessagewithprivkey(priv_key, message)
         assert_equal(expected_signature, signature)
         assert self.nodes[0].verifymessage(address, signature, message)

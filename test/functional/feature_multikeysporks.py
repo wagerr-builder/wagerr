@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 # Copyright (c) 2018-2021 The Dash Core developers
-# Copyright (c) 2018-2021 The Wagerr Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 import time
 
-from test_framework.test_framework import WagerrTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import connect_nodes, wait_until
 
 '''
@@ -20,48 +19,49 @@ can change it again.
 '''
 
 
-class MultiKeySporkTest(WagerrTestFramework):
+class MultiKeySporkTest(BitcoinTestFramework):
     def set_test_params(self):
         self.num_nodes = 5
         self.setup_clean_chain = True
 
     def setup_network(self):
-
-        # secret(base58): TD1oyPKTwkCQjugLVy3QCzgHgKTdGvLg1BiGAd7wdCnJDYPijnKA
+        # secret(base58): 931wyuRNVYvhg18Uu9bky5Qg1z4QbxaJ7fefNBzjBPiLRqcd33F
         # keyid(hex): 60f0f57f71f0081f1aacdd8432340a33a526f91b
-        # address(base58): TVkNnmvXDG7PSpqkuey8rC9qXMvSKWpYnb
- 
-        # secret(base58): THP5qnU3d4t3o1hR4zq1ejGWPqKFws3kvzV35eK5CokZmXTE2cyr
+        # address(base58): yNsMZhEhYqv14TgdYb1NS2UmNZjE8FSJxa
+
+        # secret(base58): 91vbXGMSWKGHom62986XtL1q2mQDA12ngcuUNNe5NfMSj44j7g3
         # keyid(hex): 43dff2b09de2f904f688ec14ee6899087b889ad0
-        # address(base58): TC718jAVnKZMk2nkF1GJAAW6kXZ3w6LZcu
- 
-        # secret(base58): TBeGp82H5rCdSHMRJwtrXfc7KpbxM5KZYb8L9F4E3fQkrJDJpu7s
+        # address(base58): yfLSXFfipnkgYioD6L8aUNyfRgEBuJv48h
+
+        # secret(base58): 92bxUjPT5AhgXuXJwfGGXqhomY2SdQ55MYjXyx9DZNxCABCSsRH
         # keyid(hex): d9aa5fa00cce99101a4044e65dc544d1579890de
-        # address(base58): TRBjcmyE9YBfvWxCDRTpL41sUzxCj6nnMi
- 
-        # secret(base58): THXf1NqkvtgiVk23Z4Ns6TFDQ4XNVDuzD7jPk2nh4fwwauUqXZeC
+        # address(base58): ygcG5S2pQz2U1UAaHvU6EznKZW7yapKMA7
+
+        # secret(base58): 934yPXiVGf4RCY2qTs2Bt5k3TEtAiAg12sMxCt8yVWbSU7p3fuD
         # keyid(hex): 0b23935ce0bea3b997a334f6fa276c9fa17687b2
-        # address(base58): TYd2UH2v5eeHYV7REaHfkGsnMMFcYgL9vc
- 
-        # secret(base58): TL1z4PKdMmLtMnmBQsTXE3bvuuYWm7DTDPmE7wFjCx2fFs7pcocQ
+        # address(base58): ycbRQWbovrhQMTuxg9p4LAuW5SCMAKqPrn
+
+        # secret(base58): 92Cxwia363Wg2qGF1fE5z4GKi8u7r1nrWQXdtsj2ACZqaDPSihD
         # keyid(hex): 1d1098b2b1f759b678a0a7a098637a9b898adcac
-        # address(base58): TSXFddherPjT1Y1pdpwJsLXM7QBYufxPHQ
+        # address(base58): yc5TGfcHYoLCrcbVy4umsiDjsYUn39vLui
+
         self.add_nodes(5)
 
-        spork_chain_params =   ["-sporkaddr=TRBjcmyE9YBfvWxCDRTpL41sUzxCj6nnMi",
-                                "-sporkaddr=TC718jAVnKZMk2nkF1GJAAW6kXZ3w6LZcu",
-                                "-sporkaddr=TVkNnmvXDG7PSpqkuey8rC9qXMvSKWpYnb",
-                                "-sporkaddr=TYd2UH2v5eeHYV7REaHfkGsnMMFcYgL9vc",
-+                                "-sporkaddr=TSXFddherPjT1Y1pdpwJsLXM7QBYufxPHQ",
-                                 "-minsporkkeys=3"]
+        spork_chain_params =   ["-sporkaddr=ygcG5S2pQz2U1UAaHvU6EznKZW7yapKMA7",
+                                "-sporkaddr=yfLSXFfipnkgYioD6L8aUNyfRgEBuJv48h",
+                                "-sporkaddr=yNsMZhEhYqv14TgdYb1NS2UmNZjE8FSJxa",
+                                "-sporkaddr=ycbRQWbovrhQMTuxg9p4LAuW5SCMAKqPrn",
+                                "-sporkaddr=yc5TGfcHYoLCrcbVy4umsiDjsYUn39vLui",
+                                "-minsporkkeys=3"]
 
         # Node0 extra args to use on normal node restarts
-        self.node0_extra_args = ["-sporkkey=TD1oyPKTwkCQjugLVy3QCzgHgKTdGvLg1BiGAd7wdCnJDYPijnKA"] + spork_chain_params
+        self.node0_extra_args = ["-sporkkey=931wyuRNVYvhg18Uu9bky5Qg1z4QbxaJ7fefNBzjBPiLRqcd33F"] + spork_chain_params
 
-        self.start_node(1, ["-sporkkey=THP5qnU3d4t3o1hR4zq1ejGWPqKFws3kvzV35eK5CokZmXTE2cyr"] + spork_chain_params)
-        self.start_node(2, ["-sporkkey=TBeGp82H5rCdSHMRJwtrXfc7KpbxM5KZYb8L9F4E3fQkrJDJpu7s"] + spork_chain_params)
-        self.start_node(3, ["-sporkkey=THXf1NqkvtgiVk23Z4Ns6TFDQ4XNVDuzD7jPk2nh4fwwauUqXZeC"] + spork_chain_params)
-        self.start_node(4, ["-sporkkey=TL1z4PKdMmLtMnmBQsTXE3bvuuYWm7DTDPmE7wFjCx2fFs7pcocQ"] + spork_chain_params)
+        self.start_node(0, self.node0_extra_args)
+        self.start_node(1, ["-sporkkey=91vbXGMSWKGHom62986XtL1q2mQDA12ngcuUNNe5NfMSj44j7g3"] + spork_chain_params)
+        self.start_node(2, ["-sporkkey=92bxUjPT5AhgXuXJwfGGXqhomY2SdQ55MYjXyx9DZNxCABCSsRH"] + spork_chain_params)
+        self.start_node(3, ["-sporkkey=934yPXiVGf4RCY2qTs2Bt5k3TEtAiAg12sMxCt8yVWbSU7p3fuD"] + spork_chain_params)
+        self.start_node(4, ["-sporkkey=92Cxwia363Wg2qGF1fE5z4GKi8u7r1nrWQXdtsj2ACZqaDPSihD"] + spork_chain_params)
 
         # connect nodes at start
         for i in range(0, 5):
