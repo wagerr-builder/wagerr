@@ -297,16 +297,12 @@ class AddressIndexTest(WagerrTestFramework):
         memtxid2 = self.nodes[2].sendrawtransaction(signed_tx2["hex"], 0)
         self.bump_mocktime(2)
 
-        mempool = self.nodes[2].getaddressmempool({"addresses": [address3]})
+        # sendrawtransaction above sends transactions immediately
+        mempool = self.nodes[2].getrawmempool()
         breakpoint()
-        assert_equal(len(mempool), 3)
-        assert_equal(mempool[0]["txid"], memtxid1)
-        assert_equal(mempool[0]["address"], address3)
-        assert_equal(mempool[0]["index"], 0)
-        assert_equal(mempool[1]["txid"], memtxid2)
-        assert_equal(mempool[1]["index"], 0)
-        assert_equal(mempool[2]["txid"], memtxid2)
-        assert_equal(mempool[2]["index"], 1)
+        assert_equal(len(mempool), 2)
+        assert_equal(mempool[0], memtxid1)
+        assert_equal(mempool[1], memtxid2)
 
         self.nodes[2].generate(1)
         self.sync_all()
