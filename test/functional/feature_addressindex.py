@@ -351,8 +351,7 @@ class AddressIndexTest(WagerrTestFramework):
         self.nodes[0].sendrawtransaction(signed_tx["hex"], 0)
 
         self.sync_all()
-        breakpoint()
-        mempool_deltas = self.nodes[2].getaddressmempool({"addresses": [address1]})
+        mempool_deltas = self.nodes[2].getrawmempool()
         assert_equal(len(mempool_deltas), 1)
 
         self.log.info("Passed")
