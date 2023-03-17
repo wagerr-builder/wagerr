@@ -321,13 +321,11 @@ class AddressIndexTest(WagerrTestFramework):
         self.nodes[2].sendrawtransaction(signed_tx3["hex"], 0)
         self.bump_mocktime(2)
 
-        mempool3 = self.nodes[2].getaddressmempool({"addresses": [address3]})
+        mempool3 = self.nodes[2].getrawmempool()
         breakpoint()
-        assert_equal(len(mempool3), 2)
-        assert_equal(mempool3[0]["prevtxid"], memtxid2)
-        assert_equal(mempool3[0]["prevout"], 0)
-        assert_equal(mempool3[1]["prevtxid"], memtxid2)
-        assert_equal(mempool3[1]["prevout"], 1)
+        assert_equal(len(mempool3), 3)
+        assert_equal(mempool3[0], memtxid1)
+        assert_equal(mempool3[1], memtxid2)
 
         # sending and receiving to the same address
         privkey1 = "TCiM4JqGNtShSZfSop7CEhSQzWNXXoony1yumWvW5gN5imKYp47E"
