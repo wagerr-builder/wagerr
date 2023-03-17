@@ -823,7 +823,7 @@ class WagerrTestFramework(BitcoinTestFramework):
         self.sync_all()
 
         # create masternodes
-        self.create_management_tokens()
+        #self.create_management_tokens()
         self.prepare_masternodes()
         self.prepare_datadirs()
         self.start_masternodes()
