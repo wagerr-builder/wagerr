@@ -672,15 +672,15 @@ class WagerrTestFramework(BitcoinTestFramework):
         # send to same address to reserve some funds for fees
         #self.nodes[0].sendtoken(creditsubgroupID, address, 1)
 
-        #txid_fee = self.nodes[0].sendtoaddress(address, 0.001)
-        #self.nodes[0].generate(1)
+        txid_fee = self.nodes[0].sendtoaddress(address, 0.001)
+        self.nodes[0].generate(1)
 
-        #txraw_fee = self.nodes[0].getrawtransaction(txid_fee, True)
-        #collateral_vout_fee = 0
-        #for vout_idx_fee in range(0, len(txraw_fee["vout"])):
-        #    vout_fee = txraw_fee["vout"][vout_idx_fee]
-        #    if vout_fee["value"] == 0.001 and vout_fee["addresses"][0] == address:
-        #        collateral_vout_fee = vout_idx_fee
+        txraw_fee = self.nodes[0].getrawtransaction(txid_fee, True)
+        collateral_vout_fee = 0
+        for vout_idx_fee in range(0, len(txraw_fee["vout"])):
+            vout_fee = txraw_fee["vout"][vout_idx_fee]
+            if vout_fee["value"] == 0.001 and vout_fee["addresses"][0] == address:
+                collateral_vout_fee = vout_idx_fee
 
         ownerAddr = self.nodes[0].getnewaddress()
         votingAddr = self.nodes[0].getnewaddress()
@@ -697,9 +697,9 @@ class WagerrTestFramework(BitcoinTestFramework):
             breakpoint()
             protx_result = self.nodes[0].protx('register_fund', address, ipAndPort, ownerAddr, bls['public'], votingAddr, operatorReward, rewardsAddr, address, submit)
         else:
-            #self.nodes[0].lockunspent(False, [{'txid': txid_fee, 'vout': collateral_vout_fee}])
+            self.nodes[0].lockunspent(False, [{'txid': txid_fee, 'vout': collateral_vout_fee}])
             self.nodes[0].generate(1)
-            #self.nodes[0].lockunspent(True, [{'txid': txid_fee, 'vout': collateral_vout_fee}])
+            self.nodes[0].lockunspent(True, [{'txid': txid_fee, 'vout': collateral_vout_fee}])
             protx_result = self.nodes[0].protx('register', txid, collateral_vout, ipAndPort, ownerAddr, bls['public'], votingAddr, operatorReward, rewardsAddr, address, submit)
 
         if submit:
