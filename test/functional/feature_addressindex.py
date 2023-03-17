@@ -299,7 +299,6 @@ class AddressIndexTest(WagerrTestFramework):
 
         # sendrawtransaction above sends transactions immediately
         mempool = self.nodes[2].getrawmempool()
-        breakpoint()
         assert_equal(len(mempool), 2)
         assert_equal(mempool[0], memtxid1)
         assert_equal(mempool[1], memtxid2)
@@ -311,6 +310,7 @@ class AddressIndexTest(WagerrTestFramework):
         # assert_equal(len(mempool2), 0)
 
         tx = CTransaction()
+        breakpoint()
         tx.vin = [
             CTxIn(COutPoint(int(memtxid2, 16), 0)),
             CTxIn(COutPoint(int(memtxid2, 16), 1))
