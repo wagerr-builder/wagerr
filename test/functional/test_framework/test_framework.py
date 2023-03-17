@@ -657,7 +657,7 @@ class WagerrTestFramework(BitcoinTestFramework):
     def prepare_masternode(self, idx):
         bls = self.nodes[0].bls('generate')
         address = self.nodes[0].getnewaddress()
-        self.nodes[0].sendtoken(creditsubgroupID, address, 1)
+        #self.nodes[0].sendtoken(creditsubgroupID, address, 1)
         txid = self.nodes[0].sendtoaddress(address, MASTERNODE_COLLATERAL)
         self.nodes[0].generate(1)
 
@@ -670,10 +670,10 @@ class WagerrTestFramework(BitcoinTestFramework):
         self.nodes[0].lockunspent(False, [{'txid': txid, 'vout': collateral_vout}])
 
         # send to same address to reserve some funds for fees
-        self.nodes[0].sendtoken(creditsubgroupID, address, 1)
+        #self.nodes[0].sendtoken(creditsubgroupID, address, 1)
 
-        txid_fee = self.nodes[0].sendtoaddress(address, 0.001)
-        self.nodes[0].generate(1)
+        #txid_fee = self.nodes[0].sendtoaddress(address, 0.001)
+        #self.nodes[0].generate(1)
 
         txraw_fee = self.nodes[0].getrawtransaction(txid_fee, True)
         collateral_vout_fee = 0
