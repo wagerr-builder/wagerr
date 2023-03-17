@@ -322,7 +322,6 @@ class AddressIndexTest(WagerrTestFramework):
         self.bump_mocktime(2)
 
         mempool3 = self.nodes[2].getrawmempool()
-        breakpoint()
         assert_equal(len(mempool3), 3)
         assert_equal(mempool3[0], memtxid1)
         assert_equal(mempool3[1], memtxid2)
@@ -352,6 +351,7 @@ class AddressIndexTest(WagerrTestFramework):
         self.nodes[0].sendrawtransaction(signed_tx["hex"], 0)
 
         self.sync_all()
+        breakpoint()
         mempool_deltas = self.nodes[2].getaddressmempool({"addresses": [address1]})
         assert_equal(len(mempool_deltas), 1)
 
