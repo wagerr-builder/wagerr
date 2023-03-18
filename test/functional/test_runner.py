@@ -295,7 +295,7 @@ def main():
     parser.add_argument('--filter', help='filter scripts to run by regular expression')
     args, unknown_args = parser.parse_known_args()
 
-    # args to be passed on always start with two wagerres; tests are the remaining unknown args
+    # args to be passed on always start with two wagerr daemons; tests are the remaining unknown args
     tests = [arg for arg in unknown_args if arg[:2] != "--"]
     passon_args = [arg for arg in unknown_args if arg[:2] == "--"]
 

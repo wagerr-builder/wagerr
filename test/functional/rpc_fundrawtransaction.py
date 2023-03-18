@@ -16,6 +16,7 @@ from test_framework.util import (
     connect_nodes,
     count_bytes,
     find_vout_for_address,
+    disconnect_nodes,
 )
 
 
@@ -62,6 +63,16 @@ class RawTransactionsTest(WagerrTestFramework):
         self.fee_tolerance = 2 * self.min_relay_tx_fee / 1000
 
         self.nodes[2].generate(1)
+        for n in range(self.num_nodes):
+            self.stop_node(n)
+            self.start_node(n, ["-reindex"])
+        disconnect_nodes(self.nodes[0], 1)
+        connect_nodes(self.nodes[0], 1)
+        disconnect_nodes(self.nodes[0], 2)
+        connect_nodes(self.nodes[0], 2)
+        disconnect_nodes(self.nodes[0], 3)
+        connect_nodes(self.nodes[0], 3)
+        self.sync_all()
         self.sync_all()
         self.nodes[0].generate(121)
         self.sync_all()
