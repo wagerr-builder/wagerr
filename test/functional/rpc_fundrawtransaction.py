@@ -74,7 +74,7 @@ class RawTransactionsTest(WagerrTestFramework):
         connect_nodes(self.nodes[0], 3)
         self.sync_all()
         self.sync_all()
-        self.nodes[0].generate(121)
+        self.nodes[0].generate(321)
         self.sync_all()
 
         self.test_change_position()
