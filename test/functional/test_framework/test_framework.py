@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # Copyright (c) 2014-2016 The Bitcoin Core developers
-# Copyright (c) 2014-2022 The Wagerr Core developers
+# Copyright (c) 2014-2022 The Dash Core developers
+# Copyright (c) 2014-2023 The Wagerr Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Base class for RPC testing."""
@@ -413,7 +414,8 @@ class WagerrTestFramework(metaclass=WagerrTestMetaClass):
             except JSONRPCException as e:
                 assert str(e).startswith('Method not found')
                 continue
-            #n.importprivkey(privkey=n.get_deterministic_priv_key().key, label='coinbase')
+            breakpoint()
+            n.importprivkey(privkey=n.importprivkey().key, label='coinbase')
 
     def run_test(self):
         """Tests must override this method to define test logic"""
@@ -676,7 +678,7 @@ class WagerrTestFramework(metaclass=WagerrTestMetaClass):
                 self.bump_mocktime((25 if i != 7 else 24) * 156)
                 self.nodes[CACHE_NODE_ID].generate(
                     nblocks=25 if i != 7 else 24,
-                    #address=TestNode.PRIV_KEYS[i % 4].address,
+                    address=TestNode.PRIV_KEYS[i % 4].address,
                 )
 
             assert_equal(self.nodes[CACHE_NODE_ID].getblockchaininfo()["blocks"], 199)
@@ -927,7 +929,7 @@ class WagerrTestFramework(WagerrTestFramework):
     def remove_masternode(self, idx):
         mn = self.mninfo[idx]
         rawtx = self.nodes[0].createrawtransaction([{"txid": mn.collateral_txid, "vout": mn.collateral_vout}], {self.nodes[0].getnewaddress(): 999.9999})
-        self.nodes[0].fundrawtransaction(rawtx['hex'], '{"feeRate":3000}')
+        #self.nodes[0].fundrawtransaction(rawtx['hex'], '{"feeRate":3000}')
         rawtx = self.nodes[0].signrawtransactionwithwallet(rawtx)
         self.nodes[0].sendrawtransaction(rawtx["hex"])
         self.nodes[0].generate(1)
