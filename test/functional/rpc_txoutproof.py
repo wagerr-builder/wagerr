@@ -45,6 +45,7 @@ class MerkleBlockTest(WagerrTestFramework):
         assert_equal(self.nodes[2].getbalance(), 0)
 
         tx_fee = Decimal('0.0000001')
+        self.nodes[0].settxfee(tx_fee)
         node0utxos = self.nodes[0].listunspent(1)
         tx1 = self.nodes[0].createrawtransaction([node0utxos.pop()], {self.nodes[1].getnewaddress(): 500 - tx_fee})
         breakpoint()
