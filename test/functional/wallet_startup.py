@@ -23,7 +23,7 @@ class WalletStartupTest(WagerrTestFramework):
 
     def setup_network(self):
         self.add_nodes(self.num_nodes)
-        self.start_nodes(0, [])
+        self.start_node(0, [])
 
     def run_test(self):
         self.nodes[0].createwallet(wallet_name='w0', load_on_startup=True)
