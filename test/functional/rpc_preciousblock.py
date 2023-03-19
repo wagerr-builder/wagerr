@@ -46,7 +46,7 @@ class PreciousTest(WagerrTestFramework):
         gen_address = lambda i: self.nodes[i].get_deterministic_priv_key().address  # A non-wallet address to mine to
         self.nodes[0].generate(1)
         assert_equal(self.nodes[0].getblockcount(), 1)
-        hashZ = self.nodes[1].generate(2))[-1]
+        hashZ = self.nodes[1].generate(2)[-1]
         assert_equal(self.nodes[1].getblockcount(), 2)
         node_sync_via_rpc(self.nodes[0:3])
         assert_equal(self.nodes[0].getbestblockhash(), hashZ)
