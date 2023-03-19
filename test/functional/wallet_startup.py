@@ -38,7 +38,7 @@ class WalletStartupTest(WagerrTestFramework):
         self.stop_node(0)
         self.log.inf0("Node stopped")
         self.start_node(0)
-        self.log.inf0("Node started")
+        self.log.info("Node started")
         assert_equal(set(self.nodes[0].listwallets()), set(('', 'w2', 'w4')))
         self.nodes[0].unloadwallet(wallet_name='', load_on_startup=False)
         self.nodes[0].unloadwallet(wallet_name='w4', load_on_startup=False)
