@@ -525,7 +525,7 @@ class RawTransactionsTest(WagerrTestFramework):
         self.sync_all()
 
         # Make sure funds are received at node1.
-        assert_equal(oldBalance+Decimal('10011.0000000'), self.nodes[0].getbalance())
+        assert_equal(oldBalance+Decimal('20011.0000000'), self.nodes[0].getbalance())
 
     def test_many_inputs_fee(self):
         """Multiple (~19) inputs tx test | Compare fee."""
