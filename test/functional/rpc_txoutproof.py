@@ -47,6 +47,7 @@ class MerkleBlockTest(WagerrTestFramework):
         tx_fee = Decimal('0.0000001')
         node0utxos = self.nodes[0].listunspent(1)
         tx1 = self.nodes[0].createrawtransaction([node0utxos.pop()], {self.nodes[1].getnewaddress(): 500 - tx_fee})
+        breakpoint()
         txid1 = self.nodes[0].sendrawtransaction(self.nodes[0].signrawtransactionwithwallet(tx1)["hex"])
         tx2 = self.nodes[0].createrawtransaction([node0utxos.pop()], {self.nodes[1].getnewaddress(): 500 - tx_fee})
         txid2 = self.nodes[0].sendrawtransaction(self.nodes[0].signrawtransactionwithwallet(tx2)["hex"])
