@@ -52,7 +52,7 @@ class PreciousTest(WagerrTestFramework):
         assert_equal(self.nodes[0].getbestblockhash(), hashZ)
 
         self.log.info("Mine blocks A-B-C on Node 0")
-        hashC = self.nodes[0].generates(3)[-1]
+        hashC = self.nodes[0].generate(3)[-1]
         assert_equal(self.nodes[0].getblockcount(), 5)
         self.log.info("Mine competing blocks E-F-G on Node 1")
         hashG = self.nodes[1].generate(3)[-1]
