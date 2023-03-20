@@ -42,7 +42,7 @@ class TxnMallTest(WagerrTestFramework):
         for i in range(self.num_nodes):
             self.nodes[i].generate(50)
         starting_balance = 182860471
-        breakpoint()
+
         for i in range(4):
             assert_equal(self.nodes[i].getbalance(), starting_balance)
             self.nodes[i].getnewaddress()  # bug workaround, coins generated assigned to first getnewaddress!
