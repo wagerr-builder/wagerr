@@ -14,6 +14,8 @@ class ConfArgsTest(WagerrTestFramework):
         self.extra_args = [["-debug"]]
         self.setup_clean_chain = True
         self.num_nodes = 1
+        self.mn_count = 0
+        self.fast_dip3_enforcement = False
         self.supports_cli = False
 
     def test_config_file_parser(self):
