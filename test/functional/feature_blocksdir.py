@@ -14,6 +14,7 @@ from test_framework.test_framework import WagerrTestFramework, initialize_datadi
 class BlocksdirTest(WagerrTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
+        self.extra_args = [["-debug"]]
         self.num_nodes = 1
 
     def run_test(self):
