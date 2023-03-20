@@ -85,6 +85,7 @@ class FullBlockTest(WagerrTestFramework):
         self.extra_args = [['-dip3params=2000:2000', '-acceptnonstdtxn=1']]  # This is a consensus block test, we don't care about tx policy
 
     def setup_nodes(self):
+        self.mn_count = 0
         self.add_nodes(self.num_nodes, self.extra_args)
         self.start_nodes()
 
