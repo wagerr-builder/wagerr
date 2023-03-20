@@ -28,6 +28,12 @@ class TxnMallTest(WagerrTestFramework):
     def setup_network(self):
         # Start with split network:
         super(TxnMallTest, self).setup_network()
+        self.add_nodes(self.num_nodes)
+        self.start_node(0, [])
+        self.start_node(1, [])
+        self.start_node(2, [])
+        self.start_node(3, [])
+        self.sync_all()
         disconnect_nodes(self.nodes[1], 2)
         disconnect_nodes(self.nodes[2], 1)
 
