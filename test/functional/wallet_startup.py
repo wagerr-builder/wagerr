@@ -45,7 +45,7 @@ class WalletStartupTest(WagerrTestFramework):
         self.nodes[0].loadwallet(filename='w3', load_on_startup=True)
         #self.nodes[0].loadwallet(filename='')
         self.restart_node(0)
-        assert_equal(set(self.nodes[0].listwallets()), set(('w2', 'w3')))
+        assert_equal(set(self.nodes[0].listwallets()), set(('', 'w2', 'w3')))
 
 if __name__ == '__main__':
     WalletStartupTest().main()
