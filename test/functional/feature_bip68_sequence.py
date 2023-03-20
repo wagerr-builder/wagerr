@@ -27,6 +27,8 @@ NOT_FINAL_ERROR = "non-BIP68-final (code 64)"
 class BIP68Test(WagerrTestFramework):
     def set_test_params(self):
         self.num_nodes = 2
+        self.mn_count = 0
+        self.fast_dip3_enforcement = False
         self.extra_args = [
             ["-acceptnonstdtxn=1"],
             ["-acceptnonstdtxn=0"],
