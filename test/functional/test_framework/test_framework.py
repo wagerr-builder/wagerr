@@ -905,6 +905,7 @@ class WagerrTestFramework(WagerrTestFramework):
 
         if register_fund:
             # self.nodes[0].lockunspent(True, [{'txid': txid, 'vout': collateral_vout}])
+            breakpoint()
             protx_result = self.nodes[0].protx('register_fund', address, ipAndPort, ownerAddr, bls['public'], votingAddr, operatorReward, rewardsAddr, address, submit)
         else:
             self.nodes[0].generate(1)
