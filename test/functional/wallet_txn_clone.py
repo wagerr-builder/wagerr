@@ -111,6 +111,7 @@ class TxnMallTest(WagerrTestFramework):
             assert_equal(tx2["confirmations"], 0)
 
         # Send clone and its parent to miner
+        breakpoint()
         self.nodes[2].sendrawtransaction(node0_tx1["hex"])
         txid1_clone = self.nodes[2].sendrawtransaction(tx1_clone["hex"])
         # ... mine a block...
