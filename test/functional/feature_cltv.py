@@ -65,6 +65,7 @@ class BIP65Test(WagerrTestFramework):
             '-par=1',  # Use only one script thread to get the exact reject reason for testing
             '-acceptnonstdtxn=1',  # cltv_invalidate is nonstandard
         ]]
+        self.mn_count = 0
         self.setup_clean_chain = True
         self.rpc_timeout = 120
 
