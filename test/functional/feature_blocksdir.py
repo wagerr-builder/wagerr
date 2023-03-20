@@ -16,6 +16,7 @@ class BlocksdirTest(WagerrTestFramework):
         self.setup_clean_chain = True
         self.extra_args = [["-debug"]]
         self.num_nodes = 1
+        self.mn_count = 1
 
     def run_test(self):
         self.stop_node(0)
