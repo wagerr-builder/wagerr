@@ -39,7 +39,9 @@ class TxnMallTest(WagerrTestFramework):
 
     def run_test(self):
         # All nodes should start with 12,500 WAGERR:
-        starting_balance = 12500
+        for i in range(self.num_nodes):
+            self.nodes[i].generate(50)
+        starting_balance = 182860471
         breakpoint()
         for i in range(4):
             assert_equal(self.nodes[i].getbalance(), starting_balance)
