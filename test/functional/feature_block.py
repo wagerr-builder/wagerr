@@ -78,6 +78,7 @@ class FullBlockTest(WagerrTestFramework):
     def set_test_params(self):
         self.num_nodes = 1
         self.mn_count = 0
+        self.fast_dip3_enforcement = False
         self.setup_clean_chain = True
         # Very large reorgs cause cs_main to be held for a very long time in ActivateBestChainStep,
         # which causes RPC to hang, so we need to increase RPC timeouts
