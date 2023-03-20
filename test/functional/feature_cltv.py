@@ -66,6 +66,7 @@ class BIP65Test(WagerrTestFramework):
             '-acceptnonstdtxn=1',  # cltv_invalidate is nonstandard
         ]]
         self.mn_count = 0
+        self.fast_dip3_enforcement = True
         self.setup_clean_chain = True
         self.rpc_timeout = 120
 
