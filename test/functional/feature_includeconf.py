@@ -23,6 +23,8 @@ class IncludeConfTest(WagerrTestFramework):
         self.setup_clean_chain = False
         self.extra_args = [["-debug"]]
         self.num_nodes = 1
+        self.mn_count = 0
+        self.fast_dip3_enforcement = False
 
     def setup_chain(self):
         super().setup_chain()
