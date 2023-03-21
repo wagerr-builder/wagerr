@@ -677,8 +677,7 @@ class WagerrTestFramework(metaclass=WagerrTestMetaClass):
             for i in range(8):
                 self.bump_mocktime((25 if i != 7 else 24) * 156)
                 self.nodes[CACHE_NODE_ID].generate(
-                    nblocks=25 if i != 7 else 24,
-                    address=TestNode.PRIV_KEYS[i % 4].address,
+                    nblocks=25 if i != 7 else 24
                 )
 
             assert_equal(self.nodes[CACHE_NODE_ID].getblockchaininfo()["blocks"], 199)
