@@ -651,7 +651,7 @@ class WagerrTestFramework(metaclass=WagerrTestMetaClass):
                     cache_node_dir,
                     chain=self.chain,
                     extra_conf=["bind=127.0.0.1"],
-                    extra_args=['-disablewallet', "-mocktime=%d" % TIME_GENESIS_BLOCK],
+                    extra_args=["-mocktime=%d" % TIME_GENESIS_BLOCK],
                     extra_args_from_options=self.extra_args_from_options,
                     rpchost=None,
                     timewait=self.rpc_timeout,
@@ -663,7 +663,6 @@ class WagerrTestFramework(metaclass=WagerrTestMetaClass):
                     cwd=self.options.tmpdir,
                 ))
             self.start_node(CACHE_NODE_ID)
-            self.nodes[CACHE_NODE_ID].createwallet("wallet.dat")
 
             # Wait for RPC connections to be ready
             self.nodes[CACHE_NODE_ID].wait_for_rpc_connection()
