@@ -676,6 +676,7 @@ class WagerrTestFramework(metaclass=WagerrTestMetaClass):
             self.set_genesis_mocktime()
             for i in range(8):
                 self.bump_mocktime((25 if i != 7 else 24) * 156)
+                breakpoint()
                 self.nodes[CACHE_NODE_ID].generate(25 if i != 7 else 24)
 
             assert_equal(self.nodes[CACHE_NODE_ID].getblockchaininfo()["blocks"], 199)
