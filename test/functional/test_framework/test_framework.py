@@ -663,6 +663,7 @@ class WagerrTestFramework(metaclass=WagerrTestMetaClass):
                     cwd=self.options.tmpdir,
                 ))
             self.start_node(CACHE_NODE_ID)
+            self.nodes[CACHE_NODE_ID].createwallet("wallet.dat")
 
             # Wait for RPC connections to be ready
             self.nodes[CACHE_NODE_ID].wait_for_rpc_connection()
