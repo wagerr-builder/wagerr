@@ -26,6 +26,8 @@ class LoadblockTest(WagerrTestFramework):
         self.num_nodes = 2
         self.extra_args = [["-debug"], ["-debug"]]
         self.supports_cli = False
+        self.mn_count = 0
+        self.fast_dip3_enforcement = False
 
     def run_test(self):
         self.nodes[1].setnetworkactive(state=False)
