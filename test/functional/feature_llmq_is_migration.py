@@ -18,8 +18,8 @@ Test IS LLMQ migration with DIP0024
 class LLMQISMigrationTest(WagerrTestFramework):
     def set_test_params(self):
         # -whitelist is needed to avoid the trickling logic on node0
-        self.set_dash_test_params(16, 15, [["-whitelist=127.0.0.1"], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []], fast_dip3_enforcement=True)
-        self.set_dash_llmq_test_params(4, 4)
+        self.set_wagerr_test_params(16, 15, [["-whitelist=127.0.0.1"], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []], fast_dip3_enforcement=True)
+        self.set_wagerr_llmq_test_params(4, 4)
 
     def get_request_id(self, tx_hex):
         tx = FromHex(CTransaction(), tx_hex)
