@@ -24,6 +24,7 @@ class LoadblockTest(WagerrTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 2
+        self.extra_args = [["-debug"], ["-debug"]]
         self.supports_cli = False
 
     def run_test(self):
