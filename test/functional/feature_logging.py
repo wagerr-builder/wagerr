@@ -15,6 +15,9 @@ class LoggingTest(WagerrTestFramework):
     def set_test_params(self):
         self.num_nodes = 1
         self.setup_clean_chain = True
+        self.mn_count = 0
+        self.fast_dip3_enforcement = False
+        self.extra_args = [["-debug"]]
 
     def relative_log_path(self, name):
         return os.path.join(self.nodes[0].datadir, self.chain, name)
