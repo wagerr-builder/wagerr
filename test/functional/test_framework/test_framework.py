@@ -689,7 +689,7 @@ class WagerrTestFramework(metaclass=WagerrTestMetaClass):
                 chain = get_chain_folder(cache_node_dir, self.chain)
                 return os.path.join(cache_node_dir, chain, *paths)
 
-            os.rmdir(cache_path('wallets'))  # Remove empty wallets dir
+            #os.rmdir(cache_path('wallets'))  # Remove empty wallets dir
             for entry in os.listdir(cache_path()):
                 if entry not in ['wallets', 'chainstate', 'blocks', 'evodb', 'llmq', 'backups', 'tokens', 'zerocoin']:
                     os.remove(cache_path(entry))
