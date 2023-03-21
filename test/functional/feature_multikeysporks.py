@@ -48,7 +48,7 @@ class MultiKeySporkTest(WagerrTestFramework):
         # address(base58): TSXFddherPjT1Y1pdpwJsLXM7QBYufxPHQ
         self.add_nodes(5)
 
-        spork_chain_params =   ["-sporkaddr=TRBjcmyE9YBfvWxCDRTpL41sUzxCj6nnMi",
+        spork_chain_params =   ["-sporkaddr=TPiq9YKZdbfEGuZuZhQtLNGrkKSchmL1gc",
                                 "-sporkaddr=TC718jAVnKZMk2nkF1GJAAW6kXZ3w6LZcu",
                                 "-sporkaddr=TVkNnmvXDG7PSpqkuey8rC9qXMvSKWpYnb",
                                 "-sporkaddr=TYd2UH2v5eeHYV7REaHfkGsnMMFcYgL9vc",
@@ -56,7 +56,7 @@ class MultiKeySporkTest(WagerrTestFramework):
                                 "-minsporkkeys=3"]
 
         # Node0 extra args to use on normal node restarts
-        self.node0_extra_args = ["-sporkkey=TD1oyPKTwkCQjugLVy3QCzgHgKTdGvLg1BiGAd7wdCnJDYPijnKA"] + spork_chain_params
+        self.node0_extra_args = ["-sporkkey=6xLZdACFRA53uyxz8gKDLcgVrm5kUUEu2B3BUzWUxHqa2W7irbH"] + spork_chain_params
         self.start_node(0)
 
         self.start_node(1, ["-sporkkey=THP5qnU3d4t3o1hR4zq1ejGWPqKFws3kvzV35eK5CokZmXTE2cyr"] + spork_chain_params)
