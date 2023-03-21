@@ -37,6 +37,8 @@ class MaxUploadTest(WagerrTestFramework):
         self.num_nodes = 1
         self.extra_args = [["-maxuploadtarget=200", "-blockmaxsize=999000", "-maxtipage="+str(2*60*60*24*7), "-acceptnonstdtxn=1"]]
         self.supports_cli = False
+        self.mn_count = 0
+        self.fast_dip3_enforcement = False
 
         # Cache for utxos, as the listunspent may take a long time later in the test
         self.utxo_cache = []
