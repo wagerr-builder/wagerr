@@ -185,6 +185,8 @@ class EstimateFeeTest(WagerrTestFramework):
         self.start_node(0)
         self.txouts = []
         self.txouts2 = []
+        # Mine some blocks
+        self.node[0].generate(100)
         # Split a coinbase into two transaction puzzle outputs
         breakpoint()
         split_inputs(self.nodes[0], self.nodes[0].listunspent(0), self.txouts, True)
