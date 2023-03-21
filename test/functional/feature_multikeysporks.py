@@ -57,6 +57,7 @@ class MultiKeySporkTest(WagerrTestFramework):
 
         # Node0 extra args to use on normal node restarts
         self.node0_extra_args = ["-sporkkey=TD1oyPKTwkCQjugLVy3QCzgHgKTdGvLg1BiGAd7wdCnJDYPijnKA"] + spork_chain_params
+        self.start_node(0)
 
         self.start_node(1, ["-sporkkey=THP5qnU3d4t3o1hR4zq1ejGWPqKFws3kvzV35eK5CokZmXTE2cyr"] + spork_chain_params)
         self.start_node(2, ["-sporkkey=TBeGp82H5rCdSHMRJwtrXfc7KpbxM5KZYb8L9F4E3fQkrJDJpu7s"] + spork_chain_params)
@@ -64,7 +65,6 @@ class MultiKeySporkTest(WagerrTestFramework):
         self.start_node(4, ["-sporkkey=TL1z4PKdMmLtMnmBQsTXE3bvuuYWm7DTDPmE7wFjCx2fFs7pcocQ"] + spork_chain_params)
 
         # connect nodes at start
-        breakpoint()
         for i in range(0, 5):
             for j in range(i, 5):
                 connect_nodes(self.nodes[i], j)
