@@ -64,6 +64,7 @@ class MultiKeySporkTest(WagerrTestFramework):
         self.start_node(4, ["-sporkkey=TL1z4PKdMmLtMnmBQsTXE3bvuuYWm7DTDPmE7wFjCx2fFs7pcocQ"] + spork_chain_params)
 
         # connect nodes at start
+        breakpoint()
         for i in range(0, 5):
             for j in range(i, 5):
                 connect_nodes(self.nodes[i], j)
