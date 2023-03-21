@@ -2,7 +2,7 @@
 # Copyright (c) 2018-2020 The Wagerr Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
-"""Tests around dash governance objects."""
+"""Tests around wagerr governance objects."""
 
 import json
 import time
@@ -24,7 +24,7 @@ def validate_object(prepared, rpc_prepared):
 
 class WagerrGovernanceTest (WagerrTestFramework):
     def set_test_params(self):
-        self.set_dash_test_params(2, 1)
+        self.set_wagerr_test_params(2, 1)
 
     def prepare_object(self, object_type, parent_hash, creation_time, revision, name, amount):
         proposal_rev = revision
@@ -36,7 +36,7 @@ class WagerrGovernanceTest (WagerrTestFramework):
             "end_epoch": proposal_time + 24 * 60 * 60,
             "payment_amount": amount,
             "payment_address": self.nodes[0].getnewaddress(),
-            "url": "https://dash.org"
+            "url": "https://wagerr.org"
         }
         proposal_hex = ''.join(format(x, '02x') for x in json.dumps(proposal_template).encode())
         collateral_hash = self.nodes[0].gobject("prepare", parent_hash, proposal_rev, proposal_time, proposal_hex)
