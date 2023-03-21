@@ -68,6 +68,8 @@ class MultiKeySporkTest(WagerrTestFramework):
         for i in range(0, 5):
             for j in range(i, 5):
                 connect_nodes(self.nodes[i], j)
+        # Generate 400 blocks
+        self.nodes[0].generate(400)
 
     def get_test_spork_value(self, node, spork_name):
         self.bump_mocktime(5)  # advance ProcessTick
