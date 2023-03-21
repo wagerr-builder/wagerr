@@ -52,8 +52,8 @@ class TestP2PConn(P2PInterface):
 
 class LLMQQuorumRotationTest(WagerrTestFramework):
     def set_test_params(self):
-        self.set_dash_test_params(9, 8, fast_dip3_enforcement=True)
-        self.set_dash_llmq_test_params(4, 4)
+        self.set_wagerr_test_params(9, 8, fast_dip3_enforcement=True)
+        self.set_wagerr_llmq_test_params(4, 4)
 
     def run_test(self):
         llmq_type=103
