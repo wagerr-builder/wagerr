@@ -42,6 +42,7 @@ class IncludeConfTest(WagerrTestFramework):
         self.log.info("-includeconf works from config file. subversion should end with 'main; relative)/'")
 
         subversion = self.nodes[0].getnetworkinfo()["subversion"]
+        breakpoint()
         assert subversion.endswith("main; relative)/")
 
         self.log.info("-includeconf cannot be used as command-line arg")
