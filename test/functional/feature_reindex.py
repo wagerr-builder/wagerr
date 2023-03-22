@@ -17,9 +17,12 @@ class ReindexTest(WagerrTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 1
+        self.mn_count = 0
+        self.fast_dip3_enforcement = False
+        self.extra_args = [["-debug"]]
 
     def reindex(self, justchainstate=False):
-        self.nodes[0].generatetoaddress(3, self.nodes[0].get_deterministic_priv_key().address)
+        self.nodes[0].generate(3)
         blockcount = self.nodes[0].getblockcount()
         self.stop_nodes()
         extra_args = [["-reindex-chainstate" if justchainstate else "-reindex"]]
