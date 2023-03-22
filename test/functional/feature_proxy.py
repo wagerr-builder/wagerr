@@ -47,7 +47,7 @@ class ProxyTest(WagerrTestFramework):
         self.setup_clean_chain = True
         self.mn_count = 0
         self.fast_dip3_enforcement = False
-        self.extra_args = [[''], [''], [''], ['']]
+        self.extra_args = [['-debug'], ['-debug'], ['-debug'], ['-debug']]
 
     def setup_nodes(self):
         self.have_ipv6 = test_ipv6_local()
