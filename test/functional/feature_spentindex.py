@@ -108,7 +108,7 @@ class SpentIndexTest(WagerrTestFramework):
         assert_equal(txVerbose2["vin"][0]["valueSat"] - tx_fee_sat, amount)
 
         # Check that verbose raw transaction includes address values and input values
-        address2 = "yeMpGzMj3rhtnz48XsfpB8itPHhHtgxLc3"
+        address2 = "TPEdK89Rwds4rxdbBApYCKM6AQPcDZf8qh"
         addressHash2 = binascii.unhexlify("C5E4FB9171C22409809A3E8047A29C83886E325D")
         scriptPubKey2 = CScript([OP_DUP, OP_HASH160, addressHash2, OP_EQUALVERIFY, OP_CHECKSIG])
         tx2 = CTransaction()
