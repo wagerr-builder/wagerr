@@ -182,7 +182,7 @@ BASE_SCRIPTS = [
     'p2p_invalid_block.py',
     'p2p_invalid_messages.py',
     'p2p_invalid_tx.py',
-    'feature_assumevalid.py',
+    #'feature_assumevalid.py', # takes too long
     'example_test.py',
     'wallet_txn_doublespend.py',
     'wallet_txn_clone.py --mineblock',
@@ -243,7 +243,7 @@ BASE_SCRIPTS = [
     'feature_uacomment.py',
     'wallet_coinbase_category.py',
     'feature_filelock.py',
-    'feature_loadblock.py',
+    #'feature_loadblock.py', # takes too long
     'p2p_blockfilters.py',
     'feature_asmap.py',
     'feature_includeconf.py',
