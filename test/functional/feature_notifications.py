@@ -18,6 +18,9 @@ class NotificationsTest(WagerrTestFramework):
     def set_test_params(self):
         self.num_nodes = 2
         self.setup_clean_chain = True
+        self.mn_count = 0
+        self.fast_dip3_enforcement = False
+        self.extra_args = [["-debug"], ["-debug"]]
 
     def setup_network(self):
         self.alertnotify_dir = os.path.join(self.options.tmpdir, "alertnotify")
