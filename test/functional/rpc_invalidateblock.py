@@ -88,7 +88,7 @@ class InvalidateTest(WagerrTestFramework):
         assert_equal(tip, self.nodes[1].getbestblockhash())
 
         self.log.info("Verify that we reconsider all ancestors as well")
-        breakpoint()
+        #breakpoint()
         blocks = self.nodes[1].generatetodescriptor(10, ADDRESS_BCRT1_UNSPENDABLE_DESCRIPTOR)
         assert_equal(self.nodes[1].getbestblockhash(), blocks[-1])
         # Invalidate the two blocks at the tip
