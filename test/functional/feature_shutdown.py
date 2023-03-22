@@ -18,6 +18,9 @@ class ShutdownTest(WagerrTestFramework):
         self.setup_clean_chain = True
         self.num_nodes = 1
         self.supports_cli = False
+        self.mn_count = 0
+        self.fast_dip3_enforcement = False
+        self.extra_args = [["-debug"]]
 
     def run_test(self):
         node = get_rpc_proxy(self.nodes[0].url, 1, timeout=600, coveragedir=self.nodes[0].coverage_dir)
