@@ -117,7 +117,11 @@ class PruneTest(WagerrTestFramework):
 
         # Then mine enough full blocks to create more than 550MiB of data
         mine_large_blocks(self.nodes[0], 645)
-
+        connect_nodes(self.nodes[0], 1)
+        connect_nodes(self.nodes[0], 2)
+        connect_nodes(self.nodes[0], 3)
+        connect_nodes(self.nodes[0], 4)
+        connect_nodes(self.nodes[0], 5)
         self.sync_blocks(self.nodes[0:5])
 
     def test_height_min(self):
