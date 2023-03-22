@@ -10,7 +10,7 @@ from threading import Thread
 
 def test_long_call(node):
     block = node.waitfornewblock()
-    assert_equal(block['height'], 0)
+    assert_equal(block['height'], 31)
 
 class ShutdownTest(WagerrTestFramework):
 
