@@ -22,7 +22,7 @@ class UTXOSetHashTest(WagerrTestFramework):
         self.setup_clean_chain = True
         self.mn_count = 0
         self.fast_dip3_enforcement = True
-        self.extra_args = [["-debug"]]
+        self.extra_args = [["-keypool=100"]]
 
     def skip_test_if_missing_module(self):
         self.skip_if_no_wallet()
@@ -36,7 +36,6 @@ class UTXOSetHashTest(WagerrTestFramework):
 
     def test_muhash_implementation(self):
         self.log.info("Test MuHash implementation consistency")
-        self.skip_test_if_missing_module()
 
         node = self.nodes[0]
 
