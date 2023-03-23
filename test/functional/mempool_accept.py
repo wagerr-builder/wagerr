@@ -229,7 +229,7 @@ class MempoolAcceptanceTest(WagerrTestFramework):
         tx.vout = [tx.vout[0]] * 2
         tx.vout[0].nValue = 21000000 * COIN
         self.check_mempool_result(
-            result_expected=[{'txid': tx.rehash(), 'allowed': False, 'reject-reason': '16: bad-txns-txouttotal-toolarge'}],
+            result_expected=[{'txid': tx.rehash(), 'allowed': False, 'reject-reason': '16: bad-txns-in-belowout'}],
             rawtxs=[tx.serialize().hex()],
         )
 
