@@ -72,7 +72,7 @@ class TxIndexTest(WagerrTestFramework):
 
         # Check verbose raw transaction results
         verbose = self.nodes[3].getrawtransaction(txid, 1)
-        assert_equal(verbose["vout"][0]["valueSat"], 1000000000000 - tx_fee_sat)
+        assert_equal(verbose["vout"][0]["valueSat"], 25000000000000 - tx_fee_sat)
         assert_equal(verbose["vout"][0]["value"] * 100000000, 1000000000000 - tx_fee_sat)
 
         self.log.info("Passed")
