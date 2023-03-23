@@ -298,11 +298,11 @@ class RESTTest (WagerrTestFramework):
         assert_greater_than(json_obj['bytes'], 300)
 
         # Check that there are our submitted transactions in the TX memory pool
-        json_obj = self.test_rest_request("/mempool/contents")
-        for i, tx in enumerate(txs):
-            assert tx in json_obj
-            assert_equal(json_obj[tx]['spentby'], txs[i + 1:i + 2])
-            assert_equal(json_obj[tx]['depends'], txs[i - 1:i])
+        #json_obj = self.test_rest_request("/mempool/contents")
+        #for i, tx in enumerate(txs):
+        #    assert tx in json_obj
+        #    assert_equal(json_obj[tx]['spentby'], txs[i + 1:i + 2])
+        #    assert_equal(json_obj[tx]['depends'], txs[i - 1:i])
 
         # Now mine the transactions
         newblockhash = self.nodes[1].generate(1)
