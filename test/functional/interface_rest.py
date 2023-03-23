@@ -231,7 +231,7 @@ class RESTTest (WagerrTestFramework):
         response_header = self.test_rest_request("/headers/1/{}".format(bb_hash), req_type=ReqType.BIN, ret_type=RetType.OBJ)
         assert_equal(int(response_header.getheader('content-length')), 80)
         response_header_bytes = response_header.read()
-        assert_equal(response_bytes[:112], response_header_bytes)
+        assert_equal(response_bytes[:80], response_header_bytes)
 
         # Check block hex format
         response_hex = self.test_rest_request("/block/{}".format(bb_hash), req_type=ReqType.HEX, ret_type=RetType.OBJ)
