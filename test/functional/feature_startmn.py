@@ -12,7 +12,9 @@ from test_framework.blocktools import *
 from test_framework.messages import FromHex, ToHex
 
 
-WAGERR_AUTH_ADDR = "TJA37d7KPVmd5Lqa2EcQsptcfLYsQ1Qcfk"
+#WAGERR_AUTH_ADDR = "TJA37d7KPVmd5Lqa2EcQsptcfLYsQ1Qcfk"
+WAGERR_AUTH_ADDR = "TDn9ZfHrYvRXyXC6KxRgN6ZRXgJH2JKZWe"
+
 
 class WalletTest(WagerrTestFramework):
     def set_test_params(self):
@@ -29,9 +31,9 @@ class WalletTest(WagerrTestFramework):
 
     def run_test(self):
         self.log.info("Importing token management privkey...")
-        self.nodes[0].importprivkey("TGVmKzjo3A4TJeBjU95VYZERj5sUq5BM68rv5UzT5KVszdgy5JCK")
-        privkey = self.nodes[0].dumpprivkey("TJA37d7KPVmd5Lqa2EcQsptcfLYsQ1Qcfk")
-        assert_equal(privkey, "TGVmKzjo3A4TJeBjU95VYZERj5sUq5BM68rv5UzT5KVszdgy5JCK")
+        self.nodes[0].importprivkey("TCH8Qby7krfugb2sFWzHQSEmTxBgzBSLkgPtt5EUnzDqfaX9dcsS")
+        privkey = self.nodes[0].dumpprivkey("TDn9ZfHrYvRXyXC6KxRgN6ZRXgJH2JKZWe")
+        assert_equal(privkey, "TCH8Qby7krfugb2sFWzHQSEmTxBgzBSLkgPtt5EUnzDqfaX9dcsS")
 
         self.log.info("Mining blocks...")
         self.nodes[0].generate(16)
@@ -57,7 +59,8 @@ class WalletTest(WagerrTestFramework):
         mgtBLSKey = self.nodes[0].bls("generate")
         self.log.info("mgtBLSKey:")
         self.log.info(mgtBLSKey)
-        mgtConfig = self.nodes[0].configuremanagementtoken("MGT", "Management", "https://www.google.com", "4f92d91db24bb0b8ca24a2ec86c4b012ccdc4b2e9d659c2079f5cc358413a765", "4", mgtBLSKey['public'], "false", "true")
+        self.log.info(mgtBLSKey)
+        mgtConfig = self.nodes[0].configuremanagementtoken("MGT", "Management", 4, "https://www.google.com", "4f92d91db24bb0b8ca24a2ec86c4b012ccdc4b2e9d659c2079f5cc358413a765", "4", mgtBLSKey['public'], "false", "true")
         self.nodes[0].generate(1)
         self.log.info("mgtConfig:")
         self.log.info(mgtConfig)
