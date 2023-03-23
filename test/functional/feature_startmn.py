@@ -19,10 +19,10 @@ class WalletTest(WagerrTestFramework):
         self.extra_args = [['-sporkkey=6xLZdACFRA53uyxz8gKDLcgVrm5kUUEu2B3BUzWUxHqa2W7irbH'],[]]
 
     def setup_network(self):
-        self.add_nodes(2, self.extra_args, stderr=sys.stdout)
+        self.add_nodes(2, self.extra_args)
         self.start_node(0)
         self.start_node(1)
-        connect_nodes_bi(self.nodes,0,1)
+        connect_nodes(self.nodes[0],1)
         self.sync_all(self.nodes[0:1])
 
     def run_test(self):
