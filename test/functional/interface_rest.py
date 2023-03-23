@@ -81,14 +81,14 @@ class RESTTest (WagerrTestFramework):
         self.log.info("Mine blocks and send Wagerr to node 1")
 
         # Random address so node1's balance doesn't increase
-        not_related_address = "TL55qnGJU7HEoJBDZqziBduvdaBFGTkVfX"
+        not_related_address = "yj949n1UH6fDhw6HtVE5VMj2iSTaSWBMcW"
 
         self.nodes[0].generate(1)
         self.sync_all()
         self.nodes[1].generate(100)
         self.sync_all()
 
-        assert_equal(self.nodes[0].getbalance(), 947000000)
+        assert_equal(self.nodes[0].getbalance(), 180860471)
 
         txid = self.nodes[0].sendtoaddress(self.nodes[1].getnewaddress(), 0.1)
         self.sync_all()
