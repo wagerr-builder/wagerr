@@ -56,7 +56,7 @@ class RPCInterfaceTest(WagerrTestFramework):
             result_by_id[res["id"]] = res
 
         assert_equal(result_by_id[1]['error'], None)
-        assert_equal(result_by_id[1]['result'], 0)
+        assert_equal(result_by_id[1]['result'], 31)
 
         assert_equal(result_by_id[2]['error']['code'], -32601)
         assert_equal(result_by_id[2]['result'], None)
