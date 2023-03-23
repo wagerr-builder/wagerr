@@ -16,6 +16,8 @@ class UacommentTest(WagerrTestFramework):
         self.num_nodes = 1
         self.setup_clean_chain = True
         self.extra_args = [["-debug"]]
+        self.mn_count = 0
+        self.fast_dip3_enforcement = False
 
     def run_test(self):
         self.log.info("test multiple -uacomment")
