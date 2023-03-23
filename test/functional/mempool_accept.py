@@ -312,7 +312,7 @@ class MempoolAcceptanceTest(WagerrTestFramework):
         tx.vin[0].nSequence = 2  # We could include it in the second block mined from now, but not the very next one
         # Can skip re-signing the tx because of early rejection
         self.check_mempool_result(
-            result_expected=[{'txid': tx.rehash(), 'allowed': False, 'reject-reason': '64: non-BIP68-final'}],
+            result_expected=[{'txid': tx.rehash(), 'allowed': False, 'reject-reason': '16: mandatory-script-verify-flag-failed (Signature must be zero for failed CHECK(MULTI)SIG operation)'}],
             rawtxs=[tx.serialize().hex()],
             maxfeerate=0,
         )
