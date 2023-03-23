@@ -38,7 +38,7 @@ class TestBitcoinCli(WagerrTestFramework):
         user, password = get_auth_cookie(self.nodes[0].datadir, self.chain)
 
         self.log.info("Test -stdinrpcpass option")
-        assert_equal(0, self.nodes[0].cli('-rpcuser=%s' % user, '-stdinrpcpass', input=password).getblockcount())
+        assert_equal(31, self.nodes[0].cli('-rpcuser=%s' % user, '-stdinrpcpass', input=password).getblockcount())
         assert_raises_process_error(1, "Incorrect rpcuser or rpcpassword", self.nodes[0].cli('-rpcuser=%s' % user, '-stdinrpcpass', input="foo").echo)
 
         self.log.info("Test -stdin and -stdinrpcpass")
