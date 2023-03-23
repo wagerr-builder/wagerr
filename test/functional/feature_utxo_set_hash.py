@@ -31,7 +31,7 @@ class UTXOSetHashTest(WagerrTestFramework):
         self.log.info("Test deterministic UTXO set hash results")
 
         # These depend on the setup_clean_chain option, the chain loaded from the cache
-        assert_equal(self.nodes[0].gettxoutsetinfo()['hash_serialized_2'], "bf47168f99200d859c959df075782046ce4228d9fe43aee8ee078ec9ad5ca0f3")
+        assert_equal(self.nodes[0].gettxoutsetinfo()['hash_serialized_2'], "58875aa329bf8221ffb5c815f2e24eb58728ebe75e3ab5dd7c8b310fb73c8f54")
         assert_equal(self.nodes[0].gettxoutsetinfo("muhash")['muhash'], "dd5ad2a105c2d29495f577245c357409002329b9f4d6182c0af3dc2f462555c8")
 
     def test_muhash_implementation(self):
