@@ -91,7 +91,7 @@ class WalletTest(WagerrTestFramework):
         mn01_votingAddr = mn01_ownerAddr
 #        mn01_blsMnkey = mn01_blsKey['secret']
 
-        self.nodes[0].sendtoaddress(mn01_fundsAddr, 10000000.001)
+        self.nodes[0].sendtoaddress(mn01_fundsAddr, 25000.001)
         self.nodes[0].generate(1)
         mn01_collateral_address = self.nodes[0].getnewaddress()
         mn01_rewards_address = self.nodes[0].getnewaddress()
