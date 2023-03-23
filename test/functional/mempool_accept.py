@@ -203,7 +203,7 @@ class MempoolAcceptanceTest(WagerrTestFramework):
         tx.deserialize(BytesIO(hex_str_to_bytes(raw_tx_reference)))
         tx.vin = [tx.vin[0]] * math.ceil(MAX_BLOCK_SIZE / len(tx.vin[0].serialize()))
         self.check_mempool_result(
-            result_expected=[{'txid': tx.rehash(), 'allowed': False, 'reject-reason': '16: bad-txns-oversize'}],
+            result_expected=[{'txid': tx.rehash(), 'allowed': False, 'reject-reason': '16: bad-txns-inputs-duplicate'}],
             rawtxs=[tx.serialize().hex()],
         )
 
