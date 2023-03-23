@@ -81,11 +81,11 @@ class RESTTest (WagerrTestFramework):
         self.log.info("Mine blocks and send Wagerr to node 1")
 
         # Random address so node1's balance doesn't increase
-        not_related_address = "yj949n1UH6fDhw6HtVE5VMj2iSTaSWBMcW"
+        not_related_address = "TL55qnGJU7HEoJBDZqziBduvdaBFGTkVfX"
 
         self.nodes[0].generate(1)
         self.sync_all()
-        self.nodes[1].generatetoaddress(100, not_related_address)
+        self.nodes[1].generate(100)
         self.sync_all()
 
         assert_equal(self.nodes[0].getbalance(), 947000000)
@@ -110,7 +110,7 @@ class RESTTest (WagerrTestFramework):
 
         self.log.info("Query an unspent TXO using the /getutxos URI")
 
-        self.nodes[1].generatetoaddress(1, not_related_address)
+        self.nodes[1].generate(1)
         self.sync_all()
         bb_hash = self.nodes[0].getbestblockhash()
 
