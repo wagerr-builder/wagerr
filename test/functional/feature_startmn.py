@@ -46,13 +46,17 @@ class WalletTest(WagerrTestFramework):
         tx_signed = self.nodes[0].signrawtransactionwithwallet(ToHex(tx))["hex"]
         self.nodes[0].sendrawtransaction(tx_signed)
 
-        self.nodes[0].generate(300)
+        self.nodes[0].generate(400)
+        self.sync_all()
 
         self.log.info("Funding token management address...")
         self.nodes[0].sendtoaddress("TDn9ZfHrYvRXyXC6KxRgN6ZRXgJH2JKZWe", 1)
+        self.nodes[0].generate(87)
+        self.sync_all()
 
         self.log.info("Mining blocks...")
-        self.nodes[0].generate(1)
+        self.nodes[0].generate(100)
+        self.sync_all()
 
 # configuremanagementtoken MGT Management https://www.google.com 0 4 906e74f8d70d3dcadd4523c5c217360880f8b311292fcd4e39da6fd8d1fd14b36d27abe642483f2ff4c0ed492c707db9 false true
         self.log.info("Create MGT token...")
