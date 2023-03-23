@@ -47,6 +47,8 @@ class WalletTest(WagerrTestFramework):
         self.nodes[0].sendrawtransaction(tx_signed)
 
         self.nodes[0].generate(400)
+        connect_nodes(self.nodes[0],1)
+
         self.sync_all()
 
         self.log.info("Funding token management address...")
