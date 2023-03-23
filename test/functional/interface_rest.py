@@ -114,7 +114,7 @@ class RESTTest (WagerrTestFramework):
         self.sync_all()
         bb_hash = self.nodes[0].getbestblockhash()
 
-        assert_equal(self.nodes[1].getbalance(), Decimal("0.1"))
+        assert_equal(self.nodes[1].getbalance(), Decimal("22750000.1"))
 
         # Check chainTip response
         json_obj = self.test_rest_request("/getutxos/{}-{}".format(*spending))
