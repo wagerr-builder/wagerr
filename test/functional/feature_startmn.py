@@ -9,6 +9,8 @@ import sys
 from test_framework.test_framework import WagerrTestFramework
 from test_framework.util import *
 from test_framework.blocktools import *
+from test_framework.messages import FromHex, ToHex
+
 
 WAGERR_AUTH_ADDR = "TJA37d7KPVmd5Lqa2EcQsptcfLYsQ1Qcfk"
 
@@ -109,7 +111,7 @@ class WalletTest(WagerrTestFramework):
         disconnect_nodes(0,1) 
         disconnect_nodes(1,0) 
         time.sleep(10)
-        connect_nodes_bi(self.nodes,0,1)
+        connect_nodes(self.nodes[0] ,1)
         self.sync_all()
         self.nodes[0].spork("SPORK_4_DIP0003_ENFORCED", self.nodes[0].getblockcount() + 1)
         self.wait_for_sporks_same()

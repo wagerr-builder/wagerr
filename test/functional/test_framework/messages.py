@@ -27,7 +27,7 @@ import struct
 import time
 
 from test_framework.siphash import siphash256
-from test_framework.util import hex_str_to_bytes
+from test_framework.util import hex_str_to_bytes, bytes_to_hex_str
 
 import wagerr_hash
 
@@ -195,7 +195,6 @@ def ser_dyn_bitset(l, bytes_based):
         r = ser_compact_size(n) + bytes(r)
     return r
 
-
 # Deserialize from a hex string representation (eg from RPC)
 def FromHex(obj, hex_string):
     obj.deserialize(BytesIO(hex_str_to_bytes(hex_string)))
@@ -227,6 +226,14 @@ class CService:
     def __repr__(self):
         return "CService(ip=%s port=%i)" % (self.ip, self.port)
 
+# Deserialize from a hex string representation (eg from RPC)
+def FromHex(obj, hex_string):
+    obj.deserialize(BytesIO(hex_str_to_bytes(hex_string)))
+    return obj
+
+# Convert a binary-serializable object to hex (eg for submission via RPC)
+def ToHex(obj):
+    return bytes_to_hex_str(obj.serialize())
 
 class CAddress:
     __slots__ = ("net", "ip", "nServices", "port", "time")
