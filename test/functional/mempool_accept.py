@@ -40,7 +40,6 @@ class MempoolAcceptanceTest(WagerrTestFramework):
         self.supports_cli = False
         self.mn_count = 0
         self.fast_dip3_enforcement = False
-        self.extra_args = [["-debug"]]
 
     def skip_test_if_missing_module(self):
         self.skip_if_no_wallet()
@@ -56,7 +55,7 @@ class MempoolAcceptanceTest(WagerrTestFramework):
 
         self.log.info('Start with empty mempool, and 200 blocks')
         self.mempool_size = 0
-        assert_equal(node.getblockcount(), 200)
+        assert_equal(node.getblockcount(), 210)
         assert_equal(node.getmempoolinfo()['size'], self.mempool_size)
         coins = node.listunspent()
 
