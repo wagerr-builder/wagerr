@@ -229,7 +229,7 @@ class RESTTest (WagerrTestFramework):
 
         # Compare with block header
         response_header = self.test_rest_request("/headers/1/{}".format(bb_hash), req_type=ReqType.BIN, ret_type=RetType.OBJ)
-        assert_equal(int(response_header.getheader('content-length')), 112)
+        assert_equal(int(response_header.getheader('content-length')), 80)
         response_header_bytes = response_header.read()
         assert_equal(response_bytes[:112], response_header_bytes)
 
