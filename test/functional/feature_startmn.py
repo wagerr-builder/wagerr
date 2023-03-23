@@ -49,7 +49,7 @@ class WalletTest(WagerrTestFramework):
         self.nodes[0].generate(300)
 
         self.log.info("Funding token management address...")
-        self.nodes[0].sendtoaddress("TJA37d7KPVmd5Lqa2EcQsptcfLYsQ1Qcfk", 1)
+        self.nodes[0].sendtoaddress("TDn9ZfHrYvRXyXC6KxRgN6ZRXgJH2JKZWe", 1)
 
         self.log.info("Mining blocks...")
         self.nodes[0].generate(1)
@@ -60,7 +60,7 @@ class WalletTest(WagerrTestFramework):
         self.log.info("mgtBLSKey:")
         self.log.info(mgtBLSKey)
         self.log.info(mgtBLSKey)
-        mgtConfig = self.nodes[0].configuremanagementtoken("MGT", "Management", 4, "https://www.google.com", "4f92d91db24bb0b8ca24a2ec86c4b012ccdc4b2e9d659c2079f5cc358413a765", mgtBLSKey['public'], "false", "true")
+        mgtConfig = self.nodes[0].configuremanagementtoken("MGT", "Management", "4", "https://www.google.com", "4f92d91db24bb0b8ca24a2ec86c4b012ccdc4b2e9d659c2079f5cc358413a765", mgtBLSKey['public'], "false", "true")
         self.nodes[0].generate(1)
         self.log.info("mgtConfig:")
         self.log.info(mgtConfig)
