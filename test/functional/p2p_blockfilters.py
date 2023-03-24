@@ -69,7 +69,7 @@ class CompactFiltersTest(WagerrTestFramework):
         self.nodes[0].generate(1)
         wait_until(lambda: self.nodes[0].getblockcount() == 232)
         stale_block_hash = self.nodes[0].getblockhash(232)
-
+        breakpoint()
         self.nodes[1].generate(101)
         wait_until(lambda: self.nodes[1].getblockcount() == 333)
 
