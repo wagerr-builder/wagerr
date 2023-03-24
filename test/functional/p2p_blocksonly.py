@@ -15,6 +15,8 @@ class P2PBlocksOnly(WagerrTestFramework):
         self.setup_clean_chain = False
         self.num_nodes = 1
         self.extra_args = [["-blocksonly"]]
+        self.mn_count = 0
+        self.fast_dip3_enforcement = False
 
     def run_test(self):
         self.nodes[0].add_p2p_connection(P2PInterface())
