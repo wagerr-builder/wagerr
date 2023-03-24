@@ -81,7 +81,7 @@ class MiningTest(WagerrTestFramework):
         assert_equal(mining_info['pooledtx'], 0)
 
         # Mine a block to leave initial block download
-        node.generatetoaddress(1, node.get_deterministic_priv_key().address)
+        node.generate(1)
         tmpl = node.getblocktemplate()
         self.log.info("getblocktemplate: Test capability advertised")
         assert 'proposal' in tmpl['capabilities']
@@ -250,7 +250,7 @@ class MiningTest(WagerrTestFramework):
         assert chain_tip(block.hash, status='active', branchlen=0) in filter_tip_keys(node.getchaintips())
 
         # Building a few blocks should give the same results
-        node.generatetoaddress(10, node.get_deterministic_priv_key().address)
+        node.generate(10)
         assert_raises_rpc_error(-25, 'time-too-old', lambda: node.submitheader(hexdata=CBlockHeader(bad_block_time).serialize().hex()))
         assert_raises_rpc_error(-25, 'bad-prevblk', lambda: node.submitheader(hexdata=CBlockHeader(bad_block2).serialize().hex()))
         node.submitheader(hexdata=CBlockHeader(block).serialize().hex())
