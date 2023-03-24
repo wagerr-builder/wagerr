@@ -83,7 +83,7 @@ class P2PFingerprintTest(WagerrTestFramework):
         self.nodes[0].setmocktime(int(time.time()) - 60 * 24 * 60 * 60)
 
         # Generating a chain of 10 blocks
-        block_hashes = self.nodes[0].generatetoaddress(10, self.nodes[0].get_deterministic_priv_key().address)
+        block_hashes = self.nodes[0].generate(10)
 
         # Create longer chain starting 2 blocks before current tip
         height = len(block_hashes) - 2
@@ -114,7 +114,7 @@ class P2PFingerprintTest(WagerrTestFramework):
 
         # Longest chain is extended so stale is much older than chain tip
         self.nodes[0].setmocktime(0)
-        tip = self.nodes[0].generatetoaddress(1, self.nodes[0].get_deterministic_priv_key().address)[0]
+        tip = self.nodes[0].generate(1)
         assert_equal(self.nodes[0].getblockcount(), 11)
 
         # Send getdata & getheaders to refresh last received getheader message
