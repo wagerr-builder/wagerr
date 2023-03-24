@@ -71,7 +71,7 @@ class CompactFiltersTest(WagerrTestFramework):
         stale_block_hash = self.nodes[0].getblockhash(232)
         breakpoint()
         self.nodes[1].generate(51)
-        wait_until(lambda: self.nodes[1].getblockcount() == 282)
+        wait_until(lambda: self.nodes[1].getblockcount() == 283)
 
         # Check that nodes have signalled NODE_COMPACT_FILTERS correctly.
         assert node0.nServices & NODE_COMPACT_FILTERS != 0
