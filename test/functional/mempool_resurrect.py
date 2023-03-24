@@ -12,6 +12,9 @@ from test_framework.util import assert_equal
 class MempoolCoinbaseTest(WagerrTestFramework):
     def set_test_params(self):
         self.num_nodes = 1
+        self.mn_count = 0
+        self.fast_dip3_enforcement = False
+        self.extra_args = [["-debug"]]
 
     def skip_test_if_missing_module(self):
         self.skip_if_no_wallet()
