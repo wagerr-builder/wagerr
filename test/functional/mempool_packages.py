@@ -19,6 +19,8 @@ MAX_ANCESTORS_CUSTOM = 5
 class MempoolPackagesTest(WagerrTestFramework):
     def set_test_params(self):
         self.num_nodes = 2
+        self.mn_count = 0
+        self.fast_dip3_enforcement = False
         self.extra_args = [
             ["-maxorphantxsize=1000"],
             ["-maxorphantxsize=1000", "-limitancestorcount={}".format(MAX_ANCESTORS_CUSTOM)],
