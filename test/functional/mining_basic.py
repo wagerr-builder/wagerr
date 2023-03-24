@@ -43,6 +43,7 @@ class MiningTest(WagerrTestFramework):
         self.num_nodes = 2
         self.setup_clean_chain = True
         self.supports_cli = False
+        self.mn_count = 0
 
     def mine_chain(self):
         self.log.info('Create some old blocks')
