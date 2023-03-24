@@ -60,15 +60,15 @@ class CompactFiltersTest(WagerrTestFramework):
         node1 = self.nodes[1].add_p2p_connection(CFiltersClient())
 
         # Nodes 0 & 1 share the same first 999 blocks in the chain.
-        self.nodes[0].generate(999)
+        self.nodes[0].generate(200)
         self.sync_blocks(timeout=600)
 
         # Stale blocks by disconnecting nodes 0 & 1, mining, then reconnecting
         disconnect_nodes(self.nodes[0], 1)
 
         self.nodes[0].generate(1)
-        wait_until(lambda: self.nodes[0].getblockcount() == 1031)
-        stale_block_hash = self.nodes[0].getblockhash(1031)
+        wait_until(lambda: self.nodes[0].getblockcount() == 431)
+        stale_block_hash = self.nodes[0].getblockhash(431)
 
         breakpoint()
         self.nodes[1].generate(1001)
