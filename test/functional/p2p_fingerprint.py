@@ -98,7 +98,7 @@ class P2PFingerprintTest(WagerrTestFramework):
             node0.send_and_ping(msg_block(block))
 
         # Check that reorg succeeded
-        assert_equal(self.nodes[0].getblockcount(), 10)
+        assert_equal(self.nodes[0].getblockcount(), 44)
 
         stale_hash = int(block_hashes[-1], 16)
 
@@ -115,7 +115,7 @@ class P2PFingerprintTest(WagerrTestFramework):
         # Longest chain is extended so stale is much older than chain tip
         self.nodes[0].setmocktime(0)
         tip = self.nodes[0].generate(1)
-        assert_equal(self.nodes[0].getblockcount(), 11)
+        assert_equal(self.nodes[0].getblockcount(), 45)
 
         # Send getdata & getheaders to refresh last received getheader message
         block_hash = int(tip, 16)
