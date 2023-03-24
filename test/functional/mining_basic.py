@@ -77,7 +77,7 @@ class MiningTest(WagerrTestFramework):
         assert 'currentblocksize' not in mining_info
         assert 'currentblocktx' not in mining_info
         assert_equal(mining_info['difficulty'], Decimal('4.656542373906925E-10'))
-        assert_equal(mining_info['networkhashps'], Decimal('12'))
+        assert_equal(mining_info['networkhashps'], Decimal('0.01282051282051282'))
         assert_equal(mining_info['pooledtx'], 0)
 
         # Mine a block to leave initial block download
