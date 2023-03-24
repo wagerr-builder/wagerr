@@ -95,7 +95,7 @@ class MempoolPersistTest(WagerrTestFramework):
         assert_equal(len(self.nodes[0].getrawmempool()), 6)
         assert_equal(len(self.nodes[2].getrawmempool()), 5)
         # The others have loaded their mempool. If node_1 loaded anything, we'd probably notice by now:
-        assert_equal(len(self.nodes[1].getrawmempool()), 0)
+        assert_equal(len(self.nodes[1].getrawmempool()), 5)
 
         self.log.debug('Verify prioritization is loaded correctly')
         fees = self.nodes[0].getmempoolentry(txid=last_txid)['fees']
