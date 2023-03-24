@@ -67,7 +67,6 @@ class CompactFiltersTest(WagerrTestFramework):
         disconnect_nodes(self.nodes[0], 1)
 
         self.nodes[0].generate(1)
-        breakpoint()
         wait_until(lambda: self.nodes[0].getblockcount() == 1031)
         stale_block_hash = self.nodes[0].getblockhash(1031)
 
