@@ -59,8 +59,8 @@ class MempoolLimitTest(WagerrTestFramework):
         assert txdata['confirmations'] ==  0  #confirmation should still be 0
 
         self.log.info('Check that mempoolminfee is larger than minrelytxfee')
-        assert_equal(self.nodes[0].getmempoolinfo()['minrelaytxfee'], Decimal('0.00001000'))
-        assert_greater_than(self.nodes[0].getmempoolinfo()['mempoolminfee'], Decimal('0.00001000'))
+        assert_equal(self.nodes[0].getmempoolinfo()['minrelaytxfee'], Decimal('0.0001000'))
+        assert_greater_than(self.nodes[0].getmempoolinfo()['mempoolminfee'], Decimal('0.0001000'))
 
         self.log.info('Create a mempool tx that will not pass mempoolminfee')
         us0 = utxos.pop()
