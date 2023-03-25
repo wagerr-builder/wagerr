@@ -32,7 +32,7 @@ class NodeNetworkLimitedTest(WagerrTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 3
-        self.extra_args = [['-prune=550', '-txindex=0', '-addrmantest'], [], []]
+        self.extra_args = [['-prune=550', '-txindex=0', '-addrmantest', "-disablegovernance=true"], [], []]
 
     def disconnect_all(self):
         disconnect_nodes(self.nodes[0], 1)
