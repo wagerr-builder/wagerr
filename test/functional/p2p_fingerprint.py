@@ -99,7 +99,7 @@ class P2PFingerprintTest(WagerrTestFramework):
 
         # Check that reorg succeeded
         assert_equal(self.nodes[0].getblockcount(), 44)
-
+        breakpoint()
         stale_hash = int(block_hashes[-1], 16)
 
         # Check that getdata request for stale block succeeds
