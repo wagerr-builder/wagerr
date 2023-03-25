@@ -234,7 +234,7 @@ class SendHeadersTest(WagerrTestFramework):
         tip_height = self.nodes[1].getblockcount()
         hash_to_invalidate = self.nodes[1].getblockhash(tip_height - (length - 1))
         self.nodes[1].invalidateblock(hash_to_invalidate)
-        all_hashes = self.nodes[1].generatelength + 1)  # Must be longer than the orig chain
+        all_hashes = self.nodes[1].generate(length + 1)  # Must be longer than the orig chain
         self.sync_blocks(self.nodes, wait=0.1)
         return [int(x, 16) for x in all_hashes]
 
