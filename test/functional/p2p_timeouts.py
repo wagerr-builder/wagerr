@@ -40,6 +40,8 @@ class TimeoutsTest(WagerrTestFramework):
         self.num_nodes = 1
         # set timeout to receive version/verack to 3 seconds
         self.extra_args = [["-peertimeout=3"]]
+        self.mn_count = 0
+        self.fast_dip3_enforcement = False
 
     def run_test(self):
         # Setup the p2p connections
