@@ -253,6 +253,7 @@ class SendHeadersTest(WagerrTestFramework):
         self.test_nonnull_locators(test_node, inv_node)
 
     def test_null_locators(self, test_node, inv_node):
+        breakpoint()
         tip = self.nodes[0].getblockheader(self.nodes[0].generate(1))
         tip_hash = int(tip["hash"], 16)
 
