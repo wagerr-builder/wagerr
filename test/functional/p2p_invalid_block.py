@@ -105,7 +105,7 @@ class InvalidBlockRequestTest(WagerrTestFramework):
         block3.hashMerkleRoot = block3.calc_merkle_root()
         block3.rehash()
         block3.solve()
-
+        breakpoint()
         node.p2p.send_blocks_and_test([block3], node, success=False, reject_reason='bad-cb-amount')
 
 
