@@ -31,6 +31,9 @@ class InvalidMessagesTest(WagerrTestFramework):
     def set_test_params(self):
         self.num_nodes = 1
         self.setup_clean_chain = True
+        self.mn_count = 0
+        self.fast_dip3_enforcement = False
+        self.extra_args = [["-debug"]]
 
     def run_test(self):
         """
