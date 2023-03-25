@@ -31,7 +31,7 @@ class P2PFingerprintTest(WagerrTestFramework):
         self.num_nodes = 1
         self.mn_count = 0
         self.fast_dip3_enforcement = False
-        self.extra_args = [["-debug"], ["-debug"]]
+        self.extra_args = [["-debug"]]
 
     # Build a chain of blocks on top of given one
     def build_chain(self, nblocks, prev_hash, prev_height, prev_median_time):
@@ -99,9 +99,9 @@ class P2PFingerprintTest(WagerrTestFramework):
 
         # Check that reorg succeeded
         assert_equal(self.nodes[0].getblockcount(), 44)
-        breakpoint()
         stale_hash = int(block_hashes[-1], 16)
 
+        breakpoint()
         # Check that getdata request for stale block succeeds
         self.send_block_request(stale_hash, node0)
         test_function = lambda: self.last_block_equals(stale_hash, node0)
