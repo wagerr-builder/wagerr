@@ -231,7 +231,7 @@ class AcceptBlockTest(WagerrTestFramework):
         self.nodes[0].generate(288)
         assert_equal(self.nodes[0].getblockcount(), 290)
         self.nodes[0].getblock(all_blocks[286].hash)
-        assert_equal(self.nodes[0].getbestblockhash(), all_blocks[286].hash)
+        assert_equal(self.nodes[0].getbestblockhash(), all_blocks[290].hash)
         assert_raises_rpc_error(-1, "Block not found on disk", self.nodes[0].getblock, all_blocks[287].hash)
         self.log.info("Successfully reorged to longer chain from non-whitelisted peer")
 
