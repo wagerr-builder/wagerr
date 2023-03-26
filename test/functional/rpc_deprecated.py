@@ -11,6 +11,8 @@ class DeprecatedRpcTest(WagerrTestFramework):
         self.num_nodes = 2
         self.setup_clean_chain = True
         self.extra_args = [[], []]
+        self.mn_count = 0
+        self.fast_dip3_enforcement = False
 
     def run_test(self):
         # This test should be used to verify correct behaviour of deprecated
