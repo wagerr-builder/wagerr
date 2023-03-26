@@ -95,6 +95,7 @@ class BlockchainTest(WagerrTestFramework):
             'headers',
             'initialblockdownload',
             'mediantime',
+            'moneysupply',
             'pruned',
             'size_on_disk',
             'softforks',
@@ -104,7 +105,7 @@ class BlockchainTest(WagerrTestFramework):
         res = self.nodes[0].getblockchaininfo()
 
         # result should have these additional pruning keys if manual pruning is enabled
-        assert_equal(sorted(['moneysupply'] + res.keys()), sorted(['pruneheight', 'automatic_pruning'] + keys))
+        assert_equal(sorted(res.keys()), sorted(['pruneheight', 'automatic_pruning'] + keys))
 
         # size_on_disk should be > 0
         assert_greater_than(res['size_on_disk'], 0)
