@@ -59,7 +59,8 @@ class BlockchainTest(WagerrTestFramework):
 
     def run_test(self):
         self.mine_chain()
-        self.restart_node(0, extra_args=['-stopatheight=238', '-prune=1', '-txindex=0'])  # Set extra args with pruning after rescan is complete
+        self.stop_node(0)
+        self.start_node(0, extra_args=['-stopatheight=238', '-prune=1', '-txindex=0'])  # Set extra args with pruning after rescan is complete
 
         # Actual tests
         self._test_getblockchaininfo()
