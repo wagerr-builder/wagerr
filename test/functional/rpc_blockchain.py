@@ -290,9 +290,9 @@ class BlockchainTest(WagerrTestFramework):
         assert abs(hashes_per_second * 78 - 1) < 0.0001
 
     def _test_stopatheight(self):
-        assert_equal(self.nodes[0].getblockcount(), 200)
+        assert_equal(self.nodes[0].getblockcount(), 231)
         self.nodes[0].generate(6)
-        assert_equal(self.nodes[0].getblockcount(), 206)
+        assert_equal(self.nodes[0].getblockcount(), 237)
         self.log.debug('Node should not stop at this height')
         assert_raises(subprocess.TimeoutExpired, lambda: self.nodes[0].process.wait(timeout=3))
         try:
@@ -302,7 +302,7 @@ class BlockchainTest(WagerrTestFramework):
         self.log.debug('Node should stop at this height...')
         self.nodes[0].wait_until_stopped()
         self.start_node(0, ['-txindex=0'])
-        assert_equal(self.nodes[0].getblockcount(), 207)
+        assert_equal(self.nodes[0].getblockcount(), 238)
 
     def _test_waitforblockheight(self):
         self.log.info("Test waitforblockheight")
