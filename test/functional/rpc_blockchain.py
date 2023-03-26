@@ -79,7 +79,7 @@ class BlockchainTest(WagerrTestFramework):
             # 156 sec steps from genesis block time
             set_node_times(self.nodes, t)
             self.nodes[0].generate(1)
-        assert_equal(self.nodes[0].getblockchaininfo()['blocks'], 200)
+        assert_equal(self.nodes[0].getblockchaininfo()['blocks'], 231)
 
     def _test_getblockchaininfo(self):
         self.log.info("Test getblockchaininfo")
