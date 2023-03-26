@@ -10,6 +10,9 @@ from test_framework.util import assert_equal, assert_raises_rpc_error
 class DeriveaddressesTest(WagerrTestFramework):
     def set_test_params(self):
         self.num_nodes = 1
+        self.mn_count = 0
+        self.fast_dip3_enforcement = False
+        self.extra_args = [["-debug"], ["-debug"]]
 
     def run_test(self):
         assert_raises_rpc_error(-5, "Missing checksum", self.nodes[0].deriveaddresses, "a")
