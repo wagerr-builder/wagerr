@@ -228,7 +228,7 @@ class AcceptBlockTest(WagerrTestFramework):
         test_node.send_message(msg_block(block_h1f))
 
         test_node.sync_with_ping()
-        self.nodes[0].generate(288)
+        #self.nodes[0].generate(288)
         breakpoint()
         assert_equal(self.nodes[0].getblockcount(), 290)
         self.nodes[0].getblock(all_blocks[286].hash)
