@@ -14,6 +14,9 @@ class DecodeScriptTest(WagerrTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 1
+        self.mn_count = 0
+        self.fast_dip3_enforcement = False
+        self.extra_args = [["-debug"]]
 
     def decodescript_script_sig(self):
         signature = '304502207fa7a6d1e0ee81132a269ad84e68d695483745cde8b541e3bf630749894e342a022100c1f7ab20e13e22fb95281a870f3dcf38d782e53023ee313d741ad0cfbc0c509001'
