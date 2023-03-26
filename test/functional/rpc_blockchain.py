@@ -78,7 +78,7 @@ class BlockchainTest(WagerrTestFramework):
         for t in range(TIME_GENESIS_BLOCK, TIME_GENESIS_BLOCK + 200 * 156, 156):
             # 156 sec steps from genesis block time
             set_node_times(self.nodes, t)
-            self.nodes[0].generatetoaddress(1, address)
+            self.nodes[0].generate(1)
         assert_equal(self.nodes[0].getblockchaininfo()['blocks'], 200)
 
     def _test_getblockchaininfo(self):
@@ -291,12 +291,12 @@ class BlockchainTest(WagerrTestFramework):
 
     def _test_stopatheight(self):
         assert_equal(self.nodes[0].getblockcount(), 200)
-        self.nodes[0].generatetoaddress(6, self.nodes[0].get_deterministic_priv_key().address)
+        self.nodes[0].generate(6)
         assert_equal(self.nodes[0].getblockcount(), 206)
         self.log.debug('Node should not stop at this height')
         assert_raises(subprocess.TimeoutExpired, lambda: self.nodes[0].process.wait(timeout=3))
         try:
-            self.nodes[0].generatetoaddress(1, self.nodes[0].get_deterministic_priv_key().address)
+            self.nodes[0].generate(1)
         except (ConnectionError, http.client.BadStatusLine):
             pass  # The node already shut down before response
         self.log.debug('Node should stop at this height...')
