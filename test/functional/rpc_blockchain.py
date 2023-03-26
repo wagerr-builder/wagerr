@@ -118,7 +118,7 @@ class BlockchainTest(WagerrTestFramework):
         assert not res['automatic_pruning']
 
         self.stop_node(0)
-        self.start_node(0, ['-stopatheight=207', '-txindex=0', '-disablegovernance'])
+        self.start_node(0, ['-stopatheight=207', '-txindex=0', '-disablegovernance'], expected_stderr='Warning: You are starting with governance validation disabled. This is expected because you are running a pruned node.')
         res = self.nodes[0].getblockchaininfo()
         # should have exact keys
         assert_equal(sorted(res.keys()), keys)
