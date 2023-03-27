@@ -34,7 +34,7 @@ class GetBlockFilterTest(WagerrTestFramework):
         connect_nodes(self.nodes[0], 1)
         self.sync_blocks()
 
-        assert_equal(self.nodes[0].getblockcount(), 4)
+        assert_equal(self.nodes[0].getblockcount(), 35)
         chain1_hashes = [self.nodes[0].getblockhash(block_height) for block_height in range(4)]
 
         # Test getblockfilter returns a filter for all blocks and filter types on active chain
