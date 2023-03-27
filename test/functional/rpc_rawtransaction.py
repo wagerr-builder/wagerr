@@ -55,6 +55,8 @@ class RawTransactionsTest(WagerrTestFramework):
             ["-txindex"],
         ]
         self.supports_cli = False
+        self.mn_count = 0
+        self.fast_dip3_enforcement = False
 
     def skip_test_if_missing_module(self):
         self.skip_if_no_wallet()
