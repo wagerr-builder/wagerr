@@ -11,7 +11,7 @@
 """
 
 from test_framework.test_framework import WagerrTestFramework
-from test_framework.util import assert_equal
+from test_framework.util import assert_equal, disconnect_nodes, connect_nodes
 
 class GetChainTipsTest (WagerrTestFramework):
     def set_test_params(self):
@@ -29,6 +29,8 @@ class GetChainTipsTest (WagerrTestFramework):
 
         # Split the network and build two chains of different lengths.
         self.split_network()
+        disconnect_nodes(self.nodes[0], 2)
+        disconnect_nodes(self.nodes[0], 3)
         self.nodes[0].generate(10)
         self.nodes[2].generate(20)
 #        self.sync_all(self.nodes[:2])
@@ -50,8 +52,8 @@ class GetChainTipsTest (WagerrTestFramework):
         breakpoint()
         # Join the network halves and check that we now have two tips
         # (at least at the nodes that previously had the short chain).
-        self.join_network ()
-
+        connect_nodes(self.nodes[0], 2)
+        connect_nodes(self.nodes[0], 3)
         tips = self.nodes[0].getchaintips ()
         assert_equal (len (tips), 1)
         assert_equal (tips[0], longTip)
