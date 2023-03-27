@@ -35,6 +35,9 @@ class GetblockstatsTest(WagerrTestFramework):
         self.num_nodes = 1
         self.setup_clean_chain = True
         self.supports_cli = False
+        self.mn_count = 0
+        self.fast_dip3_enforcement = False
+        self.extra_args = [["-debug"]]
 
     def get_stats(self):
         return [self.nodes[0].getblockstats(hash_or_height=self.start_height + i) for i in range(self.max_stat_pos+1)]
