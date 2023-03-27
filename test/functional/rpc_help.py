@@ -39,7 +39,7 @@ class HelpRpcTest(WagerrTestFramework):
         # command titles
         titles = [line[3:-3] for line in node.help().splitlines() if line.startswith('==')]
 
-        components = ['Addressindex','Betting', 'Blockchain', 'Control', 'Wagerr', 'Evo', 'Generating', 'Mining', 'Network', 'Rawtransactions', 'Tokens', 'Util']
+        components = ['Addressindex','Betting', 'Blockchain', 'Control', 'Wagerr', 'Evo', 'Generating', 'Mining', 'Network', 'Rawtransactions', 'Tokens', 'Util''Addressindex', 'Betting', 'Blockchain', 'Control', 'Wagerr', 'Evo', 'Generating', 'Mining', 'Network', 'Rawtransactions', 'Tokens', 'Util', 'Wallet', 'Zmq']
 
         if self.is_wallet_compiled():
             components.append('Wallet')
