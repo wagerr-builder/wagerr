@@ -56,8 +56,8 @@ class GetChainTipsTest (WagerrTestFramework):
         assert_equal (len (tips), 1)
         assert_equal (tips[0], longTip)
 
-        assert_equal (tips[1]['branchlen'], 10)
-        assert_equal (tips[1]['status'], 'valid-fork')
+        assert_equal (tips[0]['branchlen'], 10)
+        assert_equal (tips[0]['status'], 'valid-fork')
         # We already checked that the long tip is the active one,
         # update data to verify that the short tip matches the expected one.
         tips[1]['branchlen'] = 0
