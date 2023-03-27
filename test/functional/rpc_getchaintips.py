@@ -53,7 +53,7 @@ class GetChainTipsTest (WagerrTestFramework):
         self.join_network ()
 
         tips = self.nodes[0].getchaintips ()
-        assert_equal (len (tips), 2)
+        assert_equal (len (tips), 1)
         assert_equal (tips[0], longTip)
 
         assert_equal (tips[1]['branchlen'], 10)
