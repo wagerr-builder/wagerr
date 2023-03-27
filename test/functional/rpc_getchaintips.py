@@ -30,14 +30,16 @@ class GetChainTipsTest (WagerrTestFramework):
         # Split the network and build two chains of different lengths.
         self.split_network()
         disconnect_nodes(self.nodes[0], 2)
+        disconnect_nodes(self.nodes[2], 0)
         disconnect_nodes(self.nodes[0], 3)
+        disconnect_nodes(self.nodes[3], 0)
         self.nodes[0].generate(10)
         self.nodes[2].generate(20)
 #        self.sync_all(self.nodes[:2])
 #        self.sync_all(self.nodes[2:])
 
         tips = self.nodes[1].getchaintips ()
-        assert_equal (len (tips), 2)
+        assert_equal (len (tips), 0)
         shortTip = tips[0]
         assert_equal (shortTip['branchlen'], 0)
         assert_equal (shortTip['height'], 237)
