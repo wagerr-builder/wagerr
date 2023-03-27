@@ -17,6 +17,8 @@ class GetBlockFilterTest(WagerrTestFramework):
         self.setup_clean_chain = True
         self.num_nodes = 2
         self.extra_args = [["-blockfilterindex"], []]
+        self.mn_count = 0
+        self.fast_dip3_enforcement = False
 
     def run_test(self):
         # Create two chains by disconnecting nodes 0 & 1, mining, then reconnecting
