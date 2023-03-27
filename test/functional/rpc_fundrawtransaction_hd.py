@@ -563,7 +563,7 @@ class RawTransactionsTest(WagerrTestFramework):
         self.nodes[0].generate(1)
         self.sync_all()
         breakpoint()
-        assert_equal(oldBalance+Decimal('10000.19000000'), self.nodes[0].getbalance()) #0.19+block reward
+        assert_equal(oldBalance+Decimal('250000.19000000'), self.nodes[0].getbalance()) #0.19+block reward
 
         #####################################################
         # test fundrawtransaction with OP_RETURN and no vin #
