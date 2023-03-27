@@ -45,7 +45,7 @@ class GetChainTipsTest (WagerrTestFramework):
         assert_equal (len (tips), 1)
         longTip = tips[0]
         assert_equal (longTip['branchlen'], 0)
-        assert_equal (longTip['height'], 230)
+        assert_equal (longTip['height'], 240)
         assert_equal (tips[0]['status'], 'active')
 
         # Join the network halves and check that we now have two tips
