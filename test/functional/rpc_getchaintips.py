@@ -47,7 +47,7 @@ class GetChainTipsTest (WagerrTestFramework):
         assert_equal (longTip['branchlen'], 0)
         assert_equal (longTip['height'], 240)
         assert_equal (tips[0]['status'], 'active')
-
+        breakpoint()
         # Join the network halves and check that we now have two tips
         # (at least at the nodes that previously had the short chain).
         self.join_network ()
