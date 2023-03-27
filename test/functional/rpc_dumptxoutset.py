@@ -35,8 +35,8 @@ class DumptxoutsetTest(WagerrTestFramework):
 
         assert expected_path.is_file()
 
-        assert_equal(out['coins_written'], 21)
-        assert_equal(out['base_height'], 21)
+        assert_equal(out['coins_written'], 131)
+        assert_equal(out['base_height'], 131)
         assert_equal(out['path'], str(expected_path))
         # Blockhash should be deterministic based on mocked time.
         assert_equal(
