@@ -16,6 +16,9 @@ from test_framework.util import assert_equal
 class GetChainTipsTest (WagerrTestFramework):
     def set_test_params(self):
         self.num_nodes = 4
+        self.mn_count = 0
+        self.fast_dip3_enforcement = False
+        self.extra_args = [["-debug"], ["-debug"], ["-debug"], ["-debug"]]
 
     def run_test(self):
         tips = self.nodes[0].getchaintips()
