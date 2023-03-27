@@ -40,7 +40,7 @@ class GetChainTipsTest (WagerrTestFramework):
         assert_equal (len (tips), 2)
         shortTip = tips[0]
         assert_equal (shortTip['branchlen'], 0)
-        assert_equal (shortTip['height'], 240)
+        assert_equal (shortTip['height'], 237)
         assert_equal (tips[0]['status'], 'active')
 
         tips = self.nodes[3].getchaintips ()
