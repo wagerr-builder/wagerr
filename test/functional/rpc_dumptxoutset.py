@@ -13,18 +13,21 @@ from pathlib import Path
 
 class DumptxoutsetTest(WagerrTestFramework):
     def set_test_params(self):
+        self.set_wagerr_test_params(1, 0)
+        """
         self.setup_clean_chain = True
         self.num_nodes = 1
         self.mn_count = 0
         self.fast_dip3_enforcement = True
         self.extra_args = [["-debug"]]
+        """
 
     def run_test(self):
         """Test a trivial usage of the dumptxoutset RPC command."""
         node = self.nodes[0]
         mocktime = node.getblockheader(node.getblockhash(0))['time'] + 1
         node.setmocktime(mocktime)
-        #node.generate(100)
+        node.generate(100)
 
         FILENAME = 'txoutset.dat'
         out = node.dumptxoutset(FILENAME)
