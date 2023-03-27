@@ -286,7 +286,6 @@ class RawTransactionsTest(WagerrTestFramework):
         self.nodes[0].generate(1)
         self.sync_all()
 
-        breakpoint()
         assert_equal(self.nodes[2].getbalance(), bal) # the funds of a 2of2 multisig tx should not be marked as spendable
 
         txDetails = self.nodes[0].gettransaction(txId, True)
@@ -311,6 +310,7 @@ class RawTransactionsTest(WagerrTestFramework):
         self.sync_all()
         self.nodes[0].generate(1)
         self.sync_all()
+        breakpoint()
         assert_equal(self.nodes[0].getbalance(), bal+Decimal('10000.00000000')+Decimal('2.19000000')) #block reward + tx
 
         # getrawtransaction tests
