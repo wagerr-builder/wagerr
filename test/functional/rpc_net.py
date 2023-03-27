@@ -73,6 +73,7 @@ class NetTest(WagerrTestFramework):
         # connect_nodes connects each node to the other
         # and node0 was also connected to node2 (a masternode)
         # during network setup
+        breakpoint()
         assert_equal(self.nodes[0].getconnectioncount(), 3)
 
     def _test_getnettotals(self):
