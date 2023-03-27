@@ -611,7 +611,7 @@ class RawTransactionsTest(WagerrTestFramework):
 
         assert_greater_than(result["fee"], 0)
         assert_greater_than(result["changepos"], -1)
-        assert_equal(result["fee"] + res_dec["vout"][result["changepos"]]["value"], watchonly_amount / 10)
+        assert_equal(result["fee"] + res_dec["vout"][result["changepos"]]["value"], watchonly_amount)
 
         signedtx = self.nodes[3].signrawtransactionwithwallet(result["hex"])
         assert not signedtx["complete"]
