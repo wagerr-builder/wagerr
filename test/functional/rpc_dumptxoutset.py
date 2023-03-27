@@ -24,7 +24,7 @@ class DumptxoutsetTest(WagerrTestFramework):
         node = self.nodes[0]
         mocktime = node.getblockheader(node.getblockhash(0))['time'] + 1
         node.setmocktime(mocktime)
-        node.generate(100)
+        #node.generate(100)
 
         FILENAME = 'txoutset.dat'
         out = node.dumptxoutset(FILENAME)
