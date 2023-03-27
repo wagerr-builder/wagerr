@@ -27,7 +27,7 @@ class GetBlockFilterTest(WagerrTestFramework):
         self.nodes[0].generate(3)
         self.nodes[1].generate(4)
 
-        assert_equal(self.nodes[0].getblockcount(), 3)
+        assert_equal(self.nodes[0].getblockcount(), 34)
         chain0_hashes = [self.nodes[0].getblockhash(block_height) for block_height in range(4)]
 
         # Reorg node 0 to a new chain
