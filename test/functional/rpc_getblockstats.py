@@ -18,7 +18,7 @@ TESTSDIR = os.path.dirname(os.path.realpath(__file__))
 
 class GetblockstatsTest(WagerrTestFramework):
 
-    start_height = 101
+    start_height = 31
     max_stat_pos = 2
 
     def add_options(self, parser):
