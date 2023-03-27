@@ -38,7 +38,7 @@ class DumptxoutsetTest(WagerrTestFramework):
         # Blockhash should be deterministic based on mocked time.
         assert_equal(
             out['base_hash'],
-            '65a627bab5f50aea8e69acbf9fcbe6e5162bd556ce1c46f0ec4452afaedbb702')
+            '652f911c0b4bcc7d33007ce605ac9af4aec4eeab2d77eff3cea4635981ac1d8c')
 
         with open(str(expected_path), 'rb') as f:
             digest = hashlib.sha256(f.read()).hexdigest()
