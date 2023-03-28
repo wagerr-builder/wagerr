@@ -120,7 +120,7 @@ class WalletTest(WagerrTestFramework):
             assert_equal(self.nodes[0].getunconfirmedbalance(), Decimal('960'))  # output of node 1's spend
             assert_equal(self.nodes[0].getwalletinfo()["unconfirmed_balance"], Decimal('960'))
             assert_equal(self.nodes[1].getunconfirmedbalance(), Decimal('490'))  # Doesn't include output of node 0's send since it was spent
-            assert_equal(self.nodes[1].getwalletinfo()["unconfirmed_balance"], Decimal('0'))
+            assert_equal(self.nodes[1].getwalletinfo()["unconfirmed_balance"], Decimal('490'))
 
         test_balances(fee_node_1=Decimal('0.01'))
 
