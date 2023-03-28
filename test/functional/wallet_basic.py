@@ -118,12 +118,13 @@ class WalletTest(WagerrTestFramework):
         assert_equal(walletinfo['immature_balance'], 2500000)
 
         # Have node0 mine a block, thus it will collect its own fee.
-        self.nodes[2].generate(1)
+        self.nodes[0].generate(1)
         connect_nodes(self.nodes[0], 1)
         connect_nodes(self.nodes[0], 2)
         connect_nodes(self.nodes[0], 3)
 
         # Exercise locking of unspent outputs
+        self.nodes[2].generate(1)
         unspent_0 = self.nodes[2].listunspent()[0]
         unspent_0 = {"txid": unspent_0["txid"], "vout": unspent_0["vout"]}
         assert_raises_rpc_error(-8, "Invalid parameter, expected locked output", self.nodes[2].lockunspent, True, [unspent_0])
