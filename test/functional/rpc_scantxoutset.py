@@ -17,6 +17,9 @@ class ScantxoutsetTest(WagerrTestFramework):
         self.num_nodes = 1
         self.setup_clean_chain = True
         self.supports_cli = False
+        self.mn_count = 0
+        self.fast_dip3_enforcement = False
+        self.extra_args = [["-debug"]]
 
     def skip_test_if_missing_module(self):
         self.skip_if_no_wallet()
