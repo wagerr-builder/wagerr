@@ -79,7 +79,7 @@ class WalletTest(WagerrTestFramework):
         self.nodes[0].generate(11)
         utxos = self.nodes[0].listunspent()
         assert_equal(len(utxos), 1)
-        assert_equal(len(self.nodes[1].listunspent()), 86)
+        assert_equal(len(self.nodes[1].listunspent()), 101)
         assert_equal(len(self.nodes[2].listunspent()), 0)
 
         self.log.info("test gettxout")
