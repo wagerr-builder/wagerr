@@ -15,6 +15,8 @@ class SetBanTests(WagerrTestFramework):
         self.num_nodes = 2
         self.setup_clean_chain = True
         self.extra_args = [[],[]]
+        self.mn_count = 0
+        self.fast_dip3_enforcement = False
 
     def run_test(self):
         # Node 0 connects to Node 1, check that the noban permission is not granted
