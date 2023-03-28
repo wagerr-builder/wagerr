@@ -25,6 +25,8 @@ class AbandonConflictTest(WagerrTestFramework):
     def set_test_params(self):
         self.num_nodes = 2
         self.extra_args = [["-minrelaytxfee=0.00001"], []]
+        self.mn_count = 0
+        self.fast_dip3_enforcement = False
 
     def skip_test_if_missing_module(self):
         self.skip_if_no_wallet()
