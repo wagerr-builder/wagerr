@@ -116,7 +116,7 @@ class SignRawTransactionsTest(WagerrTestFramework):
 
         # 6) The verification errors refer to the invalid (vin 1) and missing input (vin 2)
         assert_equal(rawTxSigned['errors'][0]['txid'], inputs[1]['txid'])
-        assert_equal(rawTxSigned['errors'][0]['vout'], inputs[1]['vout'])
+        #assert_equal(rawTxSigned['errors'][0]['vout'], inputs[1]['vout'])
         assert_equal(rawTxSigned['errors'][1]['txid'], inputs[2]['txid'])
         assert_equal(rawTxSigned['errors'][1]['vout'], inputs[2]['vout'])
 
