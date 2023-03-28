@@ -119,7 +119,7 @@ class WalletBackupTest(WagerrTestFramework):
         self.sync_blocks()
         self.nodes[3].generate(100)
         self.sync_blocks()
-
+        breakpoint()
         assert_equal(self.nodes[0].getbalance(), 947000000)
         assert_equal(self.nodes[1].getbalance(), 100000)
         assert_equal(self.nodes[2].getbalance(), 100000)
