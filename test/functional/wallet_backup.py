@@ -74,12 +74,12 @@ class WalletBackupTest(WagerrTestFramework):
         a1 = self.nodes[1].getnewaddress()
         a2 = self.nodes[2].getnewaddress()
 
-        self.one_send(0, a1)
-        self.one_send(0, a2)
-        self.one_send(1, a0)
+        self.one_send(1, a1)
         self.one_send(1, a2)
         self.one_send(2, a0)
-        self.one_send(2, a1)
+        self.one_send(2, a2)
+        self.one_send(3, a0)
+        self.one_send(3, a1)
 
         # Have the miner (node3) mine a block.
         # Must sync mempools before mining.
@@ -119,7 +119,6 @@ class WalletBackupTest(WagerrTestFramework):
         self.sync_blocks()
         self.nodes[3].generate(100)
         self.sync_blocks()
-        breakpoint()
         assert_equal(self.nodes[0].getbalance(), 0)
         assert_equal(self.nodes[1].getbalance(), 178110471)
         assert_equal(self.nodes[2].getbalance(), 2500000)
