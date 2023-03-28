@@ -154,9 +154,9 @@ class ToolWalletTest(WagerrTestFramework):
             ===========
             Encrypted: no
             HD (hd seed available): yes
-            Keypool Size: 2
-            Transactions: 1
-            Address Book: 1
+            Keypool Size: 1
+            Transactions: 32
+            Address Book: 2
         ''')
         self.assert_tool_output(out, '-wallet=wallet.dat', 'info')
         shasum_after = self.wallet_shasum()
