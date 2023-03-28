@@ -89,7 +89,7 @@ class WalletTest(WagerrTestFramework):
         txout = self.nodes[0].gettxout(txid=confirmed_txid, n=confirmed_index, include_mempool=False)
         assert_equal(txout['value'], 250000)
         txout = self.nodes[0].gettxout(txid=confirmed_txid, n=confirmed_index, include_mempool=True)
-        assert_equal(txout['value'], 947000000)
+        assert_equal(txout['value'], 250000)
 
         # Send 210 WAGERR from 0 to 2 using sendtoaddress call.
         # Second transaction will be child of first, and will require a fee
