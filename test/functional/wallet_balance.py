@@ -157,10 +157,10 @@ class WalletTest(WagerrTestFramework):
         # dynamically loading the wallet.
         before = self.nodes[1].getunconfirmedbalance()
         dst = self.nodes[1].getnewaddress()
-        self.nodes[1].unloadwallet('')
+        #self.nodes[1].unloadwallet('') # no longer able to unload default wallet
         self.nodes[0].sendtoaddress(dst, 0.1)
         self.sync_all()
-        self.nodes[1].loadwallet('')
+        # self.nodes[1].loadwallet('')
         after = self.nodes[1].getunconfirmedbalance()
         assert_equal(before + Decimal('0.1'), after)
 
