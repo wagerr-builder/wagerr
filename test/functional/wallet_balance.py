@@ -53,6 +53,8 @@ class WalletTest(WagerrTestFramework):
             ['-limitdescendantcount=3'],  # Limit mempool descendants as a hack to have wallet txs rejected from the mempool
             [],
         ]
+        self.mn_count = 0
+        self.fast_dip3_enforcement = False
 
     def skip_test_if_missing_module(self):
         self.skip_if_no_wallet()
