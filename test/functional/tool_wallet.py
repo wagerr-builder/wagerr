@@ -101,8 +101,8 @@ class ToolWalletTest(WagerrTestFramework):
             Encrypted: no
             HD (hd seed available): no
             Keypool Size: 1
-            Transactions: 0
-            Address Book: 1
+            Transactions: 31
+            Address Book: 2
         ''')
         self.assert_tool_output(out, '-wallet=wallet.dat', 'info')
 
