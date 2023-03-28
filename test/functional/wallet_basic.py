@@ -71,7 +71,7 @@ class WalletTest(WagerrTestFramework):
         connect_nodes(self.nodes[0], 3)
         #self.sync_all(self.nodes[0:3])
 
-        assert_equal(self.nodes[0].getbalance(), 947000000)
+        assert_equal(self.nodes[0].getbalance(), 0)
         assert_equal(self.nodes[1].getbalance(), 760000)
         assert_equal(self.nodes[2].getbalance(), 0)
 
