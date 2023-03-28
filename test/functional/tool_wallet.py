@@ -100,7 +100,7 @@ class ToolWalletTest(WagerrTestFramework):
             ===========
             Encrypted: no
             HD (hd seed available): no
-            Keypool Size: 1
+            Keypool Size: 0
             Transactions: 31
             Address Book: 2
         ''')
