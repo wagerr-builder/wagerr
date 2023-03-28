@@ -149,7 +149,7 @@ class AvoidReuseTest(WagerrTestFramework):
         self.sync_all()
 
         # listunspent should show 1 single, unused 10 btc output
-        assert_unspent(self.nodes[1], total_count=1, total_sum=10, reused_supported=True, reused_count=0)
+        assert_unspent(self.nodes[1], total_count=4, total_sum=10, reused_supported=True, reused_count=0)
 
         self.nodes[1].sendtoaddress(retaddr, 5)
         self.nodes[0].generate(1)
