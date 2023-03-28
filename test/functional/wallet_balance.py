@@ -132,7 +132,7 @@ class WalletTest(WagerrTestFramework):
         self.log.info("Test getbalance and getunconfirmedbalance with conflicted unconfirmed inputs")
         # test_balances(fee_node_1=Decimal('0.02'))
 
-        self.nodes[1].generatetoaddress(1, ADDRESS_WATCHONLY)
+        self.nodes[1].generate(1)
         self.sync_all()
 
         # balances are correct after the transactions are confirmed
@@ -142,7 +142,7 @@ class WalletTest(WagerrTestFramework):
         # Send total balance away from node 1
         txs = create_transactions(self.nodes[1], self.nodes[0].getnewaddress(), Decimal('29.98'), [Decimal('0.01')])
         self.nodes[1].sendrawtransaction(txs[0]['hex'])
-        self.nodes[1].generatetoaddress(2, ADDRESS_WATCHONLY)
+        self.nodes[1].generate(2)
         self.sync_all()
 
         # getbalance with a minconf incorrectly excludes coins that have been spent more recently than the minconf blocks ago
@@ -189,7 +189,7 @@ class WalletTest(WagerrTestFramework):
         self.nodes[1].sendrawtransaction(hexstring=tx_replace, maxfeerate=0)
 
         # Now confirm tx_replace
-        block_reorg = self.nodes[1].generatetoaddress(1, ADDRESS_WATCHONLY)[0]
+        block_reorg = self.nodes[1].generate(1)[0]
         self.sync_all()
         assert_equal(self.nodes[0].getbalance(minconf=0), total_amount)
 
@@ -199,7 +199,7 @@ class WalletTest(WagerrTestFramework):
         self.sync_blocks()
         self.nodes[0].syncwithvalidationinterfacequeue()
         assert_equal(self.nodes[0].getbalance(minconf=0), 0)  # wallet txs not in the mempool are untrusted
-        self.nodes[0].generatetoaddress(1, ADDRESS_WATCHONLY)
+        self.nodes[0].generate(1)
         assert_equal(self.nodes[0].getbalance(minconf=0), 0)  # wallet txs not in the mempool are untrusted
 
         # Now confirm tx_orig
@@ -208,7 +208,7 @@ class WalletTest(WagerrTestFramework):
         connect_nodes(self.nodes[1], 0)
         self.sync_blocks()
         self.nodes[1].sendrawtransaction(tx_orig)
-        self.nodes[1].generatetoaddress(1, ADDRESS_WATCHONLY)
+        self.nodes[1].generate(1)
         self.sync_all()
         assert_equal(self.nodes[0].getbalance(minconf=0), total_amount + 1)  # The reorg recovered our fee of 1 coin
 
