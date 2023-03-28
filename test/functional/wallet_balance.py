@@ -151,7 +151,7 @@ class WalletTest(WagerrTestFramework):
         assert_equal(self.nodes[1].getbalance(minconf=3), Decimal('23498529.98997750'))
 
         # getbalance with minconf=2 will show the new balance.
-        assert_equal(self.nodes[1].getbalance(minconf=2), Decimal('0'))
+        assert_equal(self.nodes[1].getbalance(minconf=2), Decimal('23748499.99997750'))
 
         # check mempool transactions count for wallet unconfirmed balance after
         # dynamically loading the wallet.
