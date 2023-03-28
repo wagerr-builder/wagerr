@@ -70,8 +70,9 @@ class WalletTest(WagerrTestFramework):
         self.nodes[0].generate(1)
         self.sync_all()
         self.nodes[1].generate(1)
-        self.nodes[1].generate(101)
+        self.nodes[1].generate(100)
         self.nodes[1].sendtoaddress(ADDRESS_WATCHONLY, 1000)
+        self.nodes[1].generate(1)
         self.sync_all()
 
         assert_equal(self.nodes[0].getbalance(), 180860471)
@@ -85,7 +86,7 @@ class WalletTest(WagerrTestFramework):
         assert_equal(self.nodes[0].getbalance(minconf=1, addlocked=True), 180860471)
         assert_equal(self.nodes[0].getbalance(minconf=1, avoid_reuse=False), 180860471)
         assert_equal(self.nodes[0].getbalance(minconf=1), 180860471)
-        assert_equal(self.nodes[0].getbalance(minconf=0, include_watchonly=True), 1000)
+        assert_equal(self.nodes[0].getbalance(minconf=0, include_watchonly=True), 180860471)
         assert_equal(self.nodes[1].getbalance(minconf=0, include_watchonly=True), 23000000)
 
         # Send 490 BTC from 0 to 1 and 960 BTC from 1 to 0.
