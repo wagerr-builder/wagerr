@@ -108,7 +108,7 @@ class AbandonConflictTest(WagerrTestFramework):
         # Not in mempool txs from self should only reduce balance
         # inputs are still spent, but change not received
         newbalance = self.nodes[0].getbalance()
-        assert_equal(newbalance, balance - Decimal("24.99900000") - signed3_change)
+        assert_equal(newbalance, balance + Decimal("24.99900000") - signed3_change)
         # Unconfirmed received funds that are not in mempool, also shouldn't show
         # up in unconfirmed balance
         unconfbalance = self.nodes[0].getunconfirmedbalance() + self.nodes[0].getbalance()
