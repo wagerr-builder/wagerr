@@ -125,7 +125,6 @@ class WalletTest(WagerrTestFramework):
 
         # Exercise locking of unspent outputs
         self.nodes[2].generate(10)
-        breakpoint()
         unspent_1 = self.nodes[2].listunspent()
         unspent_0 = unspent_1[0]
         unspent_0 = {"txid": unspent_0["txid"], "vout": unspent_0["vout"]}
