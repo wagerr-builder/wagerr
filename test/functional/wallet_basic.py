@@ -55,7 +55,7 @@ class WalletTest(WagerrTestFramework):
 
         self.log.info("Mining blocks...")
 
-        self.nodes[0].generate(1)
+        self.nodes[0].generate(2)
 
         walletinfo = self.nodes[0].getwalletinfo()
         assert_equal(walletinfo['immature_balance'], 0)
