@@ -119,7 +119,9 @@ class WalletTest(WagerrTestFramework):
 
         # Have node0 mine a block, thus it will collect its own fee.
         self.nodes[0].generate(1)
-        self.sync_all(self.nodes[0:3])
+        connect_nodes(self.nodes[0], 1)
+        connect_nodes(self.nodes[0], 2)
+        connect_nodes(self.nodes[0], 3)
 
         # Exercise locking of unspent outputs
         unspent_0 = self.nodes[2].listunspent()[0]
