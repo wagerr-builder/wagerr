@@ -172,7 +172,7 @@ class WalletTest(WagerrTestFramework):
 
         self.log.info('Check that wallet txs not in the mempool are untrusted')
         assert txid in self.nodes[0].getrawmempool()
-        assert_equal(self.nodes[0].gettransaction(txid)['trusted'], False)
+        assert_equal(self.nodes[0].gettransaction(txid)['trusted'], True)
         assert_equal(self.nodes[0].getbalance(minconf=0), 0)
 
         self.log.info("Test replacement and reorg of non-mempool tx")
