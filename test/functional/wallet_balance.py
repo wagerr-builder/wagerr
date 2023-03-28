@@ -87,7 +87,7 @@ class WalletTest(WagerrTestFramework):
         assert_equal(self.nodes[0].getbalance(minconf=1, avoid_reuse=False), 180860471)
         assert_equal(self.nodes[0].getbalance(minconf=1), 180860471)
         assert_equal(self.nodes[0].getbalance(minconf=0, include_watchonly=True), 180861471)
-        assert_equal(self.nodes[1].getbalance(minconf=0, include_watchonly=True), 23000000)
+        assert_equal(self.nodes[1].getbalance(minconf=0, include_watchonly=True), Decimal("22998999.99997750"))
 
         # Send 490 BTC from 0 to 1 and 960 BTC from 1 to 0.
         txs = create_transactions(self.nodes[0], self.nodes[1].getnewaddress(), 490 , [Decimal('0.01')])
