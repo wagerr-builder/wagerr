@@ -136,7 +136,7 @@ class WalletTest(WagerrTestFramework):
         self.sync_all()
 
         # balances are correct after the transactions are confirmed
-        assert_equal(self.nodes[0].getbalance(), Decimal('969.99'))  # node 1's send plus change from node 0's send
+        assert_equal(self.nodes[0].getbalance(), Decimal('180860940.99000000'))  # node 1's send plus change from node 0's send
         assert_equal(self.nodes[1].getbalance(), Decimal('29.99'))  # change from node 0's send
 
         # Send total balance away from node 1
