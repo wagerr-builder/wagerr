@@ -70,7 +70,7 @@ class WalletTest(WagerrTestFramework):
         self.nodes[0].generate(1)
         self.sync_all()
         self.nodes[1].generate(1)
-        self.nodes[1].generatetoaddress(101, ADDRESS_WATCHONLY)
+        self.nodes[1].generate(101)
         self.sync_all()
 
         assert_equal(self.nodes[0].getbalance(), 500)
