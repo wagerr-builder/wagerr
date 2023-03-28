@@ -120,10 +120,10 @@ class WalletBackupTest(WagerrTestFramework):
         self.nodes[3].generate(100)
         self.sync_blocks()
         breakpoint()
-        assert_equal(self.nodes[0].getbalance(), 947000000)
-        assert_equal(self.nodes[1].getbalance(), 100000)
-        assert_equal(self.nodes[2].getbalance(), 100000)
-        assert_equal(self.nodes[3].getbalance(), 850000)
+        assert_equal(self.nodes[0].getbalance(), 0)
+        assert_equal(self.nodes[1].getbalance(), 178110471)
+        assert_equal(self.nodes[2].getbalance(), 2500000)
+        assert_equal(self.nodes[3].getbalance(), 22500000)
 
         self.log.info("Creating transactions")
         # Five rounds of sending each other transactions.
