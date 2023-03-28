@@ -82,7 +82,7 @@ class RPCWhitelistTest(WagerrTestFramework):
                 i += 1
             for permission in permissions:
                 self.log.info("[" + user[0] + "]: Testing a permitted permission (" + permission + ")")
-                assert_equal(401, rpccall(self.nodes[0], user, permission).status)
+                assert_equal(200, rpccall(self.nodes[0], user, permission).status)
             for permission in self.never_allowed:
                 self.log.info("[" + user[0] + "]: Testing a non permitted permission (" + permission + ")")
                 assert_equal(403, rpccall(self.nodes[0], user, permission).status)
