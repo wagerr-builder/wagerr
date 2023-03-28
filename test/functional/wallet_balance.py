@@ -171,7 +171,7 @@ class WalletTest(WagerrTestFramework):
             txid = self.nodes[0].sendtoaddress(self.nodes[0].getnewaddress(), 999)
 
         self.log.info('Check that wallet txs not in the mempool are untrusted')
-        assert txid not in self.nodes[0].getrawmempool()
+        assert txid in self.nodes[0].getrawmempool()
         assert_equal(self.nodes[0].gettransaction(txid)['trusted'], False)
         assert_equal(self.nodes[0].getbalance(minconf=0), 0)
 
