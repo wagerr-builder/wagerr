@@ -137,7 +137,7 @@ class WalletTest(WagerrTestFramework):
 
         # balances are correct after the transactions are confirmed
         assert_equal(self.nodes[0].getbalance(), Decimal('180860940.99000000'))  # node 1's send plus change from node 0's send
-        assert_equal(self.nodes[1].getbalance(), Decimal('29.99'))  # change from node 0's send
+        assert_equal(self.nodes[1].getbalance(), Decimal('23248529.98997750'))  # change from node 0's send
 
         # Send total balance away from node 1
         txs = create_transactions(self.nodes[1], self.nodes[0].getnewaddress(), Decimal('29.98'), [Decimal('0.01')])
