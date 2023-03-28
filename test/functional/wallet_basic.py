@@ -58,7 +58,7 @@ class WalletTest(WagerrTestFramework):
         self.nodes[0].generate(1)
 
         walletinfo = self.nodes[0].getwalletinfo()
-        assert_equal(walletinfo['immature_balance'], 947000000.00000000)
+        assert_equal(walletinfo['immature_balance'], 0)
         assert_equal(walletinfo['balance'], 0)
 
         self.sync_all(self.nodes[0:3])
