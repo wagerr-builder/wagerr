@@ -76,6 +76,7 @@ class WalletTest(WagerrTestFramework):
         assert_equal(self.nodes[2].getbalance(), 0)
 
         # Check that only first and second nodes have UTXOs
+        breakpoint()
         utxos = self.nodes[0].listunspent()
         assert_equal(len(utxos), 1)
         assert_equal(len(self.nodes[1].listunspent()), 86)
