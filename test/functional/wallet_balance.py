@@ -74,7 +74,7 @@ class WalletTest(WagerrTestFramework):
         self.sync_all()
 
         assert_equal(self.nodes[0].getbalance(), 180860471)
-        assert_equal(self.nodes[1].getbalance(), 500)
+        assert_equal(self.nodes[1].getbalance(), 23000000)
 
         self.log.info("Test getbalance with different arguments")
         assert_equal(self.nodes[0].getbalance("*"), 180860471)
