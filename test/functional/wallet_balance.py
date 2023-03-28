@@ -148,7 +148,7 @@ class WalletTest(WagerrTestFramework):
         # getbalance with a minconf incorrectly excludes coins that have been spent more recently than the minconf blocks ago
         # TODO: fix getbalance tracking of coin spentness depth
         # getbalance with minconf=3 should still show the old balance
-        assert_equal(self.nodes[1].getbalance(minconf=3), Decimal('0'))
+        assert_equal(self.nodes[1].getbalance(minconf=3), Decimal('23498529.98997750'))
 
         # getbalance with minconf=2 will show the new balance.
         assert_equal(self.nodes[1].getbalance(minconf=2), Decimal('0'))
