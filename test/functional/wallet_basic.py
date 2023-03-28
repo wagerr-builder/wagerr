@@ -125,6 +125,7 @@ class WalletTest(WagerrTestFramework):
 
         # Exercise locking of unspent outputs
         self.nodes[2].generate(1)
+        breakpoint()
         unspent_0 = self.nodes[2].listunspent()[0]
         unspent_0 = {"txid": unspent_0["txid"], "vout": unspent_0["vout"]}
         assert_raises_rpc_error(-8, "Invalid parameter, expected locked output", self.nodes[2].lockunspent, True, [unspent_0])
