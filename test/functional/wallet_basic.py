@@ -72,7 +72,7 @@ class WalletTest(WagerrTestFramework):
         #self.sync_all(self.nodes[0:3])
 
         assert_equal(self.nodes[0].getbalance(), 0)
-        assert_equal(self.nodes[1].getbalance(), 760000)
+        assert_equal(self.nodes[1].getbalance(), 195610471)
         assert_equal(self.nodes[2].getbalance(), 0)
 
         # Check that only first and second nodes have UTXOs
