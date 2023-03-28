@@ -71,6 +71,7 @@ class WalletTest(WagerrTestFramework):
         self.sync_all()
         self.nodes[1].generate(1)
         self.nodes[1].generate(101)
+        self.nodes[1].sendtoaddress(ADDRESS_WATCHONLY, 1000)
         self.sync_all()
 
         assert_equal(self.nodes[0].getbalance(), 180860471)
