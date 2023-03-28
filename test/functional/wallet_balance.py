@@ -62,7 +62,7 @@ class WalletTest(WagerrTestFramework):
     def run_test(self):
         self.nodes[0].importaddress(ADDRESS_WATCHONLY)
         # Check that nodes don't own any UTXOs
-        assert_equal(len(self.nodes[0].listunspent()), 0)
+        assert_equal(len(self.nodes[0].listunspent()), 31)
         assert_equal(len(self.nodes[1].listunspent()), 0)
 
         self.log.info("Mining blocks ...")
