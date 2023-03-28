@@ -110,7 +110,7 @@ class WalletTest(WagerrTestFramework):
             assert_equal(self.nodes[0].getbalance(), Decimal('180859980.99000000'))  # change from node 0's send
             assert_equal(self.nodes[1].getbalance(), Decimal('22998039.99997750') - fee_node_1)  # change from node 1's send
             # Same with minconf=0
-            assert_equal(self.nodes[0].getbalance(minconf=0), Decimal('9.99'))
+            assert_equal(self.nodes[0].getbalance(minconf=0), Decimal('180859980.99000000'))
             assert_equal(self.nodes[1].getbalance(minconf=0), Decimal('30') - fee_node_1)
             # getbalance with a minconf incorrectly excludes coins that have been spent more recently than the minconf blocks ago
             # TODO: fix getbalance tracking of coin spentness depth
