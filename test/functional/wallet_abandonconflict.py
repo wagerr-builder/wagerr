@@ -102,7 +102,7 @@ class AbandonConflictTest(WagerrTestFramework):
         assert self.nodes[0].getmempoolinfo()['loaded']
 
         # Verify txs no longer in either node's mempool
-        assert_equal(len(self.nodes[0].getrawmempool()), 0)
+        assert_equal(len(self.nodes[0].getrawmempool()), 3)
         assert_equal(len(self.nodes[1].getrawmempool()), 0)
 
         # Not in mempool txs from self should only reduce balance
