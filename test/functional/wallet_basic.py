@@ -118,7 +118,7 @@ class WalletTest(WagerrTestFramework):
         assert_equal(walletinfo['immature_balance'], 2500000)
 
         # Have node0 mine a block, thus it will collect its own fee.
-        self.nodes[0].generate(1)
+        self.nodes[2].generate(1)
         connect_nodes(self.nodes[0], 1)
         connect_nodes(self.nodes[0], 2)
         connect_nodes(self.nodes[0], 3)
