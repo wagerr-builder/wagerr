@@ -71,6 +71,8 @@ class AvoidReuseTest(WagerrTestFramework):
         # This test isn't testing txn relay/timing, so set whitelist on the
         # peers for instant txn relay. This speeds up the test run time 2-3x.
         self.extra_args = [["-whitelist=127.0.0.1"]] * self.num_nodes
+        self.mn_count = 0
+        self.fast_dip3_enforcement = False
 
     def skip_test_if_missing_module(self):
         self.skip_if_no_wallet()
