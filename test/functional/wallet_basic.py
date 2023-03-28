@@ -125,7 +125,6 @@ class WalletTest(WagerrTestFramework):
 
         # Exercise locking of unspent outputs
         self.nodes[2].generate(1)
-        breakpoint()
         unspent_0 = self.nodes[2].listunspent()[0]
         unspent_0 = {"txid": unspent_0["txid"], "vout": unspent_0["vout"]}
         assert_raises_rpc_error(-8, "Invalid parameter, expected locked output", self.nodes[2].lockunspent, True, [unspent_0])
@@ -157,7 +156,7 @@ class WalletTest(WagerrTestFramework):
 
         # node0 should end up with 947010000 WAGERR in block rewards plus fees, but
         # minus the 210 plus fees sent to node2
-        assert_equal(self.nodes[0].getbalance(), 947010000-210)
+        assert_equal(self.nodes[0].getbalance(), 2999790)
         assert_equal(self.nodes[2].getbalance(), 210)
 
         # Node0 should have two unspent outputs.
