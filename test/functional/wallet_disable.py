@@ -27,7 +27,7 @@ class DisableWalletTest (WagerrTestFramework):
         x = self.nodes[0].validateaddress('TPEdK89Rwds4rxdbBApYCKM6AQPcDZf8qh')
         assert x['isvalid'] == True
         x = self.nodes[0].validateaddress('RZMsX7b1FAjJvnP78y7ChjpSMZ1N2zCDGt')
-        assert x['isvalid'] == True
+        assert x['isvalid'] == False
 
         # Checking mining to an address without a wallet. Generating to a valid address should succeed
         # but generating to an invalid address will fail.
