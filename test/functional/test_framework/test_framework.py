@@ -54,6 +54,7 @@ from .util import (
     satoshi_round,
     wait_until,
     get_chain_folder,
+    assert_raises_rpc_error,
 )
 
 WAGERR_AUTH_ADDR = "TDn9ZfHrYvRXyXC6KxRgN6ZRXgJH2JKZWe"
@@ -997,7 +998,7 @@ class WagerrTestFramework(WagerrTestFramework):
         self.start_node(0)
         self.import_deterministic_coinbase_privkeys()
         breakpoint()
-        if self.nodes[0].getwalletinfo():
+        if not assert_raises_rpc_error(-32601, 'Method not found', self.nodes[0].getwalletinfo):
             required_balance = MASTERNODE_COLLATERAL * self.mn_count + 1
             self.log.info("Generating %d coins" % required_balance)
             while self.nodes[0].getbalance() < required_balance:
