@@ -20,7 +20,6 @@ class DisableWalletTest (WagerrTestFramework):
     def setup_network(self):
         self.add_nodes(self.num_nodes, self.extra_args)
         self.start_nodes()
-        self.import_deterministic_coinbase_privkeys()
 
     def run_test (self):
         # Make sure wallet is really disabled
