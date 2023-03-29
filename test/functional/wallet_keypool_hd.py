@@ -31,7 +31,7 @@ class KeyPoolTest(WagerrTestFramework):
     def run_test(self):
         nodes = self.nodes
         self.log.info("Mining Blocks")
-        nodes[0].generate(100)
+        nodes[0].generate(200)
         addr_before_encrypting = nodes[0].getnewaddress()
         addr_before_encrypting_data = nodes[0].getaddressinfo(addr_before_encrypting)
         wallet_info_old = nodes[0].getwalletinfo()
