@@ -73,7 +73,8 @@ class WalletHDTest(WagerrTestFramework):
 
         self.stop_node(1)
         self.start_node(1)
-        connect_nodes_bi(self.nodes, 0, 1)
+        connect_nodes(self.nodes[0], 1)
+        connect_nodes(self.nodes[1], 0)
 
         self.sync_all()
         assert_equal(self.nodes[1].getbalance(), NUM_HD_ADDS + 1)
