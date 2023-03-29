@@ -997,11 +997,12 @@ class WagerrTestFramework(WagerrTestFramework):
         self.start_node(0)
         self.import_deterministic_coinbase_privkeys()
         breakpoint()
-        required_balance = MASTERNODE_COLLATERAL * self.mn_count + 1
-        self.log.info("Generating %d coins" % required_balance)
-        while self.nodes[0].getbalance() < required_balance:
-            self.bump_mocktime(1)
-            self.nodes[0].generate(10)
+        if self.nodes[0].getwalletinfo():
+            required_balance = MASTERNODE_COLLATERAL * self.mn_count + 1
+            self.log.info("Generating %d coins" % required_balance)
+            while self.nodes[0].getbalance() < required_balance:
+                self.bump_mocktime(1)
+                self.nodes[0].generate(10)
         num_simple_nodes = self.num_nodes - self.mn_count - 1
         self.log.info("Creating and starting %s simple nodes", num_simple_nodes)
         for i in range(0, num_simple_nodes):
