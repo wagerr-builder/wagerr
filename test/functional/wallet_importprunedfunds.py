@@ -9,6 +9,7 @@ from test_framework.test_framework import WagerrTestFramework
 from test_framework.util import (
     assert_equal,
     assert_raises_rpc_error,
+    connect_nodes,
 )
 
 class ImportPrunedFundsTest(WagerrTestFramework):
@@ -30,7 +31,9 @@ class ImportPrunedFundsTest(WagerrTestFramework):
         self.nodes[0].generate(101)
         self.stop_node(1)
         self.start_node(1)
-        connect_nodes_bi(self.nodes, 0 , 1)
+        connect_nodes(self.nodes[0], 1)
+        connect_nodes(self.nodes[1], 0)
+
         self.sync_all()
 
         # address
