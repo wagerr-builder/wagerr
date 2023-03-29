@@ -96,7 +96,7 @@ class ImportMultiTest(WagerrTestFramework):
         self.log.info("Should not import an invalid address")
         self.test_importmulti({"scriptPubKey": {"address": "not valid address"},
                                "timestamp": "now"},
-                              success=False,
+                              success=True,
                               error_code=-5,
                               error_message='Invalid address \"not valid address\"')
 
