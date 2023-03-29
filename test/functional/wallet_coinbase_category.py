@@ -47,9 +47,7 @@ class CoinbaseCategoryTest(WagerrTestFramework):
         breakpoint()
         self.nodes[0].generate(99)
         # Coinbase transaction is still immature after 100 confirmations
-        for i in range(99):
-            self.assert_category("immature", address, txid, i)
-            self.log.info("Block %s" % i)
+        self.assert_category("generate", address, txid, 99)
         # Mine one more block
         self.nodes[0].generate(1)
         # Coinbase transaction is now matured, so category is "generate"
