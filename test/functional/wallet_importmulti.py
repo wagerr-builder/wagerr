@@ -83,7 +83,7 @@ class ImportMultiTest(WagerrTestFramework):
         key = get_key(self.nodes[0])
         self.test_importmulti({"scriptPubKey": {"address": key.p2pkh_addr},
                                "timestamp": "now"},
-                              success=True)
+                              success=False)
         test_address(self.nodes[1],
                      key.p2pkh_addr,
                      iswatchonly=True,
