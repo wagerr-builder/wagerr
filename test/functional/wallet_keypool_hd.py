@@ -51,7 +51,6 @@ class KeyPoolTest(WagerrTestFramework):
             raise AssertionError('Keypool should be exhausted after one address')
         except JSONRPCException as e:
             assert(e.error['code']==-12)
-        #assert_raises_rpc_error(-12, "Keypool ran out, please call keypoolrefill first", nodes[0].getnewaddress())
 
         # put six (plus 2) new keys in the keypool (100% external-, +100% internal-keys, 1 in min)
         nodes[0].walletpassphrase('test', 12000)
