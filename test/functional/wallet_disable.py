@@ -17,7 +17,7 @@ class DisableWalletTest (WagerrTestFramework):
         self.num_nodes = 1
         self.extra_args = [["-disablewallet"]]
         self.mn_count = 0
-        self.fast_dip3_enforcement = False
+        self.fast_dip3_enforcement = True
 
     def run_test (self):
         # Make sure wallet is really disabled
