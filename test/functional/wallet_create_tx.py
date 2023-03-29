@@ -28,7 +28,7 @@ class CreateTxWalletTest(WagerrTestFramework):
     def test_anti_fee_sniping(self):
         self.log.info('Check that we have some (old) blocks and that anti-fee-sniping is disabled')
         self.bump_mocktime(8 * 60 * 60 + 1)
-        assert_equal(self.nodes[0].getblockchaininfo()['blocks'], 200)
+        assert_equal(self.nodes[0].getblockchaininfo()['blocks'], 210)
         txid = self.nodes[0].sendtoaddress(self.nodes[0].getnewaddress(), 1)
         tx = self.nodes[0].decoderawtransaction(self.nodes[0].gettransaction(txid)['hex'])
         assert_equal(tx['locktime'], 0)
