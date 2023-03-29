@@ -44,7 +44,6 @@ class CoinbaseCategoryTest(WagerrTestFramework):
         self.assert_category("immature", address, txid, 0)
 
         # Mine another 99 blocks on top
-        breakpoint()
         self.nodes[0].generate(99)
         # Coinbase transaction is still immature after 100 confirmations
         self.assert_category("generate", address, txid, 99)
