@@ -36,9 +36,9 @@ class CoinbaseCategoryTest(WagerrTestFramework):
     def run_test(self):
         # Generate one block to an address
         addresses=len(self.nodes[0].listaddressgroupings())
+        self.nodes[0].generate(1)
         breakpoint()
         address = self.nodes[0].listaddressgroupings()[0][0][0]
-        self.nodes[0].generate(1)
         hash = self.nodes[0].getbestblockhash()
         txid = self.nodes[0].getblock(hash)["tx"][0]
         # Coinbase transaction is immature after 1 confirmation
