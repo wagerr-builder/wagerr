@@ -997,6 +997,7 @@ class WagerrTestFramework(WagerrTestFramework):
         self.add_nodes(1, extra_args=[self.extra_args[0]])
         self.start_node(0)
         self.import_deterministic_coinbase_privkeys()
+        assert_raises_rpc_error(-32601, 'Method not found', self.nodes[0].getwalletinfo)
         breakpoint()
         if not (assert_raises_rpc_error(-32601, 'Method not found', self.nodes[0].getwalletinfo)):
             required_balance = MASTERNODE_COLLATERAL * self.mn_count + 1
