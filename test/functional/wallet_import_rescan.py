@@ -140,7 +140,7 @@ class ImportRescanTest(WagerrTestFramework):
             n.importprivkey(privkey=n.get_deterministic_priv_key().key, label='coinbase')
 
         for i in range(0, self.num_nodes -1):
-            self.restart_nodes(i)
+            self.restart_node(i)
 
         for i in range(1, self.num_nodes):
             connect_nodes(self.nodes[i], 0)
