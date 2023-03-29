@@ -46,11 +46,12 @@ class KeyPoolTest(WagerrTestFramework):
         assert addr_before_encrypting_data['hdchainid'] == wallet_info['hdchainid']
         assert addr_data['hdchainid'] == wallet_info['hdchainid']
 
-        try:
-            addr = nodes[0].getnewaddress()
-            raise AssertionError('Keypool should be exhausted after one address')
-        except JSONRPCException as e:
-            assert(e.error['code']==-32603)
+        #try:
+        #    addr = nodes[0].getnewaddress()
+        #    raise AssertionError('Keypool should be exhausted after one address')
+        #except JSONRPCException as e:
+        #    assert(e.error['code']==-32603)
+        assert_raises_rpc_error(-12, "Keypool ran out, please call keypoolrefill first", nodes[0].getnewaddress())
 
         # put six (plus 2) new keys in the keypool (100% external-, +100% internal-keys, 1 in min)
         nodes[0].walletpassphrase('test', 12000)
