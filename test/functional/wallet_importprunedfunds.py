@@ -16,6 +16,11 @@ class ImportPrunedFundsTest(WagerrTestFramework):
         self.setup_clean_chain = True
         self.num_nodes = 2
 
+    def setup_network(self):
+        self.log.info("Setup Network")
+        self.setup_nodes()
+        self.connect_network()
+
     def skip_test_if_missing_module(self):
         self.skip_if_no_wallet()
 
