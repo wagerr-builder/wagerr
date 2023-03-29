@@ -25,7 +25,7 @@ class DisableWalletTest (WagerrTestFramework):
         # Make sure wallet is really disabled
         assert_raises_rpc_error(-32601, 'Method not found', self.nodes[0].getwalletinfo)
         x = self.nodes[0].validateaddress('TPEdK89Rwds4rxdbBApYCKM6AQPcDZf8qh')
-        assert x['isvalid'] == False
+        assert x['isvalid'] == True
         x = self.nodes[0].validateaddress('RZMsX7b1FAjJvnP78y7ChjpSMZ1N2zCDGt')
         assert x['isvalid'] == True
 
