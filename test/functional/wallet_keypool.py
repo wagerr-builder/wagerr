@@ -13,7 +13,7 @@ from test_framework.util import assert_equal, assert_raises_rpc_error
 class KeyPoolTest(WagerrTestFramework):
     def set_test_params(self):
         self.num_nodes = 1
-        self.extra_args = [['-usehd=0']]
+        self.extra_args = [['-keypool=1']]
         self.setup_clean_chain = True
 
     def setup_network(self):
