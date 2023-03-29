@@ -35,7 +35,8 @@ class CoinbaseCategoryTest(WagerrTestFramework):
 
     def run_test(self):
         # Generate one block to an address
-        address = self.nodes[0].listaddressgroupings()[10]
+        addresses=len(self.nodes[0].listaddressgroupings)
+        address = self.nodes[0].listaddressgroupings()[addresses + 1]
         self.nodes[0].generate(1)
         hash = self.nodes[0].getbestblockhash()
         txid = self.nodes[0].getblock(hash)["tx"][0]
