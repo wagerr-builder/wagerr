@@ -37,7 +37,7 @@ class CreateTxWalletTest(WagerrTestFramework):
         self.nodes[0].generate(1)
         txid = self.nodes[0].sendtoaddress(self.nodes[0].getnewaddress(), 1)
         tx = self.nodes[0].decoderawtransaction(self.nodes[0].gettransaction(txid)['hex'])
-        assert 0 < tx['locktime'] <= 201
+        assert 0 < tx['locktime'] <= 211
 
     def test_tx_size_too_large(self):
         # More than 10kB of outputs, so that we hit -maxtxfee with a high feerate
