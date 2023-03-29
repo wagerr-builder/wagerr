@@ -21,6 +21,10 @@ class KeyPoolTest(WagerrTestFramework):
         self.num_nodes = 1
         self.extra_args = [['-usehd=1']]
 
+    def setup_network(self):
+        self.add_nodes(self.num_nodes, self.extra_args)
+        self.start_nodes()
+
     def skip_test_if_missing_module(self):
         self.skip_if_no_wallet()
 
