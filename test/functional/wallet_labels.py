@@ -48,7 +48,7 @@ class WalletLabelsTest(WagerrTestFramework):
         # common address
         linked_addresses = set()
         breakpoint()
-        address_groups = list(node.getaddressesbylabel('coinbase').items()))
+        address_groups = list(node.getaddressesbylabel('coinbase').items())
         for address_group in address_groups:
             assert_equal(len(address_group), 1)
             assert_equal(len(address_group[0]), 2)
