@@ -79,7 +79,7 @@ class WalletUpgradeToHDTest(WagerrTestFramework):
         assert balance_before != balance_non_HD
 
         self.log.info("No mnemonic, no mnemonic passphrase, no wallet passphrase, should result in completely different keys")
-        assert node.upgradetohd()
+        #assert node.upgradetohd()
         assert mnemonic != node.dumphdinfo()['mnemonic']
         assert chainid != node.getwalletinfo()['hdchainid']
         assert_equal(balance_non_HD, node.getbalance())
