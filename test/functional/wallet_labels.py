@@ -35,7 +35,8 @@ class WalletLabelsTest(WagerrTestFramework):
         # Note each time we call generate, all generated coins go into
         # the same address, so we call twice to get two addresses w/500 each
         node.generate(1)
-        node.getnewaddress(label='coinbase')
+        newaddress=node.getnewaddress(label='coinbase')
+        node.sendtoaddress(newaddress, 10000)
         node.generate(101)
         assert_equal(node.getbalance(), 195860471)
 
@@ -47,6 +48,7 @@ class WalletLabelsTest(WagerrTestFramework):
         # common address
         linked_addresses = set()
         breakpoint()
+        address_groups = list(node.getaddressesbylabel('coinbase').items()))
         for address_group in address_groups:
             assert_equal(len(address_group), 1)
             assert_equal(len(address_group[0]), 2)
@@ -65,7 +67,8 @@ class WalletLabelsTest(WagerrTestFramework):
         )
         # there should be 1 address group, with the previously
         # unlinked addresses now linked (they both have 0 balance)
-        address_groups = node.listaddressgroupings()
+        #address_groups = node.listaddressgroupings()
+        address_groups = list(node.getaddressesbylabel('coinbase').items()))
         assert_equal(len(address_groups), 1)
         assert_equal(len(address_groups[0]), 2)
         assert_equal(set([a[0] for a in address_groups[0]]), linked_addresses)
