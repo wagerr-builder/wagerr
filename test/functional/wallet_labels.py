@@ -34,10 +34,10 @@ class WalletLabelsTest(WagerrTestFramework):
 
         # Note each time we call generate, all generated coins go into
         # the same address, so we call twice to get two addresses w/500 each
-        node.generate(1)
+        node.generate(51)
         newaddress=node.getnewaddress(label='coinbase')
         node.sendtoaddress(newaddress, 10000)
-        node.generate(101)
+        node.generate(51)
         assert_equal(node.getbalance(), 195860471)
 
         # there should be 2 address groups
