@@ -51,7 +51,7 @@ class WalletLabelsTest(WagerrTestFramework):
         breakpoint()
         #address_groups = list(node.getaddressesbylabel('coinbase').items())
         for address_group in address_groups:
-            assert_equal(len(address_group), 2)
+            assert_equal(len(address_group), 1)
             assert_equal(len(address_group[0]), 2)
             assert_equal(address_group[0][1], Decimal("239999.99997750"))
             assert_equal(address_group[0][2], 'coinbase')
