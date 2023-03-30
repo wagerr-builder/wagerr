@@ -48,7 +48,6 @@ class WalletLabelsTest(WagerrTestFramework):
         # the addresses aren't linked now, but will be after we send to the
         # common address
         linked_addresses = set()
-        breakpoint()
         #address_groups = list(node.getaddressesbylabel('coinbase').items())
         for address_group in address_groups:
             assert_equal(len(address_group), 2)
@@ -56,6 +55,7 @@ class WalletLabelsTest(WagerrTestFramework):
             assert_equal(address_group[2][1], Decimal("10000"))
             assert_equal(address_group[2][2], 'coinbase')
             linked_addresses.add(address_group[2][0])
+            breakpoint()
 
         # send 500 from each address to a third address not in this wallet
         common_address = "TKCjZUMw7Hjq5vUSKdcuQnotxcG9De2oxH"
