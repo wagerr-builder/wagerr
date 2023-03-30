@@ -21,7 +21,7 @@ class ListSinceBlockTest(WagerrTestFramework):
     def set_test_params(self):
         self.num_nodes = 4
         self.setup_clean_chain = True
-        self.extra_args = [["-debug"]]
+        self.extra_args = [[], [], [], []]
 
     def setup_network(self):
         self.add_nodes(self.num_nodes, self.extra_args)
