@@ -19,6 +19,7 @@ class TxnMallTest(WagerrTestFramework):
         self.supports_cli = False
         self.extra_args = [["-debug"], ["-debug"], ["-debug"], ["-debug"]]
         self.mn_count = 0
+        self.fast_dip3_enforcement = True
 
     def setup_network(self):
         self.add_nodes(self.num_nodes, self.extra_args)
