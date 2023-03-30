@@ -36,6 +36,7 @@ class WalletUpgradeToHDTest(WagerrTestFramework):
         self.stop_node(0)
         shutil.copyfile(os.path.join(node.datadir, "non_hd.bak"), os.path.join(node.datadir, "regtest", "wallet.dat"))
         self.start_node(0)
+        breakpoint()
         assert 'hdchainid' not in node.getwalletinfo()
 
     def run_test(self):
