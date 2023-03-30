@@ -14,6 +14,11 @@ from test_framework.util import assert_equal, wait_until
 class ResendWalletTransactionsTest(WagerrTestFramework):
     def set_test_params(self):
         self.num_nodes = 1
+        self.extra_args = [["-debug"]]
+
+    def setup_network(self):
+        self.add_nodes(self.num_nodes, self.extra_args)
+        self.start_nodes()
 
     def skip_test_if_missing_module(self):
         self.skip_if_no_wallet()
