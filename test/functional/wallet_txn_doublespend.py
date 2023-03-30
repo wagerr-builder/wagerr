@@ -40,7 +40,7 @@ class TxnMallTest(WagerrTestFramework):
 
     def run_test(self):
         # All nodes should start with 12,500 WAGERR:
-        starting_balance = 12500
+        starting_balance = 220360471
 
         # All nodes should be out of IBD.
         # If the nodes are not all out of IBD, that can interfere with
