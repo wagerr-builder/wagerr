@@ -27,6 +27,7 @@ class ListTransactionsTest(WagerrTestFramework):
         disconnect_nodes(self.nodes[0], 1)
         connect_nodes(self.nodes[0], 1)
         #self.sync_all()
+        breakpoint()
         assert_array_result(self.nodes[0].listtransactions(),
                             {"txid": txid},
                             {"category": "send", "amount": Decimal("-0.1"), "confirmations": 0})
