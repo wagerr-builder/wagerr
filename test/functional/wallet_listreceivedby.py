@@ -13,6 +13,8 @@ from test_framework.util import (
     assert_raises_rpc_error,
     sync_blocks,
     find_vout_for_address,
+    connect_nodes,
+    disconnect_nodes,
 )
 
 
@@ -32,8 +34,9 @@ class ReceivedByTest(WagerrTestFramework):
     def run_test(self):
         # Generate block to get out of IBD
         self.nodes[0].generate(1)
-        self.sync_blocks()
-
+        #self.sync_blocks()
+        connect_nodes(self.nodes[0], 1)
+        self.sync_all()
         # save the number of coinbase reward addresses so far
         num_cb_reward_addresses = len(self.nodes[1].listreceivedbyaddress(minconf=0, include_empty=True, include_watchonly=True))
 
