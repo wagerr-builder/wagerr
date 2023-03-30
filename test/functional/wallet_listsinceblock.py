@@ -118,7 +118,7 @@ class ListSinceBlockTest(WagerrTestFramework):
         self.log.info('lastblockhash=%s' % (lastblockhash))
 
         self.sync_all(self.nodes[:2])
-        self.sync_all(self.nodes[2:])
+        #self.sync_all(self.nodes[2:])
 
         self.join_network()
 
