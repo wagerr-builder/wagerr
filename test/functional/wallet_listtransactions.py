@@ -11,9 +11,14 @@ from test_framework.util import assert_array_result, assert_equal
 class ListTransactionsTest(WagerrTestFramework):
     def set_test_params(self):
         self.num_nodes = 2
+        self.extra_args = [["-debug"], ['-debug']]
 
     def skip_test_if_missing_module(self):
         self.skip_if_no_wallet()
+
+    def setup_network(self):
+        self.add_nodes(self.num_nodes, self.extra_args)
+        self.start_nodes()
 
     def run_test(self):
         # Simple send, 0 to 1:
