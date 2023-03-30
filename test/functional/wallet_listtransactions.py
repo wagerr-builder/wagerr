@@ -23,8 +23,9 @@ class ListTransactionsTest(WagerrTestFramework):
     def run_test(self):
         # Simple send, 0 to 1:
         txid = self.nodes[0].sendtoaddress(self.nodes[1].getnewaddress(), 0.1)
+        disconnect_nodes(self.nodes[0], 1)
         connect_nodes(self.nodes[0], 1)
-        self.sync_all()
+        #self.sync_all()
         assert_array_result(self.nodes[0].listtransactions(),
                             {"txid": txid},
                             {"category": "send", "amount": Decimal("-0.1"), "confirmations": 0})
