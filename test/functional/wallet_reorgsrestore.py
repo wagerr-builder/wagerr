@@ -27,6 +27,11 @@ from test_framework.util import (
 class ReorgsRestoreTest(WagerrTestFramework):
     def set_test_params(self):
         self.num_nodes = 3
+        self.extra_args = [["-debug"], ["-debug"], ["debug"]]
+
+    def setup_network(self):
+        self.add_nodes(self.num_nodes, self.extra_args)
+        self.start_nodes()
 
     def skip_test_if_missing_module(self):
         self.skip_if_no_wallet()
