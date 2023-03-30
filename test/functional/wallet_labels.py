@@ -47,7 +47,7 @@ class WalletLabelsTest(WagerrTestFramework):
         linked_addresses = set()
         for address_group in address_groups:
             assert_equal(len(address_group), 1)
-            assert_equal(len(address_group[0]), 3)
+            assert_equal(len(address_group[0]), 2)
             assert_equal(address_group[0][1], 10000.00000000)
             assert_equal(address_group[0][2], 'coinbase')
             linked_addresses.add(address_group[0][0])
