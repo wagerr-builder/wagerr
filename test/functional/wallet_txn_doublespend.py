@@ -18,6 +18,7 @@ class TxnMallTest(WagerrTestFramework):
         self.num_nodes = 4
         self.supports_cli = False
         self.extra_args = [["-debug"], ["-debug"], ["-debug"], ["-debug"]]
+        self.mn_count = 0
 
     def setup_network(self):
         self.add_nodes(self.num_nodes, self.extra_args)
