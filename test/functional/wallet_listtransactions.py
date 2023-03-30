@@ -23,17 +23,17 @@ class ListTransactionsTest(WagerrTestFramework):
     def run_test(self):
         # Simple send, 0 to 1:
         txid = self.nodes[0].sendtoaddress(self.nodes[1].getnewaddress(), 0.1)
-        #self.nodes[0].generate(1)
+        self.nodes[0].generate(1)
         disconnect_nodes(self.nodes[0], 1)
         connect_nodes(self.nodes[0], 1)
         #self.sync_all()
         breakpoint()
         assert_array_result(self.nodes[0].listtransactions(),
                             {"txid": txid},
-                            {"category": "send", "amount": Decimal("-0.1"), "confirmations": 0})
+                            {"category": "send", "amount": Decimal("-0.1"), "confirmations": 1})
         assert_array_result(self.nodes[1].listtransactions(),
                             {"txid": txid},
-                            {"category": "receive", "amount": Decimal("0.1"), "confirmations": 0})
+                            {"category": "receive", "amount": Decimal("0.1"), "confirmations": 1})
         # mine a block, confirmations should change:
         self.nodes[0].generate(1)
         self.sync_all()
