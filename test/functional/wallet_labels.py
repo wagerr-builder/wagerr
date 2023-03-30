@@ -46,6 +46,7 @@ class WalletLabelsTest(WagerrTestFramework):
         # the addresses aren't linked now, but will be after we send to the
         # common address
         linked_addresses = set()
+        breakpoint()
         for address_group in address_groups:
             assert_equal(len(address_group), 1)
             assert_equal(len(address_group[0]), 2)
