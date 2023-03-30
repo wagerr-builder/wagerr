@@ -6,7 +6,7 @@
 from decimal import Decimal
 
 from test_framework.test_framework import WagerrTestFramework
-from test_framework.util import assert_array_result, assert_equal
+from test_framework.util import assert_array_result, assert_equal, connect_nodes, disconnect_nodes
 
 class ListTransactionsTest(WagerrTestFramework):
     def set_test_params(self):
@@ -23,6 +23,7 @@ class ListTransactionsTest(WagerrTestFramework):
     def run_test(self):
         # Simple send, 0 to 1:
         txid = self.nodes[0].sendtoaddress(self.nodes[1].getnewaddress(), 0.1)
+        connect_nodes(self.nodes[0], 1)
         self.sync_all()
         assert_array_result(self.nodes[0].listtransactions(),
                             {"txid": txid},
