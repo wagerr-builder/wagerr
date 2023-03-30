@@ -32,7 +32,7 @@ class KeyPoolTest(WagerrTestFramework):
         # Keep creating keys
         addr = nodes[0].getnewaddress()
 
-        assert_raises_rpc_error(-32603, "No key for coinbase available", nodes[0].generate, 1)
+        assert_raises_rpc_error(-12, "Keypool ran out, please call keypoolrefill first", nodes[0].generate, 1)
 
         # put three new keys in the keypool
         nodes[0].walletpassphrase('test', 12000)
