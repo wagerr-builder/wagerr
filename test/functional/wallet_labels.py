@@ -13,6 +13,7 @@ from collections import defaultdict
 
 from test_framework.test_framework import WagerrTestFramework
 from test_framework.util import assert_equal, assert_raises_rpc_error
+from decimal import *
 
 class WalletLabelsTest(WagerrTestFramework):
     def set_test_params(self):
@@ -52,7 +53,7 @@ class WalletLabelsTest(WagerrTestFramework):
         for address_group in address_groups:
             assert_equal(len(address_group), 1)
             assert_equal(len(address_group[0]), 2)
-            assert_equal(address_group[0][1], 10000.00000000)
+            assert_equal(address_group[0][1], Decimal("10250000.00002250")
             assert_equal(address_group[0][2], 'coinbase')
             linked_addresses.add(address_group[0][0])
 
