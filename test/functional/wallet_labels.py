@@ -68,7 +68,7 @@ class WalletLabelsTest(WagerrTestFramework):
         # there should be 1 address group, with the previously
         # unlinked addresses now linked (they both have 0 balance)
         #address_groups = node.listaddressgroupings()
-        address_groups = list(node.getaddressesbylabel('coinbase').items()))
+        address_groups = list(node.getaddressesbylabel('coinbase').items())
         assert_equal(len(address_groups), 1)
         assert_equal(len(address_groups[0]), 2)
         assert_equal(set([a[0] for a in address_groups[0]]), linked_addresses)
