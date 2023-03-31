@@ -1020,11 +1020,12 @@ class WagerrTestFramework(WagerrTestFramework):
             while self.nodes[0].getblockcount() < spork4height:
                 self.nodes[0].generate(10)
         else:
-            self.nodes[0].sporkupdate("SPORK_4_DIP0003_ENFORCED", 50)
+            spork4height=50
+            self.nodes[0].sporkupdate("SPORK_4_DIP0003_ENFORCED", spork4height)
             self.wait_for_sporks_same()
             currentBlock=self.nodes[0].getblockcount()
-            if  currentBlock < 50:
-                generateBlocks = 50 - currentBlock
+            if  currentBlock < spork4height:
+                generateBlocks = spork4height - currentBlock
                 self.nodes[0].generate(generateBlocks)
         self.sync_all()
 
@@ -1055,7 +1056,6 @@ class WagerrTestFramework(WagerrTestFramework):
         self.bump_mocktime(1)
 
         mn_info = self.nodes[0].masternodelist("status")
-        breakpoint()
         assert len(mn_info) == self.mn_count
         for status in mn_info.values():
             assert status == 'ENABLED'
