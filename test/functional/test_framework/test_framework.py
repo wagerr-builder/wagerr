@@ -1023,6 +1023,10 @@ class WagerrTestFramework(WagerrTestFramework):
         else:
             self.nodes[0].sporkupdate("SPORK_4_DIP0003_ENFORCED", 50)
             self.wait_for_sporks_same()
+            currentBlock=self.nodes[0].getblockcount()
+            if  currentBlock < 50:
+                generateBlocks = 50 - currentBlock
+                self.nodes[0].generate(generateBlocks)
         self.sync_all()
 
         # create masternodes
