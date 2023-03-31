@@ -1171,6 +1171,7 @@ class WagerrTestFramework(WagerrTestFramework):
     def wait_for_best_chainlock(self, node, block_hash, timeout=15):
         wait_until(lambda: node.getbestchainlock()["blockhash"] == block_hash, timeout=timeout, sleep=0.1)
 
+    def wait_for_sporks_same(self, timeout=30):
         def check_sporks_same():
             sporks = self.nodes[0].spork('show')
             breakpoint()
