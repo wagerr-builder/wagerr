@@ -1055,6 +1055,7 @@ class WagerrTestFramework(WagerrTestFramework):
         self.bump_mocktime(1)
 
         mn_info = self.nodes[0].masternodelist("status")
+        breakpoint()
         assert len(mn_info) == self.mn_count
         for status in mn_info.values():
             assert status == 'ENABLED'
