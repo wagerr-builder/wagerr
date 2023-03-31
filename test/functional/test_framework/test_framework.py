@@ -900,10 +900,9 @@ class WagerrTestFramework(WagerrTestFramework):
         operatorReward = idx
 
         submit = (idx % 4) < 2
-        """
+        """  register_fund not working
         if register_fund:
             # self.nodes[0].lockunspent(True, [{'txid': txid, 'vout': collateral_vout}])
-            #breakpoint()
             protx_result = self.nodes[0].protx('register_fund', address, ipAndPort, ownerAddr, bls['public'], votingAddr, operatorReward, rewardsAddr, address, submit)
         else:
             self.nodes[0].generate(1)
@@ -1175,7 +1174,6 @@ class WagerrTestFramework(WagerrTestFramework):
     def wait_for_sporks_same(self, timeout=30):
         def check_sporks_same():
             sporks = self.nodes[0].spork('show')
-            #breakpoint()
             #return all(node.spork('show') == sporks for node in self.nodes[1:])
         #wait_until(check_sporks_same, timeout=timeout, sleep=0.5)
 
