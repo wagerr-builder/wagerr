@@ -11,11 +11,6 @@ from test_framework.util import *
 from test_framework.blocktools import *
 from test_framework.messages import FromHex, ToHex
 
-
-#WAGERR_AUTH_ADDR = "TJA37d7KPVmd5Lqa2EcQsptcfLYsQ1Qcfk"
-WAGERR_AUTH_ADDR = "TDn9ZfHrYvRXyXC6KxRgN6ZRXgJH2JKZWe"
-
-
 class WalletTest(WagerrTestFramework):
     def set_test_params(self):
         self.num_nodes = 2
@@ -39,7 +34,9 @@ class WalletTest(WagerrTestFramework):
         mn01_votingAddr = mn01_ownerAddr
 #        mn01_blsMnkey = mn01_blsKey['secret']
 
-        self.nodes[0].sendtoaddress(mn01_fundsAddr, 25000.001)
+        txid=self.nodes[0].sendtoaddress(mn01_fundsAddr, 25001)
+        collateral_vout = 0
+
         self.nodes[0].generate(1)
         mn01_collateral_address = self.nodes[0].getnewaddress()
         mn01_rewards_address = self.nodes[0].getnewaddress()
@@ -52,7 +49,7 @@ class WalletTest(WagerrTestFramework):
         self.log.info(mn01_rewards_address)
         self.log.info(mn01_fundsAddr)
 
-        mn01_protx_hash = self.nodes[0].protx('register_fund', mn01_collateral_address, '127.0.0.1:%d' % mn01_p2p_port, mn01_ownerAddr, mn01_operatorAddr, mn01_votingAddr, 0, mn01_rewards_address, mn01_fundsAddr)
+        mn01_protx_hash = self.nodes[0].protx('register', txid, collateral_vout,  '127.0.0.1:%d' % mn01_p2p_port, mn01_ownerAddr, mn01_operatorAddr, mn01_votingAddr, 0, mn01_rewards_address, mn01_fundsAddr)
 
         mn01_collateral_txid = mn01_protx_hash
         mn01_collateral_vout = -1
