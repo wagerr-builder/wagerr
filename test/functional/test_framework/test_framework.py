@@ -900,7 +900,8 @@ class WagerrTestFramework(WagerrTestFramework):
         operatorReward = idx
 
         submit = (idx % 4) < 2
-        breakpoint()
+        #breakpoint()
+        """
         if register_fund:
             # self.nodes[0].lockunspent(True, [{'txid': txid, 'vout': collateral_vout}])
             #breakpoint()
@@ -908,6 +909,9 @@ class WagerrTestFramework(WagerrTestFramework):
         else:
             self.nodes[0].generate(1)
             protx_result = self.nodes[0].protx('register', txid, collateral_vout, ipAndPort, ownerAddr, bls['public'], votingAddr, operatorReward, rewardsAddr, address, submit)
+        """
+        self.nodes[0].generate(1)
+        protx_result = self.nodes[0].protx('register', txid, collateral_vout, ipAndPort, ownerAddr, bls['public'], votingAddr, operatorReward, rewardsAddr, address, submit)
 
         if submit:
             proTxHash = protx_result
