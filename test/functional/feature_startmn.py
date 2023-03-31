@@ -11,6 +11,8 @@ from test_framework.util import *
 from test_framework.blocktools import *
 from test_framework.messages import FromHex, ToHex
 
+MASTERNODE_COLLATERAL = 25000
+
 class WalletTest(WagerrTestFramework):
     def set_test_params(self):
         self.num_nodes = 2
@@ -36,12 +38,12 @@ class WalletTest(WagerrTestFramework):
         mn01_votingAddr = mn01_ownerAddr
 #        mn01_blsMnkey = mn01_blsKey['secret']
 
-        txid=self.nodes[0].sendtoaddress(mn01_fundsAddr, 25000)
+        txid=self.nodes[0].sendtoaddress(mn01_fundsAddr, MASTERNODE_COLLATERAL)
         collateral_vout = 0
         txraw = self.nodes[0].getrawtransaction(txid, True)
         for vout_idx in range(0, len(txraw["vout"])):
             vout = txraw["vout"][vout_idx]
-            if vout["value"] == 25001:
+            if vout["value"] == MASTERNODE_COLLATERAL:
                 collateral_vout = vout_idx
         self.nodes[0].lockunspent(False, [{'txid': txid, 'vout': collateral_vout}])
         self.nodes[0].generate(1)
