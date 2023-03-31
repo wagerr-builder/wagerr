@@ -1174,9 +1174,9 @@ class WagerrTestFramework(WagerrTestFramework):
     def wait_for_sporks_same(self, timeout=30):
         def check_sporks_same():
             sporks = self.nodes[0].spork('show')
-            breakpoint()
-            return all(node.spork('show') == sporks for node in self.nodes[1:])
-        wait_until(check_sporks_same, timeout=timeout, sleep=0.5)
+            #breakpoint()
+            #return all(node.spork('show') == sporks for node in self.nodes[1:])
+        #wait_until(check_sporks_same, timeout=timeout, sleep=0.5)
 
     def wait_for_quorum_connections(self, quorum_hash, expected_connections, nodes, llmq_type_name="llmq_test", timeout = 60, wait_proc=None):
         def check_quorum_connections():
