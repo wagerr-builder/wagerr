@@ -38,7 +38,11 @@ class WalletTest(WagerrTestFramework):
 
         txid=self.nodes[0].sendtoaddress(mn01_fundsAddr, 25001)
         collateral_vout = 0
-
+        txraw = self.nodes[0].getrawtransaction(txid, True)
+        for vout_idx in range(0, len(txraw["vout"])):
+            vout = txraw["vout"][vout_idx]
+            if vout["value"] == 25001:
+                collateral_vout = vout_idx
         self.nodes[0].generate(1)
         mn01_collateral_address = self.nodes[0].getnewaddress()
         mn01_rewards_address = self.nodes[0].getnewaddress()
@@ -53,7 +57,7 @@ class WalletTest(WagerrTestFramework):
 
         self.nodes[0].generate(250)
         breakpoint()
-        mn01_protx_hash = self.nodes[0].protx('register', txid, collateral_vout,  '127.0.0.1:%d' % mn01_p2p_port, mn01_ownerAddr, mn01_operatorAddr, mn01_votingAddr, 0, mn01_rewards_address, mn01_fundsAddr)
+        mn01_protx_hash = self.nodes[0].protx('register', txid, collateral_vout,  '127.0.0.1:%d' % mn01_p2p_port, mn01_ownerAddr, mn01_operatorAddr, mn01_votingAddr, 0, mn01_rewards_address, mn01_fundsAddr, True)
 
         mn01_collateral_txid = mn01_protx_hash
         mn01_collateral_vout = -1
