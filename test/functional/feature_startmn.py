@@ -36,14 +36,16 @@ class WalletTest(WagerrTestFramework):
         mn01_votingAddr = mn01_ownerAddr
 #        mn01_blsMnkey = mn01_blsKey['secret']
 
-        txid=self.nodes[0].sendtoaddress(mn01_fundsAddr, 25001)
+        txid=self.nodes[0].sendtoaddress(mn01_fundsAddr, 25000)
         collateral_vout = 0
         txraw = self.nodes[0].getrawtransaction(txid, True)
         for vout_idx in range(0, len(txraw["vout"])):
             vout = txraw["vout"][vout_idx]
             if vout["value"] == 25001:
                 collateral_vout = vout_idx
+        self.nodes[0].lockunspent(False, [{'txid': txid, 'vout': collateral_vout}])
         self.nodes[0].generate(1)
+        self.nodes[0].sendtoaddress(mn01_fundsAddr, 0.001)
         mn01_collateral_address = self.nodes[0].getnewaddress()
         mn01_rewards_address = self.nodes[0].getnewaddress()
 
