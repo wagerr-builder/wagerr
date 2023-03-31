@@ -60,7 +60,6 @@ class WalletTest(WagerrTestFramework):
         self.log.info(mn01_fundsAddr)
 
         self.nodes[0].generate(250)
-        breakpoint()
         mn01_protx_hash = self.nodes[0].protx('register', txid, collateral_vout,  '127.0.0.1:%d' % mn01_p2p_port, mn01_ownerAddr, mn01_operatorAddr, mn01_votingAddr, 0, mn01_rewards_address, mn01_fundsAddr, True)
 
         mn01_collateral_txid = mn01_protx_hash
