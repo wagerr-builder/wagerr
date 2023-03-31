@@ -30,58 +30,6 @@ class WalletTest(WagerrTestFramework):
         self.sync_all(self.nodes[0:1])
 
     def run_test(self):
-        self.log.info("Importing token management privkey...")
-        self.nodes[0].importprivkey("TCH8Qby7krfugb2sFWzHQSEmTxBgzBSLkgPtt5EUnzDqfaX9dcsS")
-        privkey = self.nodes[0].dumpprivkey("TDn9ZfHrYvRXyXC6KxRgN6ZRXgJH2JKZWe")
-        assert_equal(privkey, "TCH8Qby7krfugb2sFWzHQSEmTxBgzBSLkgPtt5EUnzDqfaX9dcsS")
-
-        self.log.info("Mining blocks...")
-        self.nodes[0].generate(16)
-
-        inputs  = [ ]
-        outputs = { self.nodes[0].getnewaddress() : 15000000, self.nodes[0].getnewaddress() : 15000000, self.nodes[0].getnewaddress() : 15000000, self.nodes[0].getnewaddress() : 15000000, self.nodes[0].getnewaddress() : 15000000, self.nodes[0].getnewaddress() : 15000000 }
-        rawtx = self.nodes[0].createrawtransaction(inputs, outputs)
-        rawtxfund = self.nodes[0].fundrawtransaction(rawtx)['hex']
-        tx = FromHex(CTransaction(), rawtxfund)
-        tx_signed = self.nodes[0].signrawtransactionwithwallet(ToHex(tx))["hex"]
-        self.nodes[0].sendrawtransaction(tx_signed)
-
-        self.nodes[0].generate(400)
-        disconnect_nodes(self.nodes[0],1)
-        connect_nodes(self.nodes[0],1)
-
-        self.sync_all()
-
-        self.log.info("Funding token management address...")
-        self.nodes[0].sendtoaddress("TDn9ZfHrYvRXyXC6KxRgN6ZRXgJH2JKZWe", 1)
-        self.nodes[0].generate(87)
-        self.sync_all()
-
-        self.log.info("Mining blocks...")
-        self.nodes[0].generate(100)
-        self.sync_all()
-
-# configuremanagementtoken MGT Management https://www.google.com 0 4 906e74f8d70d3dcadd4523c5c217360880f8b311292fcd4e39da6fd8d1fd14b36d27abe642483f2ff4c0ed492c707db9 false true
-        self.log.info("Create MGT token...")
-        mgtBLSKey = self.nodes[0].bls("generate")
-        self.log.info("mgtBLSKey:")
-        self.log.info(mgtBLSKey)
-        self.log.info(mgtBLSKey)
-        mgtConfig = self.nodes[0].configuremanagementtoken("MGT", "Management", "4", "https://www.google.com", "4f92d91db24bb0b8ca24a2ec86c4b012ccdc4b2e9d659c2079f5cc358413a765", mgtBLSKey['public'], "false", "true")
-        self.nodes[0].generate(1)
-        self.log.info("mgtConfig:")
-        self.log.info(mgtConfig)
-        tokensaddress=self.nodes[0].getnewaddress()
-        self.log.info("tokensaddress: "+tokensaddress)
-        self.nodes[0].minttoken(mgtConfig['groupID'], tokensaddress, 20)
-        self.nodes[0].generate(1)
-
-        tokenbalance = self.nodes[0].gettokenbalance()
-        self.log.info("tokenbalance:")
-        self.log.info(tokenbalance)
-
-        self.sync_all(self.nodes[0:1])
-
         mn01_collateral_address = self.nodes[0].getnewaddress()
         mn01_p2p_port = p2p_port(0)
         mn01_blsKey = self.nodes[0].bls('generate')
