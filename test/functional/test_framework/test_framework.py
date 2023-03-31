@@ -900,7 +900,6 @@ class WagerrTestFramework(WagerrTestFramework):
         operatorReward = idx
 
         submit = (idx % 4) < 2
-        breakpoint()
         """
         if register_fund:
             # self.nodes[0].lockunspent(True, [{'txid': txid, 'vout': collateral_vout}])
