@@ -45,7 +45,6 @@ class WalletTest(WagerrTestFramework):
             vout = txraw["vout"][vout_idx]
             if vout["value"] == MASTERNODE_COLLATERAL:
                 collateral_vout = vout_idx
-        breakpoint()
         self.nodes[0].lockunspent(False, [{'txid': txid, 'vout': collateral_vout}])
         self.nodes[0].generate(1)
         self.nodes[0].sendtoaddress(mn01_fundsAddr, 0.001)
@@ -72,6 +71,7 @@ class WalletTest(WagerrTestFramework):
             if txout['value'] == Decimal(25000):
                 mn01_collateral_vout = txout['n']
                 break
+        breakpoint()
         assert(mn01_collateral_vout != -1)
 
         self.log.info("mn01_protx_hash:")
