@@ -81,10 +81,10 @@ class WalletTest(WagerrTestFramework):
         self.stop_node(1)
         self.start_node(1)
         connect_nodes(self.nodes[0] ,1)
-        self.sync_all()
+        #self.sync_all()
         self.nodes[0].sporkupdate("SPORK_4_DIP0003_ENFORCED", self.nodes[0].getblockcount() + 1)
         self.wait_for_sporks_same()
-        self.sync_all()
+        #self.sync_all()
 
         self.nodes[0].generate(2)
 
