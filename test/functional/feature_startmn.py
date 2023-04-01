@@ -68,6 +68,7 @@ class WalletTest(WagerrTestFramework):
 
         rawtx = self.nodes[0].getrawtransaction(mn01_collateral_txid, 1)
         for txout in rawtx['vout']:
+            self.log.info("TxOut %s"  % txout)
             if txout['value'] == Decimal(25000):
                 mn01_collateral_vout = txout['n']
                 break
