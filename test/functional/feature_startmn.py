@@ -58,7 +58,6 @@ class WalletTest(WagerrTestFramework):
         self.log.info(mn01_votingAddr)
         self.log.info(mn01_rewards_address)
         self.log.info(mn01_fundsAddr)
-        breakpoint()
         mn01_protx_hash = self.nodes[0].protx('register', txid, collateral_vout,  '127.0.0.1:%d' % mn01_p2p_port, mn01_ownerAddr, mn01_operatorAddr, mn01_votingAddr, 0, mn01_rewards_address, mn01_fundsAddr, True)
 
         """ collateral_vout for 25000 is hidden with lockunspent
