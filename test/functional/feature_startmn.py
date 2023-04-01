@@ -18,7 +18,7 @@ class WalletTest(WagerrTestFramework):
         self.num_nodes = 2
         self.setup_clean_chain = True
         self.extra_args = [['-sporkkey=6xLZdACFRA53uyxz8gKDLcgVrm5kUUEu2B3BUzWUxHqa2W7irbH'],[]]
-        self.fast_dip3_enforcement = False
+        self.fast_dip3_enforcement = True
 
     def setup_network(self):
         self.add_nodes(2, self.extra_args)
@@ -28,6 +28,7 @@ class WalletTest(WagerrTestFramework):
         self.sync_all(self.nodes[0:1])
 
     def run_test(self):
+        self.nodes[0].sporkupdate("SPORK_4_DIP0003_ENFORCED", 50)
         mn01_collateral_address = self.nodes[0].getnewaddress()
         mn01_p2p_port = p2p_port(0)
         mn01_blsKey = self.nodes[0].bls('generate')
@@ -35,7 +36,7 @@ class WalletTest(WagerrTestFramework):
         mn01_ownerAddr = self.nodes[0].getnewaddress()
         mn01_operatorAddr = mn01_blsKey['public']
         mn01_votingAddr = mn01_ownerAddr
-        self.nodes[0].generate(251)
+        self.nodes[0].generate(25)
 #        mn01_blsMnkey = mn01_blsKey['secret']
 
         txid=self.nodes[0].sendtoaddress(mn01_fundsAddr, MASTERNODE_COLLATERAL)
@@ -49,7 +50,7 @@ class WalletTest(WagerrTestFramework):
         self.nodes[0].sendtoaddress(mn01_fundsAddr, 0.001)
         mn01_collateral_address = self.nodes[0].getnewaddress()
         mn01_rewards_address = self.nodes[0].getnewaddress()
-        self.nodes[0].generate(250)
+        self.nodes[0].generate(26)
 
         self.log.info(mn01_collateral_address)
         self.log.info('127.0.0.1:%d' % mn01_p2p_port)
@@ -61,6 +62,7 @@ class WalletTest(WagerrTestFramework):
         breakpoint()
         mn01_protx_hash = self.nodes[0].protx('register', txid, collateral_vout,  '127.0.0.1:%d' % mn01_p2p_port, mn01_ownerAddr, mn01_operatorAddr, mn01_votingAddr, 0, mn01_rewards_address, mn01_fundsAddr, True)
 
+        """ collateral_vout for 25000 is hidden with lockunspent
         mn01_collateral_txid = mn01_protx_hash
         mn01_collateral_vout = -1
 
@@ -72,7 +74,7 @@ class WalletTest(WagerrTestFramework):
                 break
         breakpoint()
         assert(mn01_collateral_vout != -1)
-
+        """
         self.log.info("mn01_protx_hash:")
         self.log.info(mn01_protx_hash)
         disconnect_nodes(0,1) 
