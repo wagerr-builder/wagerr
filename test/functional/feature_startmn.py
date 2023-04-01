@@ -30,7 +30,6 @@ class WalletTest(WagerrTestFramework):
     def run_test(self):
         self.nodes[0].sporkupdate("SPORK_4_DIP0003_ENFORCED", 50)
         self.log.info("Sporks %s" % self.nodes[0].spork("show"))
-        breakpoint()
         mn01_collateral_address = self.nodes[0].getnewaddress()
         mn01_p2p_port = p2p_port(0)
         mn01_blsKey = self.nodes[0].bls('generate')
