@@ -37,6 +37,7 @@ class WalletTest(WagerrTestFramework):
         mn01_blsKey = self.nodes[0].bls('generate')
         mn01_fundsAddr = self.nodes[0].getnewaddress()
         self.nodes[0].sendtoaddress(mn01_fundsAddr, 0.001)
+        self.nodes[0].generate(1)
         mn01_ownerAddr = self.nodes[0].getnewaddress()
         mn01_operatorAddr = mn01_blsKey['public']
         mn01_votingAddr = mn01_ownerAddr
