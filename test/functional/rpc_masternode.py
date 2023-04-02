@@ -3,7 +3,7 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 from test_framework.test_framework import WagerrTestFramework
-from test_framework.util import assert_equal
+from test_framework.util import assert_equal, connect_nodes, disconnect_nodes
 
 '''
 rpc_masternode.py
@@ -19,6 +19,14 @@ class RPCMasternodeTest(WagerrTestFramework):
         self.log.info("test that results from `winners` and `payments` RPCs match")
         blockhash = ""
         payments = []
+        self.nodes[0].generate(450)
+        disconnect_nodes(self.nodes[0], 1)
+        connect_nodes(self.nodes[0], 1)
+        disconnect_nodes(self.nodes[0], 2)
+        connect_nodes(self.nodes[0], 2)
+        disconnect_nodes(self.nodes[0], 3)
+        connect_nodes(self.nodes[0], 3)
+        self.sync_all()
         # we expect some masternodes to have 0 operator reward and some to have non-0 operator reward
         checked_0_operator_reward = False
         checked_non_0_operator_reward = False
