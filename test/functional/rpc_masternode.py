@@ -23,7 +23,7 @@ class RPCMasternodeTest(WagerrTestFramework):
         checked_0_operator_reward = False
         checked_non_0_operator_reward = False
         while not checked_0_operator_reward or not checked_non_0_operator_reward:
-            self.nodes[0].generate(1)
+            self.nodes[0].generate(450)
             bi = self.nodes[0].getblockchaininfo()
             height = bi["blocks"]
             blockhash = bi["bestblockhash"]
