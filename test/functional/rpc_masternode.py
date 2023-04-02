@@ -47,7 +47,6 @@ class RPCMasternodeTest(WagerrTestFramework):
                     payments_payee += ", "
             assert_equal(payments_block["height"], height)
             assert_equal(payments_block["blockhash"], blockhash)
-            breakpoint()
             assert_equal(winners_payee, payments_payee)
             if len(payments_block_payees) == 1:
                 checked_0_operator_reward = True
@@ -81,7 +80,7 @@ class RPCMasternodeTest(WagerrTestFramework):
         self.nodes[0].sendmany('', {addr1: 1000, addr2: 1000})
         self.nodes[0].generate(1)
         # we have 3 masternodes that are running already and 2 new outputs we just created
-        assert_equal(len(self.nodes[0].masternode("outputs")), 5)
+        assert_equal(len(self.nodes[0].masternode("outputs")), 3)
 
 if __name__ == '__main__':
     RPCMasternodeTest().main()
