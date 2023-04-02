@@ -77,8 +77,6 @@ DUPLICATE_COINBASE_SCRIPT_SIG = b'\x01\x78'  # Valid for block at height 120
 class FullBlockTest(WagerrTestFramework):
     def set_test_params(self):
         self.num_nodes = 1
-        self.mn_count = 0
-        self.fast_dip3_enforcement = False
         self.setup_clean_chain = True
         # Very large reorgs cause cs_main to be held for a very long time in ActivateBestChainStep,
         # which causes RPC to hang, so we need to increase RPC timeouts
@@ -86,7 +84,7 @@ class FullBlockTest(WagerrTestFramework):
         # Must set '-dip3params=2000:2000' to create pre-dip3 blocks only
         self.extra_args = [['-dip3params=2000:2000', '-acceptnonstdtxn=1']]  # This is a consensus block test, we don't care about tx policy
 
-    def setup_nodes(self):
+    def setup_network(self):
         self.add_nodes(self.num_nodes, self.extra_args)
         self.start_nodes()
 
