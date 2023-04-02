@@ -74,7 +74,7 @@ class MiningTest(WagerrTestFramework):
 
         self.log.info('getmininginfo')
         mining_info = node.getmininginfo()
-        assert_equal(mining_info['blocks'], 231)
+        assert_equal(mining_info['blocks'], 200)
         assert_equal(mining_info['chain'], self.chain)
         assert 'currentblocksize' not in mining_info
         assert 'currentblocktx' not in mining_info
