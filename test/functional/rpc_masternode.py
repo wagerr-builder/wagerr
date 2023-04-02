@@ -13,7 +13,7 @@ Test "masternode" rpc subcommands
 
 class RPCMasternodeTest(WagerrTestFramework):
     def set_test_params(self):
-        self.set_wagerr_test_params(4, 3, fast_dip3_enforcement=False)
+        self.set_wagerr_test_params(4, 3, fast_dip3_enforcement=True)
 
     def run_test(self):
         self.log.info("test that results from `winners` and `payments` RPCs match")
