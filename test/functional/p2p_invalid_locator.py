@@ -14,9 +14,11 @@ class InvalidLocatorTest(WagerrTestFramework):
     def set_test_params(self):
         self.num_nodes = 1
         self.setup_clean_chain = False
-        self.mn_count = 0
-        self.fast_dip3_enforcement = False
         self.extra_args = [["-debug"]]
+
+    def setup_network(self):
+        self.add_nodes(self.num_nodes, self.extra_args)
+        self.start_nodes()
 
     def run_test(self):
         node = self.nodes[0]  # convenience reference to the node
