@@ -39,6 +39,7 @@ class RPCMasternodeTest(WagerrTestFramework):
                     payments_payee += ", "
             assert_equal(payments_block["height"], height)
             assert_equal(payments_block["blockhash"], blockhash)
+            breakpoint()
             assert_equal(winners_payee, payments_payee)
             if len(payments_block_payees) == 1:
                 checked_0_operator_reward = True
