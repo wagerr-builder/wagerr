@@ -31,8 +31,10 @@ class InvalidTxRequestTest(WagerrTestFramework):
             "-acceptnonstdtxn=1",
         ]]
         self.setup_clean_chain = True
-        self.mn_count = 0
-        self.fast_dip3_enforcement = False
+
+    def setup_network(self):
+        self.add_nodes(self.num_nodes, self.extra_args)
+        self.start_nodes()
 
     def bootstrap_p2p(self, *, num_connections=1):
         """Add a P2P connection to the node.
