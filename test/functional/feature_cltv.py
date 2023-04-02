@@ -65,10 +65,12 @@ class BIP65Test(WagerrTestFramework):
             '-par=1',  # Use only one script thread to get the exact reject reason for testing
             '-acceptnonstdtxn=1',  # cltv_invalidate is nonstandard
         ]]
-        self.mn_count = 0
-        self.fast_dip3_enforcement = True
         self.setup_clean_chain = True
         self.rpc_timeout = 120
+
+    def setup_network(self):
+        self.add_nodes(self.num_nodes, self.extra_args)
+        self.start_nodes()
 
     def test_cltv_info(self, *, is_active):
         assert_equal(
