@@ -40,6 +40,10 @@ class AsmapTest(WagerrTestFramework):
         self.extra_args = [["-debug"]]
         self.num_nodes = 1
 
+    def setup_network(self):
+        self.add_nodes(self.num_nodes, self.extra_args)
+        self.start_nodes()
+
     def test_without_asmap_arg(self):
         self.log.info('Test wagerrd with no -asmap arg passed')
         self.stop_node(0)
