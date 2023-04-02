@@ -66,9 +66,9 @@ class DIP3Test(WagerrTestFramework):
         self.create_mn_collateral(self.nodes[0], before_dip3_mn)
         mns.append(before_dip3_mn)
 
-        # block 150 starts enforcing DIP3 MN payments
-        self.nodes[0].generate(150 - self.nodes[0].getblockcount())
-        assert self.nodes[0].getblockcount() == 150
+        # block 501 starts enforcing DIP3 MN payments
+        self.nodes[0].generate(501 - self.nodes[0].getblockcount())
+        assert self.nodes[0].getblockcount() == 501
 
         self.log.info("mining final block for DIP3 activation")
         self.nodes[0].generate(1)
@@ -261,7 +261,6 @@ class DIP3Test(WagerrTestFramework):
     def register_mn(self, node, mn):
         node.sendtoaddress(mn.fundsAddr, 0.001)
         mn.rewards_address = node.getnewaddress()
-        breakpoint()
         mn.protx_hash = node.protx('register', mn.collateral_txid, mn.collateral_vout, '127.0.0.1:%d' % mn.p2p_port, mn.ownerAddr, mn.operatorAddr, mn.votingAddr, 0, mn.rewards_address, mn.fundsAddr)
         node.generate(1)
 
