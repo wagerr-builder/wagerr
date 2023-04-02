@@ -19,12 +19,14 @@ MAX_ANCESTORS_CUSTOM = 5
 class MempoolPackagesTest(WagerrTestFramework):
     def set_test_params(self):
         self.num_nodes = 2
-        self.mn_count = 0
-        self.fast_dip3_enforcement = False
         self.extra_args = [
             ["-maxorphantxsize=1000"],
             ["-maxorphantxsize=1000", "-limitancestorcount={}".format(MAX_ANCESTORS_CUSTOM)],
         ]
+
+    def setup_network(self):
+        self.add_nodes(self.num_nodes, self.extra_args)
+        self.start_nodes()
 
     def skip_test_if_missing_module(self):
         self.skip_if_no_wallet()
