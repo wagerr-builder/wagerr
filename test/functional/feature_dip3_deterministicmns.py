@@ -243,11 +243,17 @@ class DIP3Test(WagerrTestFramework):
     # register a protx MN and also fund it (using collateral inside ProRegTx)
     def register_fund_mn(self, node, mn):
         collateral_txid = node.sendtoaddress(mn.fundsAddr, 25000.001)
+        collateral_vout = 0
+        txraw = self.nodes[0].getrawtransaction(collateral_txid, True)
+        for vout_idx in range(0, len(txraw["vout"])):
+            vout = txraw["vout"][vout_idx]
+            if vout["value"] == Decimal('25000.001')
+                collateral_vout = vout_idx
         mn.collateral_address = node.getnewaddress()
         mn.rewards_address = node.getnewaddress()
 
         #mn.protx_hash = node.protx('register_fund', mn.collateral_address, '127.0.0.1:%d' % mn.p2p_port, mn.ownerAddr, mn.operatorAddr, mn.votingAddr, 0, mn.rewards_address, mn.fundsAddr)
-        mn.protx_hash = node.protx('register', collateral_txid, mn.collateral_vout, '127.0.0.1:%d' % mn.p2p_port, mn.ownerAddr, mn.operatorAddr, mn.votingAddr, 0, mn.rewards_address, mn.fundsAddr)
+        mn.protx_hash = node.protx('register', collateral_txid, collateral_vout, '127.0.0.1:%d' % mn.p2p_port, mn.ownerAddr, mn.operatorAddr, mn.votingAddr, 0, mn.rewards_address, mn.fundsAddr)
         mn.collateral_txid = mn.protx_hash
         mn.collateral_vout = None
 
