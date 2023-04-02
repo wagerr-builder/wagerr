@@ -13,7 +13,7 @@ Test "masternode" rpc subcommands
 
 class RPCMasternodeTest(WagerrTestFramework):
     def set_test_params(self):
-        self.set_wagerr_test_params(4, 3, fast_dip3_enforcement=True)
+        self.set_wagerr_test_params(4, 3, fast_dip3_enforcement=False)
 
     def run_test(self):
         self.log.info("test that results from `winners` and `payments` RPCs match")
@@ -23,7 +23,7 @@ class RPCMasternodeTest(WagerrTestFramework):
         checked_0_operator_reward = False
         checked_non_0_operator_reward = False
         while not checked_0_operator_reward or not checked_non_0_operator_reward:
-            self.nodes[0].generate(450)
+            self.nodes[0].generate(1)
             bi = self.nodes[0].getblockchaininfo()
             height = bi["blocks"]
             blockhash = bi["bestblockhash"]
