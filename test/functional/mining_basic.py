@@ -84,6 +84,7 @@ class MiningTest(WagerrTestFramework):
 
         # Mine a block to leave initial block download
         node.generate(1)
+        breakpoint()
         tmpl = node.getblocktemplate()
         self.log.info("getblocktemplate: Test capability advertised")
         assert 'proposal' in tmpl['capabilities']
