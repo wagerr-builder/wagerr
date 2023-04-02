@@ -47,7 +47,7 @@ class WalletTest(WagerrTestFramework):
             if vout["value"] == MASTERNODE_COLLATERAL:
                 collateral_vout = vout_idx
         self.nodes[0].lockunspent(False, [{'txid': txid, 'vout': collateral_vout}])
-        self.nodes[0].sendtoaddress(mn01_fundingAddr, 1)
+        self.nodes[0].sendtoaddress(mn01_fundsAddr, 1)
         mn01_collateral_address = self.nodes[0].getnewaddress()
         mn01_rewards_address = self.nodes[0].getnewaddress()
         self.nodes[0].generate(251)
