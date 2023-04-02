@@ -110,6 +110,10 @@ class WagerrZMQTest (WagerrTestFramework):
         self.set_wagerr_test_params(5, 4, fast_dip3_enforcement=True, extra_args=extra_args)
         self.set_wagerr_llmq_test_params(4, 4)
 
+    def setup_network(self):
+        self.add_nodes(self.num_nodes, self.extra_args)
+        self.start_nodes()
+
     def skip_test_if_missing_module(self):
         self.skip_if_no_py3_zmq()
         self.skip_if_no_bitcoind_zmq()
