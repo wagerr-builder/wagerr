@@ -34,6 +34,7 @@ class MempoolCoinbaseTest(WagerrTestFramework):
         # Mine four blocks. After this, nodes[0] blocks
         # 101, 102, and 103 are spend-able.
         new_blocks = self.nodes[1].generate(4)
+        self.nodes[0].connect_nodes(self.nodes[0],1)
         self.sync_all()
 
         node0_address = self.nodes[0].getnewaddress()
