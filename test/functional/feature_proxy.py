@@ -45,11 +45,9 @@ class ProxyTest(WagerrTestFramework):
     def set_test_params(self):
         self.num_nodes = 4
         self.setup_clean_chain = True
-        self.mn_count = 0
-        self.fast_dip3_enforcement = False
         self.extra_args = [['-debug'], ['-debug'], ['-debug'], ['-debug']]
 
-    def setup_nodes(self):
+    def setup_network(self):
         self.have_ipv6 = test_ipv6_local()
         # Create two proxies on different ports
         # ... one unauthenticated
