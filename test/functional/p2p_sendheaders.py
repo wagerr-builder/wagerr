@@ -205,10 +205,11 @@ class SendHeadersTest(WagerrTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 2
-        self.mn_count = 0
-        self.fast_dip3_enforcement = False
         self.extra_args = [["-debug"], ["-debug"]]
 
+    def setup_network(self):
+        self.add_nodes(self.num_nodes, self.extra_args)
+        self.start_nodes()
     def mine_blocks(self, count):
         """Mine count blocks and return the new tip."""
 
