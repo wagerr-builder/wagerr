@@ -17,9 +17,11 @@ class SettingsTest(WagerrTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 1
-        self.mn_count = 0
-        self.fast_dip3_enforcement = False
         self.extra_args = [["-debug"]]
+
+    def setup_network(self):
+        self.add_nodes(self.num_nodes, self.extra_args)
+        self.start_nodes()
 
     def run_test(self):
         node, = self.nodes
