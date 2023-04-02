@@ -35,6 +35,7 @@ class WalletTest(WagerrTestFramework):
         mn01_ownerAddr = self.nodes[0].getnewaddress()
         mn01_operatorAddr = mn01_blsKey['public']
         mn01_votingAddr = mn01_ownerAddr
+        mn01_fundingAddr = self.nodes[0].getnewaddress()
         self.nodes[0].generate(250)
 #        mn01_blsMnkey = mn01_blsKey['secret']
 
@@ -45,8 +46,8 @@ class WalletTest(WagerrTestFramework):
             vout = txraw["vout"][vout_idx]
             if vout["value"] == MASTERNODE_COLLATERAL:
                 collateral_vout = vout_idx
-        self.nodes[0].lockunspent(False, [{'txid': txid, 'vout': collateral_vout}])
-        self.nodes[0].sendtoaddress(mn01_fundsAddr, 0.001)
+        #self.nodes[0].lockunspent(False, [{'txid': txid, 'vout': collateral_vout}])
+        self.nodes[0].sendtoaddress(mn01_fundingAddr, 1)
         mn01_collateral_address = self.nodes[0].getnewaddress()
         mn01_rewards_address = self.nodes[0].getnewaddress()
         self.nodes[0].generate(251)
@@ -60,7 +61,7 @@ class WalletTest(WagerrTestFramework):
         self.log.info(mn01_fundsAddr)
         breakpoint()
         #mn01_protx_hash = self.nodes[0].protx('register', txid, collateral_vout,  '127.0.0.1:%d' % mn01_p2p_port, mn01_ownerAddr, mn01_operatorAddr, mn01_votingAddr, 0, mn01_rewards_address, mn01_fundsAddr, True)
-        mn01_protx_hash = self.nodes[0].protx('register_fund', mn01_fundsAddr, '127.0.0.1:%d' % mn01_p2p_port, mn01_ownerAddr, mn01_operatorAddr, mn01_votingAddr, 0, mn01_rewards_address, mn01_fundsAddr, True)
+        mn01_protx_hash = self.nodes[0].protx('register_fund', mn01_fundsAddr, '127.0.0.1:%d' % mn01_p2p_port, mn01_ownerAddr, mn01_operatorAddr, mn01_votingAddr, 0, mn01_rewards_address, mn01_fundingAddr, True)
 
 
         """ collateral_vout for 25000 is hidden with lockunspent
