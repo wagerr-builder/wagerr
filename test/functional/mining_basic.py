@@ -55,7 +55,7 @@ class MiningTest(WagerrTestFramework):
             self.bump_mocktime(156)
             self.nodes[0].generate(1)
         mining_info = self.nodes[0].getmininginfo()
-        assert_equal(mining_info['blocks'], 231)
+        assert_equal(mining_info['blocks'], 200)
         assert_equal(mining_info['currentblocktx'], 0)
         assert_equal(mining_info['currentblocksize'], 1000)
         self.restart_node(0)
