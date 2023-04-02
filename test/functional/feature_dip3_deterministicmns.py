@@ -247,7 +247,7 @@ class DIP3Test(WagerrTestFramework):
         txraw = self.nodes[0].getrawtransaction(collateral_txid, True)
         for vout_idx in range(0, len(txraw["vout"])):
             vout = txraw["vout"][vout_idx]
-            if vout["value"] == Decimal('25000.001')
+            if vout["value"] == Decimal('25000.001'):
                 collateral_vout = vout_idx
         mn.collateral_address = node.getnewaddress()
         mn.rewards_address = node.getnewaddress()
