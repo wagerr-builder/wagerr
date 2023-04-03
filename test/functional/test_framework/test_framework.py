@@ -877,14 +877,14 @@ class WagerrTestFramework(WagerrTestFramework):
         txid = None
         txid = self.nodes[0].sendtoaddress(address, MASTERNODE_COLLATERAL)
         collateral_vout = 0
-        if not register_fund:
-            txraw = self.nodes[0].getrawtransaction(txid, True)
-            for vout_idx in range(0, len(txraw["vout"])):
-                vout = txraw["vout"][vout_idx]
-                if vout["value"] == MASTERNODE_COLLATERAL:
-                    collateral_vout = vout_idx
-            self.nodes[0].lockunspent(False, [{'txid': txid, 'vout': collateral_vout}])
-
+        #if not register_fund:
+        txraw = self.nodes[0].getrawtransaction(txid, True)
+        for vout_idx in range(0, len(txraw["vout"])):
+            vout = txraw["vout"][vout_idx]
+            if vout["value"] == MASTERNODE_COLLATERAL:
+                collateral_vout = vout_idx
+        self.nodes[0].lockunspent(False, [{'txid': txid, 'vout': collateral_vout}])
+        # end
         # send to same address to reserve some funds for fees
         self.nodes[0].sendtoaddress(address, 0.001)
 
@@ -1013,7 +1013,7 @@ class WagerrTestFramework(WagerrTestFramework):
 
         spork4height=500
         if not self.fast_dip3_enforcement:
-            spork4height = self.nodes[0].getblockcount() + 1
+            #spork4height = self.nodes[0].getblockcount() + 1
             self.nodes[0].sporkupdate("SPORK_4_DIP0003_ENFORCED", spork4height)
             self.wait_for_sporks_same()
             while self.nodes[0].getblockcount() < spork4height:
