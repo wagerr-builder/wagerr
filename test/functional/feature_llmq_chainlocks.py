@@ -18,7 +18,7 @@ from test_framework.util import connect_nodes, force_finish_mnsync, isolate_node
 
 class LLMQChainLocksTest(WagerrTestFramework):
     def set_test_params(self):
-        self.set_wagerr_test_params(4, 3, fast_dip3_enforcement=True)
+        self.set_wagerr_test_params(4, 3, fast_dip3_enforcement=False)
 
     def run_test(self):
 
