@@ -88,11 +88,13 @@ class DIP3Test(WagerrTestFramework):
             mns.append(mn)
 
             # start a few MNs before they are registered and a few after they are registered
+
             start = (i % 3) == 0
             if start:
                 self.start_mn(mn)
 
             # let a few of the protx MNs refer to the existing collaterals
+            """ Register fund not working
             fund = (i % 2) == 0
             if fund:
                 self.log.info("register_fund %s" % mn.alias)
@@ -102,7 +104,11 @@ class DIP3Test(WagerrTestFramework):
                 self.create_mn_collateral(self.nodes[0], mn)
                 self.log.info("register %s" % mn.alias)
                 self.register_mn(self.nodes[0], mn)
-
+            """
+            self.log.info("create_collateral %s" % mn.alias)
+            self.create_mn_collateral(self.nodes[0], mn)
+            self.log.info("register %s" % mn.alias)
+            self.register_mn(self.nodes[0], mn)
             self.nodes[0].generate(1)
 
             if not start:
