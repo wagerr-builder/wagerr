@@ -89,9 +89,9 @@ class DIP3Test(WagerrTestFramework):
 
             # start a few MNs before they are registered and a few after they are registered
 
-            start = (i % 3) == 0
-            if start:
-                self.start_mn(mn)
+            #start = (i % 3) == 0
+            #if start:
+            #    self.start_mn(mn)
 
             # let a few of the protx MNs refer to the existing collaterals
             """ Register fund not working
@@ -111,8 +111,8 @@ class DIP3Test(WagerrTestFramework):
             self.register_mn(self.nodes[0], mn)
             self.nodes[0].generate(1)
 
-            if not start:
-                self.start_mn(mn)
+            #if not start:
+            self.start_mn(mn)
 
             self.sync_all()
             self.assert_mnlists(mns)
