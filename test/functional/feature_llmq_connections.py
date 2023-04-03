@@ -18,7 +18,7 @@ from test_framework.util import assert_greater_than_or_equal, connect_nodes, wai
 
 class LLMQConnections(WagerrTestFramework):
     def set_test_params(self):
-        self.set_wagerr_test_params(15, 14, fast_dip3_enforcement=True)
+        self.set_wagerr_test_params(15, 14, fast_dip3_enforcement=False)
         self.set_wagerr_llmq_test_params(5, 3)
 
     def run_test(self):
