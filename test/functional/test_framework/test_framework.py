@@ -1283,7 +1283,6 @@ class WagerrTestFramework(WagerrTestFramework):
         def check_dkg_comitments():
             time.sleep(2)
             all_ok = True
-            breakpoint()
             for node in nodes:
                 s = node.quorum("dkgstatus")
                 if "minableCommitments" not in s:
@@ -1367,6 +1366,7 @@ class WagerrTestFramework(WagerrTestFramework):
         q = self.nodes[0].getbestblockhash()
         self.log.info("Expected quorum_hash:"+str(q))
         self.log.info("Waiting for phase 1 (init)")
+        breakpoint()
         self.wait_for_quorum_phase(q, 1, expected_members, None, 0, mninfos_online, llmq_type_name=llmq_type_name)
         self.wait_for_quorum_connections(q, expected_connections, nodes, wait_proc=lambda: self.bump_mocktime(1, nodes=nodes), llmq_type_name=llmq_type_name)
         if spork23_active:
