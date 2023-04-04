@@ -1248,7 +1248,6 @@ class WagerrTestFramework(WagerrTestFramework):
 
     def wait_for_quorum_phase(self, quorum_hash, phase, expected_member_count, check_received_messages, check_received_messages_count, mninfos, llmq_type_name="llmq_test", timeout=30, sleep=1):
         def check_dkg_session():
-            breakpoint()
             all_ok = True
             member_count = 0
             for mn in mninfos:
@@ -1284,6 +1283,7 @@ class WagerrTestFramework(WagerrTestFramework):
         def check_dkg_comitments():
             time.sleep(2)
             all_ok = True
+            breakpoint()
             for node in nodes:
                 s = node.quorum("dkgstatus")
                 if "minableCommitments" not in s:
