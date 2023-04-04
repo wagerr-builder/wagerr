@@ -13,7 +13,7 @@ Test "quorum" rpc subcommands
 
 class RPCMasternodeTest(WagerrTestFramework):
     def set_test_params(self):
-        self.set_dash_test_params(4, 3, fast_dip3_enforcement=True)
+        self.set_wagerr_test_params(4, 3, fast_dip3_enforcement=True)
 
     def run_test(self):
         self.nodes[0].sporkupdate("SPORK_17_QUORUM_DKG_ENABLED", 0)
