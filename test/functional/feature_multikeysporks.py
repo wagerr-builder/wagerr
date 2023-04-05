@@ -125,7 +125,7 @@ class MultiKeySporkTest(WagerrTestFramework):
             wait_until(lambda: self.get_test_spork_value(node, spork_name) == final_value, sleep=0.1, timeout=10)
 
     def run_test(self):
-        self.test_spork('SPORK_2_INSTANTSEND_ENABLED', 2)
+        self.test_spork('SPORK_2_INSTANTSEND_ENABLED', 1)
         self.test_spork('SPORK_3_INSTANTSEND_BLOCK_FILTERING', 3)
         for node in self.nodes:
             assert self.get_test_spork_value(node, 'SPORK_2_INSTANTSEND_ENABLED') == 2
