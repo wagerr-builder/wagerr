@@ -48,21 +48,16 @@ class MultiKeySporkTest(WagerrTestFramework):
         # address(base58): TSXFddherPjT1Y1pdpwJsLXM7QBYufxPHQ
         self.add_nodes(5)
 
-        spork_chain_params =   ["-sporkaddr=TRBjcmyE9YBfvWxCDRTpL41sUzxCj6nnMi",
-                                "-sporkaddr=TC718jAVnKZMk2nkF1GJAAW6kXZ3w6LZcu",
-                                "-sporkaddr=TPiq9YKZdbfEGuZuZhQtLNGrkKSchmL1gc",
-                                "-sporkaddr=TYd2UH2v5eeHYV7REaHfkGsnMMFcYgL9vc",
-                                "-sporkaddr=TSXFddherPjT1Y1pdpwJsLXM7QBYufxPHQ",
-                                "-minsporkkeys=3"]
+        spork_chain_params =   ["-sporkaddr=TPiq9YKZdbfEGuZuZhQtLNGrkKSchmL1gc"]
 
         # Node0 extra args to use on normal node restarts
         self.node0_extra_args = ["-sporkkey=6xLZdACFRA53uyxz8gKDLcgVrm5kUUEu2B3BUzWUxHqa2W7irbH"] + spork_chain_params
         self.start_node(0, self.node0_extra_args)
 
-        self.start_node(1, ["-sporkkey=THP5qnU3d4t3o1hR4zq1ejGWPqKFws3kvzV35eK5CokZmXTE2cyr"] + spork_chain_params)
-        self.start_node(2, ["-sporkkey=TBeGp82H5rCdSHMRJwtrXfc7KpbxM5KZYb8L9F4E3fQkrJDJpu7s"] + spork_chain_params)
-        self.start_node(3, ["-sporkkey=THXf1NqkvtgiVk23Z4Ns6TFDQ4XNVDuzD7jPk2nh4fwwauUqXZeC"] + spork_chain_params)
-        self.start_node(4, ["-sporkkey=TL1z4PKdMmLtMnmBQsTXE3bvuuYWm7DTDPmE7wFjCx2fFs7pcocQ"] + spork_chain_params)
+        self.start_node(1, ["-sporkkey=6xLZdACFRA53uyxz8gKDLcgVrm5kUUEu2B3BUzWUxHqa2W7irbH"] + spork_chain_params)
+        self.start_node(2, ["-sporkkey=6xLZdACFRA53uyxz8gKDLcgVrm5kUUEu2B3BUzWUxHqa2W7irbH"] + spork_chain_params)
+        self.start_node(3, ["-sporkkey=6xLZdACFRA53uyxz8gKDLcgVrm5kUUEu2B3BUzWUxHqa2W7irbH"] + spork_chain_params)
+        self.start_node(4, ["-sporkkey=6xLZdACFRA53uyxz8gKDLcgVrm5kUUEu2B3BUzWUxHqa2W7irbH"] + spork_chain_params)
 
         # connect nodes at start
         for i in range(0, 5):
