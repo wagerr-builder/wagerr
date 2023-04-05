@@ -56,7 +56,7 @@ class MultiKeySporkTest(WagerrTestFramework):
                                 "-minsporkkeys=3"]
 
         # Node0 extra args to use on normal node restarts
-        self.node0_extra_args = ["-sporkkey=TD1oyPKTwkCQjugLVy3QCzgHgKTdGvLg1BiGAd7wdCnJDYPijnKA"] + spork_chain_params
+        self.node0_extra_args = ["-sporkkey=6xLZdACFRA53uyxz8gKDLcgVrm5kUUEu2B3BUzWUxHqa2W7irbH"] + spork_chain_params
         self.start_node(0, self.node0_extra_args)
 
         self.start_node(1, ["-sporkkey=THP5qnU3d4t3o1hR4zq1ejGWPqKFws3kvzV35eK5CokZmXTE2cyr"] + spork_chain_params)
