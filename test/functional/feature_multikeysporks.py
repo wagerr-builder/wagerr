@@ -48,7 +48,7 @@ class MultiKeySporkTest(WagerrTestFramework):
         # address(base58): TSXFddherPjT1Y1pdpwJsLXM7QBYufxPHQ
         self.add_nodes(5)
 
-        spork_chain_params =   ["-sporkaddr=TPiq9YKZdbfEGuZuZhQtLNGrkKSchmL1gc",
+        spork_chain_params =   ["-sporkaddr=TRBjcmyE9YBfvWxCDRTpL41sUzxCj6nnMi",
                                 "-sporkaddr=TC718jAVnKZMk2nkF1GJAAW6kXZ3w6LZcu",
                                 "-sporkaddr=TVkNnmvXDG7PSpqkuey8rC9qXMvSKWpYnb",
                                 "-sporkaddr=TYd2UH2v5eeHYV7REaHfkGsnMMFcYgL9vc",
