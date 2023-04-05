@@ -91,6 +91,7 @@ class MultiKeySporkTest(WagerrTestFramework):
 
         # restart with no extra args to trigger CheckAndRemove
         self.restart_node(0)
+        breakpoint()
         assert self.get_test_spork_value(self.nodes[0], spork_name) != 1
 
         # restart again with corect_params, should resync spork parts from other nodes
@@ -101,7 +102,6 @@ class MultiKeySporkTest(WagerrTestFramework):
         # third signer set spork value
         self.nodes[2].sporkupdate(spork_name, 1)
         # now spork state is changed
-        breakpoint()
         for node in self.nodes:
             wait_until(lambda: self.get_test_spork_value(node, spork_name) == 1, sleep=0.1, timeout=10)
 
