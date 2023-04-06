@@ -15,11 +15,8 @@ Tests the activation of a new quorum type in dip0020 via a bip9-like hardfork
 
 class NewQuorumTypeActivationTest(WagerrTestFramework):
     def set_test_params(self):
-        self.setup_clean_chain = True
-        self.num_nodes = 4
         self.extra_args = [["-vbparams=dip0020:0:999999999999:10:8:6:5"]]
-        self.mn_count = 3
-        self.fast_dip3_enforcement = False
+        self.set_wagerr_test_params(4, 3, fast_dip3_enforcement=False)
 
     def run_test(self):
         assert_equal(get_bip9_status(self.nodes[0], 'dip0020')['status'], 'defined')
