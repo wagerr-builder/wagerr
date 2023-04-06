@@ -25,6 +25,7 @@ class TokenTest (WagerrTestFramework):
         self.setup_clean_chain = True
         self.num_nodes = 2
         self.mn_count = 0
+        self.fast_dip3_enforcement = False
         self.extra_args = [["-debug"], ["-debug"]]
         self.fast_dip3_enforcement = False
 
