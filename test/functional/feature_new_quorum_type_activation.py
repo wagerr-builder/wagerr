@@ -18,6 +18,8 @@ class NewQuorumTypeActivationTest(WagerrTestFramework):
         self.setup_clean_chain = True
         self.num_nodes = 1
         self.extra_args = [["-vbparams=dip0020:0:999999999999:10:8:6:5"]]
+        self.mn_count = 1
+        self.fast_dip3_enforcement = False
 
     def run_test(self):
         assert_equal(get_bip9_status(self.nodes[0], 'dip0020')['status'], 'defined')
