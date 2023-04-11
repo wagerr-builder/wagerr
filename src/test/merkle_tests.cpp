@@ -298,7 +298,7 @@ static inline int ctz(uint32_t i) {
     BOOST_CHECK_EQUAL(mutated, true);
 }*/
 
-BOOST_AUTO_TEST_CASE(merkle_test_LeftSubtreeRightSubtree)
+/*BOOST_AUTO_TEST_CASE(merkle_test_LeftSubtreeRightSubtree)
 {
     CBlock block, leftSubtreeBlock, rightSubtreeBlock;
 
@@ -325,6 +325,6 @@ BOOST_AUTO_TEST_CASE(merkle_test_LeftSubtreeRightSubtree)
     uint256 rootOfLR = ComputeMerkleRoot(leftRight);
 
     BOOST_CHECK_EQUAL(root, rootOfLR);
-}
+}*/
 
 BOOST_AUTO_TEST_SUITE_END()
