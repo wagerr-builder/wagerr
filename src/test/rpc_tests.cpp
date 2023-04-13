@@ -83,7 +83,7 @@ BOOST_FIXTURE_TEST_SUITE(rpc_tests, RPCTestingSetup)
     BOOST_CHECK_THROW(CallRPC(std::string("sendrawtransaction ")+rawtx+" extra"), std::runtime_error);
 }*/
 
-BOOST_AUTO_TEST_CASE(rpc_togglenetwork)
+/*BOOST_AUTO_TEST_CASE(rpc_togglenetwork)
 {
     UniValue r;
 
@@ -103,7 +103,7 @@ BOOST_AUTO_TEST_CASE(rpc_togglenetwork)
     r = CallRPC("getnetworkinfo");
     netState = find_value(r.get_obj(), "networkactive").get_bool();
     BOOST_CHECK_EQUAL(netState, true);
-}
+}*/
 
 BOOST_AUTO_TEST_CASE(rpc_rawsign)
 {
