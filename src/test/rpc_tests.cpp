@@ -122,7 +122,7 @@ BOOST_FIXTURE_TEST_SUITE(rpc_tests, RPCTestingSetup)
     BOOST_CHECK(find_value(r.get_obj(), "complete").get_bool() == false);
     r = CallRPC(std::string("signrawtransactionwithkey ")+notsigned+" ["+privkey1+","+privkey2+"] "+prevout);
     /* BOOST_CHECK(find_value(r.get_obj(), "complete").get_bool() == true); */
-}*/
+/*}*/
 
 BOOST_AUTO_TEST_CASE(rpc_createraw_op_return)
 {
