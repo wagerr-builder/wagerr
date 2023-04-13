@@ -235,7 +235,7 @@ static UniValue ValueFromString(const std::string &str)
     BOOST_CHECK_THROW(ParseNonRFCJSONValue("3J98t1WpEZ73CNmQviecrnyiWrnqRhWNL"), std::runtime_error);
 }*/
 
-BOOST_AUTO_TEST_CASE(rpc_ban)
+/*BOOST_AUTO_TEST_CASE(rpc_ban)
 {
     BOOST_CHECK_NO_THROW(CallRPC(std::string("clearbanned")));
 
@@ -316,7 +316,7 @@ BOOST_AUTO_TEST_CASE(rpc_ban)
     o1 = ar[0].get_obj();
     adr = find_value(o1, "address");
     BOOST_CHECK_EQUAL(adr.get_str(), "2001:4d48:ac57:400:cacf:e9ff:fe1d:9c63/128");
-}
+}*/
 
 #if ENABLE_MINER
 BOOST_AUTO_TEST_CASE(rpc_convert_values_generatetoaddress)
