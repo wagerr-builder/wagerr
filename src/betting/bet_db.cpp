@@ -683,9 +683,6 @@ using namespace boost::filesystem;
 
 // copy constructor for creating DB cache
 CBettingsView::CBettingsView(CBettingsView* phr) {
-    if (phr == nullptr) {
-        throw std::runtime_error("CBettingsView: phr pointer is null");
-    }
     mappings = MakeUnique<CBettingDB>(*phr->mappings.get());
     results = MakeUnique<CBettingDB>(*phr->results.get());
     events = MakeUnique<CBettingDB>(*phr->events.get());
