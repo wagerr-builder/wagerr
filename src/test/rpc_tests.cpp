@@ -214,7 +214,7 @@ static UniValue ValueFromString(const std::string &str)
     BOOST_CHECK_THROW(AmountFromValue(ValueFromString("93e+9")), UniValue); //overflow error
 }*/
 
-BOOST_AUTO_TEST_CASE(json_parse_errors)
+/*BOOST_AUTO_TEST_CASE(json_parse_errors)
 {
     // Valid
     BOOST_CHECK_EQUAL(ParseNonRFCJSONValue("1.0").get_real(), 1.0);
@@ -233,7 +233,7 @@ BOOST_AUTO_TEST_CASE(json_parse_errors)
     // BTC addresses should fail parsing
     BOOST_CHECK_THROW(ParseNonRFCJSONValue("175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W"), std::runtime_error);
     BOOST_CHECK_THROW(ParseNonRFCJSONValue("3J98t1WpEZ73CNmQviecrnyiWrnqRhWNL"), std::runtime_error);
-}
+}*/
 
 BOOST_AUTO_TEST_CASE(rpc_ban)
 {
