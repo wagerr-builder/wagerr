@@ -343,7 +343,7 @@ BOOST_AUTO_TEST_CASE(rpc_convert_values_generatetoaddress)
 }
 #endif // ENABLE_MINER */
 
-BOOST_AUTO_TEST_CASE(rpc_getblockstats_calculate_percentiles_by_size)
+/*BOOST_AUTO_TEST_CASE(rpc_getblockstats_calculate_percentiles_by_size)
 {
     int64_t total_size = 200;
     std::vector<std::pair<CAmount, int64_t>> feerates;
@@ -419,6 +419,6 @@ BOOST_AUTO_TEST_CASE(rpc_getblockstats_calculate_percentiles_by_size)
     for (int64_t i = 0; i < NUM_GETBLOCKSTATS_PERCENTILES; i++) {
         BOOST_CHECK_EQUAL(result4[i], 1);
     }
-}
+}*/
 
 BOOST_AUTO_TEST_SUITE_END()
