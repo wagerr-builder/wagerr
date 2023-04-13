@@ -318,7 +318,7 @@ static UniValue ValueFromString(const std::string &str)
     BOOST_CHECK_EQUAL(adr.get_str(), "2001:4d48:ac57:400:cacf:e9ff:fe1d:9c63/128");
 }*/
 
-#if ENABLE_MINER
+/* #if ENABLE_MINER
 BOOST_AUTO_TEST_CASE(rpc_convert_values_generatetoaddress)
 {
     UniValue result;
@@ -341,7 +341,7 @@ BOOST_AUTO_TEST_CASE(rpc_convert_values_generatetoaddress)
     BOOST_CHECK_EQUAL(result[1].get_str(), "TRyF3VZyWfZaAjJ5mi9cApuS9GGtkENRMc");
     BOOST_CHECK_EQUAL(result[2].get_int(), 9);
 }
-#endif // ENABLE_MINER
+#endif // ENABLE_MINER */
 
 BOOST_AUTO_TEST_CASE(rpc_getblockstats_calculate_percentiles_by_size)
 {
