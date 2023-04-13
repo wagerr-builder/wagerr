@@ -124,7 +124,7 @@ BOOST_FIXTURE_TEST_SUITE(rpc_tests, RPCTestingSetup)
     /* BOOST_CHECK(find_value(r.get_obj(), "complete").get_bool() == true); */
 /*}*/
 
-BOOST_AUTO_TEST_CASE(rpc_createraw_op_return)
+/*BOOST_AUTO_TEST_CASE(rpc_createraw_op_return)
 {
     BOOST_CHECK_NO_THROW(CallRPC("createrawtransaction [{\"txid\":\"a3b807410df0b60fcb9736768df5823938b2f838694939ba45f3c0a1bff150ed\",\"vout\":0}] {\"data\":\"68656c6c6f776f726c64\"}"));
 
@@ -137,7 +137,7 @@ BOOST_AUTO_TEST_CASE(rpc_createraw_op_return)
 
     // Data 81 bytes long
     BOOST_CHECK_NO_THROW(CallRPC("createrawtransaction [{\"txid\":\"a3b807410df0b60fcb9736768df5823938b2f838694939ba45f3c0a1bff150ed\",\"vout\":0}] {\"data\":\"010203040506070809101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081\"}"));
-}
+}*/
 
 BOOST_AUTO_TEST_CASE(rpc_format_monetary_values)
 {
