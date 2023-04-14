@@ -39,7 +39,7 @@ struct MinerTestingSetup : public TestingSetup {
 };
 } // namespace miner_tests
 
-BOOST_FIXTURE_TEST_SUITE(miner_tests, MinerTestingSetup)
+BOOST_FIXTURE_TEST_SUITE(miner_tests, BasicTestingSetup)
 
 static CFeeRate blockMinFeeRate = CFeeRate(DEFAULT_BLOCK_MIN_TX_FEE);
 
@@ -205,7 +205,7 @@ void MinerTestingSetup::TestPackageSelection(const CChainParams& chainparams, co
 }
 
 // NOTE: These tests rely on CreateNewBlock doing its own self-validation!
-/* BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
+ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
 {
     const auto chainParams = CreateChainParams(CBaseChainParams::MAIN);
     const CChainParams& chainparams = *chainParams;
@@ -544,6 +544,6 @@ void MinerTestingSetup::TestPackageSelection(const CChainParams& chainparams, co
     TestPackageSelection(chainparams, scriptPubKey, txFirst);
 
     fCheckpointsEnabled = true;
-}*/
+}
 
 BOOST_AUTO_TEST_SUITE_END()
