@@ -28,6 +28,7 @@
 
 #include <map>
 #include <vector>
+
 using SimpleUTXOMap = std::map<COutPoint, std::pair<int, CAmount>>;
 
 const auto deployment_id = Consensus::DEPLOYMENT_REALLOC;
