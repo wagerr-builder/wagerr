@@ -9,6 +9,7 @@
 #include <util/time.h>
 
 #include <boost/test/unit_test.hpp>
+#include <betting/bet_db.h>
 
 BOOST_FIXTURE_TEST_SUITE(txindex_tests, TestChain100Setup)
 
