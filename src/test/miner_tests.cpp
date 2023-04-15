@@ -39,9 +39,7 @@ struct MinerTestingSetup : public TestingSetup {
     }
     BlockAssembler AssemblerForTest(const CChainParams& params);
     CBettingsView phr;
-    {
-        phr = CBettingsView();
-    }
+    phr = CBettingsView();
 };
 } // namespace miner_tests
 
