@@ -45,8 +45,9 @@ BOOST_FIXTURE_TEST_SUITE(miner_tests, MinerTestingSetup)
 
 static CFeeRate blockMinFeeRate = CFeeRate(DEFAULT_BLOCK_MIN_TX_FEE);
 
-CBettingsView originalView;
-CBettingsView* phr = &originalView;
+//CBettingsView originalView;
+//CBettingsView* phr = &originalView;
+CBettingsView* phr = new CBettingsView();
 
 /*explicit CBettingsView() {
     mappings = MakeUnique<CBettingDB>();
