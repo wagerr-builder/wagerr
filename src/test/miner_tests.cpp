@@ -48,7 +48,7 @@ static CFeeRate blockMinFeeRate = CFeeRate(DEFAULT_BLOCK_MIN_TX_FEE);
 CBettingsView originalView;
 CBettingsView* phr = &originalView;
 
-explicit CBettingsView() {
+/*explicit CBettingsView() {
     mappings = MakeUnique<CBettingDB>();
     mappingsStorage = MakeUnique<CStorageKV>();
     // Initialize the rest of the unique_ptr members similarly
@@ -81,7 +81,7 @@ explicit CBettingsView() {
     fieldResultsStorage = MakeUnique<CStorageKV>();
     fieldBets = MakeUnique<CBettingDB>(); // "bets"
     fieldBetsStorage = MakeUnique<CStorageKV>();
-}
+}*/
 
 BlockAssembler MinerTestingSetup::AssemblerForTest(const CChainParams& params)
 {
