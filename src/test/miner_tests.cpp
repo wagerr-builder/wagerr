@@ -38,6 +38,7 @@ struct MinerTestingSetup : public TestingSetup {
         return CheckSequenceLocks(*m_node.mempool, tx, flags);
     }
     BlockAssembler AssemblerForTest(const CChainParams& params);
+    CBettingsView phr; // Add this line back
 };
 } // namespace miner_tests
 
