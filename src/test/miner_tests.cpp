@@ -38,17 +38,17 @@ struct MinerTestingSetup : public TestingSetup {
         return CheckSequenceLocks(*m_node.mempool, tx, flags);
     }
     BlockAssembler AssemblerForTest(const CChainParams& params);
-    CBettingsView phr;
-    // Add a constructor for MinerTestingSetup
-    MinerTestingSetup();
 };
 } // namespace miner_tests
 
-miner_tests::MinerTestingSetup::MinerTestingSetup()
-    : TestingSetup(CBaseChainParams::REGTEST)
-    , phr() // Initialize phr using the default constructor
+namespace miner_tests {
+boost::shared_ptr<MinerTestingSetup> CreateNewBlock_validity_setup()
 {
+    auto setup = boost::make_shared<MinerTestingSetup>();
+    setup->phr = CBettingsView();
+    return setup;
 }
+} // namespace miner_tests
 
 BOOST_FIXTURE_TEST_SUITE(miner_tests, MinerTestingSetup)
 
@@ -216,9 +216,9 @@ void MinerTestingSetup::TestPackageSelection(const CChainParams& chainparams, co
 }
 
 // NOTE: These tests rely on CreateNewBlock doing its own self-validation!
-BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
+//BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
+BOOST_FIXTURE_TEST_CASE(CreateNewBlock_validity, MinerTestingSetup, *boost::unit_test::precondition(miner_tests::CreateNewBlock_validity_setup()))
 {
-    const auto chainParams = CreateChainParams(CBaseChainParams::MAIN);
     const CChainParams& chainparams = *chainParams;
     CScript scriptPubKey = CScript() << ParseHex("04678afdb0fe5548271967f1a67130b7105cd6a828e03909a67962e0ea1f61deb649f6bc3f4cef38c4f35504e51ec112de5c384df7ba0b8d578a4c702b6bf11d5f") << OP_CHECKSIG;
     std::unique_ptr<CBlockTemplate> pblocktemplate, pemptyblocktemplate;
