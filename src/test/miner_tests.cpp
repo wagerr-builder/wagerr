@@ -218,7 +218,7 @@ void MinerTestingSetup::TestPackageSelection(const CChainParams& chainparams, co
 
 // NOTE: These tests rely on CreateNewBlock doing its own self-validation!
 //BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
-BOOST_FIXTURE_TEST_CASE(CreateNewBlock_validity, MinerTestingSetup, *boost::unit_test::precondition(miner_tests::CreateNewBlock_validity_setup()))
+BOOST_FIXTURE_TEST_CASE(CreateNewBlock_validity, MinerTestingSetup)
 {
     const auto chainParams = CreateChainParams(CBaseChainParams::REGTEST);
     const CChainParams& chainparams = *chainParams;
