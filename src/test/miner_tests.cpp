@@ -42,7 +42,6 @@ struct MinerTestingSetup : public TestingSetup {
     {
         phr = CBettingsView();
     }
-}
 };
 } // namespace miner_tests
 
