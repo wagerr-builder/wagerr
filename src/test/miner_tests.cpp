@@ -45,50 +45,6 @@ BOOST_FIXTURE_TEST_SUITE(miner_tests, MinerTestingSetup)
 
 static CFeeRate blockMinFeeRate = CFeeRate(DEFAULT_BLOCK_MIN_TX_FEE);
 
-//CBettingsView originalView;
-//CBettingsView* phr = &originalView;
-CBettingsView* phr = new CBettingsView();
-
-class CBettingsView
-{
-public:
-    CBettingsView()
-    {
-    mappings = MakeUnique<CBettingDB>();
-    mappingsStorage = MakeUnique<CStorageKV>();
-    // Initialize the rest of the unique_ptr members similarly
-    results = MakeUnique<CBettingDB>(); // "results"
-    resultsStorage = MakeUnique<CStorageKV>();
-    events = MakeUnique<CBettingDB>(); // "events"
-    eventsStorage = MakeUnique<CStorageKV>();
-    bets = MakeUnique<CBettingDB>(); // "bets"
-    betsStorage = MakeUnique<CStorageKV>();
-    undos = MakeUnique<CBettingDB>(); // "undos"
-    undosStorage = MakeUnique<CStorageKV>();
-    payoutsInfo = MakeUnique<CBettingDB>(); // "payoutsinfo"
-    payoutsInfoStorage = MakeUnique<CStorageKV>();
-    quickGamesBets = MakeUnique<CBettingDB>(); // "quickgamesbets"
-    quickGamesBetsStorage = MakeUnique<CStorageKV>();
-    chainGamesLottoEvents = MakeUnique<CBettingDB>(); // "cglottoevents"
-    chainGamesLottoEventsStorage = MakeUnique<CStorageKV>();
-    chainGamesLottoBets = MakeUnique<CBettingDB>(); // "cglottobets"
-    chainGamesLottoBetsStorage = MakeUnique<CStorageKV>();
-    chainGamesLottoResults = MakeUnique<CBettingDB>(); // "cglottoresults"
-    chainGamesLottoResultsStorage = MakeUnique<CStorageKV>();
-    // save failed tx ids which contain in chain, but not affect on
-    // it needed to avoid undo issues, when we try undo not affected tx
-    failedBettingTxs = MakeUnique<CBettingDB>(); // "failedtxs"
-    failedBettingTxsStorage = MakeUnique<CStorageKV>();
-    // field betting
-    fieldEvents = MakeUnique<CBettingDB>(); // "events"
-    fieldEventsStorage = MakeUnique<CStorageKV>();
-    fieldResults = MakeUnique<CBettingDB>(); // "results"
-    fieldResultsStorage = MakeUnique<CStorageKV>();
-    fieldBets = MakeUnique<CBettingDB>(); // "bets"
-    fieldBetsStorage = MakeUnique<CStorageKV>();
-    }
-}
-
 BlockAssembler MinerTestingSetup::AssemblerForTest(const CChainParams& params)
 {
     BlockAssembler::Options options;
@@ -253,7 +209,7 @@ void MinerTestingSetup::TestPackageSelection(const CChainParams& chainparams, co
 // NOTE: These tests rely on CreateNewBlock doing its own self-validation!
 BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
 {
-    CBettingsView* phr = new CBettingsView();
+    CBettingsView phr;
     const auto chainParams = CreateChainParams(CBaseChainParams::MAIN);
     const CChainParams& chainparams = *chainParams;
     CScript scriptPubKey = CScript() << ParseHex("04678afdb0fe5548271967f1a67130b7105cd6a828e03909a67962e0ea1f61deb649f6bc3f4cef38c4f35504e51ec112de5c384df7ba0b8d578a4c702b6bf11d5f") << OP_CHECKSIG;
