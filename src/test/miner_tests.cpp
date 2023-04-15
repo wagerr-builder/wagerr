@@ -40,13 +40,15 @@ struct MinerTestingSetup : public TestingSetup {
     BlockAssembler AssemblerForTest(const CChainParams& params);
     CBettingsView phr;
     // Add a constructor for MinerTestingSetup
-    MinerTestingSetup()
-    {
-        // Initialize the CBettingsView object
-        phr = CBettingsView();
-    }
+    MinerTestingSetup();
 };
 } // namespace miner_tests
+
+miner_tests::MinerTestingSetup::MinerTestingSetup()
+    : TestingSetup(CBaseChainParams::REGTEST, {}, true, {}, {}, true)
+    , phr() // Initialize phr using the default constructor
+{
+}
 
 BOOST_FIXTURE_TEST_SUITE(miner_tests, MinerTestingSetup)
 
