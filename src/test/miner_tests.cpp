@@ -45,7 +45,7 @@ struct MinerTestingSetup : public TestingSetup {
 } // namespace miner_tests
 
 miner_tests::MinerTestingSetup::MinerTestingSetup()
-    : TestingSetup(CBaseChainParams::REGTEST, {}, true, {}, {}, true)
+    : TestingSetup(CBaseChainParams::REGTEST)
     , phr() // Initialize phr using the default constructor
 {
 }
