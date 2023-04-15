@@ -246,7 +246,7 @@ void MinerTestingSetup::TestPackageSelection(const CChainParams& chainparams, co
 }
 
 // NOTE: These tests rely on CreateNewBlock doing its own self-validation!
-BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
+BOOST_AUTO_TEST_CASE(CreateNewBlock_validity, CBettingsView* phr = new CBettingsView())
 {
     const auto chainParams = CreateChainParams(CBaseChainParams::MAIN);
     const CChainParams& chainparams = *chainParams;
