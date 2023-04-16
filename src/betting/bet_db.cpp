@@ -679,25 +679,22 @@ using namespace boost::filesystem;
 // Add this class definition above the CBettingsView class in bet_db.cpp
 class CEmptyStorageKV : public CStorageKV {
 public:
-    virtual bool Write(const std::vector<unsigned char>& key, const std::vector<unsigned char>& value) override {
-        return true;
-    }
-
-    virtual bool Read(const std::vector<unsigned char>& key, std::vector<unsigned char>& value) override {
-        return false;
-    }
-
     virtual bool Exists(const std::vector<unsigned char>& key) const override {
         return false;
     }
-
+    virtual bool Write(const std::vector<unsigned char>& key, const std::vector<unsigned char>& value) override {
+        return false;
+    }
     virtual bool Erase(const std::vector<unsigned char>& key) override {
-        return true;
+        return false;
     }
-
+    virtual bool Read(const std::vector<unsigned char>& key, std::vector<unsigned char>& value) const override {
+        return false;
+    }
     virtual std::unique_ptr<CStorageKVIterator> NewIterator() override {
-        return nullptr;
+        return std::unique_ptr<CStorageKVIterator>(new CEmptyStorageKVIterator());
     }
+    // Remove the Flush() method here as well
 };
 
 /*

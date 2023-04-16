@@ -35,7 +35,6 @@ public:
     virtual bool Erase(const std::vector<unsigned char>& key) = 0;
     virtual bool Read(const std::vector<unsigned char>& key, std::vector<unsigned char>& value) = 0;
     virtual std::unique_ptr<CStorageKVIterator> NewIterator() = 0;
-    virtual void Flush() = 0; // Add this line
 };
 
 // LevelDB glue layer Iterator
