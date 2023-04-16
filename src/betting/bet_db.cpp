@@ -683,38 +683,20 @@ using namespace boost::filesystem;
 
 // copy constructor for creating DB cache
 CBettingsView::CBettingsView(CBettingsView* phr) {
-    if (phr != nullptr) {
-        mappings = MakeUnique<CBettingDB>(*phr->mappings.get());
-        results = MakeUnique<CBettingDB>(*phr->results.get());
-        events = MakeUnique<CBettingDB>(*phr->events.get());
-        bets = MakeUnique<CBettingDB>(*phr->bets.get());
-        fieldEvents = MakeUnique<CBettingDB>(*phr->fieldEvents.get());
-        fieldResults = MakeUnique<CBettingDB>(*phr->fieldResults.get());
-        fieldBets = MakeUnique<CBettingDB>(*phr->fieldBets.get());
-        undos = MakeUnique<CBettingDB>(*phr->undos.get());
-        payoutsInfo = MakeUnique<CBettingDB>(*phr->payoutsInfo.get());
-        quickGamesBets = MakeUnique<CBettingDB>(*phr->quickGamesBets.get());
-        chainGamesLottoEvents = MakeUnique<CBettingDB>(*phr->chainGamesLottoEvents.get());
-        chainGamesLottoBets = MakeUnique<CBettingDB>(*phr->chainGamesLottoBets.get());
-        chainGamesLottoResults = MakeUnique<CBettingDB>(*phr->chainGamesLottoResults.get());
-        failedBettingTxs = MakeUnique<CBettingDB>(*phr->failedBettingTxs.get());
-    } else {
-        // Initialize each unique_ptr member with nullptr
-        mappings = nullptr;
-        results = nullptr;
-        events = nullptr;
-        bets = nullptr;
-        fieldEvents = nullptr;
-        fieldResults = nullptr;
-        fieldBets = nullptr;
-        undos = nullptr;
-        payoutsInfo = nullptr;
-        quickGamesBets = nullptr;
-        chainGamesLottoEvents = nullptr;
-        chainGamesLottoBets = nullptr;
-        chainGamesLottoResults = nullptr;
-        failedBettingTxs = nullptr;
-    }
+    mappings = MakeUnique<CBettingDB>(*phr->mappings.get());
+    results = MakeUnique<CBettingDB>(*phr->results.get());
+    events = MakeUnique<CBettingDB>(*phr->events.get());
+    bets = MakeUnique<CBettingDB>(*phr->bets.get());
+    fieldEvents = MakeUnique<CBettingDB>(*phr->fieldEvents.get());
+    fieldResults = MakeUnique<CBettingDB>(*phr->fieldResults.get());
+    fieldBets = MakeUnique<CBettingDB>(*phr->fieldBets.get());
+    undos = MakeUnique<CBettingDB>(*phr->undos.get());
+    payoutsInfo = MakeUnique<CBettingDB>(*phr->payoutsInfo.get());
+    quickGamesBets = MakeUnique<CBettingDB>(*phr->quickGamesBets.get());
+    chainGamesLottoEvents = MakeUnique<CBettingDB>(*phr->chainGamesLottoEvents.get());
+    chainGamesLottoBets = MakeUnique<CBettingDB>(*phr->chainGamesLottoBets.get());
+    chainGamesLottoResults = MakeUnique<CBettingDB>(*phr->chainGamesLottoResults.get());
+    failedBettingTxs = MakeUnique<CBettingDB>(*phr->failedBettingTxs.get());
 }
 
 bool CBettingsView::Flush() {

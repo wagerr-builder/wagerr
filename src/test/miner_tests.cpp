@@ -27,6 +27,27 @@
 #include <memory>
 
 #include <boost/test/unit_test.hpp>
+#include "betting/bet_db.h"
+
+// Initialize an instance of CBettingsView with the necessary data
+CBettingsView original_bettings_view;
+
+original_bettings_view.mappings = MakeUnique<CBettingDB>(*phr->mappings.get());
+original_bettings_view.results = MakeUnique<CBettingDB>(*phr->results.get());
+original_bettings_view.events = MakeUnique<CBettingDB>(*phr->events.get());
+original_bettings_view.bets = MakeUnique<CBettingDB>(*phr->bets.get());
+original_bettings_view.fieldEvents = MakeUnique<CBettingDB>(*phr->fieldEvents.get());
+original_bettings_view.fieldResults = MakeUnique<CBettingDB>(*phr->fieldResults.get());
+original_bettings_view.fieldBets = MakeUnique<CBettingDB>(*phr->fieldBets.get());
+original_bettings_view.undos = MakeUnique<CBettingDB>(*phr->undos.get());
+original_bettings_view.payoutsInfo = MakeUnique<CBettingDB>(*phr->payoutsInfo.get());
+original_bettings_view.quickGamesBets = MakeUnique<CBettingDB>(*phr->quickGamesBets.get());
+original_bettings_view.chainGamesLottoEvents = MakeUnique<CBettingDB>(*phr->chainGamesLottoEvents.get());
+original_bettings_view.chainGamesLottoBets = MakeUnique<CBettingDB>(*phr->chainGamesLottoBets.get());
+original_bettings_view.chainGamesLottoResults = MakeUnique<CBettingDB>(*phr->chainGamesLottoResults.get());
+original_bettings_view.failedBettingTxs = MakeUnique<CBettingDB>(*phr->failedBettingTxs.get());
+
+CBettingsView new_bettings_view(&original_bettings_view);
 
 namespace miner_tests {
 struct MinerTestingSetup : public TestingSetup {
