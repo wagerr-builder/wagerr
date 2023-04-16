@@ -687,7 +687,7 @@ public:
         return true;
     }
 
-    virtual bool Read(const std::vector<unsigned char>& key, std::vector<unsigned char>& value) const override {
+    virtual bool Read(const std::vector<unsigned char>& key, std::vector<unsigned char>& value) override {
         return false;
     }
 
