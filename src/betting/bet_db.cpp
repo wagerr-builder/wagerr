@@ -676,6 +676,26 @@ using namespace boost::filesystem;
 
     return result;
 }
+// Add this class definition above the CBettingsView class in bet_db.cpp
+class CEmptyStorageKV : public CStorageKV {
+public:
+    virtual bool Exists(const std::vector<unsigned char>& key) const override {
+        return false;
+    }
+
+    virtual void Write(const std::vector<unsigned char>& key, const std::vector<unsigned char>& value) override {
+    }
+
+    virtual bool Read(const std::vector<unsigned char>& key, std::vector<unsigned char>& value) const override {
+        return false;
+    }
+
+    virtual void Erase(const std::vector<unsigned char>& key) override {
+    }
+
+    virtual void Flush() override {
+    }
+};
 
 /*
  * CBettingsView methods
@@ -700,7 +720,7 @@ CBettingsView::CBettingsView(CBettingsView* phr) {
         failedBettingTxs = MakeUnique<CBettingDB>(*phr->failedBettingTxs.get());
     } else {
         // Initialize unique_ptr members with empty instances of the respective DBs
-        CStorageKV emptyStorage; // Add this declaration
+        CEmptyStorageKV emptyStorage; // Add this declaration
         mappings = MakeUnique<CBettingDB>(emptyStorage);
         results = MakeUnique<CBettingDB>(emptyStorage);
         events = MakeUnique<CBettingDB>(emptyStorage);
