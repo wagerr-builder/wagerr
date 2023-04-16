@@ -683,7 +683,7 @@ using namespace boost::filesystem;
 
 // copy constructor for creating DB cache
 CBettingsView::CBettingsView(CBettingsView* phr) {
-       if (phr != nullptr) {
+    if (phr != nullptr) {
         mappings = MakeUnique<CBettingDB>(*phr->mappings.get());
         results = MakeUnique<CBettingDB>(*phr->results.get());
         events = MakeUnique<CBettingDB>(*phr->events.get());
@@ -699,7 +699,21 @@ CBettingsView::CBettingsView(CBettingsView* phr) {
         chainGamesLottoResults = MakeUnique<CBettingDB>(*phr->chainGamesLottoResults.get());
         failedBettingTxs = MakeUnique<CBettingDB>(*phr->failedBettingTxs.get());
     } else {
-        // Handle the case where phr is a null pointer, e.g., by initializing the unique_ptr members with nullptr or creating empty instances of the respective DBs.
+        // Initialize unique_ptr members with empty instances of the respective DBs
+        mappings = MakeUnique<CBettingDB>();
+        results = MakeUnique<CBettingDB>();
+        events = MakeUnique<CBettingDB>();
+        bets = MakeUnique<CBettingDB>();
+        fieldEvents = MakeUnique<CBettingDB>();
+        fieldResults = MakeUnique<CBettingDB>();
+        fieldBets = MakeUnique<CBettingDB>();
+        undos = MakeUnique<CBettingDB>();
+        payoutsInfo = MakeUnique<CBettingDB>();
+        quickGamesBets = MakeUnique<CBettingDB>();
+        chainGamesLottoEvents = MakeUnique<CBettingDB>();
+        chainGamesLottoBets = MakeUnique<CBettingDB>();
+        chainGamesLottoResults = MakeUnique<CBettingDB>();
+        failedBettingTxs = MakeUnique<CBettingDB>();
     }
 }
 
