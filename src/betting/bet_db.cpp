@@ -683,14 +683,20 @@ public:
         return false;
     }
 
-    virtual void Write(const std::vector<unsigned char>& key, const std::vector<unsigned char>& value) override {
+    virtual bool Write(const std::vector<unsigned char>& key, const std::vector<unsigned char>& value) override {
+        return true;
     }
 
     virtual bool Read(const std::vector<unsigned char>& key, std::vector<unsigned char>& value) const override {
         return false;
     }
 
-    virtual void Erase(const std::vector<unsigned char>& key) override {
+    virtual bool Erase(const std::vector<unsigned char>& key) override {
+        return true;
+    }
+
+    virtual std::unique_ptr<CStorageKVIterator> NewIterator() override {
+        return nullptr;
     }
 
     virtual void Flush() override {
