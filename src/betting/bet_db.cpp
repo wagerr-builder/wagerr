@@ -687,6 +687,10 @@ public:
         return false;
     }
 
+    virtual bool Exists(const std::vector<unsigned char>& key) const override {
+        return false;
+    }
+
     virtual bool Erase(const std::vector<unsigned char>& key) override {
         return true;
     }
