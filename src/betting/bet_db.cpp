@@ -699,21 +699,21 @@ CBettingsView::CBettingsView(CBettingsView* phr) {
         chainGamesLottoResults = MakeUnique<CBettingDB>(*phr->chainGamesLottoResults.get());
         failedBettingTxs = MakeUnique<CBettingDB>(*phr->failedBettingTxs.get());
     } else {
-        // Initialize unique_ptr members with empty instances of the respective DBs
-        mappings = MakeUnique<CBettingDB>();
-        results = MakeUnique<CBettingDB>();
-        events = MakeUnique<CBettingDB>();
-        bets = MakeUnique<CBettingDB>();
-        fieldEvents = MakeUnique<CBettingDB>();
-        fieldResults = MakeUnique<CBettingDB>();
-        fieldBets = MakeUnique<CBettingDB>();
-        undos = MakeUnique<CBettingDB>();
-        payoutsInfo = MakeUnique<CBettingDB>();
-        quickGamesBets = MakeUnique<CBettingDB>();
-        chainGamesLottoEvents = MakeUnique<CBettingDB>();
-        chainGamesLottoBets = MakeUnique<CBettingDB>();
-        chainGamesLottoResults = MakeUnique<CBettingDB>();
-        failedBettingTxs = MakeUnique<CBettingDB>();
+        // Initialize each unique_ptr member with nullptr
+        mappings = nullptr;
+        results = nullptr;
+        events = nullptr;
+        bets = nullptr;
+        fieldEvents = nullptr;
+        fieldResults = nullptr;
+        fieldBets = nullptr;
+        undos = nullptr;
+        payoutsInfo = nullptr;
+        quickGamesBets = nullptr;
+        chainGamesLottoEvents = nullptr;
+        chainGamesLottoBets = nullptr;
+        chainGamesLottoResults = nullptr;
+        failedBettingTxs = nullptr;
     }
 }
 
