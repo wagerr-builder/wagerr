@@ -700,20 +700,20 @@ CBettingsView::CBettingsView(CBettingsView* phr) {
         failedBettingTxs = MakeUnique<CBettingDB>(*phr->failedBettingTxs.get());
     } else {
         // Initialize unique_ptr members with empty instances of the respective DBs
-        mappings = MakeUnique<CBettingDB>();
-        results = MakeUnique<CBettingDB>();
-        events = MakeUnique<CBettingDB>();
-        bets = MakeUnique<CBettingDB>();
-        fieldEvents = MakeUnique<CBettingDB>();
-        fieldResults = MakeUnique<CBettingDB>();
-        fieldBets = MakeUnique<CBettingDB>();
-        undos = MakeUnique<CBettingDB>();
-        payoutsInfo = MakeUnique<CBettingDB>();
-        quickGamesBets = MakeUnique<CBettingDB>();
-        chainGamesLottoEvents = MakeUnique<CBettingDB>();
-        chainGamesLottoBets = MakeUnique<CBettingDB>();
-        chainGamesLottoResults = MakeUnique<CBettingDB>();
-        failedBettingTxs = MakeUnique<CBettingDB>();
+        mappings = MakeUnique<CBettingDB>(emptyStorage);
+        results = MakeUnique<CBettingDB>(emptyStorage);
+        events = MakeUnique<CBettingDB>(emptyStorage);
+        bets = MakeUnique<CBettingDB>(emptyStorage);
+        fieldEvents = MakeUnique<CBettingDB>(emptyStorage);
+        fieldResults = MakeUnique<CBettingDB>(emptyStorage);
+        fieldBets = MakeUnique<CBettingDB>(emptyStorage);
+        undos = MakeUnique<CBettingDB>(emptyStorage);
+        payoutsInfo = MakeUnique<CBettingDB>(emptyStorage);
+        quickGamesBets = MakeUnique<CBettingDB>(emptyStorage);
+        chainGamesLottoEvents = MakeUnique<CBettingDB>(emptyStorage);
+        chainGamesLottoBets = MakeUnique<CBettingDB>(emptyStorage);
+        chainGamesLottoResults = MakeUnique<CBettingDB>(emptyStorage);
+        failedBettingTxs = MakeUnique<CBettingDB>(emptyStorage);
     }
 }
 
