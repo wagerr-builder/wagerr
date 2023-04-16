@@ -700,6 +700,7 @@ CBettingsView::CBettingsView(CBettingsView* phr) {
         failedBettingTxs = MakeUnique<CBettingDB>(*phr->failedBettingTxs.get());
     } else {
         // Initialize unique_ptr members with empty instances of the respective DBs
+        CStorageKV emptyStorage; // Add this declaration
         mappings = MakeUnique<CBettingDB>(emptyStorage);
         results = MakeUnique<CBettingDB>(emptyStorage);
         events = MakeUnique<CBettingDB>(emptyStorage);
