@@ -36,6 +36,7 @@ struct MinerTestingSetup : public TestingSetup {
         return CheckSequenceLocks(*m_node.mempool, tx, flags);
     }
     BlockAssembler AssemblerForTest(const CChainParams& params);
+    CBettingsView phr; // Add this line back
 };
 } // namespace miner_tests
 
@@ -205,7 +206,7 @@ void MinerTestingSetup::TestPackageSelection(const CChainParams& chainparams, co
 }
 
 // NOTE: These tests rely on CreateNewBlock doing its own self-validation!
-BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
+BOOST_AUTO_TEST_CASE(CreateNewBlock_validity, MinerTestingSetup)
 {
     const auto chainParams = CreateChainParams(CBaseChainParams::MAIN);
     const CChainParams& chainparams = *chainParams;
