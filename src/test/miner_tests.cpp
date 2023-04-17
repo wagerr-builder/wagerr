@@ -28,6 +28,8 @@
 
 #include <boost/test/unit_test.hpp>
 
+#include <betting/bet_db.h>
+
 namespace miner_tests {
 struct MinerTestingSetup : public TestingSetup {
     void TestPackageSelection(const CChainParams& chainparams, const CScript& scriptPubKey, const std::vector<CTransactionRef>& txFirst) EXCLUSIVE_LOCKS_REQUIRED(::cs_main, m_node.mempool->cs);
@@ -36,8 +38,17 @@ struct MinerTestingSetup : public TestingSetup {
         return CheckSequenceLocks(*m_node.mempool, tx, flags);
     }
     BlockAssembler AssemblerForTest(const CChainParams& params);
+    CBettingsView phr;
+
+    // Add a constructor for MinerTestingSetup
+    MinerTestingSetup()
+    {
+        // Initialize the CBettingsView object
+        phr = CBettingsView();
+    }
 };
 } // namespace miner_tests
+
 
 BOOST_FIXTURE_TEST_SUITE(miner_tests, MinerTestingSetup)
 
