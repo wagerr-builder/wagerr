@@ -47,11 +47,6 @@ miner_tests::MinerTestingSetup::MinerTestingSetup()
     phr = std::make_shared<CBettingsView>(); // Initialize phr with a new CBettingsView instance
 }
 
-void miner_tests::MinerTestingSetup::SetPHR(const std::shared_ptr<CBettingsView>& phr)
-{
-    this->phr = phr;
-}
-
 void SetBettingViewForTesting(CBettingsView* pBettingView);
 
 void SetBettingViewForTesting(CBettingsView* pBettingView)
