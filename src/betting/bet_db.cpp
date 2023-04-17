@@ -699,11 +699,6 @@ CBettingsView::CBettingsView(CBettingsView* phr) {
     failedBettingTxs = MakeUnique<CBettingDB>(*phr->failedBettingTxs.get());
 }
 
-CBettingsView::CBettingsView()
-    : mappings(std::make_unique<CBettingDB>())
-{
-}
-
 bool CBettingsView::Flush() {
     return mappings->Flush() &&
             results->Flush() &&
