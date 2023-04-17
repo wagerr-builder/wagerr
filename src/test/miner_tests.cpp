@@ -31,22 +31,30 @@
 #include <betting/bet_db.h>
 
 namespace miner_tests {
-struct MinerTestingSetup : public TestingSetup {
-    void TestPackageSelection(const CChainParams& chainparams, const CScript& scriptPubKey, const std::vector<CTransactionRef>& txFirst) EXCLUSIVE_LOCKS_REQUIRED(::cs_main, m_node.mempool->cs);
-    bool TestSequenceLocks(const CTransaction& tx, int flags) EXCLUSIVE_LOCKS_REQUIRED(::cs_main, m_node.mempool->cs)
-    {
-        return CheckSequenceLocks(*m_node.mempool, tx, flags);
-    }
-    BlockAssembler AssemblerForTest(const CChainParams& params);
-    CBettingsView phr;
 
-    // Add a constructor for MinerTestingSetup
-    MinerTestingSetup()
-    {
-        // Initialize the CBettingsView object
-        phr = CBettingsView();
+    CBettingsView CreateInitializedCBettingsView() {
+        CBettingsView initializedPhr;
+        // Initialize phr here
+        return initializedPhr;
     }
-};
+
+    struct MinerTestingSetup : public TestingSetup {
+        void TestPackageSelection(const CChainParams& chainparams, const CScript& scriptPubKey, const std::vector<CTransactionRef>& txFirst) EXCLUSIVE_LOCKS_REQUIRED(::cs_main, m_node.mempool->cs);
+        bool TestSequenceLocks(const CTransaction& tx, int flags) EXCLUSIVE_LOCKS_REQUIRED(::cs_main, m_node.mempool->cs)
+        {
+            return CheckSequenceLocks(*m_node.mempool, tx, flags);
+        }
+        BlockAssembler AssemblerForTest(const CChainParams& params);
+
+        // Add the CBettingsView member variable
+        CBettingsView phr;
+
+        MinerTestingSetup()
+        {
+            // Initialize the phr object with the initialized CBettingsView
+            phr = CreateInitializedCBettingsView();
+        }
+    };
 } // namespace miner_tests
 
 
