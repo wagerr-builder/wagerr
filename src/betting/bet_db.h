@@ -975,6 +975,8 @@ class CBettingsView
 {
     // fields will be init in init.cpp
 public:
+    // Default constructor
+    CBettingsView();
     std::unique_ptr<CBettingDB> mappings; // "mappings"
     std::unique_ptr<CStorageKV> mappingsStorage;
     std::unique_ptr<CBettingDB> results; // "results"

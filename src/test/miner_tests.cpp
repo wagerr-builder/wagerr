@@ -49,6 +49,7 @@ struct MinerTestingSetup : public TestingSetup {
 
 miner_tests::MinerTestingSetup::MinerTestingSetup()
     : TestingSetup(CBaseChainParams::REGTEST)
+    , phr(std::make_shared<CBettingsView>()) // Initialize phr with a new CBettingsView instance
 {
 }
 
