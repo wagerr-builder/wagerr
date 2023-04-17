@@ -37,14 +37,22 @@ struct MinerTestingSetup : public TestingSetup {
     }
     BlockAssembler AssemblerForTest(const CChainParams& params);
     CBettingsView phr;
-    MinerTestingSetup(const CBettingsView& phr);
+    // Add a default constructor
+    MinerTestingSetup();
+
+    // Add a method to set the phr value
+    void SetPHR(const CBettingsView& phr);
 };
 } // namespace miner_tests
 
-miner_tests::MinerTestingSetup::MinerTestingSetup(const CBettingsView& phr)
+miner_tests::MinerTestingSetup::MinerTestingSetup()
     : TestingSetup(CBaseChainParams::REGTEST)
-    , phr(phr) // Initialize phr using the provided reference
 {
+}
+
+void miner_tests::MinerTestingSetup::SetPHR(const CBettingsView& phr)
+{
+    this->phr = phr;
 }
 
 BOOST_FIXTURE_TEST_SUITE(miner_tests, MinerTestingSetup)
@@ -216,7 +224,7 @@ void MinerTestingSetup::TestPackageSelection(const CChainParams& chainparams, co
 BOOST_FIXTURE_TEST_CASE(CreateNewBlock_validity, MinerTestingSetup)
 {
     CBettingsView phr;
-    MinerTestingSetup test_setup(phr);
+    SetPHR(phr);
     const auto chainParams = CreateChainParams(CBaseChainParams::MAIN);
     const CChainParams& chainparams = *chainParams;
     CScript scriptPubKey = CScript() << ParseHex("04678afdb0fe5548271967f1a67130b7105cd6a828e03909a67962e0ea1f61deb649f6bc3f4cef38c4f35504e51ec112de5c384df7ba0b8d578a4c702b6bf11d5f") << OP_CHECKSIG;
