@@ -30,17 +30,9 @@
 
 #include <betting/bet_db.h>
 
-namespace miner_tests {
-    class InitializedCBettingsView : public CBettingsView {
-    public:
-        InitializedCBettingsView() : CBettingsView(&tempInstance) {
-            // Perform any other necessary initialization here
-        }
-    private:
-        // Create a temporary instance of CBettingsView
-        CBettingsView tempInstance;
-    };
+#include <betting/bet_db.h>
 
+namespace miner_tests {
     struct MinerTestingSetup : public TestingSetup {
         void TestPackageSelection(const CChainParams& chainparams, const CScript& scriptPubKey, const std::vector<CTransactionRef>& txFirst) EXCLUSIVE_LOCKS_REQUIRED(::cs_main, m_node.mempool->cs);
         bool TestSequenceLocks(const CTransaction& tx, int flags) EXCLUSIVE_LOCKS_REQUIRED(::cs_main, m_node.mempool->cs)
@@ -49,7 +41,10 @@ namespace miner_tests {
         }
         BlockAssembler AssemblerForTest(const CChainParams& params);
 
-        InitializedCBettingsView phr;
+        // Create a temporary instance of CBettingsView
+        CBettingsView tempInstance;
+        // Create a CBettingsView instance using the temporary instance as a parameter
+        CBettingsView phr = CBettingsView(&tempInstance);
 
         MinerTestingSetup() {
             // No need for additional initialization here, as it's done in the InitializedCBettingsView constructor
