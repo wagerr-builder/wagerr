@@ -42,9 +42,22 @@ namespace miner_tests {
         CBettingsView phr;
 
         MinerTestingSetup() {
-            // Initialize the phr object with a temporary CBettingsView instance
             CBettingsView tempInstance;
-            phr = CBettingsView(&tempInstance);
+            tempInstance.mappings = MakeUnique<CBettingDB>(CBettingDB::DbType::MAPPINGS, true, false);
+            tempInstance.results = MakeUnique<CBettingDB>(CBettingDB::DbType::RESULTS, true, false);
+            tempInstance.events = MakeUnique<CBettingDB>(CBettingDB::DbType::EVENTS, true, false);
+            tempInstance.bets = MakeUnique<CBettingDB>(CBettingDB::DbType::BETS, true, false);
+            tempInstance.fieldEvents = MakeUnique<CBettingDB>(CBettingDB::DbType::FIELDEVENTS, true, false);
+            tempInstance.fieldResults = MakeUnique<CBettingDB>(CBettingDB::DbType::FIELDRESULTS, true, false);
+            tempInstance.fieldBets = MakeUnique<CBettingDB>(CBettingDB::DbType::FIELDBETS, true, false);
+            tempInstance.undos = MakeUnique<CBettingDB>(CBettingDB::DbType::UNDOS, true, false);
+            tempInstance.payoutsInfo = MakeUnique<CBettingDB>(CBettingDB::DbType::PAYOUTSINFO, true, false);
+            tempInstance.quickGamesBets = MakeUnique<CBettingDB>(CBettingDB::DbType::QUICKGAMESBETS, true, false);
+            tempInstance.chainGamesLottoEvents = MakeUnique<CBettingDB>(CBettingDB::DbType::CHAINGAMESLOTTOEVENTS, true, false);
+            tempInstance.chainGamesLottoBets = MakeUnique<CBettingDB>(CBettingDB::DbType::CHAINGAMESLOTTOBETS, true, false);
+            tempInstance.chainGamesLottoResults = MakeUnique<CBettingDB>(CBettingDB::DbType::CHAINGAMESLOTTORESULTS, true, false);
+            tempInstance.failedBettingTxs = MakeUnique<CBettingDB>(CBettingDB::DbType::FAILEDBETTINGTXS, true, false);
+            phr = CBettingsView(tempInstance);
         }
     };
 } // namespace miner_tests
