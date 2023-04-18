@@ -32,6 +32,31 @@
 
 #include <dbwrapper.h>
 
+class CTestStorageKV : public CStorageKV {
+public:
+    CTestStorageKV() {}
+
+    bool Exists(const std::vector<unsigned char>& key) override {
+        return false;
+    }
+
+    bool Write(const std::vector<unsigned char>& key, const std::vector<unsigned char>& value) override {
+        return true;
+    }
+
+    bool Erase(const std::vector<unsigned char>& key) override {
+        return true;
+    }
+
+    bool Read(const std::vector<unsigned char>& key, std::vector<unsigned char>& value) override {
+        return false;
+    }
+
+    std::unique_ptr<CStorageKVIterator> NewIterator() override {
+        return nullptr;
+    }
+};
+
 namespace miner_tests {
     struct MinerTestingSetup : public TestingSetup {
         void TestPackageSelection(const CChainParams& chainparams, const CScript& scriptPubKey, const std::vector<CTransactionRef>& txFirst) EXCLUSIVE_LOCKS_REQUIRED(::cs_main, m_node.mempool->cs);
@@ -45,23 +70,22 @@ namespace miner_tests {
 
         MinerTestingSetup() {
             CBettingsView tempInstance;
-            fs::path tempdir = fs::temp_directory_path() / fs::unique_path();
-            CDBWrapper db(tempdir, 1 << 20, true, false);
+            CTestStorageKV testStorageKV;
 
-            tempInstance.mappings = MakeUnique<CBettingDB>(db);
-            tempInstance.results = MakeUnique<CBettingDB>(db);
-            tempInstance.events = MakeUnique<CBettingDB>(db);
-            tempInstance.bets = MakeUnique<CBettingDB>(db);
-            tempInstance.fieldEvents = MakeUnique<CBettingDB>(db);
-            tempInstance.fieldResults = MakeUnique<CBettingDB>(db);
-            tempInstance.fieldBets = MakeUnique<CBettingDB>(db);
-            tempInstance.undos = MakeUnique<CBettingDB>(db);
-            tempInstance.payoutsInfo = MakeUnique<CBettingDB>(db);
-            tempInstance.quickGamesBets = MakeUnique<CBettingDB>(db);
-            tempInstance.chainGamesLottoEvents = MakeUnique<CBettingDB>(db);
-            tempInstance.chainGamesLottoBets = MakeUnique<CBettingDB>(db);
-            tempInstance.chainGamesLottoResults = MakeUnique<CBettingDB>(db);
-            tempInstance.failedBettingTxs = MakeUnique<CBettingDB>(db);
+            tempInstance.mappings = MakeUnique<CBettingDB>(testStorageKV);
+            tempInstance.results = MakeUnique<CBettingDB>(testStorageKV);
+            tempInstance.events = MakeUnique<CBettingDB>(testStorageKV);
+            tempInstance.bets = MakeUnique<CBettingDB>(testStorageKV);
+            tempInstance.fieldEvents = MakeUnique<CBettingDB>(testStorageKV);
+            tempInstance.fieldResults = MakeUnique<CBettingDB>(testStorageKV);
+            tempInstance.fieldBets = MakeUnique<CBettingDB>(testStorageKV);
+            tempInstance.undos = MakeUnique<CBettingDB>(testStorageKV);
+            tempInstance.payoutsInfo = MakeUnique<CBettingDB>(testStorageKV);
+            tempInstance.quickGamesBets = MakeUnique<CBettingDB>(testStorageKV);
+            tempInstance.chainGamesLottoEvents = MakeUnique<CBettingDB>(testStorageKV);
+            tempInstance.chainGamesLottoBets = MakeUnique<CBettingDB>(testStorageKV);
+            tempInstance.chainGamesLottoResults = MakeUnique<CBettingDB>(testStorageKV);
+            tempInstance.failedBettingTxs = MakeUnique<CBettingDB>(testStorageKV);
             phr = CBettingsView(tempInstance);
         }
     };
