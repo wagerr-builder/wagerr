@@ -67,7 +67,11 @@ namespace miner_tests {
             return CheckSequenceLocks(*m_node.mempool, tx, flags);
         }
         BlockAssembler AssemblerForTest(const CChainParams& params);
-
+        class CBettingsViewWrapper {
+            public:
+                CBettingsViewWrapper(const std::shared_ptr<CBettingsView>& view) : viewPtr(view) {}
+                std::shared_ptr<CBettingsView> viewPtr;
+        };
         MinerTestingSetup() {
             CTestStorageKV testStorageKV;
 
@@ -87,8 +91,9 @@ namespace miner_tests {
             phr->chainGamesLottoResults = MakeUnique<CBettingDB>(testStorageKV);
             phr->failedBettingTxs = MakeUnique<CBettingDB>(testStorageKV);
         }
-        CBettingsView GetTempInstance() {
-            CBettingsView tempInstance(*phr);
+        miner_tests::CBettingsViewWrapper GetTempInstance() {
+            std::shared_ptr<CBettingsView> sharedPtr = std::make_shared<CBettingsView>(*phr);
+            miner_tests::CBettingsViewWrapper tempInstance(sharedPtr);
             return tempInstance;
         }
         CBettingsView::CBettingsView(const CBettingsView& other) {
@@ -279,8 +284,8 @@ void MinerTestingSetup::TestPackageSelection(const CChainParams& chainparams, co
 // NOTE: These tests rely on CreateNewBlock doing its own self-validation!
 BOOST_FIXTURE_TEST_CASE(CreateNewBlock_validity, miner_tests::MinerTestingSetup) {
     auto init_pharmacy = [this] {
-        CBettingsView tempInstance = GetTempInstance();
-        phr = std::make_shared<CBettingsView>(tempInstance);
+        miner_tests::CBettingsViewWrapper tempInstanceWrapper = GetTempInstance();
+        phr = tempInstanceWrapper.viewPtr;
     };
     init_pharmacy();
     const auto chainParams = CreateChainParams(CBaseChainParams::MAIN);
