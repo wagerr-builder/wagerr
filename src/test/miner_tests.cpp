@@ -30,6 +30,8 @@
 
 #include <betting/bet_db.h>
 
+extern CBettingsView* pBettingView;
+
 namespace miner_tests {
 
     CBettingsView CreateInitializedCBettingsView() {
@@ -38,6 +40,9 @@ namespace miner_tests {
         return initializedPhr;
     }
 
+    void SetGlobalBettingView(CBettingsView* pView) {
+        pBettingView = pView;
+    }
     struct MinerTestingSetup : public TestingSetup {
         void TestPackageSelection(const CChainParams& chainparams, const CScript& scriptPubKey, const std::vector<CTransactionRef>& txFirst) EXCLUSIVE_LOCKS_REQUIRED(::cs_main, m_node.mempool->cs);
         bool TestSequenceLocks(const CTransaction& tx, int flags) EXCLUSIVE_LOCKS_REQUIRED(::cs_main, m_node.mempool->cs)
@@ -46,17 +51,18 @@ namespace miner_tests {
         }
         BlockAssembler AssemblerForTest(const CChainParams& params);
 
-        // Add the CBettingsView member variable
         CBettingsView phr;
 
         MinerTestingSetup()
         {
             // Initialize the phr object with the initialized CBettingsView
             phr = CreateInitializedCBettingsView();
+
+            // Set the global betting view variable
+            SetGlobalBettingView(&phr);
         }
     };
 } // namespace miner_tests
-
 
 BOOST_FIXTURE_TEST_SUITE(miner_tests, MinerTestingSetup)
 
@@ -226,7 +232,6 @@ void MinerTestingSetup::TestPackageSelection(const CChainParams& chainparams, co
 // NOTE: These tests rely on CreateNewBlock doing its own self-validation!
 BOOST_FIXTURE_TEST_CASE(CreateNewBlock_validity, MinerTestingSetup)
 {
-    CBettingsView phr;
     const auto chainParams = CreateChainParams(CBaseChainParams::MAIN);
     const CChainParams& chainparams = *chainParams;
     CScript scriptPubKey = CScript() << ParseHex("04678afdb0fe5548271967f1a67130b7105cd6a828e03909a67962e0ea1f61deb649f6bc3f4cef38c4f35504e51ec112de5c384df7ba0b8d578a4c702b6bf11d5f") << OP_CHECKSIG;
