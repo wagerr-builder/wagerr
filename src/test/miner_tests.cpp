@@ -87,9 +87,23 @@ namespace miner_tests {
             phr->chainGamesLottoResults = MakeUnique<CBettingDB>(testStorageKV);
             phr->failedBettingTxs = MakeUnique<CBettingDB>(testStorageKV);
         }
-
-        ~MinerTestingSetup() {
-            delete phr;
+        CBettingsView GetTempInstance() {
+            CBettingsView tempInstance;
+            tempInstance.mappings = MakeUnique<CBettingDB>(*phr->mappings.get());
+            tempInstance.results = MakeUnique<CBettingDB>(*phr->results.get());
+            tempInstance.events = MakeUnique<CBettingDB>(*phr->events.get());
+            tempInstance.bets = MakeUnique<CBettingDB>(*phr->bets.get());
+            tempInstance.fieldEvents = MakeUnique<CBettingDB>(*phr->fieldEvents.get());
+            tempInstance.fieldResults = MakeUnique<CBettingDB>(*phr->fieldResults.get());
+            tempInstance.fieldBets = MakeUnique<CBettingDB>(*phr->fieldBets.get());
+            tempInstance.undos = MakeUnique<CBettingDB>(*phr->undos.get());
+            tempInstance.payoutsInfo = MakeUnique<CBettingDB>(*phr->payoutsInfo.get());
+            tempInstance.quickGamesBets = MakeUnique<CBettingDB>(*phr->quickGamesBets.get());
+            tempInstance.chainGamesLottoEvents = MakeUnique<CBettingDB>(*phr->chainGamesLottoEvents.get());
+            tempInstance.chainGamesLottoBets = MakeUnique<CBettingDB>(*phr->chainGamesLottoBets.get());
+            tempInstance.chainGamesLottoResults = MakeUnique<CBettingDB>(*phr->chainGamesLottoResults.get());
+            tempInstance.failedBettingTxs = MakeUnique<CBettingDB>(*phr->failedBettingTxs.get());
+            return tempInstance;
         }
     };
 } // namespace miner_tests
@@ -262,6 +276,7 @@ void MinerTestingSetup::TestPackageSelection(const CChainParams& chainparams, co
 
 // NOTE: These tests rely on CreateNewBlock doing its own self-validation!
 BOOST_FIXTURE_TEST_CASE(CreateNewBlock_validity, miner_tests::MinerTestingSetup) {
+    CBettingsView tempInstance = GetTempInstance();
     const auto chainParams = CreateChainParams(CBaseChainParams::MAIN);
     const CChainParams& chainparams = *chainParams;
     CScript scriptPubKey = CScript() << ParseHex("04678afdb0fe5548271967f1a67130b7105cd6a828e03909a67962e0ea1f61deb649f6bc3f4cef38c4f35504e51ec112de5c384df7ba0b8d578a4c702b6bf11d5f") << OP_CHECKSIG;
