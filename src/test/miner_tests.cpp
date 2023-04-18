@@ -88,22 +88,24 @@ namespace miner_tests {
             phr->failedBettingTxs = MakeUnique<CBettingDB>(testStorageKV);
         }
         CBettingsView GetTempInstance() {
-            CBettingsView tempInstance;
-            tempInstance.mappings = MakeUnique<CBettingDB>(*phr->mappings.get());
-            tempInstance.results = MakeUnique<CBettingDB>(*phr->results.get());
-            tempInstance.events = MakeUnique<CBettingDB>(*phr->events.get());
-            tempInstance.bets = MakeUnique<CBettingDB>(*phr->bets.get());
-            tempInstance.fieldEvents = MakeUnique<CBettingDB>(*phr->fieldEvents.get());
-            tempInstance.fieldResults = MakeUnique<CBettingDB>(*phr->fieldResults.get());
-            tempInstance.fieldBets = MakeUnique<CBettingDB>(*phr->fieldBets.get());
-            tempInstance.undos = MakeUnique<CBettingDB>(*phr->undos.get());
-            tempInstance.payoutsInfo = MakeUnique<CBettingDB>(*phr->payoutsInfo.get());
-            tempInstance.quickGamesBets = MakeUnique<CBettingDB>(*phr->quickGamesBets.get());
-            tempInstance.chainGamesLottoEvents = MakeUnique<CBettingDB>(*phr->chainGamesLottoEvents.get());
-            tempInstance.chainGamesLottoBets = MakeUnique<CBettingDB>(*phr->chainGamesLottoBets.get());
-            tempInstance.chainGamesLottoResults = MakeUnique<CBettingDB>(*phr->chainGamesLottoResults.get());
-            tempInstance.failedBettingTxs = MakeUnique<CBettingDB>(*phr->failedBettingTxs.get());
+            CBettingsView tempInstance(*phr);
             return tempInstance;
+        }
+        CBettingsView::CBettingsView(const CBettingsView& other) {
+            mappings = MakeUnique<CBettingDB>(*other.mappings.get());
+            results = MakeUnique<CBettingDB>(*other.results.get());
+            events = MakeUnique<CBettingDB>(*other.events.get());
+            bets = MakeUnique<CBettingDB>(*other.bets.get());
+            fieldEvents = MakeUnique<CBettingDB>(*other.fieldEvents.get());
+            fieldResults = MakeUnique<CBettingDB>(*other.fieldResults.get());
+            fieldBets = MakeUnique<CBettingDB>(*other.fieldBets.get());
+            undos = MakeUnique<CBettingDB>(*other.undos.get());
+            payoutsInfo = MakeUnique<CBettingDB>(*other.payoutsInfo.get());
+            quickGamesBets = MakeUnique<CBettingDB>(*other.quickGamesBets.get());
+            chainGamesLottoEvents = MakeUnique<CBettingDB>(*other.chainGamesLottoEvents.get());
+            chainGamesLottoBets = MakeUnique<CBettingDB>(*other.chainGamesLottoBets.get());
+            chainGamesLottoResults = MakeUnique<CBettingDB>(*other.chainGamesLottoResults.get());
+            failedBettingTxs = MakeUnique<CBettingDB>(*other.failedBettingTxs.get());
         }
     };
 } // namespace miner_tests
