@@ -59,6 +59,8 @@ public:
 
 namespace miner_tests {
     struct MinerTestingSetup : public TestingSetup {
+        public:
+            CBettingsView* phr;
         void TestPackageSelection(const CChainParams& chainparams, const CScript& scriptPubKey, const std::vector<CTransactionRef>& txFirst) EXCLUSIVE_LOCKS_REQUIRED(::cs_main, m_node.mempool->cs);
         bool TestSequenceLocks(const CTransaction& tx, int flags) EXCLUSIVE_LOCKS_REQUIRED(::cs_main, m_node.mempool->cs)
         {
@@ -66,27 +68,28 @@ namespace miner_tests {
         }
         BlockAssembler AssemblerForTest(const CChainParams& params);
 
-        CBettingsView phr;
-
         MinerTestingSetup() {
-            CBettingsView tempInstance;
             CTestStorageKV testStorageKV;
 
-            tempInstance.mappings = MakeUnique<CBettingDB>(testStorageKV);
-            tempInstance.results = MakeUnique<CBettingDB>(testStorageKV);
-            tempInstance.events = MakeUnique<CBettingDB>(testStorageKV);
-            tempInstance.bets = MakeUnique<CBettingDB>(testStorageKV);
-            tempInstance.fieldEvents = MakeUnique<CBettingDB>(testStorageKV);
-            tempInstance.fieldResults = MakeUnique<CBettingDB>(testStorageKV);
-            tempInstance.fieldBets = MakeUnique<CBettingDB>(testStorageKV);
-            tempInstance.undos = MakeUnique<CBettingDB>(testStorageKV);
-            tempInstance.payoutsInfo = MakeUnique<CBettingDB>(testStorageKV);
-            tempInstance.quickGamesBets = MakeUnique<CBettingDB>(testStorageKV);
-            tempInstance.chainGamesLottoEvents = MakeUnique<CBettingDB>(testStorageKV);
-            tempInstance.chainGamesLottoBets = MakeUnique<CBettingDB>(testStorageKV);
-            tempInstance.chainGamesLottoResults = MakeUnique<CBettingDB>(testStorageKV);
-            tempInstance.failedBettingTxs = MakeUnique<CBettingDB>(testStorageKV);
-            phr = tempInstance;
+            phr = new CBettingsView();
+            phr->mappings = MakeUnique<CBettingDB>(testStorageKV);
+            phr->results = MakeUnique<CBettingDB>(testStorageKV);
+            phr->events = MakeUnique<CBettingDB>(testStorageKV);
+            phr->bets = MakeUnique<CBettingDB>(testStorageKV);
+            phr->fieldEvents = MakeUnique<CBettingDB>(testStorageKV);
+            phr->fieldResults = MakeUnique<CBettingDB>(testStorageKV);
+            phr->fieldBets = MakeUnique<CBettingDB>(testStorageKV);
+            phr->undos = MakeUnique<CBettingDB>(testStorageKV);
+            phr->payoutsInfo = MakeUnique<CBettingDB>(testStorageKV);
+            phr->quickGamesBets = MakeUnique<CBettingDB>(testStorageKV);
+            phr->chainGamesLottoEvents = MakeUnique<CBettingDB>(testStorageKV);
+            phr->chainGamesLottoBets = MakeUnique<CBettingDB>(testStorageKV);
+            phr->chainGamesLottoResults = MakeUnique<CBettingDB>(testStorageKV);
+            phr->failedBettingTxs = MakeUnique<CBettingDB>(testStorageKV);
+        }
+
+        ~MinerTestingSetup() {
+            delete phr;
         }
     };
 } // namespace miner_tests
