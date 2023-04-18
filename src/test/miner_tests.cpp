@@ -34,11 +34,11 @@ namespace miner_tests {
     class InitializedCBettingsView : public CBettingsView {
     public:
         InitializedCBettingsView() : CBettingsView(&tempInstance) {
-            // Create a temporary instance of CBettingsView
-            CBettingsView tempInstance;
-
             // Perform any other necessary initialization here
         }
+    private:
+        // Create a temporary instance of CBettingsView
+        CBettingsView tempInstance;
     };
 
     struct MinerTestingSetup : public TestingSetup {
