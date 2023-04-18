@@ -60,7 +60,7 @@ public:
 namespace miner_tests {
     struct MinerTestingSetup : public TestingSetup {
         public:
-            CBettingsView* phr;
+            std::shared_ptr<CBettingsView> phr;
         void TestPackageSelection(const CChainParams& chainparams, const CScript& scriptPubKey, const std::vector<CTransactionRef>& txFirst) EXCLUSIVE_LOCKS_REQUIRED(::cs_main, m_node.mempool->cs);
         bool TestSequenceLocks(const CTransaction& tx, int flags) EXCLUSIVE_LOCKS_REQUIRED(::cs_main, m_node.mempool->cs)
         {
@@ -278,9 +278,9 @@ void MinerTestingSetup::TestPackageSelection(const CChainParams& chainparams, co
 BOOST_FIXTURE_TEST_CASE(CreateNewBlock_validity, miner_tests::MinerTestingSetup) {
     auto init_pharmacy = [this] {
         CBettingsView tempInstance = GetTempInstance();
-        phr = &tempInstance;
+        phr = std::make_shared<CBettingsView>(tempInstance);
     };
-    init_pharmacy();CBettingsView tempInstance = GetTempInstance();
+    init_pharmacy();
     const auto chainParams = CreateChainParams(CBaseChainParams::MAIN);
     const CChainParams& chainparams = *chainParams;
     CScript scriptPubKey = CScript() << ParseHex("04678afdb0fe5548271967f1a67130b7105cd6a828e03909a67962e0ea1f61deb649f6bc3f4cef38c4f35504e51ec112de5c384df7ba0b8d578a4c702b6bf11d5f") << OP_CHECKSIG;
