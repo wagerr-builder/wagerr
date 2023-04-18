@@ -71,7 +71,7 @@ namespace miner_tests {
         MinerTestingSetup() {
             CTestStorageKV testStorageKV;
 
-            phr = new CBettingsView();
+            phr = std::make_shared<CBettingsView>();
             phr->mappings = MakeUnique<CBettingDB>(testStorageKV);
             phr->results = MakeUnique<CBettingDB>(testStorageKV);
             phr->events = MakeUnique<CBettingDB>(testStorageKV);
