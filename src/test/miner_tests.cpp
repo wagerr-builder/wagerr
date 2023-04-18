@@ -86,7 +86,7 @@ namespace miner_tests {
             tempInstance.chainGamesLottoBets = MakeUnique<CBettingDB>(testStorageKV);
             tempInstance.chainGamesLottoResults = MakeUnique<CBettingDB>(testStorageKV);
             tempInstance.failedBettingTxs = MakeUnique<CBettingDB>(testStorageKV);
-            phr = CBettingsView(tempInstance);
+            phr = tempInstance;
         }
     };
 } // namespace miner_tests
