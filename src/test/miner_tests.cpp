@@ -43,20 +43,20 @@ namespace miner_tests {
 
         MinerTestingSetup() {
             CBettingsView tempInstance;
-            tempInstance.mappings = MakeUnique<CBettingDB>(0, true, false);
-            tempInstance.results = MakeUnique<CBettingDB>(1, true, false);
-            tempInstance.events = MakeUnique<CBettingDB>(2, true, false);
-            tempInstance.bets = MakeUnique<CBettingDB>(3, true, false);
-            tempInstance.fieldEvents = MakeUnique<CBettingDB>(4, true, false);
-            tempInstance.fieldResults = MakeUnique<CBettingDB>(5, true, false);
-            tempInstance.fieldBets = MakeUnique<CBettingDB>(6, true, false);
-            tempInstance.undos = MakeUnique<CBettingDB>(7, true, false);
-            tempInstance.payoutsInfo = MakeUnique<CBettingDB>(8, true, false);
-            tempInstance.quickGamesBets = MakeUnique<CBettingDB>(9, true, false);
-            tempInstance.chainGamesLottoEvents = MakeUnique<CBettingDB>(10, true, false);
-            tempInstance.chainGamesLottoBets = MakeUnique<CBettingDB>(11, true, false);
-            tempInstance.chainGamesLottoResults = MakeUnique<CBettingDB>(12, true, false);
-            tempInstance.failedBettingTxs = MakeUnique<CBettingDB>(13, true, false);
+            tempInstance.mappings = MakeUnique<CBettingDB>(CStorageKV("mappings", true, false));
+            tempInstance.results = MakeUnique<CBettingDB>(CStorageKV("results", true, false));
+            tempInstance.events = MakeUnique<CBettingDB>(CStorageKV("events", true, false));
+            tempInstance.bets = MakeUnique<CBettingDB>(CStorageKV("bets", true, false));
+            tempInstance.fieldEvents = MakeUnique<CBettingDB>(CStorageKV("fieldEvents", true, false));
+            tempInstance.fieldResults = MakeUnique<CBettingDB>(CStorageKV("fieldResults", true, false));
+            tempInstance.fieldBets = MakeUnique<CBettingDB>(CStorageKV("fieldBets", true, false));
+            tempInstance.undos = MakeUnique<CBettingDB>(CStorageKV("undos", true, false));
+            tempInstance.payoutsInfo = MakeUnique<CBettingDB>(CStorageKV("payoutsInfo", true, false));
+            tempInstance.quickGamesBets = MakeUnique<CBettingDB>(CStorageKV("quickGamesBets", true, false));
+            tempInstance.chainGamesLottoEvents = MakeUnique<CBettingDB>(CStorageKV("chainGamesLottoEvents", true, false));
+            tempInstance.chainGamesLottoBets = MakeUnique<CBettingDB>(CStorageKV("chainGamesLottoBets", true, false));
+            tempInstance.chainGamesLottoResults = MakeUnique<CBettingDB>(CStorageKV("chainGamesLottoResults", true, false));
+            tempInstance.failedBettingTxs = MakeUnique<CBettingDB>(CStorageKV("failedBettingTxs", true, false));
             phr = CBettingsView(tempInstance);
         }
 
