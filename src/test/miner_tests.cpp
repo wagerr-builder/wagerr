@@ -30,19 +30,17 @@
 
 #include <betting/bet_db.h>
 
-extern CBettingsView* pBettingView;
-
 namespace miner_tests {
+    class InitializedCBettingsView : public CBettingsView {
+    public:
+        InitializedCBettingsView() : CBettingsView(&tempInstance) {
+            // Create a temporary instance of CBettingsView
+            CBettingsView tempInstance;
 
-    CBettingsView CreateInitializedCBettingsView() {
-        CBettingsView initializedPhr;
-        // Initialize phr here
-        return initializedPhr;
-    }
+            // Perform any other necessary initialization here
+        }
+    };
 
-    void SetGlobalBettingView(CBettingsView* pView) {
-        pBettingView = pView;
-    }
     struct MinerTestingSetup : public TestingSetup {
         void TestPackageSelection(const CChainParams& chainparams, const CScript& scriptPubKey, const std::vector<CTransactionRef>& txFirst) EXCLUSIVE_LOCKS_REQUIRED(::cs_main, m_node.mempool->cs);
         bool TestSequenceLocks(const CTransaction& tx, int flags) EXCLUSIVE_LOCKS_REQUIRED(::cs_main, m_node.mempool->cs)
@@ -51,15 +49,10 @@ namespace miner_tests {
         }
         BlockAssembler AssemblerForTest(const CChainParams& params);
 
-        CBettingsView phr;
+        InitializedCBettingsView phr;
 
-        MinerTestingSetup()
-        {
-            // Initialize the phr object with the initialized CBettingsView
-            phr = CreateInitializedCBettingsView();
-
-            // Set the global betting view variable
-            SetGlobalBettingView(&phr);
+        MinerTestingSetup() {
+            // No need for additional initialization here, as it's done in the InitializedCBettingsView constructor
         }
     };
 } // namespace miner_tests
