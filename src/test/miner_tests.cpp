@@ -58,6 +58,15 @@ public:
 };
 
 namespace miner_tests {
+    class CBettingsViewWrapper {
+    public:
+        std::shared_ptr<CBettingsView> viewPtr;
+
+        CBettingsViewWrapper() {
+            CBettingsView tempInstance;
+            viewPtr = std::make_shared<CBettingsView>(tempInstance);
+        }
+    };
     struct MinerTestingSetup : public TestingSetup {
         public:
             std::shared_ptr<CBettingsView> phr;
@@ -67,11 +76,6 @@ namespace miner_tests {
             return CheckSequenceLocks(*m_node.mempool, tx, flags);
         }
         BlockAssembler AssemblerForTest(const CChainParams& params);
-        class CBettingsViewWrapper {
-            public:
-                CBettingsViewWrapper(const std::shared_ptr<CBettingsView>& view) : viewPtr(view) {}
-                std::shared_ptr<CBettingsView> viewPtr;
-        };
         MinerTestingSetup() {
             CTestStorageKV testStorageKV;
 
@@ -91,10 +95,8 @@ namespace miner_tests {
             phr->chainGamesLottoResults = MakeUnique<CBettingDB>(testStorageKV);
             phr->failedBettingTxs = MakeUnique<CBettingDB>(testStorageKV);
         }
-        miner_tests::CBettingsViewWrapper GetTempInstance() {
-            std::shared_ptr<CBettingsView> sharedPtr = std::make_shared<CBettingsView>(*phr);
-            miner_tests::CBettingsViewWrapper tempInstance(sharedPtr);
-            return tempInstance;
+        miner_tests::CBettingsViewWrapper miner_tests::MinerTestingSetup::GetTempInstance() {
+            return miner_tests::CBettingsViewWrapper();
         }
         CBettingsView::CBettingsView(const CBettingsView& other) {
             mappings = MakeUnique<CBettingDB>(*other.mappings.get());
