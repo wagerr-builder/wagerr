@@ -699,7 +699,6 @@ CBettingsView::CBettingsView(CBettingsView* phr) {
         chainGamesLottoResults = MakeUnique<CBettingDB>(*phr->chainGamesLottoResults.get());
         failedBettingTxs = MakeUnique<CBettingDB>(*phr->failedBettingTxs.get());
     } else {
-    CBettingsView::CBettingsView() {
         // Create and initialize CStorageKV instances
         mappingsStorage = std::make_unique<CStorageKV>();
         resultsStorage = std::make_unique<CStorageKV>();
