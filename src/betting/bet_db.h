@@ -1037,6 +1037,8 @@ public:
     bool ExistFailedTx(const FailedTxKey& key);
 
     bool EraseFailedTx(const FailedTxKey& key);
+
+    void Initialize();
 };
 
 #endif
