@@ -889,7 +889,6 @@ public:
     explicit CBettingDB(CStorageKV& db) : db{db} { }
     // Cache copy constructor (we should set global flushable storage ref as flushable storage of cached copy)
     explicit CBettingDB(CBettingDB& bdb) : CBettingDB(bdb.GetDb()) { }
-    void Initialize();
     ~CBettingDB() {}
 
     bool Flush();
@@ -1012,6 +1011,8 @@ public:
 
     // copy constructor for creating DB cache
     explicit CBettingsView(CBettingsView* phr);
+
+    void Initialize();
 
     bool Flush();
 
