@@ -4,6 +4,7 @@
 
 #include <betting/bet_db.h>
 #include <boost/format.hpp>
+#include <validation.h>
 
 #define DOUBLE_ODDS(odds) (static_cast<double>(odds) / BET_ODDSDIVISOR)
 #define DOUBLE_MODIFIER(mod) (static_cast<double>(mod) / MODIFIER_DIVISOR)
