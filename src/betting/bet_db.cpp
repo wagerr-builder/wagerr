@@ -681,8 +681,7 @@ using namespace boost::filesystem;
  * CBettingsView methods
  */
 
-// copy constructor for creating DB cache
-CBettingsView::CBettingsView(CBettingsView* phr) {
+CBettingsView::CBettingsView(CBettingsView*& phr) {
     if (phr != nullptr) {
         mappings = MakeUnique<CBettingDB>(*phr->mappings.get());
         results = MakeUnique<CBettingDB>(*phr->results.get());
@@ -730,10 +729,10 @@ CBettingsView::CBettingsView(CBettingsView* phr) {
         fieldEvents = std::make_unique<CBettingDB>(*fieldEventsStorage);
         fieldResults = std::make_unique<CBettingDB>(*fieldResultsStorage);
         fieldBets = std::make_unique<CBettingDB>(*fieldBetsStorage);
+
+        // Assign newly created object to the input reference pointer
+        phr = this;
     }
-}
-
-
 }
 
 bool CBettingsView::Flush() {
