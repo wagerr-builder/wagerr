@@ -683,20 +683,58 @@ using namespace boost::filesystem;
 
 // copy constructor for creating DB cache
 CBettingsView::CBettingsView(CBettingsView* phr) {
-    mappings = MakeUnique<CBettingDB>(*phr->mappings.get());
-    results = MakeUnique<CBettingDB>(*phr->results.get());
-    events = MakeUnique<CBettingDB>(*phr->events.get());
-    bets = MakeUnique<CBettingDB>(*phr->bets.get());
-    fieldEvents = MakeUnique<CBettingDB>(*phr->fieldEvents.get());
-    fieldResults = MakeUnique<CBettingDB>(*phr->fieldResults.get());
-    fieldBets = MakeUnique<CBettingDB>(*phr->fieldBets.get());
-    undos = MakeUnique<CBettingDB>(*phr->undos.get());
-    payoutsInfo = MakeUnique<CBettingDB>(*phr->payoutsInfo.get());
-    quickGamesBets = MakeUnique<CBettingDB>(*phr->quickGamesBets.get());
-    chainGamesLottoEvents = MakeUnique<CBettingDB>(*phr->chainGamesLottoEvents.get());
-    chainGamesLottoBets = MakeUnique<CBettingDB>(*phr->chainGamesLottoBets.get());
-    chainGamesLottoResults = MakeUnique<CBettingDB>(*phr->chainGamesLottoResults.get());
-    failedBettingTxs = MakeUnique<CBettingDB>(*phr->failedBettingTxs.get());
+    if (phr != nullptr) {
+        mappings = MakeUnique<CBettingDB>(*phr->mappings.get());
+        results = MakeUnique<CBettingDB>(*phr->results.get());
+        events = MakeUnique<CBettingDB>(*phr->events.get());
+        bets = MakeUnique<CBettingDB>(*phr->bets.get());
+        fieldEvents = MakeUnique<CBettingDB>(*phr->fieldEvents.get());
+        fieldResults = MakeUnique<CBettingDB>(*phr->fieldResults.get());
+        fieldBets = MakeUnique<CBettingDB>(*phr->fieldBets.get());
+        undos = MakeUnique<CBettingDB>(*phr->undos.get());
+        payoutsInfo = MakeUnique<CBettingDB>(*phr->payoutsInfo.get());
+        quickGamesBets = MakeUnique<CBettingDB>(*phr->quickGamesBets.get());
+        chainGamesLottoEvents = MakeUnique<CBettingDB>(*phr->chainGamesLottoEvents.get());
+        chainGamesLottoBets = MakeUnique<CBettingDB>(*phr->chainGamesLottoBets.get());
+        chainGamesLottoResults = MakeUnique<CBettingDB>(*phr->chainGamesLottoResults.get());
+        failedBettingTxs = MakeUnique<CBettingDB>(*phr->failedBettingTxs.get());
+    } else {
+    CBettingsView::CBettingsView() {
+        // Create and initialize CStorageKV instances
+        mappingsStorage = std::make_unique<CStorageKV>();
+        resultsStorage = std::make_unique<CStorageKV>();
+        eventsStorage = std::make_unique<CStorageKV>();
+        betsStorage = std::make_unique<CStorageKV>();
+        undosStorage = std::make_unique<CStorageKV>();
+        payoutsInfoStorage = std::make_unique<CStorageKV>();
+        quickGamesBetsStorage = std::make_unique<CStorageKV>();
+        chainGamesLottoEventsStorage = std::make_unique<CStorageKV>();
+        chainGamesLottoBetsStorage = std::make_unique<CStorageKV>();
+        chainGamesLottoResultsStorage = std::make_unique<CStorageKV>();
+        failedBettingTxsStorage = std::make_unique<CStorageKV>();
+        fieldEventsStorage = std::make_unique<CStorageKV>();
+        fieldResultsStorage = std::make_unique<CStorageKV>();
+        fieldBetsStorage = std::make_unique<CStorageKV>();
+
+        // Initialize CBettingDB instances with corresponding CStorageKV instances
+        mappings = std::make_unique<CBettingDB>(*mappingsStorage);
+        results = std::make_unique<CBettingDB>(*resultsStorage);
+        events = std::make_unique<CBettingDB>(*eventsStorage);
+        bets = std::make_unique<CBettingDB>(*betsStorage);
+        undos = std::make_unique<CBettingDB>(*undosStorage);
+        payoutsInfo = std::make_unique<CBettingDB>(*payoutsInfoStorage);
+        quickGamesBets = std::make_unique<CBettingDB>(*quickGamesBetsStorage);
+        chainGamesLottoEvents = std::make_unique<CBettingDB>(*chainGamesLottoEventsStorage);
+        chainGamesLottoBets = std::make_unique<CBettingDB>(*chainGamesLottoBetsStorage);
+        chainGamesLottoResults = std::make_unique<CBettingDB>(*chainGamesLottoResultsStorage);
+        failedBettingTxs = std::make_unique<CBettingDB>(*failedBettingTxsStorage);
+        fieldEvents = std::make_unique<CBettingDB>(*fieldEventsStorage);
+        fieldResults = std::make_unique<CBettingDB>(*fieldResultsStorage);
+        fieldBets = std::make_unique<CBettingDB>(*fieldBetsStorage);
+    }
+}
+
+
 }
 
 bool CBettingsView::Flush() {
