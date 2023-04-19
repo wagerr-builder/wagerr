@@ -702,7 +702,7 @@ CBettingsView::CBettingsView(CBettingsView* phr) {
     }
 }
 void CBettingsView::Initialize(CBettingsView* phr) {
-    if (this == nullptr) {
+    if (phr == nullptr) {
         phr = new CBettingsView();
         // Create storage instances
         phr->mappingsStorage = MakeUnique<CStorageLevelDB>(CBettingDB::MakeDbPath("mappings"), CBettingDB::dbWrapperCacheSize(), false, fReindex);
