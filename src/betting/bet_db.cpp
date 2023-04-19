@@ -681,7 +681,7 @@ using namespace boost::filesystem;
  * CBettingsView methods
  */
 void CBettingsView::Initialize() {
-    if (phr == nullptr) {
+    if (this == nullptr) {
         phr = new CBettingsView();
         // Create storage instances
         phr->mappingsStorage = MakeUnique<CStorageLevelDB>(CBettingDB::MakeDbPath("mappings"), CBettingDB::dbWrapperCacheSize(), false, fReindex);
