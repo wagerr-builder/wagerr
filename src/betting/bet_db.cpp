@@ -698,10 +698,10 @@ CBettingsView::CBettingsView(CBettingsView* phr) {
         chainGamesLottoResults = MakeUnique<CBettingDB>(*phr->chainGamesLottoResults.get());
         failedBettingTxs = MakeUnique<CBettingDB>(*phr->failedBettingTxs.get());
     } else {
-        Initialize(phr);
+        Initialize();
     }
 }
-void CBettingsView::Initialize(CBettingsView*& phr) {
+void CBettingsView::Initialize(CBettingsView* phr) {
     if (this == nullptr) {
         phr = new CBettingsView();
         // Create storage instances
