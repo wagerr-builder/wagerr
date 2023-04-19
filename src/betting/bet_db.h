@@ -1012,8 +1012,6 @@ public:
     // copy constructor for creating DB cache
     explicit CBettingsView(CBettingsView* phr);
 
-    void Initialize();
-
     bool Flush();
 
     unsigned int GetCacheSize();
