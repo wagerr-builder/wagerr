@@ -882,15 +882,16 @@ public:
 class CBettingDB
 {
 protected:
-    CFlushableStorageKV db;
+    CFlushableStorageKV* db;
     CFlushableStorageKV& GetDb();
+
 public:
     // Add this default constructor
-    CBettingDB() : db{CStorageKV()} {}
+    CBettingDB() : db{nullptr} {}
 
-    // Existing constructors
-    explicit CBettingDB(CStorageKV& db) : db{db} { }
-    explicit CBettingDB(CBettingDB& bdb) : CBettingDB(bdb.GetDb()) { }
+    // Modify these constructors
+    explicit CBettingDB(CStorageKV& db) : db{&db} { }
+    explicit CBettingDB(CBettingDB& bdb) : CBettingDB(*(bdb.GetDb())) { }
 
     ~CBettingDB() {}
 
@@ -901,7 +902,7 @@ public:
     template<typename KeyType>
     bool Exists(const KeyType& key)
     {
-        return db.Exists(DbTypeToBytes(key));
+        return db->Exists(DbTypeToBytes(key));
     }
 
     template<typename KeyType, typename ValueType>
@@ -909,9 +910,9 @@ public:
     {
         auto vKey = DbTypeToBytes(key);
         auto vValue = DbTypeToBytes(value);
-        if (db.Exists(vKey))
+        if (db->Exists(vKey))
             return false;
-        return db.Write(vKey, vValue);
+        return db->Write(vKey, vValue);
     }
 
     template<typename KeyType, typename ValueType>
@@ -919,18 +920,18 @@ public:
     {
         auto vKey = DbTypeToBytes(key);
         auto vValue = DbTypeToBytes(value);
-        if (!db.Exists(vKey))
+        if (!db->Exists(vKey))
             return false;
-        return db.Write(vKey, vValue);
+        return db->Write(vKey, vValue);
     }
 
     template<typename KeyType>
     bool Erase(const KeyType& key)
     {
         auto vKey = DbTypeToBytes(key);
-        if (!db.Exists(vKey))
+        if (!db->Exists(vKey))
             return false;
-        return db.Erase(vKey);
+        return db->Erase(vKey);
     }
 
     template<typename KeyType, typename ValueType>
@@ -938,7 +939,7 @@ public:
     {
         auto vKey = DbTypeToBytes(key);
         std::vector<unsigned char> vValue;
-        if (db.Read(vKey, vValue)) {
+        if (db->Read(vKey, vValue)) {
             BytesToDbType(vValue, value);
             return true;
         }
