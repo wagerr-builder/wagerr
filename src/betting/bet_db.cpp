@@ -680,22 +680,6 @@ using namespace boost::filesystem;
 /*
  * CBettingsView methods
  */
-CBettingsView::CBettingsView() {
-    mappings = MakeUnique<CBettingDB>();
-    results = MakeUnique<CBettingDB>();
-    events = MakeUnique<CBettingDB>();
-    bets = MakeUnique<CBettingDB>();
-    fieldEvents = MakeUnique<CBettingDB>();
-    fieldResults = MakeUnique<CBettingDB>();
-    fieldBets = MakeUnique<CBettingDB>();
-    undos = MakeUnique<CBettingDB>();
-    payoutsInfo = MakeUnique<CBettingDB>();
-    quickGamesBets = MakeUnique<CBettingDB>();
-    chainGamesLottoEvents = MakeUnique<CBettingDB>();
-    chainGamesLottoBets = MakeUnique<CBettingDB>();
-    chainGamesLottoResults = MakeUnique<CBettingDB>();
-    failedBettingTxs = MakeUnique<CBettingDB>();
-}
 
 // copy constructor for creating DB cache
 CBettingsView::CBettingsView(CBettingsView* phr) {
