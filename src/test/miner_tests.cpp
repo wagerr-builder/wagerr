@@ -28,7 +28,7 @@
 
 #include <boost/test/unit_test.hpp>
 
-#include "bet_db.h"
+#include <betting/bet_db.h>
 
 namespace miner_tests {
 struct MinerTestingSetup : public TestingSetup {
