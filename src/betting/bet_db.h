@@ -1037,7 +1037,7 @@ public:
         chainGamesLottoEvents = phr && phr->chainGamesLottoEvents ? MakeUnique<CBettingDB>(*phr->chainGamesLottoEvents) : MakeUnique<CBettingDB>();
         chainGamesLottoEventsStorage = phr && phr->chainGamesLottoEventsStorage ? MakeUnique<CFlushableStorageKV>(*phr->chainGamesLottoEventsStorage) : MakeUnique<CFlushableStorageKV>();
         chainGamesLottoBets = phr && phr->chainGamesLottoBets ? MakeUnique<CBettingDB>(*phr->chainGamesLottoBets) : MakeUnique<CBettingDB>();
-        chainGamesLottoBetsStorage = phr && phr->chainGamesLottoBetsStorage ? MakeUnique<CFlushableStorageKV>(*phr->pchainGamesLottoBetsStorage) : MakeUnique<CFlushableStorageKV>();
+        chainGamesLottoBetsStorage = phr && phr->chainGamesLottoBetsStorage ? MakeUnique<CFlushableStorageKV>(*phr->chainGamesLottoBetsStorage) : MakeUnique<CFlushableStorageKV>();
         chainGamesLottoResults = phr && phr->chainGamesLottoResults ? MakeUnique<CBettingDB>(*phr->chainGamesLottoResults) : MakeUnique<CBettingDB>();
         chainGamesLottoResultsStorage = phr && phr->chainGamesLottoResultsStorage ? MakeUnique<CFlushableStorageKV>(*phr->chainGamesLottoResultsStorage) : MakeUnique<CFlushableStorageKV>();
         failedBettingTxs = phr && phr->failedBettingTxs ? MakeUnique<CBettingDB>(*phr->failedBettingTxs) : MakeUnique<CBettingDB>();
