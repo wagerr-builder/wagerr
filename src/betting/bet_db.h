@@ -1012,20 +1012,20 @@ public:
 
     // copy constructor for creating DB cache
     explicit CBettingsView(CBettingsView* phr) :
-        mappings(phr ? std::make_unique<CBettingDB>(*phr->mappings.get()) : std::make_unique<CBettingDB>()),
-        results(phr ? std::make_unique<CBettingDB>(*phr->results.get()) : std::make_unique<CBettingDB>()),
-        events(phr ? std::make_unique<CBettingDB>(*phr->events.get()) : std::make_unique<CBettingDB>()),
-        bets(phr ? std::make_unique<CBettingDB>(*phr->bets.get()) : std::make_unique<CBettingDB>()),
-        fieldEvents(phr ? std::make_unique<CBettingDB>(*phr->fieldEvents.get()) : std::make_unique<CBettingDB>()),
-        fieldResults(phr ? std::make_unique<CBettingDB>(*phr->fieldResults.get()) : std::make_unique<CBettingDB>()),
-        fieldBets(phr ? std::make_unique<CBettingDB>(*phr->fieldBets.get()) : std::make_unique<CBettingDB>()),
-        undos(phr ? std::make_unique<CBettingDB>(*phr->undos.get()) : std::make_unique<CBettingDB>()),
-        payoutsInfo(phr ? std::make_unique<CBettingDB>(*phr->payoutsInfo.get()) : std::make_unique<CBettingDB>()),
-        quickGamesBets(phr ? std::make_unique<CBettingDB>(*phr->quickGamesBets.get()) : std::make_unique<CBettingDB>()),
-        chainGamesLottoEvents(phr ? std::make_unique<CBettingDB>(*phr->chainGamesLottoEvents.get()) : std::make_unique<CBettingDB>()),
-        chainGamesLottoBets(phr ? std::make_unique<CBettingDB>(*phr->chainGamesLottoBets.get()) : std::make_unique<CBettingDB>()),
-        chainGamesLottoResults(phr ? std::make_unique<CBettingDB>(*phr->chainGamesLottoResults.get()) : std::make_unique<CBettingDB>()),
-        failedBettingTxs(phr ? std::make_unique<CBettingDB>(*phr->failedBettingTxs.get()) : std::make_unique<CBettingDB>())
+        mappings(phr != nullptr ? std::make_unique<CBettingDB>(*phr->mappings.get()) : MakeUnique<CBettingDB>(db)),
+        results(phr != nullptr ? std::make_unique<CBettingDB>(*phr->results.get()) : MakeUnique<CBettingDB>(db)),
+        events(phr != nullptr ? std::make_unique<CBettingDB>(*phr->events.get()) : MakeUnique<CBettingDB>(db)),
+        bets(phr != nullptr ? std::make_unique<CBettingDB>(*phr->bets.get()) : MakeUnique<CBettingDB>(db)),
+        fieldEvents(phr != nullptr ? std::make_unique<CBettingDB>(*phr->fieldEvents.get()) : MakeUnique<CBettingDB>(db)),
+        fieldResults(phr != nullptr ? std::make_unique<CBettingDB>(*phr->fieldResults.get()) : MakeUnique<CBettingDB>(db)),
+        fieldBets(phr != nullptr ? std::make_unique<CBettingDB>(*phr->fieldBets.get()) : MakeUnique<CBettingDB>(db)),
+        undos(phr != nullptr ? std::make_unique<CBettingDB>(*phr->undos.get()) : MakeUnique<CBettingDB>(db)),
+        payoutsInfo(phr != nullptr ? std::make_unique<CBettingDB>(*phr->payoutsInfo.get()) : MakeUnique<CBettingDB>(db)),
+        quickGamesBets(phr != nullptr ? std::make_unique<CBettingDB>(*phr->quickGamesBets.get()) : MakeUnique<CBettingDB>(db)),
+        chainGamesLottoEvents(phr != nullptr ? std::make_unique<CBettingDB>(*phr->chainGamesLottoEvents.get()) : MakeUnique<CBettingDB>(db)),
+        chainGamesLottoBets(phr != nullptr ? std::make_unique<CBettingDB>(*phr->chainGamesLottoBets.get()) : MakeUnique<CBettingDB>(db)),
+        chainGamesLottoResults(phr != nullptr ? std::make_unique<CBettingDB>(*phr->chainGamesLottoResults.get()) : MakeUnique<CBettingDB>(db)),
+        failedBettingTxs(phr != nullptr ? std::make_unique<CBettingDB>(*phr->failedBettingTxs.get()) : MakeUnique<CBettingDB>(db))
     { }
 
     bool Flush();
