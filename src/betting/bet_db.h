@@ -1008,6 +1008,7 @@ public:
     std::unique_ptr<CStorageKV> fieldBetsStorage;
 
     // default constructor
+    explicit CBettingDB() : CDBWrapper() { }
 
     explicit CBettingsView() :
         mappings(MakeUnique<CBettingDB>()),
