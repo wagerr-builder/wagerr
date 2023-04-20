@@ -1011,7 +1011,38 @@ public:
     explicit CBettingsView() { }
 
     // copy constructor for creating DB cache
-    explicit CBettingsView(CBettingsView* phr);
+    //explicit CBettingsView(CBettingsView* phr);
+
+    CBettingsView::CBettingsView(CBettingsView* phr) {
+        mappings = phr && phr->mappings ? MakeUnique<CBettingDB>(*phr->mappings) : MakeUnique<CBettingDB>();
+        mappingsStorage = phr && phr->mappingsStorage ? MakeUnique<CFlushableStorageKV>(*phr->mappingsStorage) : MakeUnique<CFlushableStorageKV>();
+        results = phr && phr->results ? MakeUnique<CBettingDB>(*phr->results) : MakeUnique<CBettingDB>();
+        resultsStorage = phr && phr->resultsStorage ? MakeUnique<CFlushableStorageKV>(*phr->resultsStorage) : MakeUnique<CFlushableStorageKV>();
+        events = phr && phr->events ? MakeUnique<CBettingDB>(*phr->events) : MakeUnique<CBettingDB>();
+        eventsStorage = phr && phr->eventsStorage ? MakeUnique<CFlushableStorageKV>(*phr->eventsStorage) : MakeUnique<CFlushableStorageKV>();
+        bets = phr && phr->bets ? MakeUnique<CBettingDB>(*phr->bets) : MakeUnique<CBettingDB>();
+        betsStorage = phr && phr->betsStorage ? MakeUnique<CFlushableStorageKV>(*phr->betsStorage) : MakeUnique<CFlushableStorageKV>();
+        fieldEvents = phr && phr->fieldEvents ? MakeUnique<CBettingDB>(*phr->fieldEvents) : MakeUnique<CBettingDB>();
+        fieldEventsStorage = phr && phr->fieldEventsStorage ? MakeUnique<CFlushableStorageKV>(*phr->fieldEventsStorage) : MakeUnique<CFlushableStorageKV>();
+        fieldResults = phr && phr->fieldResults ? MakeUnique<CBettingDB>(*phr->fieldResults) : MakeUnique<CBettingDB>();
+        fieldResultsStorage = phr && phr->fieldResultsStorage ? MakeUnique<CFlushableStorageKV>(*phr->fieldResultsStorage) : MakeUnique<CFlushableStorageKV>();
+        fieldBets = phr && phr->fieldBets ? MakeUnique<CBettingDB>(*phr->fieldBets) : MakeUnique<CBettingDB>();
+        fieldBetsStorage = phr && phr->fieldBetsStorage ? MakeUnique<CFlushableStorageKV>(*phr->fieldBetsStorage) : MakeUnique<CFlushableStorageKV>();
+        undos = phr && phr->undos ? MakeUnique<CBettingDB>(*phr->undos) : MakeUnique<CBettingDB>();
+        undosStorage = phr && phr->undosStorage ? MakeUnique<CFlushableStorageKV>(*phr->undosStorage) : MakeUnique<CFlushableStorageKV>();
+        payoutsInfo = phr && phr->payoutsInfo ? MakeUnique<CBettingDB>(*phr->payoutsInfo) : MakeUnique<CBettingDB>();
+        payoutsInfoStorage = phr && phr->payoutsInfoStorage ? MakeUnique<CFlushableStorageKV>(*phr->payoutsInfoStorage) : MakeUnique<CFlushableStorageKV>();
+        quickGamesBets = phr && phr->quickGamesBets ? MakeUnique<CBettingDB>(*phr->quickGamesBets) : MakeUnique<CBettingDB>();
+        quickGamesBetsStorage = phr && phr->quickGamesBetsStorage ? MakeUnique<CFlushableStorageKV>(*phr->quickGamesBetsStorage) : MakeUnique<CFlushableStorageKV>();
+        chainGamesLottoEvents = phr && phr->chainGamesLottoEvents ? MakeUnique<CBettingDB>(*phr->chainGamesLottoEvents) : MakeUnique<CBettingDB>();
+        chainGamesLottoEventsStorage = phr && phr->chainGamesLottoEventsStorage ? MakeUnique<CFlushableStorageKV>(*phr->chainGamesLottoEventsStorage) : MakeUnique<CFlushableStorageKV>();
+        chainGamesLottoBets = phr && phr->chainGamesLottoBets ? MakeUnique<CBettingDB>(*phr->chainGamesLottoBets) : MakeUnique<CBettingDB>();
+        chainGamesLottoBetsStorage = phr && phr->chainGamesLottoBetsStorage ? MakeUnique<CFlushableStorageKV>(*phr->pchainGamesLottoBetsStorage) : MakeUnique<CFlushableStorageKV>();
+        chainGamesLottoResults = phr && phr->chainGamesLottoResults ? MakeUnique<CBettingDB>(*phr->chainGamesLottoResults) : MakeUnique<CBettingDB>();
+        chainGamesLottoResultsStorage = phr && phr->chainGamesLottoResultsStorage ? MakeUnique<CFlushableStorageKV>(*phr->chainGamesLottoResultsStorage) : MakeUnique<CFlushableStorageKV>();
+        failedBettingTxs = phr && phr->failedBettingTxs ? MakeUnique<CBettingDB>(*phr->failedBettingTxs) : MakeUnique<CBettingDB>();
+        failedBettingTxsStorage = phr && phr->failedBettingTxsStorage ? MakeUnique<CFlushableStorageKV>(*phr->failedBettingTxsStorage) : MakeUnique<CFlushableStorageKV>();
+    }
 
     bool Flush();
 
