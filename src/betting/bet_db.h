@@ -1013,7 +1013,7 @@ public:
     // copy constructor for creating DB cache
     //explicit CBettingsView(CBettingsView* phr);
 
-    explicit CBettingsView::CBettingsView(CBettingsView* phr) {
+    explicit CBettingsView(CBettingsView* phr) {
         mappings = phr && phr->mappings ? MakeUnique<CBettingDB>(*phr->mappings) : MakeUnique<CBettingDB>();
         mappingsStorage = phr && phr->mappingsStorage ? MakeUnique<CFlushableStorageKV>(*phr->mappingsStorage) : MakeUnique<CFlushableStorageKV>();
         results = phr && phr->results ? MakeUnique<CBettingDB>(*phr->results) : MakeUnique<CBettingDB>();
