@@ -885,9 +885,11 @@ protected:
     CFlushableStorageKV db;
     CFlushableStorageKV& GetDb();
 public:
-    // Default Constructor.
+    // Add this default constructor
+    CBettingDB() : db{CStorageKV()} {}
+
+    // Existing constructors
     explicit CBettingDB(CStorageKV& db) : db{db} { }
-    // Cache copy constructor (we should set global flushable storage ref as flushable storage of cached copy)
     explicit CBettingDB(CBettingDB& bdb) : CBettingDB(bdb.GetDb()) { }
 
     ~CBettingDB() {}
