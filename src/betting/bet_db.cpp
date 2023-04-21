@@ -749,21 +749,22 @@ CBettingsView::CBettingsView(CBettingsView* phr) {
         phr->fieldBetsStorage = MakeUnique<CStorageLevelDB>(CBettingDB::MakeDbPath("fieldBets"), CBettingDB::dbWrapperCacheSize(), false, fReindex);
         phr->fieldBets = MakeUnique<CBettingDB>(*phr->fieldBetsStorage.get());
 
+    } else {
+        mappings = MakeUnique<CBettingDB>(*phr->mappings.get());
+        results = MakeUnique<CBettingDB>(*phr->results.get());
+        events = MakeUnique<CBettingDB>(*phr->events.get());
+        bets = MakeUnique<CBettingDB>(*phr->bets.get());
+        fieldEvents = MakeUnique<CBettingDB>(*phr->fieldEvents.get());
+        fieldResults = MakeUnique<CBettingDB>(*phr->fieldResults.get());
+        fieldBets = MakeUnique<CBettingDB>(*phr->fieldBets.get());
+        undos = MakeUnique<CBettingDB>(*phr->undos.get());
+        payoutsInfo = MakeUnique<CBettingDB>(*phr->payoutsInfo.get());
+        quickGamesBets = MakeUnique<CBettingDB>(*phr->quickGamesBets.get());
+        chainGamesLottoEvents = MakeUnique<CBettingDB>(*phr->chainGamesLottoEvents.get());
+        chainGamesLottoBets = MakeUnique<CBettingDB>(*phr->chainGamesLottoBets.get());
+        chainGamesLottoResults = MakeUnique<CBettingDB>(*phr->chainGamesLottoResults.get());
+        failedBettingTxs = MakeUnique<CBettingDB>(*phr->failedBettingTxs.get());
     }
-    mappings = MakeUnique<CBettingDB>(*phr->mappings.get());
-    results = MakeUnique<CBettingDB>(*phr->results.get());
-    events = MakeUnique<CBettingDB>(*phr->events.get());
-    bets = MakeUnique<CBettingDB>(*phr->bets.get());
-    fieldEvents = MakeUnique<CBettingDB>(*phr->fieldEvents.get());
-    fieldResults = MakeUnique<CBettingDB>(*phr->fieldResults.get());
-    fieldBets = MakeUnique<CBettingDB>(*phr->fieldBets.get());
-    undos = MakeUnique<CBettingDB>(*phr->undos.get());
-    payoutsInfo = MakeUnique<CBettingDB>(*phr->payoutsInfo.get());
-    quickGamesBets = MakeUnique<CBettingDB>(*phr->quickGamesBets.get());
-    chainGamesLottoEvents = MakeUnique<CBettingDB>(*phr->chainGamesLottoEvents.get());
-    chainGamesLottoBets = MakeUnique<CBettingDB>(*phr->chainGamesLottoBets.get());
-    chainGamesLottoResults = MakeUnique<CBettingDB>(*phr->chainGamesLottoResults.get());
-    failedBettingTxs = MakeUnique<CBettingDB>(*phr->failedBettingTxs.get());
 }
 
 bool CBettingsView::Flush() {
