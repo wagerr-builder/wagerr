@@ -707,7 +707,7 @@ CBettingsView::CBettingsView(CBettingsView* phr) {
         /*CBettingsView* tmp = new CBettingsView();
         phr = tmp;*/
         // initialize phr object
-        phr->mappingsStorage = MakeUnique<CStorageLevelDB>(CBettingDB::MakeDbPath("mappings"), CBettingDB::dbWrapperCacheSize(), false, fReindex);
+        /*phr->mappingsStorage = MakeUnique<CStorageLevelDB>(CBettingDB::MakeDbPath("mappings"), CBettingDB::dbWrapperCacheSize(), false, fReindex);
         phr->mappings = MakeUnique<CBettingDB>(*phr->mappingsStorage.get());
 
         phr->resultsStorage = MakeUnique<CStorageLevelDB>(CBettingDB::MakeDbPath("results"), CBettingDB::dbWrapperCacheSize(), false, fReindex);
@@ -747,9 +747,9 @@ CBettingsView::CBettingsView(CBettingsView* phr) {
         phr->fieldResults = MakeUnique<CBettingDB>(*phr->fieldResultsStorage.get());
 
         phr->fieldBetsStorage = MakeUnique<CStorageLevelDB>(CBettingDB::MakeDbPath("fieldBets"), CBettingDB::dbWrapperCacheSize(), false, fReindex);
-        phr->fieldBets = MakeUnique<CBettingDB>(*phr->fieldBetsStorage.get());
+        phr->fieldBets = MakeUnique<CBettingDB>(*phr->fieldBetsStorage.get());*/
 
-    } else {
+    }
         mappings = MakeUnique<CBettingDB>(*phr->mappings.get());
         results = MakeUnique<CBettingDB>(*phr->results.get());
         events = MakeUnique<CBettingDB>(*phr->events.get());
@@ -764,7 +764,7 @@ CBettingsView::CBettingsView(CBettingsView* phr) {
         chainGamesLottoBets = MakeUnique<CBettingDB>(*phr->chainGamesLottoBets.get());
         chainGamesLottoResults = MakeUnique<CBettingDB>(*phr->chainGamesLottoResults.get());
         failedBettingTxs = MakeUnique<CBettingDB>(*phr->failedBettingTxs.get());
-    }
+    
 }
 
 bool CBettingsView::Flush() {
