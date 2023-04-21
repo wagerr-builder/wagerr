@@ -703,9 +703,9 @@ using namespace boost::filesystem;
 CBettingsView::CBettingsView(CBettingsView* phr) {
     if (!phr) {
         // create initialized phr object according to init.cpp configuration
-        //phr = new CBettingsView();
-        CBettingsView* tmp = new CBettingsView();
-        phr = tmp;
+        phr = new CBettingsView();
+        /*CBettingsView* tmp = new CBettingsView();
+        phr = tmp;*/
         // initialize phr object
         phr->mappingsStorage = MakeUnique<CStorageLevelDB>(CBettingDB::MakeDbPath("mappings"), CBettingDB::dbWrapperCacheSize(), false, fReindex);
         phr->mappings = MakeUnique<CBettingDB>(*phr->mappingsStorage.get());
