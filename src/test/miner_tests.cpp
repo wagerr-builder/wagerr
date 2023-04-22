@@ -221,7 +221,7 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
     fCheckpointsEnabled = false;
 
     // Simple block creation, nothing special yet:
-    BlockTemplate* pemptyblocktemplate;
+    CBlockTemplate* pemptyblocktemplate;
     pemptyblocktemplate = AssemblerForTest(chainparams).CreateNewBlock(scriptPubKey);
     // We can't make transactions until we have inputs
     // Therefore, load 100 blocks :)
