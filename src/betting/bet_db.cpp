@@ -719,6 +719,9 @@ CBettingsView::CBettingsView(CBettingsView* phr) {
     chainGamesLottoBets = MakeUnique<CBettingDB>(*phr->chainGamesLottoBets.get());
     chainGamesLottoResults = MakeUnique<CBettingDB>(*phr->chainGamesLottoResults.get());
     failedBettingTxs = MakeUnique<CBettingDB>(*phr->failedBettingTxs.get());
+
+    // Add this line
+    phr = MakeUnique<CBettingDB>(*phr.get());
 }
 
 bool CBettingsView::Flush() {
