@@ -42,13 +42,13 @@ BOOST_AUTO_TEST_CASE(block_subsidy_test)
     nPrevBits = 0x1c29ec00;
     nPrevHeight = 5465;
     nSubsidy = GetBlockSubsidy(nPrevBits, nPrevHeight, chainParams->GetConsensus(), fPos, false);
-    BOOST_CHECK_EQUAL(nSubsidy, 0ULL);
+    BOOST_CHECK_EQUAL(nSubsidy, 380000000ULL);
 
     // details for block 17588 (subsidy returned will be for block 17589)
     nPrevBits = 0x1c08ba34;
     nPrevHeight = 17588;
     nSubsidy = GetBlockSubsidy(nPrevBits, nPrevHeight, chainParams->GetConsensus(), fPos, false);
-    BOOST_CHECK_EQUAL(nSubsidy, 0ULL);
+    BOOST_CHECK_EQUAL(nSubsidy, 380000000ULL);
 
     // details for block 99999 (subsidy returned will be for block 100000)
     nPrevBits = 0x1b10cf42;
@@ -60,7 +60,7 @@ BOOST_AUTO_TEST_CASE(block_subsidy_test)
     nPrevBits = 0x1b11548e;
     nPrevHeight = 210239;
     nSubsidy = GetBlockSubsidy(nPrevBits, nPrevHeight, chainParams->GetConsensus(), fPos, false);
-    BOOST_CHECK_EQUAL(nSubsidy, 271000000000ULL);
+    BOOST_CHECK_EQUAL(nSubsidy, 380000000ULL);
 
     // 1st subsidy reduction happens here
 
@@ -68,7 +68,7 @@ BOOST_AUTO_TEST_CASE(block_subsidy_test)
     nPrevBits = 0x1b10d50b;
     nPrevHeight = 210240;
     nSubsidy = GetBlockSubsidy(nPrevBits, nPrevHeight, chainParams->GetConsensus(), fPos, false);
-    BOOST_CHECK_EQUAL(nSubsidy, 271000000000ULL);
+    BOOST_CHECK_EQUAL(nSubsidy, 380000000ULL);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
