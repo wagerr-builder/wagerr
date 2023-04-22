@@ -757,7 +757,7 @@ CBettingsView::CBettingsView(CBettingsView* phr) {
 
         bettingsView->failedBettingTxsStorage = MakeUnique<CStorageLevelDB>(CBettingDB::MakeDbPath("failedtxs"), CBettingDB::dbWrapperCacheSize(), false, fReindex);
         bettingsView->failedBettingTxs = MakeUnique<CBettingDB>(*bettingsView->failedBettingTxsStorage.get());
-        phr = bettingsView;
+        phr = &(*bettingsView);
     } else {
         mappings = MakeUnique<CBettingDB>(*phr->mappings.get());
         results = MakeUnique<CBettingDB>(*phr->results.get());
