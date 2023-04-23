@@ -64,5 +64,5 @@ void initializeBettingView(bool fReindex) {
     bettingsView->failedBettingTxsStorage = MakeUnique<CStorageLevelDB>(CBettingDB::MakeDbPath("failedtxs"), CBettingDB::dbWrapperCacheSize(), false, fReindex);
     bettingsView->failedBettingTxs = MakeUnique<CBettingDB>(*bettingsView->failedBettingTxsStorage.get());
 
-    phr = &(*bettingsView);
-}
+    return bettingsView.get();
+    }
