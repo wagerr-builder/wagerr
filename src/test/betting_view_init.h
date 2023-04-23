@@ -8,6 +8,6 @@
 #include <memory>
 #include <betting/bet_db.h> // Include the header file for CBettingsView class
 
-CBettingsView* initializeBettingView(CBettingsView* phr);
+void initializeBettingView(bool fReindex);
 
 #endif // BETTING_VIEW_INIT_H
