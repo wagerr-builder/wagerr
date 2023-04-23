@@ -205,15 +205,10 @@ void MinerTestingSetup::TestPackageSelection(const CChainParams& chainparams, co
     pblocktemplate = AssemblerForTest(chainparams).CreateNewBlock(scriptPubKey);
     BOOST_CHECK(pblocktemplate->block.vtx[8]->GetHash() == hashLowFeeTx2);
 }
-namespace miner_tests {
-    extern std::unique_ptr<CBettingsView> bettingsView;
-    extern CBettingsView* phr;
-}
 // NOTE: These tests rely on CreateNewBlock doing its own self-validation!
 BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
 {
-    bool fReindex = false; // Replace with the desired value
-    initializeBettingView(miner_tests::phr, fReindex);
+    initializeBettingView(phr);
     const auto chainParams = CreateChainParams(CBaseChainParams::REGTEST);
     const CChainParams& chainparams = *chainParams;
     CScript scriptPubKey = CScript() << ParseHex("47304402204715731d4ef9cc08ef3922b28d6a58781b2c0350e0c78cc810c553ca339d8fcc02207a50a5fe6f870f470341122bb7770b990843f1759ae4c54a84379e9fe826ca070121021248ebb166595e7d1029a8373a281e56b696e8ee553e870ad4b934758d45ae28") << OP_CHECKSIG;

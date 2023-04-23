@@ -5,7 +5,7 @@
 #include "betting_view_init.h"
 #include <validation.h>
 
-void initializeBettingView(CBettingsView*& phr, bool fReindex) {
+void initializeBettingView(CBettingsView* phr) {
     // create new bettingsView
     //phr = new CBettingsView();
     bettingsView.reset();
