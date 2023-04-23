@@ -222,6 +222,8 @@ BITCOIN_TESTS =\
   test/base58_tests.cpp \
   test/base64_tests.cpp \
   test/bech32_tests.cpp \
+  test/betting_view_init.cpp \
+  test/betting_view_init.h \
   test/bip32_tests.cpp \
   test/bip39_tests.cpp \
   test/block_reward_reallocation_tests.cpp \
