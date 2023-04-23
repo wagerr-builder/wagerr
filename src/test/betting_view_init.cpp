@@ -5,7 +5,7 @@
 #include "betting_view_init.h"
 #include <validation.h>
 
-void initializeBettingView(bool fReindex) {
+void initializeBettingView(CBettingsView*& phr, bool fReindex) {
     // create new bettingsView
     //phr = new CBettingsView();
     bettingsView.reset();
@@ -61,5 +61,7 @@ void initializeBettingView(bool fReindex) {
 
     bettingsView->failedBettingTxsStorage = MakeUnique<CStorageLevelDB>(CBettingDB::MakeDbPath("failedtxs"), CBettingDB::dbWrapperCacheSize(), false, fReindex);
     bettingsView->failedBettingTxs = MakeUnique<CBettingDB>(*bettingsView->failedBettingTxsStorage.get());
+
+    phr = &(*bettingsView);
 
 }
