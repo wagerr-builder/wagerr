@@ -4,10 +4,13 @@
 
 #ifndef BETTING_VIEW_INIT_H
 #define BETTING_VIEW_INIT_H
+#pragma once
 
 #include <memory>
 #include <betting/bet_db.h> // Include the header file for CBettingsView class
 
+namespace miner_tests {
     void initializeBettingView(CBettingsView*& phr, bool fReindex);
+}
 
 #endif // BETTING_VIEW_INIT_H
