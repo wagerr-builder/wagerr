@@ -8,6 +8,6 @@
 #include <memory>
 #include <betting/bet_db.h> // Include the header file for CBettingsView class
 
-CBettingsView* initializeBettingView(std::unique_ptr<CBettingsView> &bettingsView, bool fReindex);
+CBettingsView* initializeBettingView(CBettingsView* phr);
 
 #endif // BETTING_VIEW_INIT_H

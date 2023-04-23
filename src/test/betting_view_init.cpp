@@ -4,8 +4,19 @@
 
 #include "betting_view_init.h"
 
-CBettingsView* initializeBettingView(std::unique_ptr<CBettingsView> &bettingsView, bool fReindex) {
-    // Reset bettingsView
+CBettingsView* initializeBettingView(CBettingsView* phr) {
+    // create new bettingsView
+    //phr = new CBettingsView();
+    bettingsView.reset();
+    // Flushable database model has the following structure:
+    // globalDB: --(r, w, del, exist)--> { CacheDB_glob_map -> { LevelDB } }.
+    // If we need make cache from global DB, for example,
+    // in those places where it is made in the original BitcoinCore,
+    // we should make CBettingsView cacheDb(globalDb) and the structure will be:
+    // cacheDB: --(r, w, del, exist)--> { CacheDB_loc_map -> { CacheDB_glob_map -> { LevelDB } } }.
+    // The Flush() operation at cacheDB will copy data from CacheDB_loc_map to CacheDB_glob_map
+    // and the Flush() at globalDB will write data from CacheDB_glob_map to LevelDB (persistent storage).    bettingsView.reset(new CBettingsView());
+
     bettingsView.reset(new CBettingsView());
 
     bettingsView->mappingsStorage = MakeUnique<CStorageLevelDB>(CBettingDB::MakeDbPath("mappings"), CBettingDB::dbWrapperCacheSize(), false, fReindex);        // create cacheble betting DB with LevelDB storage as main storage
@@ -50,5 +61,5 @@ CBettingsView* initializeBettingView(std::unique_ptr<CBettingsView> &bettingsVie
     bettingsView->failedBettingTxsStorage = MakeUnique<CStorageLevelDB>(CBettingDB::MakeDbPath("failedtxs"), CBettingDB::dbWrapperCacheSize(), false, fReindex);
     bettingsView->failedBettingTxs = MakeUnique<CBettingDB>(*bettingsView->failedBettingTxsStorage.get());
 
-    return bettingsView.get();
+    phr = &(*bettingsView);
 }
