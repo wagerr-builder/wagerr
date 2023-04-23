@@ -3,6 +3,7 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "betting_view_init.h"
+#include <validation.h>
 
 CBettingsView* initializeBettingView(CBettingsView* phr) {
     // create new bettingsView
