@@ -63,4 +63,5 @@ CBettingsView* initializeBettingView(CBettingsView* phr) {
     bettingsView->failedBettingTxs = MakeUnique<CBettingDB>(*bettingsView->failedBettingTxsStorage.get());
 
     phr = &(*bettingsView);
+    return (phr)
 }

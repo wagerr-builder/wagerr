@@ -682,28 +682,9 @@ using namespace boost::filesystem;
  * CBettingsView methods
  */
 
-// copy constructor for creating DB cache
-/*CBettingsView::CBettingsView(CBettingsView* phr) {
-    mappings = MakeUnique<CBettingDB>(*phr->mappings.get());
-    results = MakeUnique<CBettingDB>(*phr->results.get());
-    events = MakeUnique<CBettingDB>(*phr->events.get());
-    bets = MakeUnique<CBettingDB>(*phr->bets.get());
-    fieldEvents = MakeUnique<CBettingDB>(*phr->fieldEvents.get());
-    fieldResults = MakeUnique<CBettingDB>(*phr->fieldResults.get());
-    fieldBets = MakeUnique<CBettingDB>(*phr->fieldBets.get());
-    undos = MakeUnique<CBettingDB>(*phr->undos.get());
-    payoutsInfo = MakeUnique<CBettingDB>(*phr->payoutsInfo.get());
-    quickGamesBets = MakeUnique<CBettingDB>(*phr->quickGamesBets.get());
-    chainGamesLottoEvents = MakeUnique<CBettingDB>(*phr->chainGamesLottoEvents.get());
-    chainGamesLottoBets = MakeUnique<CBettingDB>(*phr->chainGamesLottoBets.get());
-    chainGamesLottoResults = MakeUnique<CBettingDB>(*phr->chainGamesLottoResults.get());
-    failedBettingTxs = MakeUnique<CBettingDB>(*phr->failedBettingTxs.get());
-}*/
-
 CBettingsView::CBettingsView(CBettingsView* phr) {
-    if (!phr) {
+    if (!phr) { // this should only happen in tests
         // create new bettingsView
-        //phr = new CBettingsView();
         bettingsView.reset();
         // Flushable database model has the following structure:
         // globalDB: --(r, w, del, exist)--> { CacheDB_glob_map -> { LevelDB } }.
