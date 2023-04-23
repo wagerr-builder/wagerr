@@ -21,6 +21,8 @@
 #include <util/system.h>
 #include <util/time.h>
 #include <validation.h>
+#include <betting_view_init.h>
+#include <betting/bet_db.h>
 
 #include <test/util/setup_common.h>
 
@@ -40,6 +42,8 @@ struct MinerTestingSetup : public TestingSetup {
 } // namespace miner_tests
 
 BOOST_FIXTURE_TEST_SUITE(miner_tests, MinerTestingSetup)
+
+CBettingsView* phr;
 
 static CFeeRate blockMinFeeRate = CFeeRate(DEFAULT_BLOCK_MIN_TX_FEE);
 
@@ -207,6 +211,9 @@ void MinerTestingSetup::TestPackageSelection(const CChainParams& chainparams, co
 // NOTE: These tests rely on CreateNewBlock doing its own self-validation!
 BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
 {
+    std::unique_ptr<CBettingsView> bettingsView;
+    bool fReindex = false; // Replace with the desired value
+    phr = initializeBettingView(bettingsView, fReindex);
     const auto chainParams = CreateChainParams(CBaseChainParams::REGTEST);
     const CChainParams& chainparams = *chainParams;
     CScript scriptPubKey = CScript() << ParseHex("47304402204715731d4ef9cc08ef3922b28d6a58781b2c0350e0c78cc810c553ca339d8fcc02207a50a5fe6f870f470341122bb7770b990843f1759ae4c54a84379e9fe826ca070121021248ebb166595e7d1029a8373a281e56b696e8ee553e870ad4b934758d45ae28") << OP_CHECKSIG;
