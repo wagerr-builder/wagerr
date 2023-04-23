@@ -21,7 +21,7 @@
 #include <util/system.h>
 #include <util/time.h>
 #include <validation.h>
-#include <betting_view_init.h>
+#include <test/betting_view_init.h>
 #include <betting/bet_db.h>
 
 #include <test/util/setup_common.h>
