@@ -5,8 +5,6 @@
 #include "betting_view_init.h"
 #include <validation.h>
 
-extern std::unique_ptr<CBettingsView> bettingsView;
-
 void initializeBettingView(bool fReindex) {
     // create new bettingsView
     //phr = new CBettingsView();
