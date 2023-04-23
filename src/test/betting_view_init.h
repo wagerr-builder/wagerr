@@ -9,8 +9,6 @@
 #include <memory>
 #include <betting/bet_db.h> // Include the header file for CBettingsView class
 
-namespace miner_tests {
-    void initializeBettingView(CBettingsView*& phr, bool fReindex);
-}
+void initializeBettingView(CBettingsView*& phr, bool fReindex);
 
 #endif // BETTING_VIEW_INIT_H
