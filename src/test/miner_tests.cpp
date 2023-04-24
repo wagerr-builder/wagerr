@@ -29,6 +29,8 @@
 
 #include <boost/test/unit_test.hpp>
 
+#include <wallet/wallet.h>
+
 namespace miner_tests {
 struct MinerTestingSetup : public TestingSetup {
     void TestPackageSelection(const CChainParams& chainparams, const CScript& scriptPubKey, const std::vector<CTransactionRef>& txFirst) EXCLUSIVE_LOCKS_REQUIRED(::cs_main, m_node.mempool->cs);
@@ -37,6 +39,17 @@ struct MinerTestingSetup : public TestingSetup {
         return CheckSequenceLocks(*m_node.mempool, tx, flags);
     }
     BlockAssembler AssemblerForTest(const CChainParams& params);
+    // Create a test wallet
+    CWallet testWallet("test_wallet.dat");
+
+    // Generate a new private key for the test wallet
+    CPubKey pubkey;
+    CKey privkey = testWallet.GenerateNewKey();
+    pubkey = privkey.GetPubKey();
+
+    // Add coins to the test wallet
+    AddSomeCoins(testWallet, 10000 * COIN);
+
 };
 } // namespace miner_tests
 

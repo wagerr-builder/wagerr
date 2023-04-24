@@ -685,7 +685,6 @@ using namespace boost::filesystem;
 // copy constructor for creating DB cache
 
 CBettingsView::CBettingsView(CBettingsView* phr) {
-    #ifdef WAGERR_TESTS
     if (!phr) {
         // create new bettingsView
         //phr = new CBettingsView();
@@ -743,8 +742,7 @@ CBettingsView::CBettingsView(CBettingsView* phr) {
         bettingsView->failedBettingTxsStorage = MakeUnique<CStorageLevelDB>(CBettingDB::MakeDbPath("failedtxs"), CBettingDB::dbWrapperCacheSize(), false, fReindex);
         bettingsView->failedBettingTxs = MakeUnique<CBettingDB>(*bettingsView->failedBettingTxsStorage.get());
         phr = &(*bettingsView);
-    } 
-    #endif
+    }
     mappings = MakeUnique<CBettingDB>(*phr->mappings.get());
     results = MakeUnique<CBettingDB>(*phr->results.get());
     events = MakeUnique<CBettingDB>(*phr->events.get());
