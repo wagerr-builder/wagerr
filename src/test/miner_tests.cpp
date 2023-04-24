@@ -30,6 +30,10 @@
 #include <boost/test/unit_test.hpp>
 
 #include <wallet/wallet.h>
+#include <script/script.h>
+#include <script/standard.h>
+#include <validation.h>
+#include <miner_tests.h>
 
 namespace miner_tests {
 struct MinerTestingSetup : public TestingSetup {
@@ -41,26 +45,6 @@ struct MinerTestingSetup : public TestingSetup {
     BlockAssembler AssemblerForTest(const CChainParams& params);
 };
 } // namespace miner_tests
-
-class MinerTestingSetup : public TestingSetup {
-public:
-    CWallet testWallet;
-
-    MinerTestingSetup();
-};
-
-MinerTestingSetup::MinerTestingSetup() : testWallet("test_wallet.dat") {
-    testWallet.SetupSPKM();
-
-    // Generate a new private key for the test wallet
-    CPubKey pubkey;
-    CKey privkey = testWallet.GenerateNewKey();
-    pubkey = privkey.GetPubKey();
-    testWallet.LearnRelatedScripts(pubkey, OutputType::LEGACY);
-
-    // Add coins to the test wallet
-    AddSomeCoins(testWallet, 10000 * COIN);
-}
 
 BOOST_FIXTURE_TEST_SUITE(miner_tests, MinerTestingSetup)
 
@@ -226,10 +210,31 @@ void MinerTestingSetup::TestPackageSelection(const CChainParams& chainparams, co
     pblocktemplate = AssemblerForTest(chainparams).CreateNewBlock(scriptPubKey);
     BOOST_CHECK(pblocktemplate->block.vtx[8]->GetHash() == hashLowFeeTx2);
 }
+void AddSomeCoins(CWallet* wallet, CAmount amount) {
+    CScript scriptPubKey = CScript() << ToByteVector(wallet->GetLegacyScriptPubKeyMan()->GetCurrentAddress().GetID()) << OP_CHECKSIG;
+    for (int i = 0; i < COINBASE_MATURITY; i++) {
+        std::shared_ptr<CWalletTx> wtx = std::make_shared<CWalletTx>(wallet, MakeTransactionRef(CreateTransaction(scriptPubKey, amount)));
+        wtx->SetMerkleBranch(BlockHash(), i);
+        wallet->AddToWallet(wtx);
+    }
+}
 
 // NOTE: These tests rely on CreateNewBlock doing its own self-validation!
 BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
 {
+    // Create a test wallet
+    CWallet* testWallet = new CWallet(nullptr, "test_wallet.dat", WalletDatabase::CreateDummy());
+    testWallet->SetupLegacyScriptPubKeyMan();
+
+    // Generate a new private key for the test wallet
+    CPubKey pubkey;
+    CKey privkey = testWallet->GenerateNewKey(testWallet->GetLegacyScriptPubKeyMan());
+    pubkey = privkey.GetPubKey();
+    testWallet->GetLegacyScriptPubKeyMan()->AddKey(privkey);
+
+    // Add coins to the test wallet
+    AddSomeCoins(testWallet, 10000 * COIN);
+
     const auto chainParams = CreateChainParams(CBaseChainParams::MAIN);
     const CChainParams& chainparams = *chainParams;
     CScript scriptPubKey = CScript() << ParseHex("04678afdb0fe5548271967f1a67130b7105cd6a828e03909a67962e0ea1f61deb649f6bc3f4cef38c4f35504e51ec112de5c384df7ba0b8d578a4c702b6bf11d5f") << OP_CHECKSIG;
@@ -244,7 +249,7 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
     fCheckpointsEnabled = false;
 
     // Simple block creation, nothing special yet:
-    std::unique_ptr<CBlockTemplate> pblocktemplate = BlockAssembler(Params()).CreateNewBlock(coinbaseScript->reserveKey.GetReservedKey().GetID(), &testWallet);
+    std::unique_ptr<CBlockTemplate> pblocktemplate = BlockAssembler(Params(), *testWallet).CreateNewBlock(coinbaseScript->reserveKey.GetReservedKey().GetID());
 
     BOOST_CHECK(pemptyblocktemplate = AssemblerForTest(chainparams).CreateNewBlock(scriptPubKey));
 
