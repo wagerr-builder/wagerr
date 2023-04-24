@@ -33,7 +33,6 @@
 #include <script/script.h>
 #include <script/standard.h>
 #include <validation.h>
-#include <miner_tests.h>
 
 namespace miner_tests {
 struct MinerTestingSetup : public TestingSetup {
