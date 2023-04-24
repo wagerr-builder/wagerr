@@ -161,7 +161,6 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& sc
     LOCK(pwallet->cs_wallet);
     const SigningProvider* signingProvider = pwallet->GetSigningProvider();
     nSplitValue = (CAmount)(pwallet->GetStakeSplitThreshold() * COIN);
-    const SigningProvider* signingProvider = new SigningProvider();
 #else
     const SigningProvider* signingProvider = new SigningProvider();
 #endif
