@@ -210,9 +210,9 @@ void MinerTestingSetup::TestPackageSelection(const CChainParams& chainparams, co
 BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
 {
     initializeBettingView(phr);
-    const auto chainParams = CreateChainParams(CBaseChainParams::REGTEST);
+    const auto chainParams = CreateChainParams(CBaseChainParams::MAIN);
     const CChainParams& chainparams = *chainParams;
-    CScript scriptPubKey = CScript() << ParseHex("47304402204715731d4ef9cc08ef3922b28d6a58781b2c0350e0c78cc810c553ca339d8fcc02207a50a5fe6f870f470341122bb7770b990843f1759ae4c54a84379e9fe826ca070121021248ebb166595e7d1029a8373a281e56b696e8ee553e870ad4b934758d45ae28") << OP_CHECKSIG;
+    CScript scriptPubKey = CScript() << ParseHex("04678afdb0fe5548271967f1a67130b7105cd6a828e03909a67962e0ea1f61deb649f6bc3f4cef38c4f35504e51ec112de5c384df7ba0b8d578a4c702b6bf11d5f") << OP_CHECKSIG;
     std::unique_ptr<CBlockTemplate> pblocktemplate, pemptyblocktemplate;
     CMutableTransaction tx;
     CScript script;
