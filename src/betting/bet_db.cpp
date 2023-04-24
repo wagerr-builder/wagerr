@@ -683,24 +683,9 @@ using namespace boost::filesystem;
  */
 
 // copy constructor for creating DB cache
-/*CBettingsView::CBettingsView(CBettingsView* phr) {
-    mappings = MakeUnique<CBettingDB>(*phr->mappings.get());
-    results = MakeUnique<CBettingDB>(*phr->results.get());
-    events = MakeUnique<CBettingDB>(*phr->events.get());
-    bets = MakeUnique<CBettingDB>(*phr->bets.get());
-    fieldEvents = MakeUnique<CBettingDB>(*phr->fieldEvents.get());
-    fieldResults = MakeUnique<CBettingDB>(*phr->fieldResults.get());
-    fieldBets = MakeUnique<CBettingDB>(*phr->fieldBets.get());
-    undos = MakeUnique<CBettingDB>(*phr->undos.get());
-    payoutsInfo = MakeUnique<CBettingDB>(*phr->payoutsInfo.get());
-    quickGamesBets = MakeUnique<CBettingDB>(*phr->quickGamesBets.get());
-    chainGamesLottoEvents = MakeUnique<CBettingDB>(*phr->chainGamesLottoEvents.get());
-    chainGamesLottoBets = MakeUnique<CBettingDB>(*phr->chainGamesLottoBets.get());
-    chainGamesLottoResults = MakeUnique<CBettingDB>(*phr->chainGamesLottoResults.get());
-    failedBettingTxs = MakeUnique<CBettingDB>(*phr->failedBettingTxs.get());
-}*/
 
 CBettingsView::CBettingsView(CBettingsView* phr) {
+    #ifdef WAGERR_TESTS
     if (!phr) {
         // create new bettingsView
         //phr = new CBettingsView();
@@ -759,6 +744,7 @@ CBettingsView::CBettingsView(CBettingsView* phr) {
         bettingsView->failedBettingTxs = MakeUnique<CBettingDB>(*bettingsView->failedBettingTxsStorage.get());
         phr = &(*bettingsView);
     } 
+    #endif
     mappings = MakeUnique<CBettingDB>(*phr->mappings.get());
     results = MakeUnique<CBettingDB>(*phr->results.get());
     events = MakeUnique<CBettingDB>(*phr->events.get());
