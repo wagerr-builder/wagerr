@@ -332,6 +332,8 @@ BITCOIN_TEST_SUITE += \
   wallet/test/init_test_fixture.h
 endif
 
+AM_CPPFLAGS += -DWAGERR_TESTS
+
 test_test_wagerr_SOURCES = $(BITCOIN_TEST_SUITE) $(BITCOIN_TESTS) $(JSON_TEST_FILES) $(RAW_TEST_FILES)
 test_test_wagerr_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(TESTDEFS) $(EVENT_CFLAGS)
 test_test_wagerr_LDADD = $(LIBTEST_UTIL)

@@ -155,15 +155,20 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& sc
 {
     CAmount nSplitValue = MAX_MONEY;
 #ifdef ENABLE_WALLET
-    if (!pwallet) {
-        throw std::runtime_error(strprintf("CreateCoinStake : unable to sign with no wallets"));
-    }
-    LOCK(pwallet->cs_wallet);
-    const SigningProvider* signingProvider = pwallet->GetSigningProvider();
-    nSplitValue = (CAmount)(pwallet->GetStakeSplitThreshold() * COIN);
+    #ifndef WAGERR_TESTS
+        if (!pwallet) {
+            throw std::runtime_error(strprintf("CreateCoinStake : unable to sign with no wallets"));
+        }
+        LOCK(pwallet->cs_wallet);
+        const SigningProvider* signingProvider = pwallet->GetSigningProvider();
+        nSplitValue = (CAmount)(pwallet->GetStakeSplitThreshold() * COIN);
+    #else
+        const SigningProvider* signingProvider = new SigningProvider();
+    #endif
 #else
     const SigningProvider* signingProvider = new SigningProvider();
 #endif
+
 
     bool fPos = (pCoinstakeTx != nullptr);
     int64_t nTimeStart = GetTimeMicros();
