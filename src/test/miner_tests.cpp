@@ -39,19 +39,28 @@ struct MinerTestingSetup : public TestingSetup {
         return CheckSequenceLocks(*m_node.mempool, tx, flags);
     }
     BlockAssembler AssemblerForTest(const CChainParams& params);
-    // Create a test wallet
-    CWallet testWallet("test_wallet.dat");
+};
+} // namespace miner_tests
+
+class MinerTestingSetup : public TestingSetup {
+public:
+    CWallet testWallet;
+
+    MinerTestingSetup();
+};
+
+MinerTestingSetup::MinerTestingSetup() : testWallet("test_wallet.dat") {
+    testWallet.SetupSPKM();
 
     // Generate a new private key for the test wallet
     CPubKey pubkey;
     CKey privkey = testWallet.GenerateNewKey();
     pubkey = privkey.GetPubKey();
+    testWallet.LearnRelatedScripts(pubkey, OutputType::LEGACY);
 
     // Add coins to the test wallet
     AddSomeCoins(testWallet, 10000 * COIN);
-
-};
-} // namespace miner_tests
+}
 
 BOOST_FIXTURE_TEST_SUITE(miner_tests, MinerTestingSetup)
 
@@ -235,6 +244,8 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
     fCheckpointsEnabled = false;
 
     // Simple block creation, nothing special yet:
+    std::unique_ptr<CBlockTemplate> pblocktemplate = BlockAssembler(Params()).CreateNewBlock(coinbaseScript->reserveKey.GetReservedKey().GetID(), &testWallet);
+
     BOOST_CHECK(pemptyblocktemplate = AssemblerForTest(chainparams).CreateNewBlock(scriptPubKey));
 
     // We can't make transactions until we have inputs
