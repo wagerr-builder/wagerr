@@ -28,9 +28,9 @@
 
 #include <boost/test/unit_test.hpp>
 
-#include <test/test_env.h>
-
 #define IS_TEST_ENVIRONMENT
+
+#include <test/test_env.h>
 
 namespace miner_tests {
 struct MinerTestingSetup : public TestingSetup {
