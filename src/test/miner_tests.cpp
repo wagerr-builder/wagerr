@@ -34,6 +34,7 @@
 #include <script/standard.h>
 #include <validation.h>
 #include <script/sign.h>
+#include <chainparams.h>
 
 namespace miner_tests {
 struct MinerTestingSetup : public TestingSetup {
@@ -46,24 +47,7 @@ struct MinerTestingSetup : public TestingSetup {
 };
 } // namespace miner_tests
 
-void AddSomeCoins(CWallet* wallet, CAmount amount) {
-    CScript scriptPubKey = GetScriptForPubKey(wallet);
-    for (int i = 0; i < COINBASE_MATURITY; i++) {
-        std::shared_ptr<CWalletTx> wtx = std::make_shared<CWalletTx>(wallet, MakeTransactionRef(CreateTransaction(scriptPubKey, amount)));
-        wtx->SetMerkleBranch(BlockHash(), i);
-        wallet->AddToWallet(wtx);
-    }
-}
-
 BOOST_FIXTURE_TEST_SUITE(miner_tests, MinerTestingSetup)
-
-CScript GetScriptForPubKey(CWallet* wallet) {
-    CTxDestination dest;
-    if (wallet->GetLegacyScriptPubKeyMan()->GetNewDestination(OutputType::LEGACY, "", dest)) {
-        return GetScriptForDestination(dest);
-    }
-    return CScript();
-}
 
 static CFeeRate blockMinFeeRate = CFeeRate(DEFAULT_BLOCK_MIN_TX_FEE);
 
@@ -120,6 +104,30 @@ static CBlockIndex CreateBlockIndex(int nHeight) EXCLUSIVE_LOCKS_REQUIRED(cs_mai
     return index;
 }
 
+CScript GetScriptForPubKey(CWallet* wallet) {
+    CTxDestination dest;
+    if (wallet->GetNewAddress(dest, "Test")) {
+        return GetScriptForDestination(dest);
+    } else {
+        throw std::runtime_error("Failed to get a new address from the wallet.");
+    }
+}
+
+void AddSomeCoins(CWallet* wallet, CAmount amount) {
+    int maturity = Params().GetConsensus().nCoinbaseMaturity;
+
+    CScript scriptPubKey = GetScriptForPubKey(wallet);
+    for (int i = 0; i < maturity; i++) {
+        CMutableTransaction mtx;
+        mtx.vout.resize(1);
+        mtx.vout[0].scriptPubKey = scriptPubKey;
+        mtx.vout[0].nValue = amount;
+
+         std::shared_ptr<CWalletTx> wtx = std::make_shared<CWalletTx>(wallet, MakeTransactionRef(std::move(mtx)));
+        // You may need to set additional data on wtx as necessary.
+        wallet->AddToWallet(wtx);
+    }
+}
 // Test suite for ancestor feerate transaction selection.
 // Implemented as an additional function, rather than a separate test case,
 // to allow reusing the blockchain created in CreateNewBlock_validity.
@@ -227,21 +235,14 @@ void MinerTestingSetup::TestPackageSelection(const CChainParams& chainparams, co
     pblocktemplate = AssemblerForTest(chainparams).CreateNewBlock(scriptPubKey);
     BOOST_CHECK(pblocktemplate->block.vtx[8]->GetHash() == hashLowFeeTx2);
 }
-void AddSomeCoins(CWallet* wallet, CAmount amount) {
-    CScript scriptPubKey = CScript() << ToByteVector(wallet->GetLegacyScriptPubKeyMan()->GetCurrentAddress().GetID()) << OP_CHECKSIG;
-    for (int i = 0; i < COINBASE_MATURITY; i++) {
-        std::shared_ptr<CWalletTx> wtx = std::make_shared<CWalletTx>(wallet, MakeTransactionRef(CreateTransaction(scriptPubKey, amount)));
-        wtx->SetMerkleBranch(BlockHash(), i);
-        wallet->AddToWallet(wtx);
-    }
-}
 
 // NOTE: These tests rely on CreateNewBlock doing its own self-validation!
 BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
 {
     // Create a test wallet
     CWallet* testWallet = new CWallet(nullptr, "test_wallet.dat", WalletDatabase::CreateDummy());
-    testWallet->SetupLegacyScriptPubKeyMan();
+    // Remove the following line
+    // testWallet->SetupLegacyScriptPubKeyMan();
 
     // Add coins to the test wallet
     AddSomeCoins(testWallet, 10000 * COIN);
@@ -261,7 +262,6 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
 
     // Simple block creation, nothing special yet:
     std::unique_ptr<CBlockTemplate> pblocktemplate = BlockAssembler(Params(), *testWallet).CreateNewBlock(GetScriptForPubKey(testWallet));
-
     //BOOST_CHECK(pemptyblocktemplate = AssemblerForTest(chainparams).CreateNewBlock(scriptPubKey));
 
     // We can't make transactions until we have inputs
