@@ -105,14 +105,6 @@ static CBlockIndex CreateBlockIndex(int nHeight) EXCLUSIVE_LOCKS_REQUIRED(cs_mai
     return index;
 }
 
-static CBlockIndex CreateBlockIndex(int nHeight) EXCLUSIVE_LOCKS_REQUIRED(cs_main)
-{
-    CBlockIndex index;
-    index.nHeight = nHeight;
-    index.pprev = ::ChainActive().Tip();
-    return index;
-}
-
 CScript GetScriptForPubKey(CWallet* wallet) {
     CTxDestination dest;
     if (wallet->GetNewDestination(OutputType::LEGACY, "", dest)) {
@@ -123,7 +115,7 @@ CScript GetScriptForPubKey(CWallet* wallet) {
 }
 
 void AddSomeCoins(CWallet* wallet, CAmount amount) {
-    int maturity = Params().GetConsensus().CoinbaseMaturity();
+    int maturity = Params().GetConsensus().nCoinbaseMaturity;
 
     CScript scriptPubKey = GetScriptForPubKey(wallet);
     for (int i = 0; i < maturity; i++) {
@@ -137,6 +129,7 @@ void AddSomeCoins(CWallet* wallet, CAmount amount) {
         wallet->AddToWallet(*wtx);
     }
 }
+
 // Test suite for ancestor feerate transaction selection.
 // Implemented as an additional function, rather than a separate test case,
 // to allow reusing the blockchain created in CreateNewBlock_validity.
@@ -249,7 +242,7 @@ void MinerTestingSetup::TestPackageSelection(const CChainParams& chainparams, co
 BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
 {
     // Create a test wallet
-    CWallet* testWallet = new CWallet(nullptr, "test_wallet.dat", WalletDatabase::CreateMock());
+    CWallet* testWallet = new CWallet(nullptr, "test_wallet.dat", WalletDatabase::CreateMock());    CWallet* testWallet = new CWallet(nullptr, "test_wallet.dat", WalletDatabase::CreateMock());
 
     // Add coins to the test wallet
     AddSomeCoins(testWallet, 10000 * COIN);
