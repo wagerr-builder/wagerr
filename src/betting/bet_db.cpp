@@ -686,7 +686,7 @@ using namespace boost::filesystem;
 
 // copy constructor for creating DB cache
 CBettingsView::CBettingsView(CBettingsView* phr) {
-    if (IsTestEnvironment()) {
+    #ifdef IS_TEST_ENVIRONMENT_MACRO
         if (!phr) {
             // create new bettingsView
             bettingsView.reset();
@@ -744,7 +744,7 @@ CBettingsView::CBettingsView(CBettingsView* phr) {
             bettingsView->failedBettingTxs = MakeUnique<CBettingDB>(*bettingsView->failedBettingTxsStorage.get());
             phr = &(*bettingsView);
         }
-    }
+    #endif
     mappings = MakeUnique<CBettingDB>(*phr->mappings.get());
     results = MakeUnique<CBettingDB>(*phr->results.get());
     events = MakeUnique<CBettingDB>(*phr->events.get());
