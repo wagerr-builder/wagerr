@@ -686,7 +686,7 @@ using namespace boost::filesystem;
 
 // copy constructor for creating DB cache
 CBettingsView::CBettingsView(CBettingsView* phr) {
-    if (g_is_test_environment) {
+    if (IsTestEnvironment()) {
         if (!phr) {
             // create new bettingsView
             bettingsView.reset();

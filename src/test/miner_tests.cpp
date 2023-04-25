@@ -30,7 +30,9 @@
 
 #include <test/test_env.h>
 
-bool g_is_test_environment = true;
+bool IsTestEnvironment() {
+    return true;
+}
 
 namespace miner_tests {
 struct MinerTestingSetup : public TestingSetup {
