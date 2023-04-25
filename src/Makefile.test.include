@@ -298,7 +298,6 @@ BITCOIN_TESTS =\
   test/subsidy_tests.cpp \
   test/sync_tests.cpp \
   test/util_threadnames_tests.cpp \
-  test/test_env.cpp \
   test/test_env.h \
   test/timedata_tests.cpp \
   test/torcontrol_tests.cpp \
