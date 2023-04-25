@@ -35,6 +35,7 @@
 #include <validation.h>
 #include <script/sign.h>
 #include <chainparams.h>
+#include <wallet/coincontrol.h>
 
 namespace miner_tests {
 struct MinerTestingSetup : public TestingSetup {
@@ -104,9 +105,17 @@ static CBlockIndex CreateBlockIndex(int nHeight) EXCLUSIVE_LOCKS_REQUIRED(cs_mai
     return index;
 }
 
+static CBlockIndex CreateBlockIndex(int nHeight) EXCLUSIVE_LOCKS_REQUIRED(cs_main)
+{
+    CBlockIndex index;
+    index.nHeight = nHeight;
+    index.pprev = ::ChainActive().Tip();
+    return index;
+}
+
 CScript GetScriptForPubKey(CWallet* wallet) {
     CTxDestination dest;
-    if (wallet->GetNewAddress(dest, "Test")) {
+    if (wallet->GetNewDestination(OutputType::LEGACY, "", dest)) {
         return GetScriptForDestination(dest);
     } else {
         throw std::runtime_error("Failed to get a new address from the wallet.");
@@ -114,7 +123,7 @@ CScript GetScriptForPubKey(CWallet* wallet) {
 }
 
 void AddSomeCoins(CWallet* wallet, CAmount amount) {
-    int maturity = Params().GetConsensus().nCoinbaseMaturity;
+    int maturity = Params().GetConsensus().CoinbaseMaturity();
 
     CScript scriptPubKey = GetScriptForPubKey(wallet);
     for (int i = 0; i < maturity; i++) {
@@ -123,9 +132,9 @@ void AddSomeCoins(CWallet* wallet, CAmount amount) {
         mtx.vout[0].scriptPubKey = scriptPubKey;
         mtx.vout[0].nValue = amount;
 
-         std::shared_ptr<CWalletTx> wtx = std::make_shared<CWalletTx>(wallet, MakeTransactionRef(std::move(mtx)));
+        std::shared_ptr<CWalletTx> wtx = std::make_shared<CWalletTx>(wallet, MakeTransactionRef(std::move(mtx)));
         // You may need to set additional data on wtx as necessary.
-        wallet->AddToWallet(wtx);
+        wallet->AddToWallet(*wtx);
     }
 }
 // Test suite for ancestor feerate transaction selection.
@@ -240,9 +249,7 @@ void MinerTestingSetup::TestPackageSelection(const CChainParams& chainparams, co
 BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
 {
     // Create a test wallet
-    CWallet* testWallet = new CWallet(nullptr, "test_wallet.dat", WalletDatabase::CreateDummy());
-    // Remove the following line
-    // testWallet->SetupLegacyScriptPubKeyMan();
+    CWallet* testWallet = new CWallet(nullptr, "test_wallet.dat", WalletDatabase::CreateMock());
 
     // Add coins to the test wallet
     AddSomeCoins(testWallet, 10000 * COIN);
@@ -261,7 +268,7 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
     fCheckpointsEnabled = false;
 
     // Simple block creation, nothing special yet:
-    std::unique_ptr<CBlockTemplate> pblocktemplate = BlockAssembler(Params(), *testWallet).CreateNewBlock(GetScriptForPubKey(testWallet));
+    std::unique_ptr<CBlockTemplate> pblocktemplate = BlockAssembler(chainparams, *testWallet).CreateNewBlock(GetScriptForPubKey(testWallet));
     //BOOST_CHECK(pemptyblocktemplate = AssemblerForTest(chainparams).CreateNewBlock(scriptPubKey));
 
     // We can't make transactions until we have inputs
