@@ -2,6 +2,12 @@
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#pragma once
+#include<test/test_env.h>
 
-bool IsTestEnvironment();
+bool IsTestEnvironment() {
+#ifdef IS_TEST_ENVIRONMENT
+    return true;
+#else
+    return false;
+#endif
+}
