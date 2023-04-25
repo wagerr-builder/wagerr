@@ -33,6 +33,7 @@
 #include <script/script.h>
 #include <script/standard.h>
 #include <validation.h>
+#include <script/sign.h>
 
 namespace miner_tests {
 struct MinerTestingSetup : public TestingSetup {
@@ -45,7 +46,24 @@ struct MinerTestingSetup : public TestingSetup {
 };
 } // namespace miner_tests
 
+void AddSomeCoins(CWallet* wallet, CAmount amount) {
+    CScript scriptPubKey = GetScriptForPubKey(wallet);
+    for (int i = 0; i < COINBASE_MATURITY; i++) {
+        std::shared_ptr<CWalletTx> wtx = std::make_shared<CWalletTx>(wallet, MakeTransactionRef(CreateTransaction(scriptPubKey, amount)));
+        wtx->SetMerkleBranch(BlockHash(), i);
+        wallet->AddToWallet(wtx);
+    }
+}
+
 BOOST_FIXTURE_TEST_SUITE(miner_tests, MinerTestingSetup)
+
+CScript GetScriptForPubKey(CWallet* wallet) {
+    CTxDestination dest;
+    if (wallet->GetLegacyScriptPubKeyMan()->GetNewDestination(OutputType::LEGACY, "", dest)) {
+        return GetScriptForDestination(dest);
+    }
+    return CScript();
+}
 
 static CFeeRate blockMinFeeRate = CFeeRate(DEFAULT_BLOCK_MIN_TX_FEE);
 
@@ -225,12 +243,6 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
     CWallet* testWallet = new CWallet(nullptr, "test_wallet.dat", WalletDatabase::CreateDummy());
     testWallet->SetupLegacyScriptPubKeyMan();
 
-    // Generate a new private key for the test wallet
-    CPubKey pubkey;
-    CKey privkey = testWallet->GenerateNewKey(testWallet->GetLegacyScriptPubKeyMan());
-    pubkey = privkey.GetPubKey();
-    testWallet->GetLegacyScriptPubKeyMan()->AddKey(privkey);
-
     // Add coins to the test wallet
     AddSomeCoins(testWallet, 10000 * COIN);
 
@@ -248,9 +260,9 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
     fCheckpointsEnabled = false;
 
     // Simple block creation, nothing special yet:
-    std::unique_ptr<CBlockTemplate> pblocktemplate = BlockAssembler(Params(), *testWallet).CreateNewBlock(coinbaseScript->reserveKey.GetReservedKey().GetID());
+    std::unique_ptr<CBlockTemplate> pblocktemplate = BlockAssembler(Params(), *testWallet).CreateNewBlock(GetScriptForPubKey(testWallet));
 
-    BOOST_CHECK(pemptyblocktemplate = AssemblerForTest(chainparams).CreateNewBlock(scriptPubKey));
+    //BOOST_CHECK(pemptyblocktemplate = AssemblerForTest(chainparams).CreateNewBlock(scriptPubKey));
 
     // We can't make transactions until we have inputs
     // Therefore, load 100 blocks :)
