@@ -1,0 +1,1 @@
+extern bool g_is_test_environment;
