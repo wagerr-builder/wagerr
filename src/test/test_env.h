@@ -4,4 +4,10 @@
 
 #pragma once
 
-bool IsTestEnvironment();
+inline bool IsTestEnvironment() {
+#ifdef IS_TEST_ENVIRONMENT
+    return true;
+#else
+    return false;
+#endif
+}
