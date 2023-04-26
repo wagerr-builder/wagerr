@@ -6,7 +6,7 @@
 #include <boost/format.hpp>
 
 #include <validation.h>
-#include <test/test_env.h>
+#include <test/test_utils.h>
 
 #define DOUBLE_ODDS(odds) (static_cast<double>(odds) / BET_ODDSDIVISOR)
 #define DOUBLE_MODIFIER(mod) (static_cast<double>(mod) / MODIFIER_DIVISOR)

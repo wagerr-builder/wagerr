@@ -312,6 +312,7 @@ BITCOIN_CORE_H = \
   support/events.h \
   support/lockedpool.h \
   sync.h \
+  test\test_utils.h \
   threadsafety.h \
   threadinterrupt.h \
   timedata.h \
@@ -521,6 +522,7 @@ libbitcoin_server_a_SOURCES = \
   validation.cpp \
   validationinterface.cpp \
   versionbits.cpp \
+  test/test_utils.cpp \
   zwgr/accumulators.cpp \
   zwgr/accumulatorcheckpoints.cpp \
   zwgr/accumulatormap.cpp \
