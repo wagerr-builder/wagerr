@@ -156,6 +156,7 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& sc
 {
     CAmount nSplitValue = MAX_MONEY;
 #ifdef ENABLE_WALLET
+    const SigningProvider* signingProvider;
     if (IsTestEnvironment()) {
         const SigningProvider* signingProvider = new SigningProvider();
     } else {
@@ -169,6 +170,7 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& sc
 #else
     const SigningProvider* signingProvider = new SigningProvider();
 #endif
+
 
     bool fPos = (pCoinstakeTx != nullptr);
     int64_t nTimeStart = GetTimeMicros();
