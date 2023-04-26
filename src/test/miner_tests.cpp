@@ -28,8 +28,6 @@
 
 #include <boost/test/unit_test.hpp>
 
-#define IS_TEST_ENVIRONMENT
-
 #include <test/test_env.h>
 
 namespace miner_tests {
