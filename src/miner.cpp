@@ -31,6 +31,7 @@
 #include <primitives/transaction.h>
 #include <script/signingprovider.h>
 #include <timedata.h>
+#include <test/test_utils.h>
 #include <util/moneystr.h>
 #include <util/system.h>
 #include <util/validation.h>
@@ -155,12 +156,16 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& sc
 {
     CAmount nSplitValue = MAX_MONEY;
 #ifdef ENABLE_WALLET
-    if (!pwallet) {
-        throw std::runtime_error(strprintf("CreateCoinStake : unable to sign with no wallets"));
+    if (IsTestEnvironment()) {
+        const SigningProvider* signingProvider = new SigningProvider();
+    } else {
+        if (!pwallet) {
+            throw std::runtime_error(strprintf("CreateCoinStake : unable to sign with no wallets"));
+        }
+        LOCK(pwallet->cs_wallet);
+        const SigningProvider* signingProvider = pwallet->GetSigningProvider();
+        nSplitValue = (CAmount)(pwallet->GetStakeSplitThreshold() * COIN);
     }
-    LOCK(pwallet->cs_wallet);
-    const SigningProvider* signingProvider = pwallet->GetSigningProvider();
-    nSplitValue = (CAmount)(pwallet->GetStakeSplitThreshold() * COIN);
 #else
     const SigningProvider* signingProvider = new SigningProvider();
 #endif
