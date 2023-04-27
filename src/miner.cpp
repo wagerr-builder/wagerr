@@ -156,19 +156,21 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& sc
 {
     CAmount nSplitValue = MAX_MONEY;
 #ifdef ENABLE_WALLET
-    const SigningProvider* signingProvider;
+    std::shared_ptr<const SigningProvider> signingProvider;
+
     if (!pwallet && !IsTestEnvironment()) {
         throw std::runtime_error(strprintf("CreateCoinStake : unable to sign with no wallets"));
-    } else if (IsTestEnvironment()){
-         const SigningProvider* signingProvider = new SigningProvider();
+    } else if (IsTestEnvironment()) {
+        signingProvider = std::make_shared<SigningProvider>();
     } else {
         LOCK(pwallet->cs_wallet);
-        const SigningProvider* signingProvider = pwallet->GetSigningProvider();
+        signingProvider = std::shared_ptr<const SigningProvider>(pwallet->GetSigningProvider());
         nSplitValue = (CAmount)(pwallet->GetStakeSplitThreshold() * COIN);
     }
 #else
-    const SigningProvider* signingProvider = new SigningProvider();
+    std::shared_ptr<const SigningProvider> signingProvider = std::make_shared<SigningProvider>();
 #endif
+
 
 
     bool fPos = (pCoinstakeTx != nullptr);
