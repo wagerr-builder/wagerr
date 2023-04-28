@@ -3,15 +3,13 @@
 #ifndef TEST_WALLET_H
 #define TEST_WALLET_H
 
-#include <wallet/wallet.h>
-#include <node/context.h>
-#include <node/interfaces.h>
+#include "wallet/wallet.h"
+#include "test/test_chain.h" // Add this include
 
 class TestWallet {
 public:
-    TestWallet();
-
-    std::shared_ptr<CWallet> CreateTestWallet(interfaces::Chain& chain) const;
+    TestWallet() = default;
+    std::shared_ptr<CWallet> CreateTestWallet(TestChain& chain) const;
 };
 
 #endif // TEST_WALLET_H
