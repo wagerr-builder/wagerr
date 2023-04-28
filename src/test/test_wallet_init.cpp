@@ -1,4 +1,4 @@
-#include <test/test_wallet_init.h>
+#include "test_wallet_init.h"
 #include <wallet/wallet.h>
 
 std::shared_ptr<CWallet> pwallet;
