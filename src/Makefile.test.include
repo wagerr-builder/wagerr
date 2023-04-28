@@ -315,6 +315,7 @@ BITCOIN_TESTS =\
 
 if ENABLE_WALLET
 BITCOIN_TESTS += \
+  test/test_wallet.cpp \
   wallet/test/coinjoin_tests.cpp \
   wallet/test/db_tests.cpp \
   wallet/test/psbt_wallet_tests.cpp \
