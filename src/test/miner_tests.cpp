@@ -28,7 +28,9 @@
 
 #include <boost/test/unit_test.hpp>
 
-#include "test_wallet_init.h"
+#include <test/test_wallet.h>
+#include <test/test_chain.h>
+
 
 namespace miner_tests {
 struct MinerTestingSetup : public TestingSetup {
@@ -38,7 +40,10 @@ struct MinerTestingSetup : public TestingSetup {
         return CheckSequenceLocks(*m_node.mempool, tx, flags);
     }
     BlockAssembler AssemblerForTest(const CChainParams& params);
-    InitTestWallet("test_wallet");
+    // In your test function or fixture setup
+    TestWallet testWallet;
+    TestChain testChain;
+    std::shared_ptr<CWallet> wallet = testWallet.CreateTestWallet(testChain);
 };
 } // namespace miner_tests
 
