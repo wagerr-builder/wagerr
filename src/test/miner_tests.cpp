@@ -28,6 +28,9 @@
 
 #include <boost/test/unit_test.hpp>
 
+#include <test/test_wallet.h>
+
+
 namespace miner_tests {
 struct MinerTestingSetup : public TestingSetup {
     void TestPackageSelection(const CChainParams& chainparams, const CScript& scriptPubKey, const std::vector<CTransactionRef>& txFirst) EXCLUSIVE_LOCKS_REQUIRED(::cs_main, m_node.mempool->cs);
@@ -36,6 +39,9 @@ struct MinerTestingSetup : public TestingSetup {
         return CheckSequenceLocks(*m_node.mempool, tx, flags);
     }
     BlockAssembler AssemblerForTest(const CChainParams& params);
+    // In your test function or fixture setup
+    TestWallet testWallet;
+    std::shared_ptr<CWallet> wallet = testWallet.CreateTestWallet();
 };
 } // namespace miner_tests
 
