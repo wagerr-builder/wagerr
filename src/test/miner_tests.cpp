@@ -41,7 +41,8 @@ struct MinerTestingSetup : public TestingSetup {
     BlockAssembler AssemblerForTest(const CChainParams& params);
     // In your test function or fixture setup
     TestWallet testWallet;
-    std::shared_ptr<CWallet> wallet = testWallet.CreateTestWallet();
+    interfaces::Chain& chain = g_context->chain;
+    std::shared_ptr<CWallet> wallet = testWallet.CreateTestWallet(chain);
 };
 } // namespace miner_tests
 
