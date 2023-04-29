@@ -17,6 +17,7 @@ std::shared_ptr<CWallet> InitTestWallet(const std::string& wallet_name) {
     std::vector<bilingual_str> warnings;
     bool first_run = false;
     pwallet = CWallet::CreateWalletFromFile(*chain, loc, error, warnings, first_run);
+    return pwallet;
 }
 
 
