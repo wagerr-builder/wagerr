@@ -297,6 +297,7 @@ BITCOIN_TESTS =\
   test/streams_tests.cpp \
   test/subsidy_tests.cpp \
   test/sync_tests.cpp \
+  test/test_wallet_init.cpp \
   test/util_threadnames_tests.cpp \
   test/test_utils_test.cpp \
   test/timedata_tests.cpp \
