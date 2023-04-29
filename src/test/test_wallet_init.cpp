@@ -8,9 +8,8 @@
 
 std::shared_ptr<CWallet> pwallet;
 
-void InitTestWallet(const std::string& wallet_name) {
+std::shared_ptr<CWallet> InitTestWallet(const std::string& wallet_name) {
     WalletLocation loc(wallet_name);
-
     std::unique_ptr<NodeContext> node_context = std::make_unique<NodeContext>();
     std::unique_ptr<interfaces::Node> node = interfaces::MakeNode(node_context.get());
     std::unique_ptr<interfaces::Chain> chain = interfaces::MakeChain(*node_context);
