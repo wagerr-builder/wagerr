@@ -1,8 +1,7 @@
 #include "wallet/wallet.h"
 #include "wallet/walletutil.h"
 #include "interfaces/chain.h"
-#include "test/interfaces.h"
-#include "test_wallet_init.h"
+#include "interfaces/node.h"
 
 std::shared_ptr<CWallet> pwallet;
 
@@ -15,3 +14,4 @@ void InitTestWallet(const std::string& wallet_name) {
     bool first_run = false;
     pwallet = CWallet::CreateWalletFromFile(*chain, loc, error, warnings, first_run);
 }
+
