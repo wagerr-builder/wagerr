@@ -1,15 +1,17 @@
+#include "wallet/wallet.h"
+#include "wallet/walletutil.h"
+#include "interfaces/chain.h"
+#include "test/interfaces.h"
 #include "test_wallet_init.h"
-#include <wallet/wallet.h>
 
 std::shared_ptr<CWallet> pwallet;
 
 void InitTestWallet(const std::string& wallet_name) {
     WalletLocation loc(wallet_name);
-    std::string error;
-    std::string warning;
-    bool first_run;
-    pwallet = CWallet::CreateWalletFromFile(loc, error, warning, first_run);
-    if (!pwallet) {
-        throw std::runtime_error(strprintf("Failed to create wallet: %s", error));
-    }
+
+    std::unique_ptr<interfaces::Chain> chain = interfaces::MakeChain();
+    bilingual_str error;
+    std::vector<bilingual_str> warnings;
+    bool first_run = false;
+    pwallet = CWallet::CreateWalletFromFile(*chain, loc, error, warnings, first_run);
 }
