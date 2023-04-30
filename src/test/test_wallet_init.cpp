@@ -2,13 +2,13 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "wallet/wallet.h"
-#include "wallet/walletutil.h"
-#include "interfaces/chain.h"
-#include "interfaces/node.h"
-#include "util/translation.h"
-#include "node/context.h"
-#include "test/test_wallet_init.h"
+#include <wallet/wallet.h>
+#include <wallet/walletutil.h>
+#include <interfaces/chain.h>
+#include <interfaces/node.h>
+#include <util/translation.h>
+#include <node/context.h>
+#include <test/test_wallet_init.h>
 
 std::shared_ptr<CWallet> pwallet;
 
