@@ -83,8 +83,10 @@ class FullBlockTest(WagerrTestFramework):
         self.rpc_timeout = 180
         # Must set '-dip3params=2000:2000' to create pre-dip3 blocks only
         self.extra_args = [['-dip3params=2000:2000', '-acceptnonstdtxn=1']]  # This is a consensus block test, we don't care about tx policy
-        self.mn_count = 0
-        self.fast_dip3_enforcement = False
+
+    def setup_network(self):
+        self.add_nodes(self.num_nodes, self.extra_args)
+        self.start_nodes()
 
     def setup_nodes(self):
         self.add_nodes(self.num_nodes, self.extra_args)
