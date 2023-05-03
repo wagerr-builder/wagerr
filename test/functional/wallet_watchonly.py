@@ -28,7 +28,7 @@ class CreateWalletWatchonlyTest(WagerrTestFramework):
 
     def run_test(self):
         node = self.nodes[0]
-
+        breakpoint()
         self.nodes[0].createwallet(wallet_name='default')
         def_wallet = node.get_wallet_rpc('default')
 
