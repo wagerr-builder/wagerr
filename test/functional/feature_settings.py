@@ -25,8 +25,9 @@ class SettingsTest(WagerrTestFramework):
 
     def run_test(self):
         node, = self.nodes
+        breakpoint()
         settings = Path(node.datadir, self.chain, "settings.json")
-        conf = Path(node.datadir, "dash.conf")
+        conf = Path(node.datadir, "wagerr.conf")
 
         # Assert empty settings file was created
         self.stop_node(0)
