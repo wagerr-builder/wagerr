@@ -117,7 +117,7 @@ class PruneTest(WagerrTestFramework):
 
         # Then mine enough full blocks to create more than 550MiB of data
         mine_large_blocks(self.nodes[0], 645)
-        
+        breakpoint()
         self.stop_node(0)
         self.stop_node(1)
         self.stop_node(2)
