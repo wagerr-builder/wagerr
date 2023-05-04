@@ -117,7 +117,6 @@ class PruneTest(WagerrTestFramework):
 
         # Then mine enough full blocks to create more than 550MiB of data
         mine_large_blocks(self.nodes[0], 645)
-        breakpoint()
         self.stop_node(0)
         self.stop_node(1)
         self.start_node(0)
@@ -139,6 +138,7 @@ class PruneTest(WagerrTestFramework):
         self.log.info("Though we're already using more than 550MiB, current usage: %d" % calc_usage(self.prunedir))
         self.log.info("Mining 25 more blocks should cause the first block file to be pruned")
         # Pruning doesn't run until we're allocating another chunk, 20 full blocks past the height cutoff will ensure this
+        breakpoint()
         mine_large_blocks(self.nodes[0], 25)
 
         # Wait for blk00000.dat to be pruned
