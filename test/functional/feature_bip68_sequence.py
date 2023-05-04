@@ -217,18 +217,17 @@ class BIP68Test(WagerrTestFramework):
         txid = self.nodes[0].sendtoaddress(self.nodes[0].getnewaddress(), 2)
         tx1 = FromHex(CTransaction(), self.nodes[0].getrawtransaction(txid))
         tx1.rehash()
+        self.nodes[0].generate(2)
 
         # Anyone-can-spend mempool tx.
         # Sequence lock of 0 should pass.
         tx2 = CTransaction()
         tx2.nVersion = 2
         tx2.vin = [CTxIn(COutPoint(tx1.sha256, 0), nSequence=2 | CTxIn.SEQUENCE_LOCKTIME_TYPE_FLAG)]
-        #tx2.vin = [CTxIn(COutPoint(tx1.sha256, 0), nSequence=0)]
-        tx2.vout = [CTxOut(int(tx1.vout[0].nValue - self.relayfee*COIN), DUMMY_P2SH_SCRIPT)]
+        tx2.vin = [CTxIn(COutPoint(tx1.sha256, 0), nSequence=0)]
         tx2_raw = self.nodes[0].signrawtransactionwithwallet(ToHex(tx2))["hex"]
         tx2 = FromHex(tx2, tx2_raw)
         tx2.rehash()
-        self.nodes[0].generate(2)
 
         self.nodes[0].sendrawtransaction(tx2_raw)
 
