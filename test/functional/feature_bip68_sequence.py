@@ -222,11 +222,13 @@ class BIP68Test(WagerrTestFramework):
         # Sequence lock of 0 should pass.
         tx2 = CTransaction()
         tx2.nVersion = 2
-        tx2.vin = [CTxIn(COutPoint(tx1.sha256, 0), nSequence=0)]
+        tx2.vin = [CTxIn(COutPoint(tx1.sha256, 0), nSequence=2 | CTxIn.SEQUENCE_LOCKTIME_TYPE_FLAG)]
+        #tx2.vin = [CTxIn(COutPoint(tx1.sha256, 0), nSequence=0)]
         tx2.vout = [CTxOut(int(tx1.vout[0].nValue - self.relayfee*COIN), DUMMY_P2SH_SCRIPT)]
         tx2_raw = self.nodes[0].signrawtransactionwithwallet(ToHex(tx2))["hex"]
         tx2 = FromHex(tx2, tx2_raw)
         tx2.rehash()
+        self.nodes[0].generate(2)
 
         self.nodes[0].sendrawtransaction(tx2_raw)
 
