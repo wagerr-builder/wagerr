@@ -120,6 +120,7 @@ class PruneTest(WagerrTestFramework):
         breakpoint()
         self.stop_node(0)
         self.stop_node(1)
+        self.stop_node(2, expected_stderr='Warning: You are starting with governance validation disabled. This is expected because you are running a pruned node.')
         self.stop_node(3, expected_stderr='Warning: You are starting with governance validation disabled. This is expected because you are running a pruned node.')
         self.stop_node(4, expected_stderr='Warning: You are starting with governance validation disabled. This is expected because you are running a pruned node.')
         self.stop_node(5, expected_stderr='Warning: You are starting with governance validation disabled. This is expected because you are running a pruned node.')
