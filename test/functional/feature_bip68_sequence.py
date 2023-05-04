@@ -15,7 +15,7 @@ from test_framework.util import (
     satoshi_round
 )
 from test_framework.script_util import DUMMY_P2SH_SCRIPT
-from random import randint
+from random import randint, shuffle
 
 SEQUENCE_LOCKTIME_DISABLE_FLAG = (1<<31)
 SEQUENCE_LOCKTIME_TYPE_FLAG = (1<<22) # this means use time (0 means height)
@@ -126,7 +126,7 @@ class BIP68Test(WagerrTestFramework):
             addresses.append(self.nodes[0].getnewaddress())
         while len(self.nodes[0].listunspent()) < 200:
             import random
-            random.shuffle(addresses)
+            shuffle(addresses)
             num_outputs = random.randint(1, max_outputs)
             outputs = {}
             for i in range(num_outputs):
@@ -144,7 +144,7 @@ class BIP68Test(WagerrTestFramework):
         for i in range(400):
             # Randomly choose up to 10 inputs
             num_inputs = randint(1, 10)
-            random.shuffle(utxos)
+            shuffle(utxos)
 
             # Track whether any sequence locks used should fail
             should_pass = True
@@ -159,11 +159,11 @@ class BIP68Test(WagerrTestFramework):
                 sequence_value = 0xfffffffe # this disables sequence locks
 
                 # 50% chance we enable sequence locks
-                if random.randint(0,1):
+                if randint(0,1):
                     using_sequence_locks = True
 
                     # 10% of the time, make the input sequence value pass
-                    input_will_pass = (random.randint(1,10) == 1)
+                    input_will_pass = (randint(1,10) == 1)
                     sequence_value = utxos[j]["confirmations"]
                     if not input_will_pass:
                         sequence_value += 1
@@ -182,7 +182,7 @@ class BIP68Test(WagerrTestFramework):
                         can_time_lock = False
 
                     # if time-lockable, then 50% chance we make this a time lock
-                    if random.randint(0,1) and can_time_lock:
+                    if randint(0,1) and can_time_lock:
                         # Find first time-lock value that fails, or latest one that succeeds
                         time_delta = sequence_value << SEQUENCE_LOCKTIME_GRANULARITY
                         if input_will_pass and time_delta > cur_time - orig_time:
