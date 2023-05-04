@@ -15,6 +15,7 @@ from test_framework.util import (
     satoshi_round
 )
 from test_framework.script_util import DUMMY_P2SH_SCRIPT
+import random
 
 SEQUENCE_LOCKTIME_DISABLE_FLAG = (1<<31)
 SEQUENCE_LOCKTIME_TYPE_FLAG = (1<<22) # this means use time (0 means height)
