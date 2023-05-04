@@ -15,7 +15,7 @@ from test_framework.util import (
     satoshi_round
 )
 from test_framework.script_util import DUMMY_P2SH_SCRIPT
-import random
+from random import randint
 
 SEQUENCE_LOCKTIME_DISABLE_FLAG = (1<<31)
 SEQUENCE_LOCKTIME_TYPE_FLAG = (1<<22) # this means use time (0 means height)
@@ -143,7 +143,7 @@ class BIP68Test(WagerrTestFramework):
         # all pass.
         for i in range(400):
             # Randomly choose up to 10 inputs
-            num_inputs = random.randint(1, 10)
+            num_inputs = randint(1, 10)
             random.shuffle(utxos)
 
             # Track whether any sequence locks used should fail
