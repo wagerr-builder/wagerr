@@ -70,7 +70,7 @@ class SpentIndexTest(WagerrTestFramework):
         self.log.info("Testing spent index...")
 
         privkey = "THTeyaP8QLTG8zwG1AdYrnWqCaaAjbj7TcW9xRhJ7n6LRLCeg6Bc"
-        addressHash = binascii.unhexlify("C5E4FB9171C22409809A3E8047A29C83886E325D")
+        addressHash = binascii.unhexlify("91842b36d6fd19e6077c28fb086964f818f5114f")
         scriptPubKey = CScript([OP_DUP, OP_HASH160, addressHash, OP_EQUALVERIFY, OP_CHECKSIG])
         unspent = self.nodes[0].listunspent()
         tx = CTransaction()
@@ -109,7 +109,7 @@ class SpentIndexTest(WagerrTestFramework):
 
         # Check that verbose raw transaction includes address values and input values
         address2 = "TPEdK89Rwds4rxdbBApYCKM6AQPcDZf8qh"
-        addressHash2 = binascii.unhexlify("C5E4FB9171C22409809A3E8047A29C83886E325D")
+        addressHash2 = binascii.unhexlify("91842b36d6fd19e6077c28fb086964f818f5114f")
         scriptPubKey2 = CScript([OP_DUP, OP_HASH160, addressHash2, OP_EQUALVERIFY, OP_CHECKSIG])
         tx2 = CTransaction()
         tx2.vin = [CTxIn(COutPoint(int(txid, 16), 0))]
