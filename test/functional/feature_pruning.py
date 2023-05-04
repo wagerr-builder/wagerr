@@ -117,6 +117,9 @@ class PruneTest(WagerrTestFramework):
 
         # Then mine enough full blocks to create more than 550MiB of data
         mine_large_blocks(self.nodes[0], 645)
+        
+        self.stop_nodes()
+        self.start_nodes()
         disconnect_nodes(self.nodes[0], 1)
         connect_nodes(self.nodes[0], 1)
         disconnect_nodes(self.nodes[0], 2)
@@ -127,7 +130,6 @@ class PruneTest(WagerrTestFramework):
         connect_nodes(self.nodes[0], 4)
         disconnect_nodes(self.nodes[0], 5)
         connect_nodes(self.nodes[0], 5)
-        self.sync_all()
 
     def test_height_min(self):
         assert os.path.isfile(os.path.join(self.prunedir, "blk00000.dat")), "blk00000.dat is missing, pruning too early"
