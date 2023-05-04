@@ -408,7 +408,7 @@ class CTxIn:
         r += self.prevout.serialize()
         r += ser_string(self.scriptSig)
         breakpoint()
-        r += struct.pack("<I", self.nSequence)
+        r += struct.pack("<I", self.nSequence & 0xffffffff)
         return r
 
     def __repr__(self):
