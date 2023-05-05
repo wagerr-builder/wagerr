@@ -17,6 +17,8 @@ from test_framework.util import (
 from test_framework.script_util import DUMMY_P2SH_SCRIPT
 from random import randint, shuffle
 
+from decimal import Decimal
+
 SEQUENCE_LOCKTIME_DISABLE_FLAG = (1<<31)
 SEQUENCE_LOCKTIME_TYPE_FLAG = (1<<22) # this means use time (0 means height)
 SEQUENCE_LOCKTIME_GRANULARITY = 9 # this is a bit-shift
