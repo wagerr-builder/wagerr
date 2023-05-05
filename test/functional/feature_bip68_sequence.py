@@ -95,12 +95,15 @@ class BIP68Test(WagerrTestFramework):
 
         # This transaction will enable sequence-locks, so this transaction should
         # fail
+        new_address = self.nodes[0].getnewaddress()
+        script_pub_key = self.nodes[0].getaddressinfo(new_address)["scriptPubKey"]
+
         tx2 = CTransaction()
         tx2.nVersion = 2
         sequence_value = sequence_value & 0x7fffffff
         tx2.vin = [CTxIn(COutPoint(tx1_id, 0), nSequence=sequence_value)]
         breakpoint()
-        tx2.vout = [CTxOut(int(value - self.relayfee * COIN), DUMMY_P2SH_SCRIPT)]
+        tx2.vout = [CTxOut(int(value - self.relayfee * COIN), script_pub_key)]
         tx2.rehash()
 
         assert_raises_rpc_error(-26, NOT_FINAL_ERROR, self.nodes[0].sendrawtransaction, ToHex(tx2))
