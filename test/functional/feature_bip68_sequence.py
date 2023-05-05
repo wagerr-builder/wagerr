@@ -99,6 +99,7 @@ class BIP68Test(WagerrTestFramework):
         tx2.nVersion = 2
         sequence_value = sequence_value & 0x7fffffff
         tx2.vin = [CTxIn(COutPoint(tx1_id, 0), nSequence=sequence_value)]
+        breakpoint()
         tx2.vout = [CTxOut(int(value - self.relayfee * COIN), DUMMY_P2SH_SCRIPT)]
         tx2.rehash()
 
@@ -354,7 +355,6 @@ class BIP68Test(WagerrTestFramework):
         tx2 = CTransaction()
         tx2.nVersion = 1
         tx2.vin = [CTxIn(COutPoint(tx1.sha256, 0), nSequence=0)]
-        breakpoint()
         tx2.vout = [CTxOut(int(tx1.vout[0].nValue - self.relayfee*COIN), DUMMY_P2SH_SCRIPT)]
 
         # sign tx2
