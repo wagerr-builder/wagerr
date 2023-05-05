@@ -102,7 +102,6 @@ class BIP68Test(WagerrTestFramework):
         tx2.nVersion = 2
         sequence_value = sequence_value & 0x7fffffff
         tx2.vin = [CTxIn(COutPoint(tx1_id, 0), nSequence=sequence_value)]
-        breakpoint()
         tx2.vout = [CTxOut(int(value - self.relayfee * COIN), bytes.fromhex(script_pub_key))]
         tx2.rehash()
 
