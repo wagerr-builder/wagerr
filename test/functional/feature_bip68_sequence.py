@@ -237,6 +237,9 @@ class BIP68Test(WagerrTestFramework):
         tx2.rehash()
 
         self.nodes[0].sendrawtransaction(tx2_raw)
+        print("Transaction ID after sending: ", tx2.hash)
+        print("Mempool content after sending: ", self.nodes[0].getrawmempool())
+
 
         # Create a spend of the 0th output of orig_tx with a sequence lock
         # of 1, and test what happens when submitting.
@@ -273,7 +276,7 @@ class BIP68Test(WagerrTestFramework):
             self.nodes[0].setmocktime(cur_time + 600)
             self.nodes[0].generate(1)
             cur_time += 600
-
+        print("Mempool content after generating block {i + 1}: ", self.nodes[0].getrawmempool())
         print("Transaction ID: ", tx2.hash)
         print("Mempool content: ", self.nodes[0].getrawmempool())
 
