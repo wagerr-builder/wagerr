@@ -108,6 +108,7 @@ class FullBlockTest(WagerrTestFramework):
         self.spendable_outputs = []
 
         # Create a new block
+        breakpoint()
         b_dup_cb = self.next_block('dup_cb')
         b_dup_cb.vtx[0].vin[0].scriptSig = DUPLICATE_COINBASE_SCRIPT_SIG
         b_dup_cb.vtx[0].rehash()
