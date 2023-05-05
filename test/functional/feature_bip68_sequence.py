@@ -276,7 +276,7 @@ class BIP68Test(WagerrTestFramework):
             self.nodes[0].setmocktime(cur_time + 600)
             self.nodes[0].generate(1)
             cur_time += 600
-            print("Mempool content after generating block {i + 1}: ", self.nodes[0].getrawmempool())
+            print(f"Mempool content after generating block {i + 1}: ", self.nodes[0].getrawmempool())
         print("Transaction ID: ", tx2.hash)
         print("Mempool content: ", self.nodes[0].getrawmempool())
 
