@@ -265,8 +265,6 @@ class BIP68Test(WagerrTestFramework):
         test_nonzero_locks(tx2, self.nodes[0], self.relayfee, use_height_lock=False)
 
         # Now mine some blocks, but make sure tx2 doesn't get mined.
-        # Use prioritisetransaction to lower the effective feerate to 0
-        self.nodes[0].prioritisetransaction(tx2.hash, int(-self.relayfee*COIN))
         very_low_feerate = Decimal('0.00000001')
         tx2.vout[0].nValue = int(tx1.vout[0].nValue - very_low_feerate * COIN)
 
