@@ -678,7 +678,7 @@ class P2PDataStore(P2PInterface):
                 def log_and_check_hashes():
                    best_block_hash = node.getbestblockhash()
                    expected_block_hash = blocks[-1].hash
-                   self.log.info(f"Best block hash: {best_block_hash}, Expected block hash: {expected_block_hash}")
+                   print(f"Best block hash: {best_block_hash}, Expected block hash: {expected_block_hash}")
                    return best_block_hash == expected_block_hash
 
                 self.wait_until(log_and_check_hashes, timeout=timeout)
