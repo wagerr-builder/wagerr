@@ -283,7 +283,9 @@ class BIP68Test(WagerrTestFramework):
         print("Transaction ID: ", tx2.hash)
         print("Mempool content: ", self.nodes[0].getrawmempool())
 
-        assert tx2.hash in self.nodes[0].getrawmempool()
+        tx_info = self.nodes[0].gettransaction(tx2.hash)
+        assert tx_info['confirmations'] > 0
+
 
         test_nonzero_locks(tx2, self.nodes[0], self.relayfee, use_height_lock=True)
         test_nonzero_locks(tx2, self.nodes[0], self.relayfee, use_height_lock=False)
