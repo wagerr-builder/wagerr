@@ -227,6 +227,9 @@ class BIP68Test(WagerrTestFramework):
         tx2 = CTransaction()
         tx2.nVersion = 2
         tx2.vin = [CTxIn(COutPoint(tx1.sha256, 0), nSequence=0)]
+        new_address = self.nodes[0].getnewaddress()
+        script_pub_key = self.nodes[0].getaddressinfo(new_address)["scriptPubKey"]
+        tx2.vout = [CTxOut(int(tx1.vout[0].nValue - self.relayfee*COIN), bytes.fromhex(script_pub_key))]
         tx2_raw = self.nodes[0].signrawtransactionwithwallet(ToHex(tx2))["hex"]
         tx2 = FromHex(tx2, tx2_raw)
         tx2.rehash()
