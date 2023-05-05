@@ -675,7 +675,15 @@ class P2PDataStore(P2PInterface):
                 self.sync_with_ping()
 
             if success:
-                self.wait_until(lambda: node.getbestblockhash() == blocks[-1].hash, timeout=timeout)
+                def log_and_check_hashes():
+                   best_block_hash = node.getbestblockhash()
+                   expected_block_hash = blocks[-1].hash
+                   self.log.info(f"Best block hash: {best_block_hash}, Expected block hash: {expected_block_hash}")
+                   return best_block_hash == expected_block_hash
+
+                self.wait_until(log_and_check_hashes, timeout=timeout)
+
+                #self.wait_until(lambda: node.getbestblockhash() == blocks[-1].hash, timeout=timeout)
             else:
                 assert node.getbestblockhash() != blocks[-1].hash
 
