@@ -237,9 +237,6 @@ class BIP68Test(WagerrTestFramework):
         tx2.rehash()
 
         self.nodes[0].sendrawtransaction(tx2_raw)
-        print("Transaction ID after sending: ", tx2.hash)
-        print("Mempool content after sending: ", self.nodes[0].getrawmempool())
-
 
         # Create a spend of the 0th output of orig_tx with a sequence lock
         # of 1, and test what happens when submitting.
@@ -275,17 +272,9 @@ class BIP68Test(WagerrTestFramework):
             self.nodes[0].setmocktime(cur_time + 600)
             self.nodes[0].generate(1)
             cur_time += 600
-            print("Mempool content after generating block ", i + 1, ": ", self.nodes[0].getrawmempool())
-        for i in range(1, 11):
-            block_hash = self.nodes[0].getblockhash(cur_height + i)
-            block = self.nodes[0].getblock(block_hash, 2)
-            print(f"Block {i} transactions: {[tx['txid'] for tx in block['tx']]}")
-        print("Transaction ID: ", tx2.hash)
-        print("Mempool content: ", self.nodes[0].getrawmempool())
 
         tx_info = self.nodes[0].gettransaction(tx2.hash)
         assert tx_info['confirmations'] > 0
-
 
         test_nonzero_locks(tx2, self.nodes[0], self.relayfee, use_height_lock=True)
         test_nonzero_locks(tx2, self.nodes[0], self.relayfee, use_height_lock=False)
