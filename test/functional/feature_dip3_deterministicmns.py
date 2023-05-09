@@ -320,6 +320,7 @@ class DIP3Test(WagerrTestFramework):
     def assert_mnlist(self, node, mns):
         if not self.compare_mnlist(node, mns):
             expected = []
+            breakpoint()
             for mn in mns:
                 expected.append('%s-%d' % (mn.collateral_txid, mn.collateral_vout))
             self.log.error('mnlist: ' + str(node.masternode('list', 'status')))
