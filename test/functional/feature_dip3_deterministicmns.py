@@ -30,6 +30,7 @@ class DIP3Test(WagerrTestFramework):
         self.extra_args += ["-sporkkey=6xLZdACFRA53uyxz8gKDLcgVrm5kUUEu2B3BUzWUxHqa2W7irbH"]
         self.extra_args += ["-dip3params=135:150"]
         self.extra_args += ["-reservebalance=12000000"]
+        self.extra_args += ["-addressindex"]
 
 
     def skip_test_if_missing_module(self):
