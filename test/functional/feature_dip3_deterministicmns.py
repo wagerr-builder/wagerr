@@ -258,7 +258,6 @@ class DIP3Test(WagerrTestFramework):
                 mn.collateral_vout = vout_idx
         mn.collateral_address = node.getnewaddress()
         mn.rewards_address = node.getnewaddress()
-        breakpoint()
         #mn.protx_hash = node.protx('register_fund', mn.collateral_address, '127.0.0.1:%d' % mn.p2p_port, mn.ownerAddr, mn.operatorAddr, mn.votingAddr, 0, mn.rewards_address, mn.fundsAddr)
         #mn.protx_hash = node.protx('register', mn.collateral_txid, mn.collateral_vout, '127.0.0.1:%d' % mn.p2p_port, mn.ownerAddr, mn.operatorAddr, mn.votingAddr, 0, mn.rewards_address, mn.fundsAddr)
         #mn.collateral_txid = mn.protx_hash
@@ -275,7 +274,6 @@ class DIP3Test(WagerrTestFramework):
     def register_mn(self, node, mn):
         node.sendtoaddress(mn.fundsAddr, 25000.001)
         mn.rewards_address = node.getnewaddress()
-        breakpoint()
         mn.protx_hash = node.protx('register', mn.collateral_txid, mn.collateral_vout, '127.0.0.1:%d' % mn.p2p_port, mn.ownerAddr, mn.operatorAddr, mn.votingAddr, 0, mn.rewards_address, mn.fundsAddr)
         node.generate(1)
 
@@ -329,7 +327,6 @@ class DIP3Test(WagerrTestFramework):
             raise AssertionError("mnlists does not match provided mns")
 
     def compare_mnlist(self, node, mns):
-        breakpoint()
         mnlist = node.masternode('list', 'status')
         for mn in mns:
             s = '%s-%d' % (mn.collateral_txid, mn.collateral_vout)
