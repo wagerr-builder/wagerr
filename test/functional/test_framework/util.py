@@ -502,6 +502,7 @@ def sync_blocks(rpc_connections, *, wait=1, timeout=60):
     raise AssertionError("Block sync timed out:{}".format("".join("\n  {!r}".format(b) for b in best_hash)))
 
 def force_finish_mnsync(node):
+    breakpoint()
     """
     Masternodes won't accept incoming connections while IsSynced is false.
     Force them to switch to this state to speed things up.
