@@ -79,7 +79,7 @@ class DIP3Test(WagerrTestFramework):
         self.sync_blocks(self.nodes, timeout=120)
 
         # DIP3 is fully enforced here
-
+        breakpoint()
         self.register_mn(self.nodes[0], before_dip3_mn)
         self.start_mn(before_dip3_mn)
 
