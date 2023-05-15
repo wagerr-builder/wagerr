@@ -345,7 +345,7 @@ class DIP3Test(WagerrTestFramework):
 
     def compare_mnlist(self, node, mns):
         breakpoint()
-        mnlist = node.masternodelist('status')
+        mnlist = node.masternodelist('info')
         for mn in mns:
             s = '%s-%d' % (mn.collateral_txid, mn.collateral_vout)
             if s not in mnlist:
