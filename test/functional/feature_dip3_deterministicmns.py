@@ -331,6 +331,7 @@ class DIP3Test(WagerrTestFramework):
             self.assert_mnlist(node, mns)
 
     def assert_mnlist(self, node, mns):
+        breakpoint()
         if not self.compare_mnlist(node, mns):
             expected = []
             for mn in mns:
