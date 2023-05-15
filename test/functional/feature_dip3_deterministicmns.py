@@ -284,7 +284,7 @@ class DIP3Test(WagerrTestFramework):
             vout = txraw["vout"][vout_idx]
             if vout["value"] == Decimal('25000'):
                 mn.collateral_vout = vout_idx
-        self.nodes[0].lockunspent(False, [{'txid': mn.collateral_txid, 'vout': mn.collateral_vout}])
+        #self.nodes[0].lockunspent(False, [{'txid': mn.collateral_txid, 'vout': mn.collateral_vout}])
         mn.rewards_address = node.getnewaddress()
         proTxHash = node.protx('register', mn.collateral_txid, mn.collateral_vout, '127.0.0.1:%d' % mn.p2p_port, mn.ownerAddr, mn.operatorAddr, mn.votingAddr, 0, mn.rewards_address, mn.fundsAddr)
         mn.protx_hash = self.nodes[0].sendrawtransaction(proTxHash)
