@@ -273,10 +273,18 @@ class DIP3Test(WagerrTestFramework):
     # create a protx MN which refers to an existing collateral
     def register_mn(self, node, mn):
         breakpoint()
-        node.sendtoaddress(mn.fundsAddr, 25000)
+        bls = self.nodes[0].bls('generate')
+        mn.ownerAddr=bls['public']
+        mn.collateral_txid=node.sendtoaddress(mn.fundsAddr, 25000)
         node.generate(1)
         node.sendtoaddress(mn.fundsAddr, 0.001)
         node.generate(1)
+        txraw = self.nodes[0].getrawtransaction(mn.collateral_txid, True)
+        for vout_idx in range(0, len(txraw["vout"])):
+            vout = txraw["vout"][vout_idx]
+            if vout["value"] == Decimal('25000'):
+                mn.collateral_vout = vout_idx
+        self.nodes[0].lockunspent(False, [{'txid': mn.collateral_txid, 'vout': mn.collateral_vout}])
         mn.rewards_address = node.getnewaddress()
         mn.protx_hash = node.protx('register', mn.collateral_txid, mn.collateral_vout, '127.0.0.1:%d' % mn.p2p_port, mn.ownerAddr, mn.operatorAddr, mn.votingAddr, 0, mn.rewards_address, mn.fundsAddr)
         node.generate(1)
