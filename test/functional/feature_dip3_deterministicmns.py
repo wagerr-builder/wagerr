@@ -286,8 +286,8 @@ class DIP3Test(WagerrTestFramework):
                 mn.collateral_vout = vout_idx
         #self.nodes[0].lockunspent(False, [{'txid': mn.collateral_txid, 'vout': mn.collateral_vout}])
         mn.rewards_address = node.getnewaddress()
-        proTxHash = node.protx('register', mn.collateral_txid, mn.collateral_vout, '127.0.0.1:%d' % mn.p2p_port, mn.ownerAddr, mn.operatorAddr, mn.votingAddr, 0, mn.rewards_address, mn.fundsAddr)
-        mn.protx_hash = self.nodes[0].sendrawtransaction(proTxHash)
+        mn.protx_hash = node.protx('register', mn.collateral_txid, mn.collateral_vout, '127.0.0.1:%d' % mn.p2p_port, mn.ownerAddr, mn.operatorAddr, mn.votingAddr, 0, mn.rewards_address, mn.fundsAddr)
+        #mn.protx_hash = self.nodes[0].sendrawtransaction(proTxHash)
         node.generate(1)
 
     def start_mn(self, mn):
