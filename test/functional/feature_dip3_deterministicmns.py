@@ -274,7 +274,7 @@ class DIP3Test(WagerrTestFramework):
     def register_mn(self, node, mn):
         breakpoint()
         bls = self.nodes[0].bls('generate')
-        mn.ownerAddr=bls['public']
+        mn.operatorAddr=bls['public']
         mn.collateral_txid=node.sendtoaddress(mn.fundsAddr, 25000)
         node.generate(1)
         node.sendtoaddress(mn.fundsAddr, 0.001)
