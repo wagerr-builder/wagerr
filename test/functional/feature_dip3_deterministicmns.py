@@ -67,6 +67,9 @@ class DIP3Test(WagerrTestFramework):
         self.create_mn_collateral(self.nodes[0], before_dip3_mn)
         mns.append(before_dip3_mn)
 
+        #set block 500 to DIp3 activation
+        self.nodes[0].sporkupdate("SPORK_4_DIP0003_ENFORCED", 500)
+
         # block 501 starts enforcing DIP3 MN payments
         self.nodes[0].generate(501 - self.nodes[0].getblockcount())
         assert self.nodes[0].getblockcount() == 501
