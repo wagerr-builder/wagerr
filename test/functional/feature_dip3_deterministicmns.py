@@ -291,6 +291,7 @@ class DIP3Test(WagerrTestFramework):
         node.generate(1)
 
     def start_mn(self, mn):
+        breakpoint()
         if len(self.nodes) <= mn.idx:
             self.add_nodes(mn.idx - len(self.nodes) + 1)
             assert len(self.nodes) == mn.idx + 1
@@ -331,7 +332,6 @@ class DIP3Test(WagerrTestFramework):
             self.assert_mnlist(node, mns)
 
     def assert_mnlist(self, node, mns):
-        breakpoint()
         if not self.compare_mnlist(node, mns):
             expected = []
             for mn in mns:
