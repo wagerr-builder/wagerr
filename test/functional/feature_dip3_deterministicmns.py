@@ -344,6 +344,7 @@ class DIP3Test(WagerrTestFramework):
             raise AssertionError("mnlists does not match provided mns")
 
     def compare_mnlist(self, node, mns):
+        breakpoint()
         mnlist = node.masternodelist('status')
         for mn in mns:
             s = '%s-%d' % (mn.collateral_txid, mn.collateral_vout)
