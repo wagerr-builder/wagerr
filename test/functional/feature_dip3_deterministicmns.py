@@ -28,7 +28,7 @@ class DIP3Test(WagerrTestFramework):
 
         self.extra_args = ["-budgetparams=10:10:10"]
         self.extra_args += ["-sporkkey=6xLZdACFRA53uyxz8gKDLcgVrm5kUUEu2B3BUzWUxHqa2W7irbH"]
-        self.extra_args += ["-dip3params=135:150"]
+        self.extra_args += ["-dip3params=135:550"]
         self.extra_args += ["-reservebalance=12000000"]
         self.extra_args += ["-addressindex"]
 
@@ -68,7 +68,7 @@ class DIP3Test(WagerrTestFramework):
         mns.append(before_dip3_mn)
 
         #set block 500 to DIp3 activation
-        self.nodes[0].sporkupdate("SPORK_4_DIP0003_ENFORCED", 500)
+        #self.nodes[0].sporkupdate("SPORK_4_DIP0003_ENFORCED", 500)
 
         # block 501 starts enforcing DIP3 MN payments
         self.nodes[0].generate(501 - self.nodes[0].getblockcount())
