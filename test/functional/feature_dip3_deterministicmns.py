@@ -340,7 +340,7 @@ class DIP3Test(WagerrTestFramework):
             expected = []
             for mn in mns:
                 expected.append('%s-%d' % (mn.collateral_txid, mn.collateral_vout))
-            self.log.error('mnlist: ' + str(node.masternode('list', 'status')))
+            self.log.error('mnlist: ' + str(node.masternodelist('status')))
             self.log.error('expected: ' + str(expected))
             raise AssertionError("mnlists does not match provided mns")
 
