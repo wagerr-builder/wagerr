@@ -26,10 +26,25 @@ class DIP3Test(WagerrTestFramework):
         self.setup_clean_chain = True
         self.supports_cli = False
 
-        base_args = ["-budgetparams=10:10:10", "-dip3params=135:550", "-reservebalance=12000000", "-addressindex"]
-        sporkkey_arg = ["-sporkkey=6xLZdACFRA53uyxz8gKDLcgVrm5kUUEu2B3BUzWUxHqa2W7irbH"]
+        self.extra_args = []
+        for i in range(self.num_nodes):
+            if i == 0:
+                # Only set the spork key for the first node
+                self.extra_args.append([
+                    "-budgetparams=10:10:10",
+                    "-sporkkey=6xLZdACFRA53uyxz8gKDLcgVrm5kUUEu2B3BUzWUxHqa2W7irbH",
+                    "-dip3params=135:550",
+                    "-reservebalance=12000000",
+                    "-addressindex"
+                ])
+            else:
+                self.extra_args.append([
+                    "-budgetparams=10:10:10",
+                    "-dip3params=135:550",
+                    "-reservebalance=12000000",
+                    "-addressindex"
+                ])
 
-        self.extra_args = [base_args + sporkkey_arg] + [base_args for _ in range(self.num_nodes - 1)]
 
 
     def skip_test_if_missing_module(self):
