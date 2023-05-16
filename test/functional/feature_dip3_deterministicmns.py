@@ -323,7 +323,7 @@ class DIP3Test(WagerrTestFramework):
         self.sync_all()
         for node in self.nodes:
             protx_info = node.protx('info', mn.protx_hash)
-            mn_list = node.masternode('list')
+            mn_list = node.masternodelist('status')
             assert_equal(protx_info['state']['service'], '127.0.0.2:%d' % mn.p2p_port)
             assert_equal(mn_list['%s-%d' % (mn.collateral_txid, mn.collateral_vout)]['address'], '127.0.0.2:%d' % mn.p2p_port)
 
@@ -346,7 +346,7 @@ class DIP3Test(WagerrTestFramework):
 
     def compare_mnlist(self, node, mns):
         breakpoint()
-        mnlist = node.masternodelist('info')
+        mnlist = node.masternodelist('status')
         for mn in mns:
             s = '%s-%d' % (mn.collateral_txid, mn.collateral_vout)
             if s not in mnlist:
