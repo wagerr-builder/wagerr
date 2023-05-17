@@ -26,6 +26,13 @@ class DIP3Test(WagerrTestFramework):
         self.setup_clean_chain = True
         self.supports_cli = False
 
+        self.extra_args = ["-budgetparams=10:10:10"]
+        self.extra_args += ["-sporkkey=6xLZdACFRA53uyxz8gKDLcgVrm5kUUEu2B3BUzWUxHqa2W7irbH"]
+        self.extra_args += ["-dip3params=135:150"]
+        self.extra_args += ["-reservebalance=12000000"]
+        self.extra_args += ["-addressindex"]
+
+    """
         # define common arguments for all nodes
         common_args = ["-budgetparams=10:10:10", "-dip3params=135:550", "-reservebalance=12000000", "-addressindex"]
 
@@ -34,7 +41,7 @@ class DIP3Test(WagerrTestFramework):
 
         # create a list of arguments for each node
         self.extra_args = [common_args + controller_args] + [common_args] * (self.num_nodes - 1)
-
+    """
 
     def skip_test_if_missing_module(self):
         self.skip_if_no_wallet()
