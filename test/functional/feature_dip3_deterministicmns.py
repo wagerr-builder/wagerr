@@ -47,7 +47,7 @@ class DIP3Test(WagerrTestFramework):
 
     def start_controller_node(self):
         self.log.info("starting controller node")
-        self.start_node(0, extra_args=self.extra_args)
+        self.start_node(0, extra_args=self.extra_args[0])
         for node in self.nodes[1:]:
             if node is not None and node.process is not None:
                 connect_nodes(node, 0)
