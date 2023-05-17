@@ -142,13 +142,13 @@ class DIP3Test(WagerrTestFramework):
             mns_tmp.append(mns[spend_mns_count - 1 - i])
             self.assert_mnlist(self.nodes[0], mns_tmp)
 
-        #"""" needs getblocktemplate which does not work with POS
+        """" needs getblocktemplate which does not work with POS
         self.log.info("cause a reorg with a double spend and check that mnlists are still correct on all nodes")
         self.mine_double_spend(self.nodes[0], dummy_txins, self.nodes[0].getnewaddress(), use_mnmerkleroot_from_tip=True)
         self.nodes[0].generate(spend_mns_count)
         self.sync_all()
         self.assert_mnlists(mns_tmp)
-        #"""
+        """
         self.log.info("test mn payment enforcement with deterministic MNs")
         for i in range(20):
             node = self.nodes[i % len(self.nodes)]
