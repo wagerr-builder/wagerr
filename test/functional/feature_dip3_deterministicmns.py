@@ -74,6 +74,7 @@ class DIP3Test(WagerrTestFramework):
 
         # block 501 starts enforcing DIP3 MN payments
         self.nodes[0].generate(150 - self.nodes[0].getblockcount())
+        breakpoint()
         assert self.nodes[0].getblockcount() == 151
 
         self.log.info("mining final block for DIP3 activation")
