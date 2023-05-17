@@ -344,7 +344,7 @@ class DIP3Test(WagerrTestFramework):
         self.nodes[0].generate(1)
 
     def assert_mnlists(self, mns):
-        breakpoint()
+        #breakpoint()
         for node in self.nodes:
             self.assert_mnlist(node, mns)
 
