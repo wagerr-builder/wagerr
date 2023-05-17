@@ -46,7 +46,7 @@ class DIP3Test(WagerrTestFramework):
     def start_controller_node(self):
         self.log.info("starting controller node")
         self.start_node(0, extra_args=self.extra_args)
-        self.nodes[0].sporkupdate("SPORK_4_DIP0003_ENFORCED", 500)
+        self.nodes[0].sporkupdate("SPORK_4_DIP0003_ENFORCED", 150)
         for node in self.nodes[1:]:
             if node is not None and node.process is not None:
                 connect_nodes(node, 0)
@@ -73,8 +73,8 @@ class DIP3Test(WagerrTestFramework):
         #self.nodes[0].sporkupdate("SPORK_4_DIP0003_ENFORCED", 500)
 
         # block 501 starts enforcing DIP3 MN payments
-        self.nodes[0].generate(501 - self.nodes[0].getblockcount())
-        assert self.nodes[0].getblockcount() == 501
+        self.nodes[0].generate(150 - self.nodes[0].getblockcount())
+        assert self.nodes[0].getblockcount() == 151
 
         self.log.info("mining final block for DIP3 activation")
         self.nodes[0].generate(1)
@@ -140,14 +140,13 @@ class DIP3Test(WagerrTestFramework):
             mns_tmp.append(mns[spend_mns_count - 1 - i])
             self.assert_mnlist(self.nodes[0], mns_tmp)
 
-        """
+        #"""" needs getblocktemplate which does not work with POS
         self.log.info("cause a reorg with a double spend and check that mnlists are still correct on all nodes")
         self.mine_double_spend(self.nodes[0], dummy_txins, self.nodes[0].getnewaddress(), use_mnmerkleroot_from_tip=True)
         self.nodes[0].generate(spend_mns_count)
         self.sync_all()
-        breakpoint()
         self.assert_mnlists(mns_tmp)
-        """
+        #"""
         self.log.info("test mn payment enforcement with deterministic MNs")
         for i in range(20):
             node = self.nodes[i % len(self.nodes)]
@@ -300,7 +299,7 @@ class DIP3Test(WagerrTestFramework):
             self.add_nodes(mn.idx - len(self.nodes) + 1)
             assert len(self.nodes) == mn.idx + 1
         self.restart_node(mn.idx, extra_args = self.extra_args + ['-masternodeblsprivkey=%s' % mn.blsMnkey])
-        self.nodes[mn.idx].sporkupdate('SPORK_4_DIP0003_ENFORCED', 500)
+        self.nodes[mn.idx].sporkupdate('SPORK_4_DIP0003_ENFORCED', 150)
         force_finish_mnsync(self.nodes[mn.idx])
         mn.node = self.nodes[mn.idx]
         connect_nodes(mn.node, 0)
@@ -384,8 +383,8 @@ class DIP3Test(WagerrTestFramework):
         return dummy_txin
 
     def mine_block(self, node, vtx=[], miner_address=None, mn_payee=None, mn_amount=None, use_mnmerkleroot_from_tip=False, expected_error=None):
-        node.generate(1)
-        """ getblocktemplate does not work in POS
+        #node.generate(1)
+        #""" getblocktemplate does not work in POS
         bt = node.getblocktemplate()
         height = bt['height']
         tip_hash = bt['previousblockhash']
@@ -468,7 +467,7 @@ class DIP3Test(WagerrTestFramework):
             raise AssertionError('mining the block should have failed with error %s, but submitblock returned %s' % (expected_error, result))
         elif expected_error is None and result is not None:
             raise AssertionError('submitblock returned %s' % (result))
-        """
+        #"""
     def mine_double_spend(self, node, txins, target_address, use_mnmerkleroot_from_tip=False):
         amount = Decimal(0)
         for txin in txins:
