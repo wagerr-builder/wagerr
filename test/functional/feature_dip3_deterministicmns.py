@@ -154,6 +154,7 @@ class DIP3Test(WagerrTestFramework):
             node = self.nodes[i % len(self.nodes)]
             self.test_invalid_mn_payment(node)
             self.nodes[0].generate(1)
+            breakpoint()
             connect_nodes(node, 0)
             self.sync_all()
 
@@ -173,7 +174,6 @@ class DIP3Test(WagerrTestFramework):
         multisig = self.nodes[0].createmultisig(1, [addr1Obj['pubkey'], addr2Obj['pubkey']])['address']
         self.update_mn_payee(mns[0], multisig)
         found_multisig_payee = False
-        breakpoint()
         for _ in range(len(mns)):
             bt = self.nodes[0].getblocktemplate()
             expected_payee = bt['masternode'][0]['payee']
@@ -389,7 +389,6 @@ class DIP3Test(WagerrTestFramework):
     def mine_block(self, node, vtx=[], miner_address=None, mn_payee=None, mn_amount=None, use_mnmerkleroot_from_tip=False, expected_error=None):
         node.generate(1)
         """ getblocktemplate does not work in POS
-        breakpoint()
         bt = node.getblocktemplate()
         height = bt['height']
         tip_hash = bt['previousblockhash']
