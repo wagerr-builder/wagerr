@@ -16,6 +16,8 @@ from test_framework.util import assert_equal, connect_nodes, force_finish_mnsync
 
 WAGERR_AUTH_ADDR = "TJA37d7KPVmd5Lqa2EcQsptcfLYsQ1Qcfk"
 
+MN_COLLATERAL = 25000
+
 class Masternode(object):
     pass
 
@@ -238,25 +240,25 @@ class DIP3Test(WagerrTestFramework):
 
     def create_mn_collateral(self, node, mn):
         mn.collateral_address = node.getnewaddress()
-        mn.collateral_txid = node.sendtoaddress(mn.collateral_address, 25000)
+        mn.collateral_txid = node.sendtoaddress(mn.collateral_address, MN_COLLATERAL)
         mn.collateral_vout = None
         node.generate(1)
 
         rawtx = node.getrawtransaction(mn.collateral_txid, 1)
         for txout in rawtx['vout']:
-            if txout['value'] == Decimal(25000):
+            if txout['value'] == Decimal(MN_COLLATERAL):
                 mn.collateral_vout = txout['n']
                 break
         assert mn.collateral_vout is not None
 
     # register a protx MN and also fund it (using collateral inside ProRegTx)
     def register_fund_mn(self, node, mn):
-        mn.collateral_txid = node.sendtoaddress(mn.fundsAddr, 25000)
+        mn.collateral_txid = node.sendtoaddress(mn.fundsAddr, MN_COLLATERAL)
         mn.collateral_vout = 0
         txraw = self.nodes[0].getrawtransaction(mn.collateral_txid, True)
         for vout_idx in range(0, len(txraw["vout"])):
             vout = txraw["vout"][vout_idx]
-            if vout["value"] == Decimal('25000'):
+            if vout["value"] == Decimal('MN_COLLATERAL'):
                 mn.collateral_vout = vout_idx
         mn.collateral_address = node.getnewaddress()
         mn.rewards_address = node.getnewaddress()
@@ -267,7 +269,7 @@ class DIP3Test(WagerrTestFramework):
 
         rawtx = node.getrawtransaction(mn.collateral_txid, 1)
         for txout in rawtx['vout']:
-            if txout['value'] == Decimal(25000):
+            if txout['value'] == Decimal(MN_COLLATERAL):
                 mn.collateral_vout = txout['n']
                 break
         assert mn.collateral_vout is not None
@@ -276,14 +278,14 @@ class DIP3Test(WagerrTestFramework):
     def register_mn(self, node, mn):
         bls = node.bls('generate')
         mn.operatorAddr=bls['public']
-        mn.collateral_txid=node.sendtoaddress(mn.fundsAddr, 25000)
+        mn.collateral_txid=node.sendtoaddress(mn.fundsAddr, MN_COLLATERAL)
         node.generate(1)
         node.sendtoaddress(mn.fundsAddr, 0.001)
         node.generate(1)
         txraw = self.nodes[0].getrawtransaction(mn.collateral_txid, True)
         for vout_idx in range(0, len(txraw["vout"])):
             vout = txraw["vout"][vout_idx]
-            if vout["value"] == Decimal('25000'):
+            if vout["value"] == Decimal('MN_COLLATERAL'):
                 mn.collateral_vout = vout_idx
         #self.nodes[0].lockunspent(False, [{'txid': mn.collateral_txid, 'vout': mn.collateral_vout}])
         mn.rewards_address = node.getnewaddress()
@@ -303,7 +305,7 @@ class DIP3Test(WagerrTestFramework):
         self.sync_all()
 
     def spend_mn_collateral(self, mn, with_dummy_input_output=False):
-        return self.spend_input(mn.collateral_txid, mn.collateral_vout, 25000, with_dummy_input_output)
+        return self.spend_input(mn.collateral_txid, mn.collateral_vout, MN_COLLATERAL, with_dummy_input_output)
 
     def update_mn_payee(self, mn, payee):
         self.nodes[0].sendtoaddress(mn.fundsAddr, 0.001)
