@@ -246,7 +246,7 @@ class DIP3Test(WagerrTestFramework):
 
         rawtx = node.getrawtransaction(mn.collateral_txid, 1)
         for txout in rawtx['vout']:
-            if txout['value'] == Decimal(MN_COLLATERAL):
+            if txout['value'] == Decimal('25000'):
                 mn.collateral_vout = txout['n']
                 break
         assert mn.collateral_vout is not None
