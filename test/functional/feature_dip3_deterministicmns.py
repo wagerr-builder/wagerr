@@ -380,6 +380,7 @@ class DIP3Test(WagerrTestFramework):
         return dummy_txin
 
     def mine_block(self, node, vtx=[], miner_address=None, mn_payee=None, mn_amount=None, use_mnmerkleroot_from_tip=False, expected_error=None):
+        breakpoint()
         bt = node.getblocktemplate()
         height = bt['height']
         tip_hash = bt['previousblockhash']
