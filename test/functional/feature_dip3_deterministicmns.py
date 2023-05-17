@@ -386,6 +386,7 @@ class DIP3Test(WagerrTestFramework):
     def mine_block(self, node, vtx=[], miner_address=None, mn_payee=None, mn_amount=None, use_mnmerkleroot_from_tip=False, expected_error=None):
         #node.generate(1)
         #""" getblocktemplate does not work in POS
+        breakpoint()
         bt = node.getblocktemplate()
         height = bt['height']
         tip_hash = bt['previousblockhash']
