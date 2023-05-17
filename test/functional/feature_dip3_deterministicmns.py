@@ -386,8 +386,8 @@ class DIP3Test(WagerrTestFramework):
         return dummy_txin
 
     def mine_block(self, node, vtx=[], miner_address=None, mn_payee=None, mn_amount=None, use_mnmerkleroot_from_tip=False, expected_error=None):
-        #node.generate(1)
-        #""" getblocktemplate does not work in POS
+        node.generate(1)
+        """ getblocktemplate does not work in POS
         breakpoint()
         bt = node.getblocktemplate()
         height = bt['height']
@@ -471,7 +471,7 @@ class DIP3Test(WagerrTestFramework):
             raise AssertionError('mining the block should have failed with error %s, but submitblock returned %s' % (expected_error, result))
         elif expected_error is None and result is not None:
             raise AssertionError('submitblock returned %s' % (result))
-        #"""
+        """
     def mine_double_spend(self, node, txins, target_address, use_mnmerkleroot_from_tip=False):
         amount = Decimal(0)
         for txin in txins:
