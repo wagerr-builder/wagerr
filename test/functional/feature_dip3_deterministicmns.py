@@ -32,17 +32,6 @@ class DIP3Test(WagerrTestFramework):
         self.extra_args += ["-reservebalance=12000000"]
         self.extra_args += ["-addressindex"]
 
-    """
-        # define common arguments for all nodes
-        common_args = ["-budgetparams=10:10:10", "-dip3params=135:550", "-reservebalance=12000000", "-addressindex"]
-
-        # define extra arguments for the controller node
-        controller_args = ["-sporkkey=6xLZdACFRA53uyxz8gKDLcgVrm5kUUEu2B3BUzWUxHqa2W7irbH"]
-
-        # create a list of arguments for each node
-        self.extra_args = [common_args + controller_args] + [common_args] * (self.num_nodes - 1)
-    """
-
     def skip_test_if_missing_module(self):
         self.skip_if_no_wallet()
 
@@ -93,7 +82,6 @@ class DIP3Test(WagerrTestFramework):
         self.sync_blocks(self.nodes, timeout=120)
 
         # DIP3 is fully enforced here
-        #breakpoint()
         self.register_mn(self.nodes[0], before_dip3_mn)
         self.start_mn(before_dip3_mn)
 
@@ -286,7 +274,6 @@ class DIP3Test(WagerrTestFramework):
 
     # create a protx MN which refers to an existing collateral
     def register_mn(self, node, mn):
-        #breakpoint()
         bls = node.bls('generate')
         mn.operatorAddr=bls['public']
         mn.collateral_txid=node.sendtoaddress(mn.fundsAddr, 25000)
@@ -300,13 +287,11 @@ class DIP3Test(WagerrTestFramework):
                 mn.collateral_vout = vout_idx
         #self.nodes[0].lockunspent(False, [{'txid': mn.collateral_txid, 'vout': mn.collateral_vout}])
         mn.rewards_address = node.getnewaddress()
-        #breakpoint()
         mn.protx_hash = node.protx('register', mn.collateral_txid, mn.collateral_vout, '127.0.0.1:%d' % mn.p2p_port, mn.ownerAddr, mn.operatorAddr, mn.votingAddr, 0, mn.rewards_address, mn.fundsAddr)
         #mn.protx_hash = self.nodes[0].sendrawtransaction(proTxHash)
         node.generate(1)
 
     def start_mn(self, mn):
-        #breakpoint()
         if len(self.nodes) <= mn.idx:
             self.add_nodes(mn.idx - len(self.nodes) + 1)
             assert len(self.nodes) == mn.idx + 1
@@ -344,7 +329,6 @@ class DIP3Test(WagerrTestFramework):
         self.nodes[0].generate(1)
 
     def assert_mnlists(self, mns):
-        #breakpoint()
         for node in self.nodes:
             self.assert_mnlist(node, mns)
 
