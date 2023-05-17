@@ -69,10 +69,7 @@ class DIP3Test(WagerrTestFramework):
         self.create_mn_collateral(self.nodes[0], before_dip3_mn)
         mns.append(before_dip3_mn)
 
-        #set block 500 to DIp3 activation
-        #self.nodes[0].sporkupdate("SPORK_4_DIP0003_ENFORCED", 500)
-
-        # block 501 starts enforcing DIP3 MN payments
+        # block 151 starts enforcing DIP3 MN payments
         self.nodes[0].generate(150 - self.nodes[0].getblockcount())
         assert self.nodes[0].getblockcount() == 150
 
@@ -121,6 +118,11 @@ class DIP3Test(WagerrTestFramework):
 
             self.sync_all()
             self.assert_mnlists(mns)
+
+        # get to POS block
+        self.log.info("generate up to POS block")
+        self.nodes[0].generate(251 - self.nodes[0].getblockcount)
+        assert self.nodes[0].getblockcount() == 251
 
         self.log.info("test that MNs disappear from the list when the ProTx collateral is spent")
         spend_mns_count = 3
