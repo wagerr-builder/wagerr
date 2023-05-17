@@ -121,7 +121,7 @@ class DIP3Test(WagerrTestFramework):
 
         # get to POS block
         self.log.info("generate up to POS block")
-        self.nodes[0].generate(251 - self.nodes[0].getblockcount)
+        self.nodes[0].generate(251 - self.nodes[0].getblockcount())
         assert self.nodes[0].getblockcount() == 251
 
         self.log.info("test that MNs disappear from the list when the ProTx collateral is spent")
