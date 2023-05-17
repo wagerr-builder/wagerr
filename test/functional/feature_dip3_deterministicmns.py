@@ -302,7 +302,7 @@ class DIP3Test(WagerrTestFramework):
         if len(self.nodes) <= mn.idx:
             self.add_nodes(mn.idx - len(self.nodes) + 1)
             assert len(self.nodes) == mn.idx + 1
-        self.restart_node(mn.idx, extra_args = self.extra_args + ['-masternodeblsprivkey=%s' % mn.blsMnkey])
+        self.restart_node(mn.idx, extra_args = self.extra_args[mn.idx] + ['-masternodeblsprivkey=%s' % mn.blsMnkey])
         force_finish_mnsync(self.nodes[mn.idx])
         mn.node = self.nodes[mn.idx]
         connect_nodes(mn.node, 0)
