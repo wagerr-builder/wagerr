@@ -78,7 +78,6 @@ class DIP3Test(WagerrTestFramework):
 
         self.log.info("mining final block for DIP3 activation")
         self.nodes[0].generate(1)
-        breakpoint()
 
         # We have hundreds of blocks to sync here, give it more time
         self.log.info("syncing blocks for all nodes")
@@ -171,6 +170,7 @@ class DIP3Test(WagerrTestFramework):
         multisig = self.nodes[0].createmultisig(1, [addr1Obj['pubkey'], addr2Obj['pubkey']])['address']
         self.update_mn_payee(mns[0], multisig)
         found_multisig_payee = False
+        breakpoint()
         for _ in range(len(mns)):
             bt = self.nodes[0].getblocktemplate()
             expected_payee = bt['masternode'][0]['payee']
