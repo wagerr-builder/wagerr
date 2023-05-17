@@ -154,6 +154,7 @@ class DIP3Test(WagerrTestFramework):
             node = self.nodes[i % len(self.nodes)]
             self.test_invalid_mn_payment(node)
             self.nodes[0].generate(1)
+            connect_nodes(node, 0)
             self.sync_all()
 
         self.log.info("testing ProUpServTx")
