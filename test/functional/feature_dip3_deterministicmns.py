@@ -144,6 +144,7 @@ class DIP3Test(WagerrTestFramework):
         self.mine_double_spend(self.nodes[0], dummy_txins, self.nodes[0].getnewaddress(), use_mnmerkleroot_from_tip=True)
         self.nodes[0].generate(spend_mns_count)
         self.sync_all()
+        breakpoint()
         self.assert_mnlists(mns_tmp)
 
         self.log.info("test mn payment enforcement with deterministic MNs")
@@ -382,7 +383,6 @@ class DIP3Test(WagerrTestFramework):
         return dummy_txin
 
     def mine_block(self, node, vtx=[], miner_address=None, mn_payee=None, mn_amount=None, use_mnmerkleroot_from_tip=False, expected_error=None):
-        breakpoint()
         node.generate(1)
         """ getblocktemplate does not work in POS
         bt = node.getblocktemplate()
