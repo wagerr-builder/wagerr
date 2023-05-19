@@ -151,9 +151,9 @@ class DIP3Test(WagerrTestFramework):
         self.nodes[8].invalidateblock(self.nodes[8].getbestblockhash())
         self.nodes[9].invalidateblock(self.nodes[9].getbestblockhash())
         self.nodes[10].invalidateblock(self.nodes[10].getbestblockhash())
-        self.nodes[10].invalidateblock(self.nodes[11].getbestblockhash())
-        self.nodes[10].invalidateblock(self.nodes[12].getbestblockhash())
-        mns_tmp.append(mns[spend_mns_count - 1 - i])
+        self.nodes[11].invalidateblock(self.nodes[11].getbestblockhash())
+        self.nodes[12].invalidateblock(self.nodes[12].getbestblockhash())
+        mns_tmp.append(mns[spend_mns_count - 1])
         self.assert_mnlist(self.nodes[0], mns_tmp)
 
         """ needs getblocktemplate which does not work with POS
