@@ -136,14 +136,24 @@ class DIP3Test(WagerrTestFramework):
             mns_tmp.remove(mns[i])
             self.assert_mnlists(mns_tmp)
 
-        """ Block Reversion not propagates
+        """ Block Reversion not propagated """
         self.log.info("test that reverting the blockchain on a single node results in the mnlist to be reverted as well")
         for i in range(spend_mns_count):
             breakpoint()
             self.nodes[0].invalidateblock(self.nodes[0].getbestblockhash())
+            self.nodes[1].invalidateblock(self.nodes[1].getbestblockhash())
+            self.nodes[2].invalidateblock(self.nodes[2].getbestblockhash())
+            self.nodes[3].invalidateblock(self.nodes[3].getbestblockhash())
+            self.nodes[4].invalidateblock(self.nodes[4].getbestblockhash())
+            self.nodes[5].invalidateblock(self.nodes[5].getbestblockhash())
+            self.nodes[6].invalidateblock(self.nodes[6].getbestblockhash())
+            self.nodes[7].invalidateblock(self.nodes[7].getbestblockhash())
+            self.nodes[8].invalidateblock(self.nodes[8].getbestblockhash())
+            self.nodes[9].invalidateblock(self.nodes[9].getbestblockhash())
+            self.nodes[10].invalidateblock(self.nodes[10].getbestblockhash())
             mns_tmp.append(mns[spend_mns_count - 1 - i])
             self.assert_mnlist(self.nodes[0], mns_tmp)
-        """
+
         """ needs getblocktemplate which does not work with POS
         self.log.info("cause a reorg with a double spend and check that mnlists are still correct on all nodes")
         self.mine_double_spend(self.nodes[0], dummy_txins, self.nodes[0].getnewaddress(), use_mnmerkleroot_from_tip=True)
@@ -293,10 +303,8 @@ class DIP3Test(WagerrTestFramework):
             vout = txraw["vout"][vout_idx]
             if vout["value"] == Decimal('25000.00000000'):
                 mn.collateral_vout = vout_idx
-        #self.nodes[0].lockunspent(False, [{'txid': mn.collateral_txid, 'vout': mn.collateral_vout}])
         mn.rewards_address = node.getnewaddress()
         mn.protx_hash = node.protx('register', mn.collateral_txid, mn.collateral_vout, '127.0.0.1:%d' % mn.p2p_port, mn.ownerAddr, mn.operatorAddr, mn.votingAddr, 0, mn.rewards_address, mn.fundsAddr)
-        #mn.protx_hash = self.nodes[0].sendrawtransaction(proTxHash)
         node.generate(1)
 
     def start_mn(self, mn):
