@@ -285,8 +285,9 @@ class DIP3Test(WagerrTestFramework):
         breakpoint()
         #bls = node.bls('generate')
         #mn.operatorAddr=bls['public']
-        #mn.collateral_txid=node.sendtoaddress(mn.fundsAddr, MN_COLLATERAL)
-        #node.generate(1)
+        if node.index == 0:
+            mn.collateral_txid=node.sendtoaddress(mn.fundsAddr, MN_COLLATERAL)
+            node.generate(1)
         node.sendtoaddress(mn.fundsAddr, 0.001)
         node.generate(1)
         txraw = self.nodes[0].getrawtransaction(mn.collateral_txid, True)
