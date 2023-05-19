@@ -138,6 +138,7 @@ class DIP3Test(WagerrTestFramework):
 
         self.log.info("test that reverting the blockchain on a single node results in the mnlist to be reverted as well")
         for i in range(spend_mns_count):
+            breakpoint()
             self.nodes[0].invalidateblock(self.nodes[0].getbestblockhash())
             mns_tmp.append(mns[spend_mns_count - 1 - i])
             self.assert_mnlist(self.nodes[0], mns_tmp)
@@ -161,7 +162,6 @@ class DIP3Test(WagerrTestFramework):
         """
         self.log.info("testing ProUpServTx")
         for mn in mns:
-            breakpoint()
             self.test_protx_update_service(mn)
 
         self.log.info("testing P2SH/multisig for payee addresses")
@@ -321,7 +321,6 @@ class DIP3Test(WagerrTestFramework):
         assert info['state']['payoutAddress'] == payee
 
     def test_protx_update_service(self, mn):
-        breakpoint()
         self.nodes[0].sendtoaddress(mn.fundsAddr, 0.001)
         self.nodes[0].protx('update_service', mn.protx_hash, '127.0.0.2:%d' % mn.p2p_port, mn.blsMnkey, "", mn.fundsAddr)
         self.nodes[0].generate(1)
