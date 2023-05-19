@@ -125,7 +125,6 @@ class DIP3Test(WagerrTestFramework):
         assert self.nodes[0].getblockcount() == 251
 
         self.log.info("test that MNs disappear from the list when the ProTx collateral is spent")
-        breakpoint()
         spend_mns_count = 3
         mns_tmp = [] + mns
         dummy_txins = []
@@ -140,7 +139,6 @@ class DIP3Test(WagerrTestFramework):
         """ Block invalidation not propagated """
         self.log.info("test that reverting the blockchain on a single node results in the mnlist to be reverted as well")
         for i in range(spend_mns_count):
-            breakpoint()
             self.nodes[0].invalidateblock(self.nodes[0].getbestblockhash())
             self.nodes[1].invalidateblock(self.nodes[1].getbestblockhash())
             self.nodes[2].invalidateblock(self.nodes[2].getbestblockhash())
