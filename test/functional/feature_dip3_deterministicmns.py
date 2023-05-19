@@ -161,6 +161,7 @@ class DIP3Test(WagerrTestFramework):
         """
         self.log.info("testing ProUpServTx")
         for mn in mns:
+            breakpoint()
             self.test_protx_update_service(mn)
 
         self.log.info("testing P2SH/multisig for payee addresses")
