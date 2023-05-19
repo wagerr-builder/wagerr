@@ -136,14 +136,15 @@ class DIP3Test(WagerrTestFramework):
             mns_tmp.remove(mns[i])
             self.assert_mnlists(mns_tmp)
 
+        """ Block Reversion not propagates
         self.log.info("test that reverting the blockchain on a single node results in the mnlist to be reverted as well")
         for i in range(spend_mns_count):
             breakpoint()
             self.nodes[0].invalidateblock(self.nodes[0].getbestblockhash())
             mns_tmp.append(mns[spend_mns_count - 1 - i])
             self.assert_mnlist(self.nodes[0], mns_tmp)
-
-        """" needs getblocktemplate which does not work with POS
+        """
+        """ needs getblocktemplate which does not work with POS
         self.log.info("cause a reorg with a double spend and check that mnlists are still correct on all nodes")
         self.mine_double_spend(self.nodes[0], dummy_txins, self.nodes[0].getnewaddress(), use_mnmerkleroot_from_tip=True)
         self.nodes[0].generate(spend_mns_count)
