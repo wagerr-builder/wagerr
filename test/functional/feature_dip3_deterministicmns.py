@@ -282,12 +282,8 @@ class DIP3Test(WagerrTestFramework):
 
     # create a protx MN which refers to an existing collateral
     def register_mn(self, node, mn):
-        breakpoint()
-        #bls = node.bls('generate')
-        #mn.operatorAddr=bls['public']
-        if node.index == 0:
-            mn.collateral_txid=node.sendtoaddress(mn.fundsAddr, MN_COLLATERAL)
-            node.generate(1)
+        mn.collateral_txid=node.sendtoaddress(mn.fundsAddr, MN_COLLATERAL)
+        node.generate(1)
         node.sendtoaddress(mn.fundsAddr, 0.001)
         node.generate(1)
         txraw = self.nodes[0].getrawtransaction(mn.collateral_txid, True)
@@ -324,6 +320,7 @@ class DIP3Test(WagerrTestFramework):
         assert info['state']['payoutAddress'] == payee
 
     def test_protx_update_service(self, mn):
+        breakpoint()
         self.nodes[0].sendtoaddress(mn.fundsAddr, 0.001)
         self.nodes[0].protx('update_service', mn.protx_hash, '127.0.0.2:%d' % mn.p2p_port, mn.blsMnkey, "", mn.fundsAddr)
         self.nodes[0].generate(1)
