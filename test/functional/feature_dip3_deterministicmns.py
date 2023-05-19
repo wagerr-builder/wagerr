@@ -322,6 +322,7 @@ class DIP3Test(WagerrTestFramework):
         assert info['state']['payoutAddress'] == payee
 
     def test_protx_update_service(self, mn):
+        breakpoint()
         self.nodes[0].sendtoaddress(mn.fundsAddr, 0.001)
         self.nodes[0].protx('update_service', mn.protx_hash, '127.0.0.2:%d' % mn.p2p_port, mn.blsMnkey, "", mn.fundsAddr)
         self.nodes[0].generate(1)
