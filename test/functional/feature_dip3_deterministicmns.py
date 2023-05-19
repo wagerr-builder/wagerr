@@ -125,6 +125,7 @@ class DIP3Test(WagerrTestFramework):
         assert self.nodes[0].getblockcount() == 251
 
         self.log.info("test that MNs disappear from the list when the ProTx collateral is spent")
+        breakpoint()
         spend_mns_count = 3
         mns_tmp = [] + mns
         dummy_txins = []
