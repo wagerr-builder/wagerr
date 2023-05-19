@@ -282,6 +282,7 @@ class DIP3Test(WagerrTestFramework):
 
     # create a protx MN which refers to an existing collateral
     def register_mn(self, node, mn):
+        breakpoint()
         bls = node.bls('generate')
         mn.operatorAddr=bls['public']
         mn.collateral_txid=node.sendtoaddress(mn.fundsAddr, MN_COLLATERAL)
