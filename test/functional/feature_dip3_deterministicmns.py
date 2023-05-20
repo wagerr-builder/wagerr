@@ -142,6 +142,8 @@ class DIP3Test(WagerrTestFramework):
             mns_tmp.append(mns[spend_mns_count - 1 - i])
             self.assert_mnlist(self.nodes[0], mns_tmp)
         self.restart_node(0, extra_args = self.extra_args)
+        for n in range(self.num_nodes -1 ):
+            connect_nodes(self.nodes[0], (n+1))
 
         """ needs getblocktemplate which does not work with POS
         self.log.info("cause a reorg with a double spend and check that mnlists are still correct on all nodes")
@@ -323,6 +325,7 @@ class DIP3Test(WagerrTestFramework):
         self.nodes[0].protx('update_service', mn.protx_hash, '127.0.0.2:%d' % mn.p2p_port, mn.blsMnkey, "", mn.fundsAddr)
         self.nodes[0].generate(1)
         breakpoint()
+        self.restart_node(0, extra_args = self.extra_args)
         self.sync_all()
         for node in self.nodes:
             protx_info = node.protx('info', mn.protx_hash)
