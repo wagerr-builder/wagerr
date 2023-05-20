@@ -327,6 +327,8 @@ class DIP3Test(WagerrTestFramework):
         self.nodes[0].generate(1)
         breakpoint()
         self.restart_node(0, extra_args = self.extra_args)
+        for n in range(self.num_nodes -1 ):
+            connect_nodes(self.nodes[0], (n+1))
         self.sync_all()
         for node in self.nodes:
             protx_info = node.protx('info', mn.protx_hash)
