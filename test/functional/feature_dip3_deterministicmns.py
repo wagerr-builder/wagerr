@@ -162,7 +162,7 @@ class DIP3Test(WagerrTestFramework):
             self.sync_all()
         """
         self.log.info("testing ProUpServTx")
-        for mn in mns:
+        for mn in mns_tmp:
             self.test_protx_update_service(mn)
 
         self.log.info("testing P2SH/multisig for payee addresses")
