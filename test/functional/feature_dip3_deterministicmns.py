@@ -136,24 +136,11 @@ class DIP3Test(WagerrTestFramework):
             mns_tmp.remove(mns[i])
             self.assert_mnlists(mns_tmp)
 
-        """ Block invalidation not propagated """
         self.log.info("test that reverting the blockchain on a single node results in the mnlist to be reverted as well")
         for i in range(spend_mns_count):
             self.nodes[0].invalidateblock(self.nodes[0].getbestblockhash())
-            self.nodes[1].invalidateblock(self.nodes[1].getbestblockhash())
-            self.nodes[2].invalidateblock(self.nodes[2].getbestblockhash())
-            self.nodes[3].invalidateblock(self.nodes[3].getbestblockhash())
-            self.nodes[4].invalidateblock(self.nodes[4].getbestblockhash())
-            self.nodes[5].invalidateblock(self.nodes[5].getbestblockhash())
-            self.nodes[6].invalidateblock(self.nodes[6].getbestblockhash())
-            self.nodes[7].invalidateblock(self.nodes[7].getbestblockhash())
-            self.nodes[8].invalidateblock(self.nodes[8].getbestblockhash())
-            self.nodes[9].invalidateblock(self.nodes[9].getbestblockhash())
-            self.nodes[10].invalidateblock(self.nodes[10].getbestblockhash())
-            self.nodes[11].invalidateblock(self.nodes[11].getbestblockhash())
-            self.nodes[12].invalidateblock(self.nodes[12].getbestblockhash())
-        #mns_tmp.append(mns[spend_mns_count - 1])
-        #self.assert_mnlist(self.nodes[0], mns_tmp)
+            mns_tmp.append(mns[spend_mns_count - 1 - i])
+            self.assert_mnlist(self.nodes[0], mns_tmp)
 
         """ needs getblocktemplate which does not work with POS
         self.log.info("cause a reorg with a double spend and check that mnlists are still correct on all nodes")
