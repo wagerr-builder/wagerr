@@ -142,6 +142,7 @@ class DIP3Test(WagerrTestFramework):
             mns_tmp.append(mns[spend_mns_count - 1 - i])
             self.assert_mnlist(self.nodes[0], mns_tmp)
         self.restart_node(0, extra_args = self.extra_args)
+        breakpoint()
         for n in range(self.num_nodes -1 ):
             connect_nodes(self.nodes[0], (n+1))
 
