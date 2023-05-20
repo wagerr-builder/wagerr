@@ -332,6 +332,7 @@ class DIP3Test(WagerrTestFramework):
             protx_info = node.protx('info', mn.protx_hash)
             mn_list = node.masternodelist('status')
             assert_equal(protx_info['state']['service'], '127.0.0.2:%d' % mn.p2p_port)
+            breakpoint()
             assert_equal(mn_list['%s-%d' % (mn.collateral_txid, mn.collateral_vout)]['address'], '127.0.0.2:%d' % mn.p2p_port)
 
         # undo
