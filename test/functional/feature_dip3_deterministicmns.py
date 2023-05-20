@@ -137,11 +137,11 @@ class DIP3Test(WagerrTestFramework):
             self.assert_mnlists(mns_tmp)
 
         self.log.info("test that reverting the blockchain on a single node results in the mnlist to be reverted as well")
+        breakpoint()
         for i in range(spend_mns_count):
             self.nodes[0].invalidateblock(self.nodes[0].getbestblockhash())
             mns_tmp.append(mns[spend_mns_count - 1 - i])
             self.assert_mnlist(self.nodes[0], mns_tmp)
-        breakpoint()
         self.restart_node(0, extra_args = self.extra_args)
 
         """ needs getblocktemplate which does not work with POS
