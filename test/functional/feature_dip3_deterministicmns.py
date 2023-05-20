@@ -141,8 +141,8 @@ class DIP3Test(WagerrTestFramework):
             self.nodes[0].invalidateblock(self.nodes[0].getbestblockhash())
             mns_tmp.append(mns[spend_mns_count - 1 - i])
             self.assert_mnlist(self.nodes[0], mns_tmp)
-            breakpoint()
-            self.restart_node(mn.idx, extra_args = self.extra_args + ['-masternodeblsprivkey=%s' % mn.blsMnkey])
+        breakpoint()
+        self.restart_node(0)
 
         """ needs getblocktemplate which does not work with POS
         self.log.info("cause a reorg with a double spend and check that mnlists are still correct on all nodes")
