@@ -142,6 +142,7 @@ class DIP3Test(WagerrTestFramework):
                 self.nodes[j].invalidateblock(self.nodes[j].getbestblockhash())
             mns_tmp.append(mns[spend_mns_count - 1 - i])
             self.assert_mnlist(self.nodes[0], mns_tmp)
+        breakpoint()
         self.restart_node(0, extra_args = self.extra_args)
         for n in range(self.num_nodes - 1 ):
             connect_nodes(self.nodes[0], (n+1))
@@ -165,7 +166,6 @@ class DIP3Test(WagerrTestFramework):
         """
         self.log.info("testing ProUpServTx")
         for mn in mns:
-            breakpoint()
             self.test_protx_update_service(mn)
 
         self.log.info("testing P2SH/multisig for payee addresses")
