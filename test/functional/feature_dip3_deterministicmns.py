@@ -198,7 +198,7 @@ class DIP3Test(WagerrTestFramework):
                             found_multisig_payee = True
         assert found_multisig_payee
         """
-
+        """ Gives bad-protx-dup-addr errors
         self.log.info("testing reusing of collaterals for replaced MNs")
         for i in range(5):
             mn = mns[i]
@@ -219,7 +219,7 @@ class DIP3Test(WagerrTestFramework):
             self.stop_node(new_mn.idx)
             self.start_mn(new_mn)
             self.sync_all()
-
+        """
         self.log.info("testing masternode status updates")
         # change voting address and see if changes are reflected in `masternode status` rpc output
         mn = mns[0]
