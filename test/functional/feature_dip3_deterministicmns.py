@@ -170,6 +170,7 @@ class DIP3Test(WagerrTestFramework):
         for mn in mns:
             self.test_protx_update_service(mn)
 
+        """ uses getblocktemplate which doesn't work in POS
         self.log.info("testing P2SH/multisig for payee addresses")
 
         # Create 1 of 2 multisig
@@ -196,6 +197,7 @@ class DIP3Test(WagerrTestFramework):
                         if expected_payee in out['scriptPubKey']['addresses'] and out['valueSat'] == expected_amount:
                             found_multisig_payee = True
         assert found_multisig_payee
+        """
 
         self.log.info("testing reusing of collaterals for replaced MNs")
         for i in range(5):
