@@ -143,9 +143,9 @@ class DIP3Test(WagerrTestFramework):
             mns_tmp.append(mns[spend_mns_count - 1 - i])
             self.assert_mnlist(self.nodes[0], mns_tmp)
         breakpoint()
-        self.restart_node(0, extra_args = self.extra_args)
-        for n in range(self.num_nodes - 1 ):
-            connect_nodes(self.nodes[0], (n+1))
+        #self.restart_node(0, extra_args = self.extra_args)
+        #for n in range(self.num_nodes - 1 ):
+        #    connect_nodes(self.nodes[0], (n+1))
 
         """ needs getblocktemplate which does not work with POS
         self.log.info("cause a reorg with a double spend and check that mnlists are still correct on all nodes")
@@ -354,7 +354,6 @@ class DIP3Test(WagerrTestFramework):
             raise AssertionError("mnlists does not match provided mns")
 
     def compare_mnlist(self, node, mns):
-        breakpoint()
         mnlist = node.masternodelist('status')
         for mn in mns:
             s = '%s-%d' % (mn.collateral_txid, mn.collateral_vout)
