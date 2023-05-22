@@ -208,6 +208,7 @@ class DIP3Test(WagerrTestFramework):
             new_mn.collateral_address = mn.collateral_address
             new_mn.collateral_txid = mn.collateral_txid
             new_mn.collateral_vout = mn.collateral_vout
+            breakpoint()
 
             self.register_mn(self.nodes[0], new_mn)
             mns[i] = new_mn
