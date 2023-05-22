@@ -887,7 +887,7 @@ class WagerrTestFramework(WagerrTestFramework):
         txraw = self.nodes[0].getrawtransaction(txid, True)
         for vout_idx in range(0, len(txraw["vout"])):
             vout = txraw["vout"][vout_idx]
-            if vout["value"] == Decimal(MASTERNODE_COLLATERAL)
+            if vout["value"] == Decimal(MASTERNODE_COLLATERAL):
                 collateral_vout = vout_idx
         #self.nodes[0].lockunspent(False, [{'txid': txid, 'vout': collateral_vout}])
 
