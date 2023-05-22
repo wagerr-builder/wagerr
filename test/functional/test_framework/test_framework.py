@@ -57,6 +57,8 @@ from .util import (
     assert_raises_rpc_error,
 )
 
+from decimal import Decimal
+
 WAGERR_AUTH_ADDR = "TDn9ZfHrYvRXyXC6KxRgN6ZRXgJH2JKZWe"
 
 class TestStatus(Enum):
@@ -885,7 +887,7 @@ class WagerrTestFramework(WagerrTestFramework):
         txraw = self.nodes[0].getrawtransaction(txid, True)
         for vout_idx in range(0, len(txraw["vout"])):
             vout = txraw["vout"][vout_idx]
-            if vout["value"] == MASTERNODE_COLLATERAL:
+            if vout["value"] == Decimal(MASTERNODE_COLLATERAL)
                 collateral_vout = vout_idx
         #self.nodes[0].lockunspent(False, [{'txid': txid, 'vout': collateral_vout}])
 
