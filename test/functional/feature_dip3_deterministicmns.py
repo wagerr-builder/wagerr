@@ -124,7 +124,7 @@ class DIP3Test(WagerrTestFramework):
         self.nodes[0].generate(251 - self.nodes[0].getblockcount())
         assert self.nodes[0].getblockcount() == 251
 
-        """ Reversion of blocks doesn't give the expected output
+        """ Reversion of blocks doesn't give the expected output on next generate command the 3 reverted masternodes are lost from the masternodelist
         self.log.info("test that MNs disappear from the list when the ProTx collateral is spent")
         spend_mns_count = 3
         mns_tmp = [] + mns
@@ -143,7 +143,6 @@ class DIP3Test(WagerrTestFramework):
                 self.nodes[j].invalidateblock(self.nodes[j].getbestblockhash())
             mns_tmp.append(mns[spend_mns_count - 1 - i])
             self.assert_mnlist(self.nodes[0], mnlist = node.masternodelist('status'))
-        breakpoint()
         #self.restart_node(0, extra_args = self.extra_args)
         #for n in range(self.num_nodes - 1 ):
         #    connect_nodes(self.nodes[0], (n+1))
@@ -162,7 +161,6 @@ class DIP3Test(WagerrTestFramework):
             node = self.nodes[i % len(self.nodes)]
             self.test_invalid_mn_payment(node)
             self.nodes[0].generate(1)
-            breakpoint()
             connect_nodes(node, 0)
             self.sync_all()
         """
@@ -208,7 +206,6 @@ class DIP3Test(WagerrTestFramework):
             new_mn.collateral_address = mn.collateral_address
             new_mn.collateral_txid = mn.collateral_txid
             new_mn.collateral_vout = mn.collateral_vout
-            breakpoint()
 
             self.register_mn(self.nodes[0], new_mn)
             mns[i] = new_mn
