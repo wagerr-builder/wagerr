@@ -876,7 +876,11 @@ class WagerrTestFramework(WagerrTestFramework):
 
         txid = None
         txid = self.nodes[0].sendtoaddress(address, MASTERNODE_COLLATERAL)
-        collateral_vout = 0
+        self.nodes[0].generate(1)
+        # end
+        # send to same address to reserve some funds for fees
+        self.nodes[0].sendtoaddress(address, 0.001)
+        self.nodes[0].generate(1)
         #if not register_fund:
         txraw = self.nodes[0].getrawtransaction(txid, True)
         for vout_idx in range(0, len(txraw["vout"])):
@@ -884,9 +888,6 @@ class WagerrTestFramework(WagerrTestFramework):
             if vout["value"] == MASTERNODE_COLLATERAL:
                 collateral_vout = vout_idx
         #self.nodes[0].lockunspent(False, [{'txid': txid, 'vout': collateral_vout}])
-        # end
-        # send to same address to reserve some funds for fees
-        self.nodes[0].sendtoaddress(address, 0.001)
 
         ownerAddr = self.nodes[0].getnewaddress()
         # votingAddr = self.nodes[0].getnewaddress()
