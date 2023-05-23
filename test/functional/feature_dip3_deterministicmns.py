@@ -299,6 +299,7 @@ class DIP3Test(WagerrTestFramework):
             if vout["value"] == Decimal('25000.00000000'):
                 mn.collateral_vout = vout_idx
         mn.rewards_address = node.getnewaddress()
+        breakpoint()
         mn.protx_hash = node.protx('register', mn.collateral_txid, mn.collateral_vout, '127.0.0.1:%d' % mn.p2p_port, mn.ownerAddr, mn.operatorAddr, mn.votingAddr, 0, mn.rewards_address, mn.fundsAddr)
         node.generate(1)
 
