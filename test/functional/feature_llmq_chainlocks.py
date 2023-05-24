@@ -18,7 +18,7 @@ from test_framework.util import connect_nodes, force_finish_mnsync, isolate_node
 
 class LLMQChainLocksTest(WagerrTestFramework):
     def set_test_params(self):
-        extra_args = ["-sporkkey=6xLZdACFRA53uyxz8gKDLcgVrm5kUUEu2B3BUzWUxHqa2W7irbH"]
+        extra_args = ["-sporkkey=6xLZdACFRA53uyxz8gKDLcgVrm5kUUEu2B3BUzWUxHqa2W7irbH"] * 4
         self.set_wagerr_test_params(4, 3, extra_args=extra_args, fast_dip3_enforcement=False)
 
 
