@@ -1015,7 +1015,6 @@ class WagerrTestFramework(WagerrTestFramework):
         self.log.info("Activating DIP3")
 
         spork4height=150
-        breakpoint()
         if not self.fast_dip3_enforcement:
             #spork4height = self.nodes[0].getblockcount() + 1
             self.nodes[0].sporkupdate("SPORK_4_DIP0003_ENFORCED", self.nodes[0].getblockcount() + 1)
