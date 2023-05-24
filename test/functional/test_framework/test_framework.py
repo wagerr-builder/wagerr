@@ -1339,6 +1339,7 @@ class WagerrTestFramework(WagerrTestFramework):
     def mine_quorum(self, llmq_type_name="llmq_test", llmq_type=100, expected_connections=None, expected_members=None, expected_contributions=None, expected_complaints=0, expected_justifications=0, expected_commitments=None, mninfos_online=None, mninfos_valid=None):
         spork21_active = self.nodes[0].spork('show')['SPORK_21_QUORUM_ALL_CONNECTED'] <= 1
         spork23_active = self.nodes[0].spork('show')['SPORK_23_QUORUM_POSE'] <= 1
+        breakpoint()
 
         if expected_connections is None:
             expected_connections = (self.llmq_size - 1) if spork21_active else 2
