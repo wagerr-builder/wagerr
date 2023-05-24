@@ -910,8 +910,7 @@ class WagerrTestFramework(WagerrTestFramework):
             self.nodes[0].generate(1)
             protx_result = self.nodes[0].protx('register', txid, collateral_vout, ipAndPort, ownerAddr, bls['public'], votingAddr, operatorReward, rewardsAddr, address, submit)
         """
-        self.nodes[0].generate(40)
-        breakpoint()
+        self.nodes[0].generate(11)
         protx_result = self.nodes[0].protx('register', txid, collateral_vout, ipAndPort, ownerAddr, bls['public'], votingAddr, operatorReward, rewardsAddr, address, submit)
 
         if submit:
@@ -1014,7 +1013,7 @@ class WagerrTestFramework(WagerrTestFramework):
 
         self.log.info("Activating DIP3")
 
-        spork4height=150
+        spork4height=500
         if not self.fast_dip3_enforcement:
             #spork4height = self.nodes[0].getblockcount() + 1
             self.nodes[0].sporkupdate("SPORK_4_DIP0003_ENFORCED", self.nodes[0].getblockcount() + 1)
