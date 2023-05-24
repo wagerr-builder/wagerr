@@ -911,6 +911,7 @@ class WagerrTestFramework(WagerrTestFramework):
             protx_result = self.nodes[0].protx('register', txid, collateral_vout, ipAndPort, ownerAddr, bls['public'], votingAddr, operatorReward, rewardsAddr, address, submit)
         """
         self.nodes[0].generate(100)
+        time.sleep(10)
         protx_result = self.nodes[0].protx('register', txid, collateral_vout, ipAndPort, ownerAddr, bls['public'], votingAddr, operatorReward, rewardsAddr, address, submit)
 
         if submit:
