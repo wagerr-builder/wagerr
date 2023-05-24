@@ -1255,7 +1255,7 @@ class WagerrTestFramework(WagerrTestFramework):
             all_ok = True
             member_count = 0
             for mn in mninfos:
-                s = mn.node.quorum("dkgstatus")["session"]
+                s = mn.node.quorum("dkgstatus")
                 mn_ok = True
                 for qs in s:
                     if qs["llmqType"] != llmq_type_name:
