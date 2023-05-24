@@ -870,7 +870,6 @@ class WagerrTestFramework(WagerrTestFramework):
         self.sync_all()
 
     def prepare_masternode(self, idx, rewardsAddr=None):
-        breakpoint()
         register_fund = (idx % 2) == 0
 
         bls = self.nodes[0].bls('generate')
