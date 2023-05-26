@@ -915,7 +915,7 @@ class WagerrTestFramework(WagerrTestFramework):
         self.nodes[0].generate(100)
 
         protx_result = self.nodes[0].protx('register', txid, collateral_vout, ipAndPort, ownerAddr, bls['public'], votingAddr, operatorReward, rewardsAddr, address, submit)
-
+        generate(100)
         if submit:
             proTxHash = protx_result
         else:
@@ -929,7 +929,6 @@ class WagerrTestFramework(WagerrTestFramework):
 
         self.mninfo.append(MasternodeInfo(proTxHash, ownerAddr, votingAddr, bls['public'], bls['secret'], address, txid, collateral_vout))
         # self.sync_all()
-
         self.log.info("Prepared masternode %d: collateral_txid=%s, collateral_vout=%d, protxHash=%s" % (idx, txid, collateral_vout, proTxHash))
 
     def remove_masternode(self, idx):
