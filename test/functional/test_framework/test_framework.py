@@ -1258,11 +1258,11 @@ class WagerrTestFramework(WagerrTestFramework):
                 s = mn.node.quorum("dkgstatus")["session"]
                 mn_ok = True
                 for qs in s:
-                    self.log.info("qs llmqtype %s: " % (qs["llmqtype"]))
+                    self.log.info("qs llmqtype %s: " % (qs["llmqType"]))
                     if qs["llmqType"] != llmq_type_name:
                         continue
                     qstatus = qs["status"]
-                    self.log.info("qs quorum hash %s: quorum hash %s" % (qs["quorumHash"], quorum_hash))
+                    self.log.info("qs quorum hash %s: quorum hash %s" % (qstatus["quorumHash"], quorum_hash))
                     if qstatus["quorumHash"] != quorum_hash:
                         continue
                     member_count += 1
