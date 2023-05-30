@@ -1258,8 +1258,7 @@ class WagerrTestFramework(WagerrTestFramework):
                 s = mn.node.quorum("dkgstatus")["session"]
                 mn_ok = True
                 for qs in s:
-                    breakpoint()
-                    self.log.info("qs llmqtype %s: " % (qs["llmqType"]))
+                    #breakpoint()
                     if qs["llmqType"] != llmq_type_name:
                         continue
                     qstatus = qs["status"]
