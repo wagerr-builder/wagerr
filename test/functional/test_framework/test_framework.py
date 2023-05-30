@@ -1311,7 +1311,6 @@ class WagerrTestFramework(WagerrTestFramework):
     def wait_for_quorum_list(self, quorum_hash, nodes, timeout=15, sleep=2, llmq_type_name="llmq_test"):
         self.nodes[0].sporkupdate("SPORK_4_DIP0003_ENFORCED", 10)
         def wait_func():
-            self.log.info("quorums: " + str(self.nodes[0].quorum("list")))
             if quorum_hash in self.nodes[0].quorum("list")[llmq_type_name]:
                 return True
             self.bump_mocktime(sleep, nodes=nodes)
