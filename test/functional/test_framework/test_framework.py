@@ -1282,6 +1282,7 @@ class WagerrTestFramework(WagerrTestFramework):
             if all_ok and member_count != expected_member_count:
                 return False
             return all_ok
+        breakpoint()
         wait_until(check_dkg_session, timeout=timeout, sleep=sleep)
 
     def wait_for_quorum_commitment(self, quorum_hash, nodes, llmq_type=100, timeout=15):
