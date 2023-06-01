@@ -1261,6 +1261,7 @@ class WagerrTestFramework(WagerrTestFramework):
                     if qs["llmqType"] != llmq_type_name:
                         continue
                     qstatus = qs["status"]
+                    self.log.info("New quorum: quorumHash=%s, expected=%s" % (qstatus["quorumHash"], quorum_hash))
                     if qstatus["quorumHash"] != quorum_hash:
                         continue
                     member_count += 1
