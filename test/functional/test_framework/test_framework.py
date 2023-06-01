@@ -1371,6 +1371,7 @@ class WagerrTestFramework(WagerrTestFramework):
         self.sync_blocks(nodes)
 
         q = self.nodes[0].getbestblockhash()
+        breakpoint()
         self.log.info("Expected quorum_hash:"+str(q))
         self.log.info("Waiting for phase 1 (init)")
         self.wait_for_quorum_phase(q, 1, expected_members, None, 0, mninfos_online, llmq_type_name=llmq_type_name)
