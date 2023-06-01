@@ -1256,13 +1256,12 @@ class WagerrTestFramework(WagerrTestFramework):
             member_count = 0
             for mn in mninfos:
                 s = mn.node.quorum("dkgstatus")["session"]
-                breakpoint()
                 mn_ok = True
                 for qs in s:
-                    #breakpoint()
                     if qs["llmqType"] != llmq_type_name:
                         continue
                     qstatus = qs["status"]
+                    self.log.info("New quorum: quorumHash=%s, expected=%s" % (qstatus["quorumHash"], quorum_hash))
                     if qstatus["quorumHash"] != quorum_hash:
                         continue
                     member_count += 1
@@ -1283,7 +1282,6 @@ class WagerrTestFramework(WagerrTestFramework):
             if all_ok and member_count != expected_member_count:
                 return False
             return all_ok
-        #breakpoint()
         wait_until(check_dkg_session, timeout=timeout, sleep=sleep)
 
     def wait_for_quorum_commitment(self, quorum_hash, nodes, llmq_type=100, timeout=15):
