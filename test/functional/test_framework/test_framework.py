@@ -1282,6 +1282,7 @@ class WagerrTestFramework(WagerrTestFramework):
             if all_ok and member_count != expected_member_count:
                 return False
             return all_ok
+        breakpoint()
         wait_until(check_dkg_session, timeout=timeout, sleep=sleep)
 
     def wait_for_quorum_commitment(self, quorum_hash, nodes, llmq_type=100, timeout=15):
@@ -1371,7 +1372,6 @@ class WagerrTestFramework(WagerrTestFramework):
         self.sync_blocks(nodes)
 
         q = self.nodes[0].getbestblockhash()
-        breakpoint()
         self.log.info("Current Quorum Hashes : %s", self.nodes[0].quorum('list'))
         self.log.info("Expected quorum_hash:"+str(q))
         self.log.info("Waiting for phase 1 (init)")
