@@ -37,13 +37,8 @@ class LLMQChainLocksTest(WagerrTestFramework):
                 self.nodes[i].sporkupdate("SPORK_21_QUORUM_ALL_CONNECTED", 1)
                 self.nodes[i].sporkupdate("SPORK_23_QUORUM_POSE", 1)
 
-        self.activate_dip8()
-
-        self.nodes[0].sporkupdate("SPORK_4_DIP0003_ENFORCED", 1)
-        self.nodes[0].sporkupdate("SPORK_17_QUORUM_DKG_ENABLED", 1)
-        self.nodes[0].sporkupdate("SPORK_21_QUORUM_ALL_CONNECTED", 1)
-        self.nodes[0].sporkupdate("SPORK_23_QUORUM_POSE", 1)
         self.wait_for_sporks_same()
+        self.activate_dip8()
 
         self.log.info("Mining 4 quorums")
         for i in range(4):
