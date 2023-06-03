@@ -1261,7 +1261,7 @@ class WagerrTestFramework(WagerrTestFramework):
                     if qs["llmqType"] != llmq_type_name:
                         continue
                     qstatus = qs["status"]
-                    #self.log.info("New quorum: quorumHash=%s, expected=%s" % (qstatus["quorumHash"], quorum_hash))
+                    self.log.info("New quorum: quorumHash=%s, expected=%s" % (qstatus["quorumHash"], quorum_hash))
                     if qstatus["quorumHash"] != quorum_hash:
                         continue
                     member_count += 1
@@ -1282,7 +1282,6 @@ class WagerrTestFramework(WagerrTestFramework):
             if all_ok and member_count != expected_member_count:
                 return False
             return all_ok
-        breakpoint()
         wait_until(check_dkg_session, timeout=timeout, sleep=sleep)
 
     def wait_for_quorum_commitment(self, quorum_hash, nodes, llmq_type=100, timeout=15):
@@ -1372,8 +1371,6 @@ class WagerrTestFramework(WagerrTestFramework):
         self.sync_blocks(nodes)
 
         q = self.nodes[0].getbestblockhash()
-        self.log.info("Current Quorum Hashes : %s", self.nodes[0].quorum('list'))
-        self.log.info("Expected quorum_hash:"+str(q))
         self.log.info("Waiting for phase 1 (init)")
         self.wait_for_quorum_phase(q, 1, expected_members, None, 0, mninfos_online, llmq_type_name=llmq_type_name)
         self.wait_for_quorum_connections(q, expected_connections, nodes, wait_proc=lambda: self.bump_mocktime(1, nodes=nodes), llmq_type_name=llmq_type_name)
