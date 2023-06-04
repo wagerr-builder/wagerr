@@ -19,7 +19,7 @@ class NotificationsTest(WagerrTestFramework):
         self.num_nodes = 2
         self.setup_clean_chain = True
         self.mn_count = 0
-        self.fast_dip3_enforcement = False
+        self.fast_dip3_enforcement = True
         self.extra_args = [["-debug"], ["-debug"]]
 
     def setup_network(self):
