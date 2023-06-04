@@ -42,6 +42,7 @@ class NotificationsTest(WagerrTestFramework):
     def run_test(self):
         self.log.info("test -blocknotify")
         block_count = 10
+        breakpoint()
         blocks = self.nodes[1].generate(block_count)
 
         # wait at most 10 seconds for expected number of files before reading the content
