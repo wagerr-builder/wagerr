@@ -51,9 +51,8 @@ class NotificationsTest(WagerrTestFramework):
         newblock = []
         for i in range(self.nodes[0].getblockcount() + 1):
             newblock.append(self.nodes[1].getblockhash(i)
-        blocks = newblock
         # directory content should equal the generated blocks hashes
-        assert_equal(sorted(blocks), sorted(os.listdir(self.blocknotify_dir)))
+        assert_equal(sorted(newblock), sorted(os.listdir(self.blocknotify_dir)))
 
         if self.is_wallet_compiled():
             self.log.info("test -walletnotify")
