@@ -72,12 +72,10 @@ class NotificationsTest(WagerrTestFramework):
             # restart node to rescan to force wallet notifications
             self.start_node(0)
             connect_nodes(self.nodes[1], 0)
-            breakpoint()
-
             wait_until(lambda: len(os.listdir(self.walletnotify_dir)) == block_count, timeout=10)
 
             # directory content should equal the generated transaction hashes
-            txids_rpc = list(map(lambda t: t['txid'], self.nodes[1].listtransactions("*", block_count)))
+            txids_rpc = list(map(lambda t: t['txid'], self.nodes[0].listtransactions("*", block_count)))
             assert_equal(sorted(txids_rpc), sorted(os.listdir(self.walletnotify_dir)))
 
         # TODO: add test for `-alertnotify` large fork notifications
