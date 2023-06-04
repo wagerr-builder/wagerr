@@ -51,12 +51,12 @@ class NotificationsTest(WagerrTestFramework):
         for i in range(1, self.nodes[1].getblockcount() + 1):
             blocks.append(self.nodes[1].getblockhash(i))
         # directory content should equal the generated blocks hashes
-        breakpoint()
         assert_equal(sorted(blocks), sorted(os.listdir(self.blocknotify_dir)))
 
         if self.is_wallet_compiled():
             self.log.info("test -walletnotify")
             # wait at most 10 seconds for expected number of files before reading the content
+            breakpoint()
             wait_until(lambda: len(os.listdir(self.walletnotify_dir)) == block_count, timeout=10)
 
             # directory content should equal the generated transaction hashes
