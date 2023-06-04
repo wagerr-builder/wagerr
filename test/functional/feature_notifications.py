@@ -34,6 +34,7 @@ class NotificationsTest(WagerrTestFramework):
         self.extra_args = [[
                             "-alertnotify=echo > {}".format(os.path.join(self.alertnotify_dir, '%s')),
                             "-blocknotify=echo > {}".format(os.path.join(self.blocknotify_dir, '%s')),
+                            "-rescan",
                             "-walletnotify=echo > {}".format(os.path.join(self.walletnotify_dir, '%s'))],
                            ["-blockversion=211",
                             "-rescan",
