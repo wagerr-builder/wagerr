@@ -33,7 +33,8 @@ class NotificationsTest(WagerrTestFramework):
         # -alertnotify and -blocknotify on node0, walletnotify on node1
         self.extra_args = [[
                             "-alertnotify=echo > {}".format(os.path.join(self.alertnotify_dir, '%s')),
-                            "-blocknotify=echo > {}".format(os.path.join(self.blocknotify_dir, '%s'))],
+                            "-blocknotify=echo > {}".format(os.path.join(self.blocknotify_dir, '%s')),
+                            "-walletnotify=echo > {}".format(os.path.join(self.walletnotify_dir, '%s'))],
                            ["-blockversion=211",
                             "-rescan",
                             "-walletnotify=echo > {}".format(os.path.join(self.walletnotify_dir, '%s'))]]
@@ -60,7 +61,7 @@ class NotificationsTest(WagerrTestFramework):
             wait_until(lambda: len(os.listdir(self.walletnotify_dir)) == block_count, timeout=10)
 
             # directory content should equal the generated transaction hashes
-            txids_rpc = list(map(lambda t: t['txid'], self.nodes[1].listtransactions("*", block_count)))
+            txids_rpc = list(map(lambda t: t['txid'], self.nodes[0].listtransactions("*", block_count)))
             assert_equal(sorted(txids_rpc), sorted(os.listdir(self.walletnotify_dir)))
             self.stop_node(1)
 
