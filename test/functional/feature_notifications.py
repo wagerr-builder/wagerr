@@ -47,12 +47,11 @@ class NotificationsTest(WagerrTestFramework):
 
         # wait at most 10 seconds for expected number of files before reading the content
         wait_until(lambda: len(os.listdir(self.blocknotify_dir)) == block_count, timeout=10)
-        breakpoint()
-        newblock = []
+        blocks = []
         for i in range(self.nodes[0].getblockcount() + 1):
-            newblock.append(self.nodes[1].getblockhash(i)
+            blocks.append(self.nodes[1].getblockhash(i)
         # directory content should equal the generated blocks hashes
-        assert_equal(sorted(newblock), sorted(os.listdir(self.blocknotify_dir)))
+        assert_equal(sorted(blocks), sorted(os.listdir(self.blocknotify_dir)))
 
         if self.is_wallet_compiled():
             self.log.info("test -walletnotify")
