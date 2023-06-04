@@ -17,7 +17,7 @@ class NewQuorumTypeActivationTest(WagerrTestFramework):
     def set_test_params(self):
         self.extra_args = [["-vbparams=dip0020:0:999999999999:10:8:6:5"]]
         self.extra_args += [["-sporkkey=6xLZdACFRA53uyxz8gKDLcgVrm5kUUEu2B3BUzWUxHqa2W7irbH"]] * 4
-        self.set_wagerr_test_params(4, 3, fast_dip3_enforcement=False)
+        self.set_wagerr_test_params(4, 3, extra_args=self.extra_args, fast_dip3_enforcement=False)
 
     def run_test(self):
         for i in range(len(self.nodes)):
