@@ -24,8 +24,9 @@ class NewQuorumTypeActivationTest(WagerrTestFramework):
         #assert_equal(get_bip9_status(self.nodes[0], 'dip0020')['status'], 'started')
         ql = self.nodes[0].quorum("list")
         assert_equal(len(ql), 4)
-        assert "llmq_test_v18" not in ql
+        assert "llmq_test_v18" in ql
         self.nodes[0].generate(300)
+        breakpoint()
         #assert_equal(get_bip9_status(self.nodes[0], 'dip0020')['status'], 'locked_in')
         ql = self.nodes[0].quorum("list")
         assert_equal(len(ql), 2)
