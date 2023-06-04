@@ -102,6 +102,7 @@ def create_raw_transaction(node, txid, to_address, *, amount):
     """
     rawtx = node.createrawtransaction(inputs=[{"txid": txid, "vout": 0}], outputs={to_address: amount})
     signresult = node.signrawtransactionwithwallet(rawtx)
+    breakpoint()
     assert_equal(signresult["complete"], True)
     return signresult['hex']
 
