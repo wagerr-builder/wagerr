@@ -57,7 +57,6 @@ class NotificationsTest(WagerrTestFramework):
         if self.is_wallet_compiled():
             self.log.info("test -walletnotify")
             # wait at most 10 seconds for expected number of files before reading the content
-            breakpoint()
             wait_until(lambda: len(os.listdir(self.walletnotify_dir)) == block_count, timeout=10)
 
             # directory content should equal the generated transaction hashes
@@ -72,6 +71,7 @@ class NotificationsTest(WagerrTestFramework):
             # restart node to rescan to force wallet notifications
             self.start_node(1)
             connect_nodes(self.nodes[0], 1)
+            breakpoint()
 
             wait_until(lambda: len(os.listdir(self.walletnotify_dir)) == block_count, timeout=10)
 
