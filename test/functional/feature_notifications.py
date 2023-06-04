@@ -48,7 +48,10 @@ class NotificationsTest(WagerrTestFramework):
         # wait at most 10 seconds for expected number of files before reading the content
         wait_until(lambda: len(os.listdir(self.blocknotify_dir)) == block_count, timeout=10)
         breakpoint()
-
+        newblock = []
+        for i in range(self.nodes[0].getblockcount() + 1):
+            newblock.append(self.nodes[1].getblockhash(i)
+        blocks = newblock
         # directory content should equal the generated blocks hashes
         assert_equal(sorted(blocks), sorted(os.listdir(self.blocknotify_dir)))
 
