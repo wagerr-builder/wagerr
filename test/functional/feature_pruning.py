@@ -33,7 +33,7 @@ def mine_large_blocks(node, n):
     for i in range(1000):
         txid=node.sendtoaddress(node.getnewaddress(), 100)
         txids.append(txid)
-        breakpoint()
+    breakpoint()
     """if "nTimes" not in mine_large_blocks.__dict__:
         mine_large_blocks.nTime = 0
 
