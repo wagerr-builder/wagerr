@@ -32,7 +32,12 @@ def mine_large_blocks(node, n):
     for j in range(n):
         txids = []
         for i in range(1000):
-            txid=node.sendtoaddress(node.getnewaddress(), 100)
+            inputs=[]
+            outputs={ node.getnewaddress(): 100 }
+            txid=node.createrawtransaction(inputs, outputs)
+            fundedTx = node.fundrawtransaction(txid)
+            signedTx = node.signrawtransactionwithwallet(fundedTx['hex'])
+            node.sendrawtransaction(signedTx['hex'])
             txids.append(txid)
         node.generate(1)
         breakpoint()
