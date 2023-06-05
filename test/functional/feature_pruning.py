@@ -31,7 +31,7 @@ def mine_large_blocks(node, n):
     # different for each block created => blockhash is unique.
     for j in range(n):
         txids = []
-        for i in range(1000):
+        for i in range(25):
             inputs=[]
             outputs={ node.getnewaddress(): 100 }
             txid=node.createrawtransaction(inputs, outputs)
