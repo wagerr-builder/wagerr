@@ -29,8 +29,10 @@ def mine_large_blocks(node, n):
     # Set the nTime if this is the first time this function has been called.
     # A static variable ensures that time is monotonicly increasing and is therefore
     # different for each block created => blockhash is unique.
+    txids = []
     for i in range(1000):
-        node.sendtoaddress(node.getnewaddress(), 100)
+        txid=node.sendtoaddress(node.getnewaddress(), 100)
+        txids.append(txid)
         breakpoint()
     """if "nTimes" not in mine_large_blocks.__dict__:
         mine_large_blocks.nTime = 0
