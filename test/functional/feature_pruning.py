@@ -29,10 +29,12 @@ def mine_large_blocks(node, n):
     # Set the nTime if this is the first time this function has been called.
     # A static variable ensures that time is monotonicly increasing and is therefore
     # different for each block created => blockhash is unique.
-    if "nTimes" not in mine_large_blocks.__dict__:
+    for i in range(1000):
+        txid[i]=node.sendtoaddress(node.getnewaddress(), 100)
+        breakpoint()
+    """if "nTimes" not in mine_large_blocks.__dict__:
         mine_large_blocks.nTime = 0
 
-    breakpoint()
     # Get the block parameters for the first block
     big_script = CScript([OP_RETURN] + [OP_NOP] * 950000)
     best_block = node.getblock(node.getbestblockhash())
@@ -63,7 +65,7 @@ def mine_large_blocks(node, n):
 
         previousblockhash = block.sha256
         height += 1
-        mine_large_blocks.nTime += 1
+        mine_large_blocks.nTime += 1"""
 
 def calc_usage(blockdir):
     return sum(os.path.getsize(blockdir + f) for f in os.listdir(blockdir) if os.path.isfile(os.path.join(blockdir, f))) / (1024. * 1024.)
