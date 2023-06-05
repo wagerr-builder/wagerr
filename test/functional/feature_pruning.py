@@ -32,6 +32,7 @@ def mine_large_blocks(node, n):
     if "nTimes" not in mine_large_blocks.__dict__:
         mine_large_blocks.nTime = 0
 
+    breakpoint()
     # Get the block parameters for the first block
     big_script = CScript([OP_RETURN] + [OP_NOP] * 950000)
     best_block = node.getblock(node.getbestblockhash())
@@ -141,7 +142,6 @@ class PruneTest(WagerrTestFramework):
         mine_large_blocks(self.nodes[0], 25)
 
         # Wait for blk00000.dat to be pruned
-        breakpoint()
         wait_until(lambda: not os.path.isfile(os.path.join(self.prunedir, "blk00000.dat")), timeout=30)
 
         self.log.info("Success")
