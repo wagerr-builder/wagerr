@@ -22,7 +22,7 @@ from test_framework.util import assert_equal, assert_greater_than, assert_raises
 TIMESTAMP_WINDOW = 2 * 60 * 60
 
 def mine_large_blocks(node, n):
-    txid=[]
+    txid=None
     # Make a large scriptPubKey for the coinbase transaction. This is OP_RETURN
     # followed by 950k of OP_NOP. This would be non-standard in a non-coinbase
     # transaction but is consensus valid.
