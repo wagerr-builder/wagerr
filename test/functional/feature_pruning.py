@@ -38,7 +38,6 @@ def mine_large_blocks(node, n):
         address = node.getnewaddress()
         node.sendtoaddress(address, 100)
         for i in range(25):
-            breakpoint()
             list_unspent = node.listunspent()
             assert(len(list_unspent) > 0)
             for utxo in list_unspent:
@@ -52,7 +51,7 @@ def mine_large_blocks(node, n):
             data=encode_str_hex("42010500000000000000000000000000000000")
             outputs={ address: 100, 'data': data }
             txid=node.createrawtransaction(inputs, outputs)
-            fundedTx = node.fundrawtransaction(txid, {'feeRate': 0.000013})
+            fundedTx = node.fundrawtransaction(txid, {'feeRate': feeRate})
             signedTx = node.signrawtransactionwithwallet(fundedTx['hex'])
             node.sendrawtransaction(signedTx['hex'])
         node.generate(1)
