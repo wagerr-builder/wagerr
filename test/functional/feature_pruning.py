@@ -33,7 +33,7 @@ def mine_large_blocks(node, n):
     for j in range(n):
         utxo_array = []
         total_amount = float(0.00)
-        min_amount = float(0.001)
+        min_amount = float(0.01)
         feeRate = float(0.013)
         for i in range(25):
             list_unspent = node.listunspent(1, 9999999)
