@@ -33,8 +33,8 @@ def mine_large_blocks(node, n):
     for j in range(n):
         utxo_array = []
         total_amount = float(0.00)
-        min_amount = float(0.01)
-        feeRate = float(0.013)
+        min_amount = float(0.1)
+        feeRate = float(0.0013)
         address = node.getnewaddress()
         node.sendtoaddress(address, 100)
         for i in range(25):
