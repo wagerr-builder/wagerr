@@ -31,7 +31,6 @@ def mine_large_blocks(node, n):
     # A static variable ensures that time is monotonicly increasing and is therefore
     # different for each block created => blockhash is unique.
     for j in range(n):
-        address=node.getnewaddress()
         utxo_array = []
         total_amount = float(0.00)
         min_amount = float(0.001)
@@ -42,9 +41,10 @@ def mine_large_blocks(node, n):
                 utxo_array.append({'txid': utxo["txid"], 'vout': utxo["vout"]})
                 total_amount += float(utxo['amount'])
                 if total_amount > min_amount:
+                    address = utxo['address']
                     break
             breakpoint()
-            inputs, spend = get_utxo_list(node, address)
+            inputs, spend = (utxo_array, total_amount)
             data=encode_str_hex("42010500000000000000000000000000000000")
             outputs={ address: 100, 'data': data }
             txid=node.createrawtransaction(inputs, outputs)
