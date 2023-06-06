@@ -31,7 +31,6 @@ def mine_large_blocks(node, n):
     # A static variable ensures that time is monotonicly increasing and is therefore
     # different for each block created => blockhash is unique.
     for j in range(n):
-        utxo_array = []
         total_amount = float(0.00)
         min_amount = float(0.1)
         feeRate = float(0.03)
@@ -41,6 +40,7 @@ def mine_large_blocks(node, n):
             node.generate(1)
             list_unspent = node.listunspent(1, 99999999, [address])
             assert(len(list_unspent) > 0)
+            utxo_array = []
             for utxo in list_unspent:
                 utxo_array.append({'txid': utxo["txid"], 'vout': utxo["vout"]})
                 total_amount += float(utxo['amount'])
