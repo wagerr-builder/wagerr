@@ -33,6 +33,7 @@ def mine_large_blocks(node, n):
     for j in range(n):
         address=node.getnewaddress()
         for i in range(25):
+            breakpoint()
             inputs, spend = get_utxo_list(node, address)
             data=encode_str_hex("42010500000000000000000000000000000000")
             outputs={ address: 100, 'data': data }
