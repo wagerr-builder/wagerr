@@ -49,8 +49,9 @@ def mine_large_blocks(node, n):
             breakpoint()
             inputs, spend = (utxo_array, total_amount)
             change = float(spend) - feeRate
-            data=encode_str_hex("42010500000000000000000000000000000000")
-            outputs={ address: 100, 'data': data }
+            #data=encode_str_hex("42010500000000000000000000000000000000")
+            #outputs={ address: 100, 'data': data }
+            outputs={ address: 100 }
             txid=node.createrawtransaction(inputs, outputs)
             fundedTx = node.fundrawtransaction(txid, {'feeRate': feeRate})
             signedTx = node.signrawtransactionwithwallet(fundedTx['hex'])
