@@ -15,6 +15,7 @@ from test_framework.messages import CBlock, ToHex
 from test_framework.script import CScript, OP_RETURN, OP_NOP
 from test_framework.test_framework import WagerrTestFramework
 from test_framework.util import assert_equal, assert_greater_than, assert_raises_rpc_error, connect_nodes, disconnect_nodes, wait_until
+from test_framework.betting_opcode import encode_str_hex
 
 # Rescans start at the earliest block up to 2 hours before a key timestamp, so
 # the manual prune RPC avoids pruning blocks in the same window to be
@@ -32,7 +33,8 @@ def mine_large_blocks(node, n):
     for j in range(n):
         for i in range(25):
             inputs=[]
-            outputs={ node.getnewaddress(): 100, 'data': "Hello World" }
+            data=encode_str_hex("Hello World")
+            outputs={ node.getnewaddress(): 100, 'data': data }
             txid=node.createrawtransaction(inputs, outputs)
             fundedTx = node.fundrawtransaction(txid)
             signedTx = node.signrawtransactionwithwallet(fundedTx['hex'])
