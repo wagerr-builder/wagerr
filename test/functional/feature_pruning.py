@@ -36,7 +36,7 @@ def mine_large_blocks(node, n):
             data=encode_str_hex("42010500000000000000000000000000000000")
             outputs={ node.getnewaddress(): 100, 'data': data }
             txid=node.createrawtransaction(inputs, outputs)
-            fundedTx = node.fundrawtransaction(txid)
+            fundedTx = node.fundrawtransaction(txid, {'feeRate':'0.03'})
             signedTx = node.signrawtransactionwithwallet(fundedTx['hex'])
             node.sendrawtransaction(signedTx['hex'])
         node.generate(1)
