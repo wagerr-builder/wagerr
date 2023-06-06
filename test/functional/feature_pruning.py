@@ -32,7 +32,17 @@ def mine_large_blocks(node, n):
     # different for each block created => blockhash is unique.
     for j in range(n):
         address=node.getnewaddress()
+        utxo_array = []
+        total_amount = float(0.00)
+        min_amount = float(0.001)
         for i in range(25):
+            list_unspent = node.listunspent(1, 9999999)
+            assert(len(list_unspent) > 0)
+            for utxo in list_unspent:
+                utxo_array.append({'txid': utxo["txid"], 'vout': utxo["vout"]})
+                total_amount += float(utxo['amount'])
+                if total_amount > min_amount:
+                    break
             breakpoint()
             inputs, spend = get_utxo_list(node, address)
             data=encode_str_hex("42010500000000000000000000000000000000")
