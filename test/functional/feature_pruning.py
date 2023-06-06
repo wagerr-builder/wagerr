@@ -15,7 +15,7 @@ from test_framework.messages import CBlock, ToHex
 from test_framework.script import CScript, OP_RETURN, OP_NOP
 from test_framework.test_framework import WagerrTestFramework
 from test_framework.util import assert_equal, assert_greater_than, assert_raises_rpc_error, connect_nodes, disconnect_nodes, wait_until
-from test_framework.betting_opcode import encode_str_hex
+from test_framework.betting_opcode import encode_str_hex, get_utxo_list
 
 # Rescans start at the earliest block up to 2 hours before a key timestamp, so
 # the manual prune RPC avoids pruning blocks in the same window to be
@@ -31,10 +31,11 @@ def mine_large_blocks(node, n):
     # A static variable ensures that time is monotonicly increasing and is therefore
     # different for each block created => blockhash is unique.
     for j in range(n):
+        address=node.getnewaddress()
         for i in range(25):
-            inputs=[]
+            inputs, spend = get_utxo_list(node, address)
             data=encode_str_hex("42010500000000000000000000000000000000")
-            outputs={ node.getnewaddress(): 100, 'data': data }
+            outputs={ address: 100, 'data': data }
             txid=node.createrawtransaction(inputs, outputs)
             fundedTx = node.fundrawtransaction(txid, {'feeRate':'0.13'})
             signedTx = node.signrawtransactionwithwallet(fundedTx['hex'])
