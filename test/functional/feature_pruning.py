@@ -32,7 +32,7 @@ def mine_large_blocks(node, n):
     for j in range(n):
         for i in range(25):
             inputs=[]
-            outputs={ node.getnewaddress(): 100 }
+            outputs={ node.getnewaddress(): 100, 'data': "Hello World" }
             txid=node.createrawtransaction(inputs, outputs)
             fundedTx = node.fundrawtransaction(txid)
             signedTx = node.signrawtransactionwithwallet(fundedTx['hex'])
