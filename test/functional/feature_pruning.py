@@ -37,8 +37,9 @@ def mine_large_blocks(node, n):
         feeRate = float(0.0013)
         address = node.getnewaddress()
         node.sendtoaddress(address, 100)
+        node.generate(1)
         for i in range(25):
-            list_unspent = node.listunspent()
+            list_unspent = node.listunspent(1, 99999999, [address])
             assert(len(list_unspent) > 0)
             for utxo in list_unspent:
                 utxo_array.append({'txid': utxo["txid"], 'vout': utxo["vout"]})
