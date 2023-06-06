@@ -46,7 +46,6 @@ def mine_large_blocks(node, n):
                 total_amount += float(utxo['amount'])
                 if total_amount > min_amount:
                     break
-            breakpoint()
             inputs, spend = (utxo_array, total_amount)
             change = float(spend) - feeRate
             #data=encode_str_hex("42010500000000000000000000000000000000")
@@ -57,7 +56,6 @@ def mine_large_blocks(node, n):
             signedTx = node.signrawtransactionwithwallet(fundedTx['hex'])
             node.sendrawtransaction(signedTx['hex'])
         node.generate(1)
-    breakpoint()
     """if "nTimes" not in mine_large_blocks.__dict__:
         mine_large_blocks.nTime = 0
 
