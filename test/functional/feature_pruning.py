@@ -30,17 +30,14 @@ def mine_large_blocks(node, n):
     # A static variable ensures that time is monotonicly increasing and is therefore
     # different for each block created => blockhash is unique.
     for j in range(n):
-        for k in range(400):
-            txids = []
-            for i in range(25):
-                inputs=[]
-                outputs={ node.getnewaddress(): 100 }
-                txid=node.createrawtransaction(inputs, outputs)
-                fundedTx = node.fundrawtransaction(txid)
-                signedTx = node.signrawtransactionwithwallet(fundedTx['hex'])
-                node.sendrawtransaction(signedTx['hex'])
-                txids.append(txid)
-            node.generate(1)
+        for i in range(25):
+            inputs=[]
+            outputs={ node.getnewaddress(): 100 }
+            txid=node.createrawtransaction(inputs, outputs)
+            fundedTx = node.fundrawtransaction(txid)
+            signedTx = node.signrawtransactionwithwallet(fundedTx['hex'])
+            node.sendrawtransaction(signedTx['hex'])
+        node.generate(1)
     breakpoint()
     """if "nTimes" not in mine_large_blocks.__dict__:
         mine_large_blocks.nTime = 0
