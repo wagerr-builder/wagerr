@@ -105,7 +105,7 @@ class WagerrZMQTest (WagerrTestFramework):
         node0_extra_args.append("-whitelist=127.0.0.1")
         node0_extra_args.append("-watchquorums")  # have to watch quorums to receive recsigs and trigger zmq
 
-        extra_args = [[]] * 5
+        extra_args = [["-sporkkey=6xLZdACFRA53uyxz8gKDLcgVrm5kUUEu2B3BUzWUxHqa2W7irbH"]] * 5
         extra_args[0] = node0_extra_args
         self.set_wagerr_test_params(5, 4, fast_dip3_enforcement=True, extra_args=extra_args)
         self.set_wagerr_llmq_test_params(4, 4)
