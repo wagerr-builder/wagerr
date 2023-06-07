@@ -36,7 +36,6 @@ class UTXOSetHashTest(WagerrTestFramework):
 
     def test_muhash_implementation(self):
         self.log.info("Test MuHash implementation consistency")
-        breakpoint()
 
         node = self.nodes[0]
 
