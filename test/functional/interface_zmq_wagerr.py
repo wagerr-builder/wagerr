@@ -130,7 +130,7 @@ class WagerrZMQTest (WagerrTestFramework):
             # Setup the ZMQ subscriber context
             self.zmq_context = zmq.Context()
             # Initialize the network
-            self.activate_dip8()
+            #self.activate_dip8()
             self.nodes[0].sporkupdate("SPORK_17_QUORUM_DKG_ENABLED", 0)
             self.wait_for_sporks_same()
             # Create an LLMQ for testing
