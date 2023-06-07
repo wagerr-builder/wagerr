@@ -56,7 +56,7 @@ class UTXOSetHashTest(WagerrTestFramework):
 
         #tx_block = node.generateblock(node.getnewaddress(), [txid])['hash']
         breakpoint()
-        blocks.append(FromHex(CBlock(), node.getblock(tx_block, False)))
+        blocks.append(FromHex(CBlock(), node.getblock(tx_block[0], False)))
 
         # Serialize the outputs that should be in the UTXO set and add them to
         # a MuHash object
