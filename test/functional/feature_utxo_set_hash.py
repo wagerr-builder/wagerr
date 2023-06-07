@@ -47,10 +47,15 @@ class UTXOSetHashTest(WagerrTestFramework):
         spending = blocks.pop(0)
 
         # Create a spending transaction and mine a block which includes it
-        tx = create_transaction(node, spending.vtx[0].rehash(), node.getnewaddress(), amount=49)
-        txid = node.sendrawtransaction(hexstring=tx.serialize().hex(), maxfeerate=0)
+        tx=node.createrawtransaction(inputs=[], outputs={ node.getnewaddress(): 49 })
+        fundedTx = node.fundrawtransaction(tx)
+        #tx = create_transaction(node, spending.vtx[0].rehash(), node.getnewaddress(), amount=49)
+        #txid = node.sendrawtransaction(hexstring=tx.serialize().hex(), maxfeerate=0)
+        signedTx = node.signrawtransactionwithwallet(fundedTx['hex'])
+        node.sendrawtransaction(signedTx['hex'])
+        tx_block=node.generate(1)
 
-        tx_block = node.generateblock(node.getnewaddress(), [txid])['hash']
+        #tx_block = node.generateblock(node.getnewaddress(), [txid])['hash']
         blocks.append(FromHex(CBlock(), node.getblock(tx_block, False)))
 
         # Serialize the outputs that should be in the UTXO set and add them to
