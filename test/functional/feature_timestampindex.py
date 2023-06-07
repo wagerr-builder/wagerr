@@ -9,7 +9,7 @@
 
 from test_framework.test_framework import WagerrTestFramework
 from test_framework.test_node import ErrorMatch
-from test_framework.util import assert_equal, connect_nodes
+from test_framework.util import assert_equal, connect_nodes, disconnect_nodes
 
 
 class TimestampIndexTest(WagerrTestFramework):
