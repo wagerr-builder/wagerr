@@ -15,6 +15,9 @@ from test_framework.messages import (
 from test_framework.muhash import MuHash3072
 from test_framework.test_framework import WagerrTestFramework
 from test_framework.util import assert_equal
+from io import BytesIO
+from test_framework.messages import CTransaction
+from test_framework.util import hex_str_to_bytes, bytes_to_hex_str
 
 class UTXOSetHashTest(WagerrTestFramework):
     def set_test_params(self):
@@ -47,11 +50,13 @@ class UTXOSetHashTest(WagerrTestFramework):
 
         breakpoint()
         # Create a spending transaction and mine a block which includes it
-        tx=node.createrawtransaction(inputs=[], outputs={ node.getnewaddress(): 49 })
+        raw_tx=node.createrawtransaction(inputs=[], outputs={ node.getnewaddress(): 49 })
         fundedTx = node.fundrawtransaction(tx)
         #tx = create_transaction(node, spending.vtx[0].rehash(), node.getnewaddress(), amount=49)
         #txid = node.sendrawtransaction(hexstring=tx.serialize().hex(), maxfeerate=0)
         signedTx = node.signrawtransactionwithwallet(fundedTx['hex'])
+        tx = CTransaction()
+        tx.deserialize(BytesIO(hex_str_to_bytes(signedTx)))
         txid=node.sendrawtransaction(signedTx['hex'])
         #tx_block=node.generate(1)
 
