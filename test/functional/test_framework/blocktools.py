@@ -150,6 +150,9 @@ def create_raw_transaction(node, txid, to_address, *, amount, fee=0.00001):
     # Make sure we're not trying to send more money than we have
     assert send_amount >= amount, "Insufficient funds"
 
+    # Create the transaction outputs
+    outputs = {to_address: send_amount}
+
     # If there's any change, send it back to our own address
     if send_amount > amount:
         change = send_amount - Decimal(amount)
@@ -159,9 +162,6 @@ def create_raw_transaction(node, txid, to_address, *, amount, fee=0.00001):
 
         change_address = node.getnewaddress()
         outputs[change_address] = change
-
-    # Create the transaction outputs
-    outputs = {to_address: send_amount}
 
     print(f"total_amount: {total_amount}, send_amount: {send_amount}, amount: {amount}, change: {change}, outputs: {outputs}, fee: {fee}")
 
