@@ -37,7 +37,8 @@ class MempoolCoinbaseTest(WagerrTestFramework):
         # Mine four blocks. After this, nodes[0] blocks
         # 101, 102, and 103 are spend-able.
         connect_nodes(self.nodes[0],1)
-        new_blocks = self.nodes[1].generate(4)
+        #new_blocks = self.nodes[1].generate(4)
+        self.nodes[1].generate(4)
         self.sync_all()
         print(f"BLock Count New: {self.nodes[0].getblockcount()}")
 
