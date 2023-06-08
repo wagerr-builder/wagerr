@@ -41,7 +41,6 @@ class MempoolCoinbaseTest(WagerrTestFramework):
 
         node0_address = self.nodes[0].getnewaddress()
         node1_address = self.nodes[1].getnewaddress()
-        new_blocks = self.nodes[1].generate(4)
         breakpoint()
         # Three scenarios for re-orging coinbase spends in the memory pool:
         # 1. Direct coinbase spend  :  spend_101
