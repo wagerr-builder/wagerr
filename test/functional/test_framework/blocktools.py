@@ -135,7 +135,19 @@ def create_raw_transaction(node, txid, to_address, *, amount, fee=0.00001):
         multiple wallets.
     """
     # Get the transaction output details
-    txout_info = node.gettxout(txid, 3)
+    txout_info = node.gettxout(txid, 0)
+
+    # Get the transaction details
+    tx_info = node.gettransaction(txid)
+
+    # Find an unspent output
+    for i, details in enumerate(tx_info['details']):
+        if details['category'] == 'receive':
+            txout_info = node.gettxout(txid, i)
+            if txout_info is not None:
+                break
+    else:
+        raise Exception("No unspent output found")
 
     # Calculate the total available amount
     total_amount = txout_info['value']
