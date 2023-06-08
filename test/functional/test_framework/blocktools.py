@@ -116,7 +116,7 @@ def create_raw_transaction(node, txid, to_address, *, amount, fee=0.00001):
 
     # If there's any change, send it back to our own address
     if send_amount > amount:
-        change = send_amount - amount
+        change = send_amount - Decimal(amount)
         change_address = node.getnewaddress()
         outputs[change_address] = change
 
