@@ -150,7 +150,7 @@ def create_raw_transaction(node, txid, to_address, *, amount, fee=0.00001):
     outputs = {to_address: amount}
 
     # If there's any change, send it back to our own address
-    change = total_amount - amount - fee
+    change = total_amount - amount - Decimal(fee)
     if change > 0:
         # Round change to 8 decimal places
         change = change.quantize(Decimal('0.00000001'))
