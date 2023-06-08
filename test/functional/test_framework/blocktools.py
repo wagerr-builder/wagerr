@@ -128,6 +128,48 @@ def create_raw_transaction(node, txid, to_address, *, amount, fee=0.00001):
 
     return signresult['hex']
 
+def create_raw_transaction(node, txid, to_address, *, amount, fee=0.00001):
+    """ Return raw signed transaction spending the first output of the
+        input txid. Note that the node must be able to sign for the
+        output that is being spent, and the node must not be running
+        multiple wallets.
+    """
+    # Get the transaction output details
+    txout_info = node.gettxout(txid, 0)
+
+    # Calculate the total available amount and the change
+    total_amount = txout_info['value']
+    send_amount = total_amount - Decimal(fee)
+
+    # Round send_amount to 8 decimal places
+    send_amount = send_amount.quantize(Decimal('0.00000001'))
+
+    # Make sure the fee is not larger than the total available amount
+    assert fee <= total_amount, "Fee is larger than the total available amount"
+
+    # Make sure we're not trying to send more money than we have
+    assert send_amount >= amount, "Insufficient funds"
+
+    # Create the transaction outputs
+    outputs = {to_address: amount}
+
+    # If there's any change, send it back to our own address
+    if send_amount > amount:
+        change = send_amount - Decimal(amount)
+
+        # Round change to 8 decimal places
+        change = change.quantize(Decimal('0.00000001'))
+
+        change_address = node.getnewaddress()
+        outputs[change_address] = change
+
+    print(f"total_amount: {total_amount}, send_amount: {send_amount}, amount: {amount}, change: {change}, outputs: {outputs}, fee: {fee}")
+
+    rawtx = node.createrawtransaction(inputs=[{"txid": txid, "vout": 0}], outputs=outputs)
+    signresult = node.signrawtransactionwithwallet(rawtx)
+
+    return signresult['hex']
+
 def get_legacy_sigopcount_block(block, accurate=True):
     count = 0
     for tx in block.vtx:
