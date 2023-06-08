@@ -135,7 +135,7 @@ def create_raw_transaction(node, txid, to_address, *, amount, fee=0.00001):
         multiple wallets.
     """
     # Get the transaction output details
-    txout_info = node.gettxout(txid, 0)
+    txout_info = node.gettxout(txid, 3)
 
     # Calculate the total available amount
     total_amount = txout_info['value']
