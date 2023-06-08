@@ -16,6 +16,7 @@ from .messages import (
 from .script import CScript, CScriptNum, CScriptOp, OP_TRUE, OP_CHECKSIG
 from .util import assert_equal, hex_str_to_bytes
 from io import BytesIO
+from decimal import Decimal
 
 MAX_BLOCK_SIGOPS = 20000
 
@@ -105,7 +106,7 @@ def create_raw_transaction(node, txid, to_address, *, amount, fee=0.00001):
 
     # Calculate the total available amount and the change
     total_amount = txout_info['value']
-    send_amount = total_amount - fee
+    send_amount = total_amount - Decimal(fee)
 
     # Make sure we're not trying to send more money than we have
     assert send_amount >= amount, "Insufficient funds"
