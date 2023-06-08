@@ -28,8 +28,10 @@ class MempoolCoinbaseTest(WagerrTestFramework):
     alert_filename = None  # Set by setup_network
 
     def run_test(self):
-        # Start with a 200 block chain
-        assert_equal(self.nodes[0].getblockcount(), 199)
+        # Start with a 250 block chain
+        while self.nodes[0].getblockcount() < 250:
+            self.nodes[0].generate(1)
+        assert_equal(self.nodes[0].getblockcount(), 250)
 
         # Mine four blocks. After this, nodes[0] blocks
         # 101, 102, and 103 are spend-able.
