@@ -29,16 +29,15 @@ class MempoolCoinbaseTest(WagerrTestFramework):
 
     def run_test(self):
         # Start with a 250 block chain
-        while self.nodes[0].getblockcount() < 250:
+        while self.nodes[0].getblockcount() < 254:
             self.nodes[0].generate(1)
-        assert_equal(self.nodes[0].getblockcount(), 250)
+        assert_equal(self.nodes[0].getblockcount(), 254)
         print(f"BLock Count Orig: {self.nodes[0].getblockcount()}")
 
         # Mine four blocks. After this, nodes[0] blocks
         # 101, 102, and 103 are spend-able.
         connect_nodes(self.nodes[0],1)
         #new_blocks = self.nodes[1].generate(4)
-        self.nodes[1].generate(4)
         self.sync_all()
         print(f"BLock Count New: {self.nodes[0].getblockcount()}")
 
