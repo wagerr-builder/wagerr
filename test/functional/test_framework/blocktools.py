@@ -151,7 +151,7 @@ def create_raw_transaction(node, txid, to_address, *, amount, fee=0.00001):
     assert send_amount >= amount, "Insufficient funds"
 
     # Create the transaction outputs
-    outputs = {to_address: amount - fee}
+    outputs = {to_address: amount - fee.quantize(Decimal('0.00000001'))}
 
     # If there's any change, send it back to our own address
     if send_amount > amount:
