@@ -166,6 +166,7 @@ def create_raw_transaction(node, txid, to_address, *, amount, fee=0.00001):
     print(f"total_amount: {total_amount}, send_amount: {send_amount}, amount: {amount}, change: {change}, outputs: {outputs}, fee: {fee}")
 
     rawtx = node.createrawtransaction(inputs=[{"txid": txid, "vout": 0}], outputs=outputs)
+    print(f"RawTX: {rawtx}")
     signresult = node.signrawtransactionwithwallet(rawtx)
 
     return signresult['hex']
