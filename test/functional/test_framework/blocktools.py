@@ -108,6 +108,9 @@ def create_raw_transaction(node, txid, to_address, *, amount, fee=0.00001):
     total_amount = txout_info['value']
     send_amount = total_amount - Decimal(fee)
 
+    # Make sure the fee is not larger than the total available amount
+    assert fee <= total_amount, "Fee is larger than the total available amount"
+
     # Make sure we're not trying to send more money than we have
     assert send_amount >= amount, "Insufficient funds"
 
