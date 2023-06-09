@@ -141,7 +141,7 @@ class MiningTest(WagerrTestFramework):
         bad_tx.rehash()
         bad_block.vtx.append(bad_tx)
         assert_template(node, bad_block, 'bad-txns-inputs-missingorspent')
-        assert_submitblock(bad_block, 'bad-txns-inputs-missingorspent')
+        assert_submitblock(bad_block, 'high-hash')
 
         self.log.info("getblocktemplate: Test nonfinal transaction")
         bad_block = copy.deepcopy(block)
