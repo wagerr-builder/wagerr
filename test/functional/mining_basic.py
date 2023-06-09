@@ -132,7 +132,7 @@ class MiningTest(WagerrTestFramework):
         bad_block.vtx.append(bad_block.vtx[0])
         assert_template(node, bad_block, 'bad-txns-duplicate')
         breakpoint()
-        assert_submitblock(bad_block, 'high-hash', 'high-hash')
+        assert_submitblock(bad_block, 'high-hash', 'bad-txns-duplicate')
 
         self.log.info("getblocktemplate: Test invalid transaction")
         bad_block = copy.deepcopy(block)
