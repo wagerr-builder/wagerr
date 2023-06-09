@@ -170,7 +170,6 @@ class MiningTest(WagerrTestFramework):
         assert_template(node, bad_block, 'bad-txnmrklroot', False)
         #assert_submitblock(bad_block, 'bad-txnmrklroot', 'bad-txnmrklroot')
 
-        breakpoint()
         """
         self.log.info("getblocktemplate: Test bad timestamps")
         bad_block = copy.deepcopy(block)
@@ -209,6 +208,7 @@ class MiningTest(WagerrTestFramework):
 
         def chain_tip(b_hash, *, status='headers-only', branchlen=1):
             return {'hash': b_hash, 'height': 202, 'branchlen': branchlen, 'status': status}
+        breakpoint()
         assert chain_tip(block.hash) not in filter_tip_keys(node.getchaintips())
         node.submitheader(hexdata=block.serialize().hex())
         assert chain_tip(block.hash) in filter_tip_keys(node.getchaintips())
