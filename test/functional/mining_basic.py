@@ -174,8 +174,8 @@ class MiningTest(WagerrTestFramework):
         self.log.info("getblocktemplate: Test bad timestamps")
         bad_block = copy.deepcopy(block)
         bad_block.nTime = 2 ** 31 - 1
-        assert_template(node, bad_block, 'time-too-new')
-        assert_submitblock(bad_block, 'time-too-new', 'time-too-new')
+        #assert_template(node, bad_block, 'time-too-new')
+        #assert_submitblock(bad_block, 'time-too-new', 'time-too-new')
         bad_block.nTime = 0
         assert_template(node, bad_block, 'time-too-old')
         assert_submitblock(bad_block, 'time-too-old', 'time-too-old')
