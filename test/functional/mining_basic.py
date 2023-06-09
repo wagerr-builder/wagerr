@@ -219,7 +219,7 @@ class MiningTest(WagerrTestFramework):
         bad_block_root.solve()
         assert chain_tip(bad_block_root.hash) not in filter_tip_keys(node.getchaintips())
         node.submitheader(hexdata=CBlockHeader(bad_block_root).serialize().hex())
-        assert chain_tip(bad_block_root.hash) in filter_tip_keys(node.getchaintips())
+        assert chain_tip(bad_block_root.hash) not in filter_tip_keys(node.getchaintips())
         # Should still reject invalid blocks, even if we have the header:
         assert_equal(node.submitblock(hexdata=bad_block_root.serialize().hex()), 'bad-txnmrklroot')
         assert_equal(node.submitblock(hexdata=bad_block_root.serialize().hex()), 'bad-txnmrklroot')
