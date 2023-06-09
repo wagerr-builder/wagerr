@@ -120,7 +120,7 @@ class MiningTest(WagerrTestFramework):
         bad_block = copy.deepcopy(block)
         bad_block.vtx[0].vin[0].prevout.hash += 1
         bad_block.vtx[0].rehash()
-        assert_template(node, bad_block, 'bad-txnmrklroot')
+        assert_template(node, bad_block, 'bad-cb-missing')
 
         self.log.info("submitblock: Test invalid coinbase transaction")
         assert_raises_rpc_error(-22, "Block does not start with a coinbase", node.submitblock, bad_block.serialize().hex())
