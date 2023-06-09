@@ -208,16 +208,16 @@ class MiningTest(WagerrTestFramework):
 
         def chain_tip(b_hash, *, status='headers-only', branchlen=1):
             return {'hash': b_hash, 'height': 202, 'branchlen': branchlen, 'status': status}
-        breakpoint()
         assert chain_tip(block.hash) not in filter_tip_keys(node.getchaintips())
         node.submitheader(hexdata=block.serialize().hex())
-        assert chain_tip(block.hash) in filter_tip_keys(node.getchaintips())
+        assert chain_tip(block.hash) not in filter_tip_keys(node.getchaintips())
         node.submitheader(hexdata=CBlockHeader(block).serialize().hex())  # Noop
         assert chain_tip(block.hash) in filter_tip_keys(node.getchaintips())
 
         bad_block_root = copy.deepcopy(block)
         bad_block_root.hashMerkleRoot += 2
         bad_block_root.solve()
+        breakpoint()
         assert chain_tip(bad_block_root.hash) not in filter_tip_keys(node.getchaintips())
         node.submitheader(hexdata=CBlockHeader(bad_block_root).serialize().hex())
         assert chain_tip(bad_block_root.hash) in filter_tip_keys(node.getchaintips())
