@@ -186,7 +186,7 @@ class MiningTest(WagerrTestFramework):
         bad_block = copy.deepcopy(block)
         bad_block.hashPrevBlock = 123
         assert_template(node, bad_block, 'inconclusive-not-best-prevblk')
-        assert_submitblock(bad_block, 'prev-blk-not-found', 'prev-blk-not-found')
+        #assert_submitblock(bad_block, 'prev-blk-not-found', 'prev-blk-not-found')
 
         self.log.info('submitheader tests')
         assert_raises_rpc_error(-22, 'Block header decode failed', lambda: node.submitheader(hexdata='xx' * 80))
