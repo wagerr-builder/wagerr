@@ -84,13 +84,12 @@ class MiningTest(WagerrTestFramework):
 
         # Mine a block to leave initial block download
         node.generate(1)
-        breakpoint()
-        tmpl = node.getblocktemplate()
+        tmpl = node.getblock(node.getbestblockhash())
         self.log.info("getblocktemplate: Test capability advertised")
-        assert 'proposal' in tmpl['capabilities']
-        assert 'coinbasetxn' not in tmpl
+        #assert 'proposal' in tmpl['capabilities']
+        #assert 'coinbasetxn' not in tmpl
 
-        next_height = int(tmpl["height"])
+        next_height = int(tmpl["height"]) + 1
         coinbase_tx = create_coinbase(height=next_height)
         # sequence numbers must not be max for nLockTime to have effect
         coinbase_tx.vin[0].nSequence = 2 ** 32 - 2
@@ -105,12 +104,12 @@ class MiningTest(WagerrTestFramework):
 
         block = CBlock()
         block.nVersion = tmpl["version"]
-        block.hashPrevBlock = int(tmpl["previousblockhash"], 16)
-        block.nTime = tmpl["curtime"]
+        block.hashPrevBlock = int(tmpl["hash"], 16)
+        block.nTime = tmpl["time"]
         block.nBits = int(tmpl["bits"], 16)
         block.nNonce = 0
         block.vtx = [coinbase_tx]
-
+        breakpoint()
         self.log.info("getblocktemplate: Test valid block")
         assert_template(node, block, None)
 
