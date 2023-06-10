@@ -52,7 +52,7 @@ class CompactFiltersTest(WagerrTestFramework):
             ["-blockfilterindex"],
         ]
         self.mn_count = 0
-        self.fast_dip3_enforcement = False
+        self.fast_dip3_enforcement = True
 
     def run_test(self):
         # Node 0 supports COMPACT_FILTERS, node 1 does not.
@@ -67,6 +67,7 @@ class CompactFiltersTest(WagerrTestFramework):
         disconnect_nodes(self.nodes[0], 1)
 
         self.nodes[0].generate(1)
+        breakpoint()
         wait_until(lambda: self.nodes[0].getblockcount() == 702)
         stale_block_hash = self.nodes[0].getblockhash(702)
         self.nodes[0].generate(51)
