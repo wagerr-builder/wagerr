@@ -68,11 +68,11 @@ class CompactFiltersTest(WagerrTestFramework):
 
         self.nodes[0].generate(1)
         breakpoint()
-        wait_until(lambda: self.nodes[0].getblockcount() == 252)
-        stale_block_hash = self.nodes[0].getblockhash(252)
+        wait_until(lambda: self.nodes[0].getblockcount() == 401)
+        stale_block_hash = self.nodes[0].getblockhash(401)
         self.nodes[0].generate(51)
         connect_nodes(self.nodes[0], 1)
-        wait_until(lambda: self.nodes[1].getblockcount() == 302)
+        wait_until(lambda: self.nodes[1].getblockcount() == 452)
 
         # Check that nodes have signalled NODE_COMPACT_FILTERS correctly.
         assert node0.nServices & NODE_COMPACT_FILTERS != 0
@@ -98,7 +98,7 @@ class CompactFiltersTest(WagerrTestFramework):
         connect_nodes(self.nodes[0], 1)
         self.sync_blocks(timeout=600)
 
-        main_block_hash = self.nodes[0].getblockhash(252)
+        main_block_hash = self.nodes[0].getblockhash(401)
         assert main_block_hash != stale_block_hash, "node 0 chain did not reorganize"
 
         self.log.info("Check that peers can fetch cfcheckpt on active chain.")
