@@ -67,10 +67,8 @@ class CompactFiltersTest(WagerrTestFramework):
         disconnect_nodes(self.nodes[0], 1)
 
         self.nodes[0].generate(1)
-        breakpoint()
         wait_until(lambda: self.nodes[0].getblockcount() == 702)
         stale_block_hash = self.nodes[0].getblockhash(702)
-        breakpoint()
         self.nodes[0].generate(51)
         connect_nodes(self.nodes[0], 1)
         wait_until(lambda: self.nodes[1].getblockcount() == 753)
@@ -92,6 +90,7 @@ class CompactFiltersTest(WagerrTestFramework):
         response = node0.last_message['cfcheckpt']
         assert_equal(response.filter_type, request.filter_type)
         assert_equal(response.stop_hash, request.stop_hash)
+        breakpoint()
         assert_equal(len(response.headers), 1)
 
         self.log.info("Reorg node 0 to a new chain.")
