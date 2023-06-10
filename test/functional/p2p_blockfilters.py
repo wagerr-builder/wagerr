@@ -96,8 +96,8 @@ class CompactFiltersTest(WagerrTestFramework):
         connect_nodes(self.nodes[0], 1)
         self.sync_blocks(timeout=600)
 
-        """
         main_block_hash = self.nodes[0].getblockhash(401)
+        """
         assert main_block_hash != stale_block_hash, "node 0 chain did not reorganize"
         """
 
@@ -112,9 +112,9 @@ class CompactFiltersTest(WagerrTestFramework):
         assert_equal(response.filter_type, request.filter_type)
         assert_equal(response.stop_hash, request.stop_hash)
 
-        """
         main_cfcheckpt = self.nodes[0].getblockfilter(main_block_hash, 'basic')['header']
         tip_cfcheckpt = self.nodes[0].getblockfilter(tip_hash, 'basic')['header']
+        """
         assert_equal(
             response.headers,
             [int(header, 16) for header in (main_cfcheckpt, tip_cfcheckpt)]
@@ -129,8 +129,8 @@ class CompactFiltersTest(WagerrTestFramework):
         node0.send_and_ping(request)
         response = node0.last_message['cfcheckpt']
 
-        """
         stale_cfcheckpt = self.nodes[0].getblockfilter(stale_block_hash, 'basic')['header']
+        """
         assert_equal(
             response.headers,
             [int(header, 16) for header in (stale_cfcheckpt,)]
