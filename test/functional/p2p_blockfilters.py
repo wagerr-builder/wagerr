@@ -72,6 +72,7 @@ class CompactFiltersTest(WagerrTestFramework):
         stale_block_hash = self.nodes[0].getblockhash(702)
         breakpoint()
         self.nodes[0].generate(51)
+        connect_nodes(self.nodes[0], 1)
         wait_until(lambda: self.nodes[1].getblockcount() == 753)
 
         # Check that nodes have signalled NODE_COMPACT_FILTERS correctly.
