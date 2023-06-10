@@ -161,7 +161,7 @@ class CompactFiltersTest(WagerrTestFramework):
         node0.send_and_ping(request)
         response = node0.last_message['cfheaders']
         stale_cfhashes = response.hashes
-        assert_equal(len(stale_cfhashes), 1000)
+        assert_equal(len(stale_cfhashes), 401)
         assert_equal(
             compute_last_header(response.prev_header, response.hashes),
             int(stale_cfcheckpt, 16)
