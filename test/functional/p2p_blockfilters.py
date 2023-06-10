@@ -44,7 +44,7 @@ class CFiltersClient(P2PInterface):
 
 class CompactFiltersTest(WagerrTestFramework):
     def set_test_params(self):
-        self.setup_clean_chain = True
+        self.setup_clean_chain = False
         self.rpc_timeout = 480
         self.num_nodes = 2
         self.extra_args = [
