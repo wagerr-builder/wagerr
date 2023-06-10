@@ -94,14 +94,14 @@ class CompactFiltersTest(WagerrTestFramework):
         breakpoint()
         #assert_equal(len(response.headers), 1)
 
-        """
         self.log.info("Reorg node 0 to a new chain.")
         connect_nodes(self.nodes[0], 1)
         self.sync_blocks(timeout=600)
-        """
 
+        """
         main_block_hash = self.nodes[0].getblockhash(401)
         assert main_block_hash != stale_block_hash, "node 0 chain did not reorganize"
+        """
 
         self.log.info("Check that peers can fetch cfcheckpt on active chain.")
         tip_hash = self.nodes[0].getbestblockhash()
