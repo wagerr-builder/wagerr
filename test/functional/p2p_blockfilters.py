@@ -122,7 +122,6 @@ class CompactFiltersTest(WagerrTestFramework):
         )
         """
 
-        breakpoint()
         self.log.info("Check that peers can fetch cfcheckpt on stale chain.")
         request = msg_getcfcheckpt(
             filter_type=FILTER_TYPE_BASIC,
