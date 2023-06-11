@@ -203,7 +203,6 @@ class CompactFiltersTest(WagerrTestFramework):
         assert_equal(cfilter.filter_type, FILTER_TYPE_BASIC)
         #assert_equal(cfilter.block_hash, int(stale_block_hash, 16))
         computed_cfhash = uint256_from_str(hash256(cfilter.filter_data))
-        breakpoint()
         assert(computed_cfhash in stale_cfhashes)
 
         self.log.info("Requests to node 1 without NODE_COMPACT_FILTERS results in disconnection.")
@@ -229,6 +228,7 @@ class CompactFiltersTest(WagerrTestFramework):
             node1.wait_for_disconnect()
 
         self.log.info("Check that invalid requests result in disconnection.")
+        breakpoint()
         requests = [
             # Requesting too many filters results in disconnection.
             msg_getcfilters(
