@@ -193,6 +193,7 @@ class CompactFiltersTest(WagerrTestFramework):
             start_height=1000,
             stop_hash=int(stale_block_hash, 16)
         )
+        breakpoint()
         node0.send_message(request)
         node0.sync_with_ping()
         response = node0.pop_cfilters()
