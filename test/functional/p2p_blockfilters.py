@@ -196,7 +196,7 @@ class CompactFiltersTest(WagerrTestFramework):
         node0 = self.nodes[0].add_p2p_connection(P2PInterface())
         node0.send_message(request)
         #node0.sync_with_ping()
-        response = node0.pop_cfilters()
+        #response = node0.pop_cfilters()
         #assert_equal(len(response), 1)
 
         cfilter = response[0]
