@@ -228,7 +228,6 @@ class CompactFiltersTest(WagerrTestFramework):
             node1.wait_for_disconnect()
 
         self.log.info("Check that invalid requests result in disconnection.")
-        breakpoint()
         requests = [
             # Requesting too many filters results in disconnection.
             msg_getcfilters(
@@ -237,6 +236,7 @@ class CompactFiltersTest(WagerrTestFramework):
                 stop_hash=int(main_block_hash, 16)
             ),
             # Requesting too many filter headers results in disconnection.
+            breakpoint()
             msg_getcfheaders(
                 filter_type=FILTER_TYPE_BASIC,
                 start_height=0,
