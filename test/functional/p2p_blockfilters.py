@@ -236,13 +236,11 @@ class CompactFiltersTest(WagerrTestFramework):
                 stop_hash=int(main_block_hash, 16)
             ),
             # Requesting too many filter headers results in disconnection.
-            """
-            msg_getcfheaders(
-                filter_type=FILTER_TYPE_BASIC,
-                start_height=0,
-                stop_hash=int(tip_hash, 16)
-            ),
-            """
+            #msg_getcfheaders(
+            #    filter_type=FILTER_TYPE_BASIC,
+            #    start_height=0,
+            #    stop_hash=int(tip_hash, 16)
+            #),
             # Requesting unknown filter type results in disconnection.
             msg_getcfcheckpt(
                 filter_type=255,
