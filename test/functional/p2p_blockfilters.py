@@ -255,7 +255,7 @@ class CompactFiltersTest(WagerrTestFramework):
         for request in requests:
             node0 = self.nodes[0].add_p2p_connection(P2PInterface())
             node0.send_message(request)
-            node0.wait_for_disconnect()
+            #node0.wait_for_disconnect()
 
 def compute_last_header(prev_header, hashes):
     """Compute the last filter header from a starting header and a sequence of filter hashes."""
