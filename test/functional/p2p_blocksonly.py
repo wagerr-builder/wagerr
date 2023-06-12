@@ -57,6 +57,7 @@ class P2PBlocksOnly(WagerrTestFramework):
         with self.nodes[0].assert_debug_log(['received getdata for: tx {} peer=1'.format(txid)]):
             self.nodes[0].sendrawtransaction(sigtx)
             self.bump_mocktime(60)
+            breakpoint()
             self.nodes[0].p2p.wait_for_tx(txid)
             assert_equal(self.nodes[0].getmempoolinfo()['size'], 1)
 
