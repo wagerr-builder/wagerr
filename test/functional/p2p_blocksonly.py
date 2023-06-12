@@ -54,10 +54,10 @@ class P2PBlocksOnly(WagerrTestFramework):
         self.log.info('Check that txs from rpc are not rejected and relayed to other peers')
         assert_equal(self.nodes[0].getpeerinfo()[0]['relaytxes'], True)
         txid = self.nodes[0].testmempoolaccept([sigtx])[0]['txid']
+        breakpoint()
         with self.nodes[0].assert_debug_log(['received getdata for: tx {} peer=1'.format(txid)]):
             self.nodes[0].sendrawtransaction(sigtx)
             self.bump_mocktime(60)
-            breakpoint()
             self.nodes[0].p2p.wait_for_tx(txid)
             assert_equal(self.nodes[0].getmempoolinfo()['size'], 1)
 
