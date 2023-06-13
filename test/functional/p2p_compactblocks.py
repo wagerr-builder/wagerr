@@ -13,6 +13,7 @@ from test_framework.mininode import mininode_lock, P2PInterface
 from test_framework.script import CScript, OP_TRUE, OP_DROP
 from test_framework.test_framework import WagerrTestFramework
 from test_framework.util import assert_equal, wait_until
+from binascii import hexlify
 
 # TestP2PConn: A peer we use to send messages to wagerrd, and store responses.
 class TestP2PConn(P2PInterface):
@@ -117,6 +118,8 @@ class CompactBlocksTest(WagerrTestFramework):
         # Doesn't matter which node we use, just use node0.
         block = self.build_block_on_tip(self.nodes[0])
         breakpoint()
+        serialized_block = hexlify(block.serialize()).decode()
+        self.nodes[0].submitblock(serialized_block)
         self.test_node.send_and_ping(msg_block(block))
         assert int(self.nodes[0].getbestblockhash(), 16) == block.sha256
         self.nodes[0].generate(100)
