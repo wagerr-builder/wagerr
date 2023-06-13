@@ -149,7 +149,6 @@ class CompactBlocksTest(WagerrTestFramework):
     # If old_node is passed in, request compact blocks with version=preferred-1
     # and verify that it receives block announcements via compact block.
     def test_sendcmpct(self, node, test_node, preferred_version, old_node=None):
-        breakpoint()
         # Make sure we get a SENDCMPCT message from our peer
         def received_sendcmpct():
             return (len(test_node.last_sendcmpct) > 0)
@@ -207,6 +206,7 @@ class CompactBlocksTest(WagerrTestFramework):
         sendcmpct.version = preferred_version
         sendcmpct.announce = True
         test_node.send_and_ping(sendcmpct)
+        breakpoint()
         check_announcement_of_new_block(node, test_node, lambda p: "cmpctblock" in p.last_message)
 
         # Try one more time (no headers sync should be needed!)
