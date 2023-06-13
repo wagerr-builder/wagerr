@@ -120,7 +120,7 @@ class CompactBlocksTest(WagerrTestFramework):
         breakpoint()
         serialized_block = hexlify(block.serialize()).decode()
         self.nodes[0].submitblock(serialized_block)
-        self.test_node.send_and_ping(msg_block(block))
+        #self.test_node.send_and_ping(msg_block(block))
         assert int(self.nodes[0].getbestblockhash(), 16) == block.sha256
         self.nodes[0].generate(100)
 
