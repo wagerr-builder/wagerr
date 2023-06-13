@@ -99,6 +99,7 @@ class CompactBlocksTest(WagerrTestFramework):
             "-acceptnonstdtxn=1",
         ]] * 2
         self.utxos = []
+        self.mn_count = 0
 
     def skip_test_if_missing_module(self):
         self.skip_if_no_wallet()
