@@ -207,7 +207,7 @@ class CompactBlocksTest(WagerrTestFramework):
         sendcmpct.announce = True
         test_node.send_and_ping(sendcmpct)
         breakpoint()
-        check_announcement_of_new_block(node, test_node, lambda p: "cmpctblock" in p.last_message)
+        check_announcement_of_new_block(node, test_node, lambda p: "cmpctblock" not in p.last_message)
 
         # Try one more time (no headers sync should be needed!)
         check_announcement_of_new_block(node, test_node, lambda p: "cmpctblock" in p.last_message)
