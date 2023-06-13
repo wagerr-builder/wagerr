@@ -91,16 +91,9 @@ class TestP2PConn(P2PInterface):
 
 class CompactBlocksTest(WagerrTestFramework):
     def set_test_params(self):
-        self.setup_clean_chain = True
-        # both nodes has the same version
         self.num_nodes = 2
-        self.extra_args = [[
-            "-txindex",
-            "-acceptnonstdtxn=1",
-        ]] * 2
-        self.utxos = []
-        self.mn_count = 0
-        self.fast_dip3_enforcement = False
+        self.setup_clean_chain = True
+        self.supports_cli = False
 
     def skip_test_if_missing_module(self):
         self.skip_if_no_wallet()
