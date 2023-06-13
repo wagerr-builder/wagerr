@@ -122,7 +122,6 @@ class CompactBlocksTest(WagerrTestFramework):
         #self.test_node.send_and_ping(msg_block(block))
         assert int(self.nodes[0].getbestblockhash(), 16) == block.sha256
         self.nodes[0].generate(100)
-        breakpoint()
 
         total_value = block.vtx[0].vout[0].nValue
         out_value = total_value // 10
@@ -150,6 +149,7 @@ class CompactBlocksTest(WagerrTestFramework):
     # If old_node is passed in, request compact blocks with version=preferred-1
     # and verify that it receives block announcements via compact block.
     def test_sendcmpct(self, node, test_node, preferred_version, old_node=None):
+        breakpoint()
         # Make sure we get a SENDCMPCT message from our peer
         def received_sendcmpct():
             return (len(test_node.last_sendcmpct) > 0)
