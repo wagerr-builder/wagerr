@@ -410,9 +410,9 @@ class CompactBlocksTest(WagerrTestFramework):
                 absolute_indexes = peer.last_message["getblocktxn"].block_txn_request.to_absolute()
             assert_equal(absolute_indexes, expected_result)
 
-        def test_tip_after_message(node, peer, msg, tip):
-            peer.send_and_ping(msg)
-            assert_equal(int(node.getbestblockhash(), 16), tip)
+        #def test_tip_after_message(node, peer, msg, tip):
+        #    peer.send_and_ping(msg)
+        #    assert_equal(int(node.getbestblockhash(), 16), tip)
 
         # First try announcing compactblocks that won't reconstruct, and verify
         # that we receive getblocktxn messages back.
