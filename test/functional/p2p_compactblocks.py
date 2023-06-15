@@ -250,7 +250,7 @@ class CompactBlocksTest(WagerrTestFramework):
     # wagerrd's choice of nonce.
     def test_compactblock_construction(self, node, test_node, version):
         # Generate a bunch of transactions.
-        node.generate(101)
+        node.generate(10)
         num_transactions = 25
         address = node.getnewaddress()
 
