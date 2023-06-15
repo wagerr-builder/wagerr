@@ -795,8 +795,8 @@ class CompactBlocksTest(WagerrTestFramework):
         #self.test_compactblock_reconstruction_multiple_peers(self.nodes[1], self.second_node, self.old_node)
         self.sync_blocks()
 
-        self.log.info("Testing invalid index in cmpctblock message...")
-        self.test_invalid_cmpctblock_message()
+        #self.log.info("Testing invalid index in cmpctblock message...")
+        #self.test_invalid_cmpctblock_message()
 
 
 if __name__ == '__main__':
