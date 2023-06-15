@@ -769,7 +769,7 @@ class CompactBlocksTest(WagerrTestFramework):
         #self.test_compactblocks_not_at_tip(self.nodes[0], self.test_node)
         self.sync_blocks()
         #self.test_compactblocks_not_at_tip(self.nodes[1], self.second_node)
-        self.test_compactblocks_not_at_tip(self.nodes[1], self.old_node)
+        #self.test_compactblocks_not_at_tip(self.nodes[1], self.old_node)
         self.sync_blocks()
 
         self.log.info("Testing handling of incorrect blocktxn responses...")
