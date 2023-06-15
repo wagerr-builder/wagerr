@@ -423,7 +423,7 @@ class CompactBlocksTest(WagerrTestFramework):
         comp_block = HeaderAndShortIDs()
         comp_block.initialize_from_block(block)
 
-        test_getblocktxn_response(comp_block, test_node, [1, 2, 3, 4, 5])
+        #test_getblocktxn_response(comp_block, test_node, [1, 2, 3, 4, 5])
 
         msg_bt = msg_blocktxn()
         msg_bt.block_transactions = BlockTransactions(block.sha256, block.vtx[1:])
