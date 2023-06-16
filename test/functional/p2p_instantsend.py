@@ -19,7 +19,7 @@ class InstantSendTest(WagerrTestFramework):
         self.num_nodes = 7
         self.mn_count = 0
         self.fast_dip3_enforcement = False
-        i#self.set_wagerr_test_params(7, 3, fast_dip3_enforcement=True, extra_args=extra_args)
+        #self.set_wagerr_test_params(7, 3, fast_dip3_enforcement=True, extra_args=extra_args)
         # set sender,  receiver,  isolated nodes
         self.isolated_idx = 1
         self.receiver_idx = 2
