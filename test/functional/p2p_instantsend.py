@@ -107,6 +107,7 @@ class InstantSendTest(WagerrTestFramework):
         self.sync_all()
 
         # create doublespending transaction, but don't relay it
+        breakpoint()
         dblspnd_tx = self.create_raw_tx(sender, isolated, 0.5, 1, 100)
         # isolate one node from network
         isolate_node(isolated)
