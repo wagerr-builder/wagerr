@@ -29,7 +29,11 @@ class InstantSendTest(WagerrTestFramework):
 
     def run_test(self):
         breakpoint()
-        self.nodes[0].sporkupdate("SPORK_17_QUORUM_DKG_ENABLED", 0)
+        for i in range(len(self.nodes)):
+            self.nodes[i].sporkupdate("SPORK_4_DIP0003_ENFORCED", 1)
+            self.nodes[i].sporkupdate("SPORK_17_QUORUM_DKG_ENABLED", 1)
+            self.nodes[i].sporkupdate("SPORK_21_QUORUM_ALL_CONNECTED", 1)
+            self.nodes[i].sporkupdate("SPORK_23_QUORUM_POSE", 1)
         self.wait_for_sporks_same()
         self.mine_quorum()
 
