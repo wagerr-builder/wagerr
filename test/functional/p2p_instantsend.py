@@ -93,6 +93,7 @@ class InstantSendTest(WagerrTestFramework):
         self.sync_all()
 
     def test_mempool_doublespend(self):
+        breakpoint()
         sender = self.nodes[self.sender_idx]
         receiver = self.nodes[self.receiver_idx]
         isolated = self.nodes[self.isolated_idx]
@@ -107,7 +108,6 @@ class InstantSendTest(WagerrTestFramework):
         self.sync_all()
 
         # create doublespending transaction, but don't relay it
-        breakpoint()
         dblspnd_tx = self.create_raw_tx(sender, isolated, 0.5, 1, 100)
         # isolate one node from network
         isolate_node(isolated)
