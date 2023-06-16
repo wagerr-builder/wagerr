@@ -101,7 +101,7 @@ class InstantSendTest(WagerrTestFramework):
         del connected_nodes[self.isolated_idx]
 
         # feed the sender with some balance
-        sender_addr = sender.getnewaddress()
+        sender_addr = isolated.getnewaddress()
         self.nodes[0].sendtoaddress(sender_addr, 1)
         self.bump_mocktime(1)
         self.nodes[0].generate(2)
