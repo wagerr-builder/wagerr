@@ -14,10 +14,13 @@ Tests InstantSend functionality (prevent doublespend for unconfirmed transaction
 
 class InstantSendTest(WagerrTestFramework):
     def set_test_params(self):
-        self.extra_args = [['-sporkkey="6xLZdACFRA53uyxz8gKDLcgVrm5kUUEu2B3BUzWUxHqa2W7irbH"']] * 7
-        self.setup_clean_chain = True
-        self.num_nodes = 7
-        self.fast_dip3_enforcement = False
+        #self.setup_clean_chain = True
+        #self.num_nodes = 7
+        #self.mn_count = 0
+        #self.fast_dip3_enforcement = False
+        #self.extra_args = [['-sporkkey="6xLZdACFRA53uyxz8gKDLcgVrm5kUUEu2B3BUzWUxHqa2W7irbH"']] * 7
+        extra_args = [["-sporkkey=6xLZdACFRA53uyxz8gKDLcgVrm5kUUEu2B3BUzWUxHqa2W7irbH"]] * 7
+        self.set_wagerr_test_params(7, 3, extra_args=extra_args, fast_dip3_enforcement=False)
         #self.set_wagerr_test_params(7, 3, fast_dip3_enforcement=True, extra_args=extra_args)
         # set sender,  receiver,  isolated nodes
         self.isolated_idx = 1
