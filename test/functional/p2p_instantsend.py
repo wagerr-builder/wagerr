@@ -28,7 +28,6 @@ class InstantSendTest(WagerrTestFramework):
         self.sender_idx = 3
 
     def run_test(self):
-        breakpoint()
         for i in range(len(self.nodes)):
             self.nodes[i].sporkupdate("SPORK_4_DIP0003_ENFORCED", 1)
             self.nodes[i].sporkupdate("SPORK_17_QUORUM_DKG_ENABLED", 1)
