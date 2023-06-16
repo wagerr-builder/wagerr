@@ -1093,7 +1093,7 @@ class WagerrTestFramework(WagerrTestFramework):
                 in_amount += float(tx['amount'])
                 inputs[-1] = input
             last_amount = float(tx['amount'])
-
+        breakpoint()
         assert len(inputs) >= min_inputs
         assert len(inputs) <= max_inputs
         assert in_amount >= amount
