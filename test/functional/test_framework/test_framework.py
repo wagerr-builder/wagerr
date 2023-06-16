@@ -1067,7 +1067,7 @@ class WagerrTestFramework(WagerrTestFramework):
         assert min_inputs <= max_inputs
         # fill inputs
         inputs = []
-        balances = node_from.listunspent()
+        balances = self.nodes[0].listunspent()
         in_amount = 0.0
         last_amount = 0.0
         for tx in balances:
