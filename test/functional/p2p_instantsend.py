@@ -98,11 +98,11 @@ class InstantSendTest(WagerrTestFramework):
         receiver = self.nodes[self.receiver_idx]
         isolated = self.nodes[self.isolated_idx]
         connected_nodes = self.nodes.copy()
-        del connected_nodes[self.isolated_idx]
 
         # feed the sender with some balance
         sender_addr = isolated.getnewaddress()
         self.nodes[0].sendtoaddress(sender_addr, 1)
+        del connected_nodes[self.isolated_idx]
         self.bump_mocktime(1)
         self.nodes[0].generate(2)
         self.sync_all()
