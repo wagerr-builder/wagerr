@@ -61,6 +61,7 @@ class InstantSendTest(WagerrTestFramework):
         # wait for the transaction to propagate
         connected_nodes = self.nodes.copy()
         del connected_nodes[self.isolated_idx]
+        breakpoint()
         self.sync_mempools(connected_nodes)
         for node in connected_nodes:
             self.wait_for_instantlock(is_id, node)
