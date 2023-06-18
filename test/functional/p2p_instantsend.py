@@ -103,13 +103,13 @@ class InstantSendTest(WagerrTestFramework):
         # feed the sender with some balance
         sender_addr = isolated.getnewaddress()
         self.nodes[0].sendtoaddress(sender_addr, 1)
+        # create doublespending transaction, but don't relay it
+        dblspnd_tx = self.create_raw_tx(sender, isolated, 0.5, 1, 100)
         del connected_nodes[self.isolated_idx]
         self.bump_mocktime(1)
         self.nodes[0].generate(2)
         self.sync_all()
 
-        # create doublespending transaction, but don't relay it
-        dblspnd_tx = self.create_raw_tx(sender, isolated, 0.5, 1, 100)
         # isolate one node from network
         isolate_node(isolated)
         # send doublespend transaction to isolated node
