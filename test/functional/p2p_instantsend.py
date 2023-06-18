@@ -4,7 +4,7 @@
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 from test_framework.test_framework import WagerrTestFramework
-from test_framework.util import assert_equal, assert_raises_rpc_error, isolate_node, reconnect_isolated_node
+from test_framework.util import assert_equal, assert_raises_rpc_error, isolate_node, reconnect_isolated_node, connect_nodes, disconnect_nodes, satoshi_round
 
 '''
 p2p_instantsend.py
@@ -47,12 +47,12 @@ class InstantSendTest(WagerrTestFramework):
         # feed the sender with some balance
         sender_addr = sender.getnewaddress()
         self.nodes[0].sendtoaddress(sender_addr, 1)
+        # create doublespending transaction, but don't relay it
+        dblspnd_tx = self.create_raw_tx(sender, isolated, 0.5, 1, 100)
         self.bump_mocktime(1)
         self.nodes[0].generate(2)
         self.sync_all()
 
-        # create doublespending transaction, but don't relay it
-        dblspnd_tx = self.create_raw_tx(sender, isolated, 0.5, 1, 100)
         # isolate one node from network
         isolate_node(isolated)
         # instantsend to receiver
