@@ -103,9 +103,9 @@ class InstantSendTest(WagerrTestFramework):
         # feed the sender with some balance
         sender_addr = isolated.getnewaddress()
         self.nodes[0].sendtoaddress(sender_addr, 1)
-        self.sync_all()
         # generate a new block to confirm the transaction
         self.nodes[0].generate(1)
+        self.sync_all()
         # create doublespending transaction, but don't relay it
         dblspnd_tx = self.create_raw_tx(sender, isolated, 0.5, 1, 100)
         del connected_nodes[self.isolated_idx]
