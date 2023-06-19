@@ -103,7 +103,7 @@ class InstantSendTest(WagerrTestFramework):
         # feed the sender with some balance
         sender_addr = isolated.getnewaddress()
         self.nodes[0].sendtoaddress(sender.getnewaddress(), 1000)
-        self.nodes[0].generate(10)
+        self.nodes[0].generate(100)
         self.sync_all()
         dtxid = sender.sendtoaddress(sender_addr, 1)
         # generate a new block to confirm the transaction
