@@ -248,6 +248,7 @@ def post_opcode(node, opcode, address):
     outputs = {address: change, 'data': opcode}
     # Create the raw transaction.
     trx = node.createrawtransaction(inputs, outputs)
+    breakpoint()
     # Add a fee rate
     node.fundrawtransaction(trx, {'feeRate':'0.03'})
     # Sign the raw transaction.
