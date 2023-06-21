@@ -141,7 +141,6 @@ def make_field_event(event_id, timestamp, group, marketType, sport, tournament, 
     for contender_id, contender_odds in contenders_win_odds.items():
         result = result + encode_int_little_endian(int(contender_id), 4)
         result = result + encode_int_little_endian(int(contender_odds), 4)
-    breakpoint()
     return result
 
 # Create an update odds for field event opcode
@@ -152,6 +151,7 @@ def make_field_update_odds(event_id, contenders_win_odds):
     for contender_id, contender_odds in contenders_win_odds.items():
         result = result + encode_int_little_endian(int(contender_id), 4)
         result = result + encode_int_little_endian(int(contender_odds), 4)
+    breakpoint()
     return result
 
 # Create an zeroing odds for field event opcode
