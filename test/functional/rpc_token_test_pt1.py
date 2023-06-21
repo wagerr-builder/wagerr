@@ -157,6 +157,7 @@ class TokenTest (WagerrTestFramework):
         self.log.info("Blockhash block %s %s", LIVE_BlockCount, LIVE_BlockHash)
         self.log.info("\nTransaction ID %s" % LIVETransTXID)
         self.log.info("Transaction Details %s" % self.nodes[0].gettokentransaction(LIVETransTXID, LIVE_BlockHash))
+        breakpoint()
         self.log.info("\nList tokens since block 200 ORAT\n%s" % self.nodes[0].listtokenssinceblock(LIVEGroup_ID, LIVE_BlockHash))
         tokenORATUnspent=self.nodes[0].listunspenttokens(ORATGroup_ID)
         newORAT=self.nodes[0].getnewaddress()
