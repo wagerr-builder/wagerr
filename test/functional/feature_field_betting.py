@@ -707,7 +707,7 @@ class BettingTest(WagerrTestFramework):
             }
         )
         post_opcode(self.nodes[1], field_event_opcode, WGR_WALLET_EVENT['addr'])
-
+        breakpoint()
         field_event_opcode = make_field_event(
             301,
             start_time,
