@@ -707,7 +707,7 @@ class BettingTest(WagerrTestFramework):
             }
         )
         post_opcode(self.nodes[1], field_event_opcode, WGR_WALLET_EVENT['addr'])
-        breakpoint()
+        #breakpoint()
         field_event_opcode = make_field_event(
             301,
             start_time,
@@ -841,7 +841,7 @@ class BettingTest(WagerrTestFramework):
         sync_blocks(self.nodes[0:4])
 
         # for node in self.nodes[0:4]:
-        breakpoint()
+        #breakpoint()
         list_events = self.nodes[2].listfieldevents()
         assert_equal(len(list_events), 4)
         for event in list_events:
