@@ -145,6 +145,7 @@ def make_field_event(event_id, timestamp, group, marketType, sport, tournament, 
 
 # Create an update odds for field event opcode
 def make_field_update_odds(event_id, contenders_win_odds):
+    breakpoint()
     result = make_common_header(OPCODE_BTX_FIELD_UPDATE_ODDS)
     result = result + encode_int_little_endian(event_id, 4)
     result = result + encode_int_little_endian(int(len(contenders_win_odds)), 1) # map size
