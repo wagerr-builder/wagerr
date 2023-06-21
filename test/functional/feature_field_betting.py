@@ -841,7 +841,7 @@ class BettingTest(WagerrTestFramework):
         sync_blocks(self.nodes[0:4])
 
         # for node in self.nodes[0:4]:
-        #breakpoint()
+        breakpoint()
         list_events = self.nodes[2].listfieldevents()
         assert_equal(len(list_events), 4)
         for event in list_events:
@@ -879,7 +879,7 @@ class BettingTest(WagerrTestFramework):
             }
         )
         post_opcode(self.nodes[1], field_update_odds_opcode, WGR_WALLET_EVENT['addr'])
-        breakpoint()
+        #breakpoint()
         field_update_odds_opcode = make_field_update_odds(301, {
                 contender_names.index("cont2") : make_odds(10),
                 # Add new conteders
