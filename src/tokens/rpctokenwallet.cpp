@@ -581,8 +581,8 @@ extern UniValue listtokenssinceblock(const JSONRPCRequest& request)
 
     pwallet->BlockUntilSyncedToCurrentChain();
 
-    LOCK(cs_main);
     //LOCK(pwallet->cs_wallet);
+    LOCK2(cs_main, pwallet->cs_wallet);
 
     unsigned int curparam = 0;
 
