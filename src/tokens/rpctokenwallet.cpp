@@ -580,8 +580,8 @@ extern UniValue listtokenssinceblock(const JSONRPCRequest& request)
     // the user could have gotten from another RPC command prior to now
 
     pwallet->BlockUntilSyncedToCurrentChain();
-
     LOCK(pwallet->cs_wallet);
+    EnsureWalletIsUnlocked(pwallet);
 
     unsigned int curparam = 0;
 
