@@ -646,6 +646,7 @@ extern UniValue listtokenssinceblock(const JSONRPCRequest& request)
 
     return ret;
 }
+}
 
 extern UniValue sendtoken(const JSONRPCRequest& request)
 {
@@ -689,7 +690,6 @@ extern UniValue sendtoken(const JSONRPCRequest& request)
     CTransactionRef tx;
     GroupSend(tx, grpID, outputs, totalTokensNeeded, pwallet);
     return tx->GetHash().GetHex();
-}
 }
 
 extern UniValue configuretoken(const JSONRPCRequest& request)
