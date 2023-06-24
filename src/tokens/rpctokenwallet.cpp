@@ -519,6 +519,8 @@ extern UniValue listtokentransactions(const JSONRPCRequest& request)
 
 extern UniValue listtokenssinceblock(const JSONRPCRequest& request)
 {
+    LOCK(cs_main);
+    {
     if (request.fHelp || request.params.size() < 1)
         throw std::runtime_error(
             "listtokenssinceblock \"groupid\" ( \"blockhash\" target-confirmations includeWatchonly )\n"
@@ -578,7 +580,6 @@ extern UniValue listtokenssinceblock(const JSONRPCRequest& request)
 
     // Make sure the results are valid at least up to the most recent block
     // the user could have gotten from another RPC command prior to now
-    LOCK(cs_main);
 
     pwallet->BlockUntilSyncedToCurrentChain();
 
@@ -688,6 +689,7 @@ extern UniValue sendtoken(const JSONRPCRequest& request)
     CTransactionRef tx;
     GroupSend(tx, grpID, outputs, totalTokensNeeded, pwallet);
     return tx->GetHash().GetHex();
+}
 }
 
 extern UniValue configuretoken(const JSONRPCRequest& request)
