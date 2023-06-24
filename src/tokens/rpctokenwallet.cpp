@@ -578,6 +578,8 @@ extern UniValue listtokenssinceblock(const JSONRPCRequest& request)
 
     // Make sure the results are valid at least up to the most recent block
     // the user could have gotten from another RPC command prior to now
+    LOCK(cs_main);
+
     pwallet->BlockUntilSyncedToCurrentChain();
 
     LOCK(pwallet->cs_wallet);
