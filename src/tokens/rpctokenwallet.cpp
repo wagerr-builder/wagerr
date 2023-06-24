@@ -519,8 +519,6 @@ extern UniValue listtokentransactions(const JSONRPCRequest& request)
 
 extern UniValue listtokenssinceblock(const JSONRPCRequest& request)
 {
-    LOCK(cs_main);
-    {
     if (request.fHelp || request.params.size() < 1)
         throw std::runtime_error(
             "listtokenssinceblock \"groupid\" ( \"blockhash\" target-confirmations includeWatchonly )\n"
@@ -583,7 +581,8 @@ extern UniValue listtokenssinceblock(const JSONRPCRequest& request)
 
     pwallet->BlockUntilSyncedToCurrentChain();
 
-    LOCK(pwallet->cs_wallet);
+    LOCK(cs_main);
+    //LOCK(pwallet->cs_wallet);
 
     unsigned int curparam = 0;
 
@@ -645,7 +644,6 @@ extern UniValue listtokenssinceblock(const JSONRPCRequest& request)
     ret.pushKV("lastblock", lastblock.GetHex());
 
     return ret;
-}
 }
 
 extern UniValue sendtoken(const JSONRPCRequest& request)
