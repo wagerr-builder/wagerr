@@ -605,7 +605,11 @@ extern UniValue listtokenssinceblock(const JSONRPCRequest& request)
         uint256 blockId;
 
         blockId.SetHex(request.params[curparam].get_str());
-        pindex = LookupBlockIndex(blockId);
+
+        {   // Start of scope for cs_main lock
+            LOCK(cs_main);
+            pindex = LookupBlockIndex(blockId);
+        }   // End of scope for cs_main lock, lock is automatically released here
     }
 
     curparam++;
