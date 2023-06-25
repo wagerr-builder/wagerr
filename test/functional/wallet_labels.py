@@ -55,7 +55,7 @@ class WalletLabelsTest(WagerrTestFramework):
             assert_equal(address_group[2][1], Decimal("10000"))
             assert_equal(address_group[2][2], 'coinbase')
             linked_addresses.add(address_group[2][0])
-            breakpoint()
+            
 
         # send 500 from each address to a third address not in this wallet
         common_address = "TKCjZUMw7Hjq5vUSKdcuQnotxcG9De2oxH"

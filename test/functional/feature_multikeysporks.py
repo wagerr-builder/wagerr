@@ -82,7 +82,7 @@ class MultiKeySporkTest(WagerrTestFramework):
         # spork change requires at least 3 signers
         time.sleep(10)
         for node in self.nodes:
-            breakpoint()
+            
             assert self.get_test_spork_value(node, spork_name) != 1
 
         # restart with no extra args to trigger CheckAndRemove

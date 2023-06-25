@@ -42,7 +42,7 @@ class CreateWalletWatchonlyTest(WagerrTestFramework):
         wo_wallet.importpubkey(pubkey=def_wallet.getaddressinfo(wo_change)['pubkey'])
 
         # generate some wagerr for testing
-        breakpoint()
+        
         node.generate(101)
 
         # send 1 btc to our watch-only address
