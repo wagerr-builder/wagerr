@@ -1134,6 +1134,7 @@ class BettingTest(WagerrTestFramework):
 
         # creating existed mapping
         mapping_opcode = make_mapping(TEAM_MAPPING, 0, "anotherTeamName")
+        breakpoint()
         assert_raises_rpc_error(-25, "", post_opcode, self.nodes[1], mapping_opcode, WGR_WALLET_ORACLE['addr'])
 
         # creating exited event shouldn't accepted to memory pool
