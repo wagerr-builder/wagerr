@@ -1135,7 +1135,7 @@ class BettingTest(WagerrTestFramework):
         # creating existed mapping
         breakpoint()
         mapping_opcode = make_mapping(TEAM_MAPPING, 0, "anotherTeamName")
-        assert_raises_rpc_error(-25, "", post_opcode, self.nodes[1], mapping_opcode, WGR_WALLET_ORACLE['addr'])
+        assert_raises_rpc_error(-26, "", post_opcode, self.nodes[1], mapping_opcode, WGR_WALLET_ORACLE['addr'])
 
         # creating exited event shouldn't accepted to memory pool
         test_event = make_event(0, # Event ID
@@ -1148,15 +1148,15 @@ class BettingTest(WagerrTestFramework):
                             14000, # home odds
                             33000, # away odds
                             0) # draw odds
-        assert_raises_rpc_error(-25, "", post_opcode, self.nodes[1], test_event, WGR_WALLET_EVENT['addr'])
+        assert_raises_rpc_error(-26, "", post_opcode, self.nodes[1], test_event, WGR_WALLET_EVENT['addr'])
 
         # creating result for resulted event shouldn't accepted to memory pool
         result_opcode = make_result(4, STANDARD_RESULT, 1, 1)
-        assert_raises_rpc_error(-25, "", post_opcode, self.nodes[1], result_opcode, WGR_WALLET_EVENT['addr'])
+        assert_raises_rpc_error(-26, "", post_opcode, self.nodes[1], result_opcode, WGR_WALLET_EVENT['addr'])
 
         # creating totals for not existed event shouldn't accepted to memory pool
         totals_event_opcode = make_total_event(1000, 26, 21000, 23000)
-        assert_raises_rpc_error(-25, "", post_opcode, self.nodes[1], totals_event_opcode, WGR_WALLET_EVENT['addr'])
+        assert_raises_rpc_error(-26, "", post_opcode, self.nodes[1], totals_event_opcode, WGR_WALLET_EVENT['addr'])
 
         self.log.info("Mempool Accepting Success")
 
