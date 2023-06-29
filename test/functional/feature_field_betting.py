@@ -523,8 +523,7 @@ class BettingTest(WagerrTestFramework):
                 contender_names.index("cont9"): make_odds(0)
             }
         )
-        assert_raises_rpc_error(-25, "",
-            post_opcode, self.nodes[1], field_event_opcode, WGR_WALLET_ORACLE['addr'])
+        assert_raises_rpc_error(-26, "",post_opcode, self.nodes[1], field_event_opcode, WGR_WALLET_ORACLE['addr'])
 
         # Test revert
         revert_chain_height = self.nodes[4].getblockcount()
@@ -558,7 +557,7 @@ class BettingTest(WagerrTestFramework):
         self.nodes[1].generate(1)
         sync_blocks(self.nodes[0:4])
 
-        #assert_raises_rpc_error(-25, "",
+        #assert_raises_rpc_error(-26, "",
         #    post_opcode, self.nodes[1], field_event_opcode, WGR_WALLET_ORACLE['addr'])
 
         # pprint.pprint(self.nodes[1].listfieldevents()[0]['contenders'])
@@ -771,7 +770,7 @@ class BettingTest(WagerrTestFramework):
                 100 : 15000 # bad contender_id
             }
         )
-        assert_raises_rpc_error(-25, "",
+        assert_raises_rpc_error(-26, "",
             post_opcode, self.nodes[1], field_update_odds_opcode, WGR_WALLET_ORACLE['addr'])
 
         field_update_odds_opcode = make_field_update_odds(
@@ -780,7 +779,7 @@ class BettingTest(WagerrTestFramework):
                 contender_names.index("cont1") : make_odds(50)
             }
         )
-        assert_raises_rpc_error(-25, "",
+        assert_raises_rpc_error(-26, "",
             post_opcode, self.nodes[1], field_update_odds_opcode, WGR_WALLET_ORACLE['addr'])
 
         # Update odds for events
@@ -1118,7 +1117,7 @@ class BettingTest(WagerrTestFramework):
         self.stop_node(4)
 
         field_zeroing_opcode = make_field_zeroing_odds(100) # bad event_id
-        assert_raises_rpc_error(-25, "",
+        assert_raises_rpc_error(-26, "",
             post_opcode, self.nodes[1], field_zeroing_opcode, WGR_WALLET_ORACLE['addr'])
 
         field_zeroing_opcode = make_field_zeroing_odds(2)
