@@ -1133,7 +1133,6 @@ class BettingTest(WagerrTestFramework):
         #assert_raises_rpc_error(-131, "Error: there is no such Event: {}".format(800), self.nodes[3].placeparlaybet, [{'eventId': 7, 'outcome': outcome_home_win}, {'eventId': 800, 'outcome': outcome_home_win}, {'eventId': 9, 'outcome': outcome_home_win}], 5000)
 
         # creating existed mapping
-        breakpoint()
         mapping_opcode = make_mapping(TEAM_MAPPING, 0, "anotherTeamName")
         assert_raises_rpc_error(-26, "", post_opcode, self.nodes[1], mapping_opcode, WGR_WALLET_ORACLE['addr'])
 
@@ -1768,7 +1767,6 @@ class BettingTest(WagerrTestFramework):
 
         self.nodes[0].generate(1)
         self.sync_all()
-        #breakpoint()
         time.sleep(10)
         self.nodes[0].generate(1)
         self.nodes[2].placebet(event_id, outcome_home_win, 25)
