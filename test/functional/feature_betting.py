@@ -1845,7 +1845,6 @@ class BettingTest(WagerrTestFramework):
         self.sync_all()
 
     def run_test(self):
-        self.run_token_setup()
         self.check_minting()
         # Chain height = 300 after minting -> v4 protocol active
         self.check_mapping()
@@ -1855,6 +1854,7 @@ class BettingTest(WagerrTestFramework):
         self.check_spread_event()
         self.check_spread_event_v2()
         self.check_total_event()
+        self.run_token_setup()
         self.check_ml_bet()
         # disable check spreads bets v1, becouse new spread system
         # uses spreads v1 before wagerr v3 prot, but regtest uses wagerr v3 prot
