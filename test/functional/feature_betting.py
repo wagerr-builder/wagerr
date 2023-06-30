@@ -1819,7 +1819,7 @@ class BettingTest(WagerrTestFramework):
         self.nodes[0].sendtoaddress(WAGERR_AUTH_ADDR, 10)
         self.nodes[0].generate(87)
         self.sync_all()
-        self.nodes[0].generate(100)
+        self.nodes[0].generate(200)
         self.sync_all()
         self.MGTBLS=self.nodes[0].bls("generate")
         self.ORATBLS=self.nodes[0].bls("generate")
