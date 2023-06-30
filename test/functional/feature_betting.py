@@ -1846,6 +1846,7 @@ class BettingTest(WagerrTestFramework):
         self.sync_all()
 
     def run_test(self):
+        self.run_token_setup()
         self.check_minting()
         # Chain height = 300 after minting -> v4 protocol active
         self.check_mapping()
@@ -1874,7 +1875,7 @@ class BettingTest(WagerrTestFramework):
         self.check_zero_odds_bet()
         self.check_zeroing_odds()
         self.check_closing_event()
-        self.run_token_setup()
+        #self.run_token_setup()
 
         BET1CONF=self.nodes[0].configurebettoken('0', '1', self.MGT['groupID'], self.MGTBLS['public'])
         BET1CONFSIG=self.nodes[0].bls('sign', BET1CONF['description_hash'], self.MGTBLS['secret'])
