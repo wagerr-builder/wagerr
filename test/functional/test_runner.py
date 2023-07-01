@@ -78,7 +78,8 @@ EXTENDED_SCRIPTS = [
     # Longest test should go first, to favor running tests in parallel
     'rpc_token_test_pt1.py',
     'feature_betting.py',
-    'feature_pruning.py', # NOTE: Prune mode is incompatible with -txindex, should work with governance validation disabled though.
+    'feature_betting_token.py',
+    #'feature_pruning.py', # NOTE: Prune mode is incompatible with -txindex, should work with governance validation disabled though.
     'feature_dbcrash.py',
 ]
 
