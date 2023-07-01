@@ -101,7 +101,7 @@ class P2PFingerprintTest(WagerrTestFramework):
         assert_equal(self.nodes[0].getblockcount(), 44)
         stale_hash = int(block_hashes[-1], 16)
 
-        breakpoint()
+        #breakpoint()
         # Check that getdata request for stale block succeeds
         self.send_block_request(stale_hash, node0)
         test_function = lambda: self.last_block_equals(stale_hash, node0)

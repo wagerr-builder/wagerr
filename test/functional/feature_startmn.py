@@ -72,7 +72,7 @@ class WalletTest(WagerrTestFramework):
             if txout['value'] == Decimal(25000):
                 mn01_collateral_vout = txout['n']
                 break
-        breakpoint()
+        #breakpoint()
         assert(mn01_collateral_vout != -1)
         """
         self.log.info("mn01_protx_hash:")

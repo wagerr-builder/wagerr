@@ -61,7 +61,7 @@ class InstantSendTest(WagerrTestFramework):
         # wait for the transaction to propagate
         connected_nodes = self.nodes.copy()
         del connected_nodes[self.isolated_idx]
-        breakpoint()
+        #breakpoint()
         self.sync_mempools(connected_nodes)
         for node in connected_nodes:
             self.wait_for_instantlock(is_id, node)
@@ -94,7 +94,7 @@ class InstantSendTest(WagerrTestFramework):
         self.sync_all()
 
     def test_mempool_doublespend(self):
-        breakpoint()
+        #breakpoint()
         sender = self.nodes[self.sender_idx]
         receiver = self.nodes[self.receiver_idx]
         isolated = self.nodes[self.isolated_idx]

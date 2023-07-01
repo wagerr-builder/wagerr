@@ -43,7 +43,7 @@ class MempoolCoinbaseTest(WagerrTestFramework):
 
         node0_address = self.nodes[0].getnewaddress()
         node1_address = self.nodes[1].getnewaddress()
-        breakpoint()
+        #breakpoint()
         # Three scenarios for re-orging coinbase spends in the memory pool:
         # 1. Direct coinbase spend  :  spend_101
         # 2. Indirect (coinbase spend in chain, child in mempool) : spend_102 and spend_102_1
@@ -52,7 +52,7 @@ class MempoolCoinbaseTest(WagerrTestFramework):
         # and make sure the mempool code behaves correctly.
         b = [ self.nodes[0].getblockhash(n) for n in range(251, 254) ]
         coinbase_txids = [ self.nodes[0].getblock(h)['tx'][0] for h in b ]
-        breakpoint()
+        #breakpoint()
         spend_101_raw = create_raw_transaction(self.nodes[0], coinbase_txids[1], node1_address, amount=499.99)
         spend_102_raw = create_raw_transaction(self.nodes[0], coinbase_txids[2], node0_address, amount=499.99)
         spend_103_raw = create_raw_transaction(self.nodes[0], coinbase_txids[3], node0_address, amount=499.99)

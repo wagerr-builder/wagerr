@@ -819,7 +819,7 @@ class BettingTest(WagerrTestFramework):
                 assert_equal(event['contenders'][0]['input-odds'], make_odds(50))
                 assert_equal(event['contenders'][0]['place-odds'], 0)
                 assert_equal(event['contenders'][0]['show-odds'], 0)
-        breakpoint()
+        #breakpoint()
         field_update_odds_opcode = make_field_update_odds(1, {
                 contender_names.index("cont2") : make_odds(49) # Add new conteder
             }
@@ -841,7 +841,7 @@ class BettingTest(WagerrTestFramework):
 
         # for node in self.nodes[0:4]:
         list_events = self.nodes[2].listfieldevents()
-        breakpoint()
+        #breakpoint()
         assert_equal(len(list_events), 4)
         for event in list_events:
             if event['event_id'] == 1:

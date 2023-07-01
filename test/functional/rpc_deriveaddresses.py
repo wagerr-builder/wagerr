@@ -19,7 +19,7 @@ class DeriveaddressesTest(WagerrTestFramework):
 
         descriptor = "pkh([6ecdc6da]029c19ca51777c8a2940fbe2e9f6bd7156227e1c53ed08447ba8d5a5deb08d97d6)#xtu8cag9"
         address = "TL55qnGJU7HEoJBDZqziBduvdaBFGTkVfX"
-        breakpoint()
+        #breakpoint()
         assert_equal(self.nodes[0].deriveaddresses(descriptor), [address])
 
         descriptor = descriptor[:-9]
