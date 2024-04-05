@@ -22,10 +22,12 @@ $(package)_libsodium_build_subdir=libsodium-cmake
 $(package)_libsodium_sha256_hash=13b8939f75bebd6ff0fac49548fbe1a4c2ac477444b2d68a7621e233339e0874
 
 $(package)_extra_sources=$($(package)_relic_file_name)
+$(package)_extra_sources_libsodium=$($(package)_libsodium_file_name)
 
 define $(package)_fetch_cmds
 $(call fetch_file,$(package),$($(package)_download_path),$($(package)_download_file),$($(package)_file_name),$($(package)_sha256_hash)) && \
-$(call fetch_file,$(package),$($(package)_relic_download_path),$($(package)_relic_download_file),$($(package)_relic_file_name),$($(package)_relic_sha256_hash))
+$(call fetch_file,$(package),$($(package)_relic_download_path),$($(package)_relic_download_file),$($(package)_relic_file_name),$($(package)_relic_sha256_hash)) && \
+$(call fetch_file,$(package),$($(package)_libsodium_download_path),$($(package)_libsodium_download_file),$($(package)_libsodium_file_name),$($(package)_libsodium_sha256_hash))
 endef
 
 define $(package)_extract_cmds
