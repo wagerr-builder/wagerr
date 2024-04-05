@@ -21,8 +21,8 @@ $(package)_libsodium_file_name=$($(package)_libsodium_download_file)
 $(package)_libsodium_build_subdir=build/_deps/sodium-subbuild
 $(package)_libsodium_sha256_hash=13b8939f75bebd6ff0fac49548fbe1a4c2ac477444b2d68a7621e233339e0874
 
-$(package)_extra_sources=$($(package)_relic_file_name)
-$(package)_extra_sources+=$($(package)_libsodium_file_name)
+$(package)_extra_sources = $($(package)_relic_file_name)
+$(package)_extra_sources += $($(package)_libsodium_file_name)
 
 define $(package)_fetch_cmds
 $(call fetch_file,$(package),$($(package)_download_path),$($(package)_download_file),$($(package)_file_name),$($(package)_sha256_hash)) && \
