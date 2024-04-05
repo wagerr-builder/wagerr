@@ -15,7 +15,7 @@ $(package)_relic_build_subdir=relic
 $(package)_relic_sha256_hash=f2de6ebdc9def7077f56c83c8b06f4da5bacc36b709514bd550a92a149e9fa1d
 
 $(package)_libsodium_version=1.0.18
-$(package)_libsodium_download_path=https://github.com/wagerr-builder/libsodium-cmake/releases/download/V$($(package)_libsodium_version)
+$(package)_libsodium_download_path=https://github.com/wagerr-builder/libsodium-cmake/releases/download/V1.0.18
 $(package)_libsodium_download_file=libsodium-cmake-$($(package)_libsodium_version).tar.gz
 $(package)_libsodium_file_name=$($(package)_libsodium_download_file)
 $(package)_libsodium_build_subdir=build/_deps/sodium-subbuild
@@ -27,7 +27,6 @@ $(package)_extra_sources_libsodium=$($(package)_libsodium_file_name)
 define $(package)_fetch_cmds
 $(call fetch_file,$(package),$($(package)_download_path),$($(package)_download_file),$($(package)_file_name),$($(package)_sha256_hash)) && \
 $(call fetch_file,$(package),$($(package)_relic_download_path),$($(package)_relic_download_file),$($(package)_relic_file_name),$($(package)_relic_sha256_hash)) && \
-echo "$($(package)_libsodium_sha256_hash)  $($(package)_source_dir)/$($(package)_libsodium_file_name)" && \
 $(call fetch_file,$(package),$($(package)_libsodium_download_path),$($(package)_libsodium_download_file),$($(package)_libsodium_file_name),$($(package)_libsodium_sha256_hash))
 endef
 
