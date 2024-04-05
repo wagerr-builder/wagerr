@@ -14,6 +14,13 @@ $(package)_relic_file_name=relic-$($(package)_relic_download_file)
 $(package)_relic_build_subdir=relic
 $(package)_relic_sha256_hash=f2de6ebdc9def7077f56c83c8b06f4da5bacc36b709514bd550a92a149e9fa1d
 
+$(package)_libsodium_version=1.0.18
+$(package)_libsodium_download_path=https://github.com/wagerr-builder/libsodium-cmake/releases/download/V$($(package)_libsodium_version)
+$(package)_libsodium_download_file=libsodium-cmake-$($(package)_libsodium_version).tar.gz
+$(package)_libsodium_file_name=libsodium-cmake-$($(package)_libsodium_download_file)
+$(package)_libsodium_build_subdir=libsodium-cmake
+$(package)_libsodium_sha256_hash=13b8939f75bebd6ff0fac49548fbe1a4c2ac477444b2d68a7621e233339e0874
+
 $(package)_extra_sources=$($(package)_relic_file_name)
 
 define $(package)_fetch_cmds
