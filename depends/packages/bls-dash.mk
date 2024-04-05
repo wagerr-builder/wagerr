@@ -24,6 +24,8 @@ $(package)_libsodium_sha256_hash=13b8939f75bebd6ff0fac49548fbe1a4c2ac477444b2d68
 $(package)_extra_sources = $($(package)_relic_file_name)
 $(package)_extra_sources += $($(package)_libsodium_file_name)
 
+$(package)_patches = libsodium-bls.patch
+
 define $(package)_fetch_cmds
 $(call fetch_file,$(package),$($(package)_download_path),$($(package)_download_file),$($(package)_file_name),$($(package)_sha256_hash)) && \
 $(call fetch_file,$(package),$($(package)_relic_download_path),$($(package)_relic_download_file),$($(package)_relic_file_name),$($(package)_relic_sha256_hash)) && \
@@ -66,6 +68,7 @@ define $(package)_set_vars
 endef
 
 define $(package)_preprocess_cmds
+  patch -p1 -i $($(package)_patch_dir)/libsodium-bls.patch && \
   sed -i.old "s|GIT_REPOSITORY https://github.com/Chia-Network/relic.git|URL \"../../relic-$($(package)_relic_version).tar.gz\"|" CMakeLists.txt && \
   sed -i.old "s|RELIC_GIT_TAG \".*\"|RELIC_GIT_TAG \"\"|" CMakeLists.txt
 endef
